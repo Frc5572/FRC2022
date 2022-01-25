@@ -5,6 +5,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -19,6 +21,10 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         System.out.println("Robot Init");
+        final MotorControllerGroup leftMotors = new MotorControllerGroup(new WPI_TalonSRX(4),
+                new WPI_TalonSRX(8));
+        final MotorControllerGroup rightMotors = new MotorControllerGroup(new WPI_TalonSRX(3),
+                new WPI_TalonSRX(2));
     }
 
     @Override
