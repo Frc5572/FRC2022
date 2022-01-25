@@ -81,7 +81,7 @@ public class SwerveModule {
     }
 
     /**
-     * XXXXX
+     *
      */
     private void resetToAbsolute() {
         double absolutePosition = Conversions.degreesToFalcon(getCanCoder().getDegrees() - angleOffset, Constants.Swerve.angleGearRatio);
@@ -89,9 +89,9 @@ public class SwerveModule {
     }
 
     /**
-     * XXXXX
      *
-     * @param rotationSpeed
+     *
+     * @param rotationSpeed Drive motor speed (-1 <= value <= 1)
      */
     public void setTurnAngle(double rotationSpeed) {
         double absolutePosition = Conversions.degreesToFalcon(getCanCoder().getDegrees() - angleOffset, Constants.Swerve.angleGearRatio);
@@ -139,7 +139,7 @@ public class SwerveModule {
 
     /**
      *
-     * @return
+     * @return Swerve module state
      */
     public SwerveModuleState getState() {
         double velocity = Conversions.falconToMPS(mDriveMotor.getSelectedSensorVelocity(), Constants.Swerve.wheelCircumference, Constants.Swerve.driveGearRatio);

@@ -35,7 +35,12 @@ public class Swerve extends SubsystemBase {
     }
 
     /**
-     * Starts and creates drive subsystem.
+     * Moves the swerve drive train
+     *
+     * @param translation The 2d translation in the X-Y plane
+     * @param rotation The amount of rotation in the Z axis
+     * @param fieldRelative Whether the movement is relative to the field or absolute
+     * @param isOpenLoop Open or closed loop system
      */
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
         SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(
@@ -49,6 +54,9 @@ public class Swerve extends SubsystemBase {
 
     /**
      * Sets motors to 0 or inactive.
+     *
+     * @param isOpenLoop Open or closed loop system
+     * @param fieldRelative Whether the movement is relative to the field or absolute
      */
     public void setMotorsZero(boolean isOpenLoop, boolean fieldRelative) {
         SwerveModuleState[] swerveModuleStates =
@@ -62,6 +70,8 @@ public class Swerve extends SubsystemBase {
 
     /**
      * Used by SwerveControllerCommand in Auto
+     *
+     * @param desiredStates The desired states of the swerve modules
      */
     public void setModuleStates(SwerveModuleState[] desiredStates) {
         SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.Swerve.maxSpeed);
@@ -71,18 +81,29 @@ public class Swerve extends SubsystemBase {
         }
     }
 
+    /**
+     * Returns the position of the robot on the field.
+     *
+     * @return The pose of the robot (x and y are in meters).
+     */
     public Pose2d getPose() {
         return swerveOdometry.getPoseMeters();
     }
 
+    /**
+     * Resets the robot's position on the field.
+     *
+     * @param pose The position on the field that your robot is at.
+     */
     public void resetOdometry(Pose2d pose) {
         swerveOdometry.resetPosition(pose, getYaw());
     }
 
     /**
      * Gets the states of each swerve module.
+     *
+     * @return Swerve module state
      */
-
     public SwerveModuleState[] getStates() {
         SwerveModuleState[] states = new SwerveModuleState[4];
         for (SwerveModule mod : swerveMods) {
@@ -91,6 +112,9 @@ public class Swerve extends SubsystemBase {
         return states;
     }
 
+    /**
+     * Resets the gryo to 0 offset
+     */
     public void zeroGyro() {
         gyro.zeroYaw();
     }
