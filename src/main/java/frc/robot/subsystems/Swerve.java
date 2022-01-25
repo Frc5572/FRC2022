@@ -27,25 +27,19 @@ public class Swerve extends SubsystemBase {
 
         swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getYaw());
 
-        mSwerveMods = new SwerveModule[] {
-                new SwerveModule(0, Constants.Swerve.Mod0.constants),
+        mSwerveMods = new SwerveModule[] {new SwerveModule(0, Constants.Swerve.Mod0.constants),
                 new SwerveModule(1, Constants.Swerve.Mod1.constants),
                 new SwerveModule(2, Constants.Swerve.Mod2.constants),
-                new SwerveModule(3, Constants.Swerve.Mod3.constants)
-        };
+                new SwerveModule(3, Constants.Swerve.Mod3.constants)};
     }
 
-    public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
-        SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(
-                fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
-                        translation.getX(),
-                        translation.getY(),
-                        rotation,
-                        getYaw())
-                        : new ChassisSpeeds(
-                                translation.getX(),
-                                translation.getY(),
-                                rotation));
+    public void drive(Translation2d translation, double rotation, boolean fieldRelative,
+            boolean isOpenLoop) {
+        SwerveModuleState[] swerveModuleStates =
+                Constants.Swerve.swerveKinematics.toSwerveModuleStates(fieldRelative
+                        ? ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(),
+                                translation.getY(), rotation, getYaw())
+                        : new ChassisSpeeds(translation.getX(), translation.getY(), rotation));
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed);
 
         for (SwerveModule mod : mSwerveMods) {
@@ -54,16 +48,10 @@ public class Swerve extends SubsystemBase {
     }
 
     public void setMotorsZero(boolean isOpenLoop, boolean fieldRelative) {
-        SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(
-                fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
-                        0,
-                        0,
-                        0,
-                        getYaw())
-                        : new ChassisSpeeds(
-                                0,
-                                0,
-                                0));
+        SwerveModuleState[] swerveModuleStates =
+                Constants.Swerve.swerveKinematics.toSwerveModuleStates(
+                        fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, getYaw())
+                                : new ChassisSpeeds(0, 0, 0));
 
         for (SwerveModule mod : mSwerveMods) {
             mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
@@ -102,7 +90,8 @@ public class Swerve extends SubsystemBase {
 
     public Rotation2d getYaw() {
         float yaw = gyro.getYaw();
-        return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - yaw) : Rotation2d.fromDegrees(yaw);
+        return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - yaw)
+                : Rotation2d.fromDegrees(yaw);
     }
 
     @Override
@@ -110,9 +99,12 @@ public class Swerve extends SubsystemBase {
         swerveOdometry.update(getYaw(), getStates());
 
         for (SwerveModule mod : mSwerveMods) {
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated", mod.getState().angle.getDegrees());
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);
+            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder",
+                    mod.getCanCoder().getDegrees());
+            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated",
+                    mod.getState().angle.getDegrees());
+            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity",
+                    mod.getState().speedMetersPerSecond);
         }
     }
 }

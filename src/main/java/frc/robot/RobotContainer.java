@@ -12,12 +12,9 @@ import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
 /**
- * This class is where the bulk of the robot should be declared. Since
- * Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in
- * the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of
- * the robot (including
+ * This class is where the bulk of the robot should be declared. Since Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
@@ -37,9 +34,12 @@ public class RobotContainer {
   private final int rotationAxis = XboxController.Axis.kRightX.value;
 
   /* Driver Buttons */
-  private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
-  private final JoystickButton moveMotorNew = new JoystickButton(driver, XboxController.Button.kA.value);
-  private final JoystickButton alignSwerve = new JoystickButton(driver, XboxController.Button.kX.value);
+  private final JoystickButton zeroGyro =
+      new JoystickButton(driver, XboxController.Button.kY.value);
+  private final JoystickButton moveMotorNew =
+      new JoystickButton(driver, XboxController.Button.kA.value);
+  private final JoystickButton alignSwerve =
+      new JoystickButton(driver, XboxController.Button.kX.value);
 
   boolean fieldRelative;
   boolean openLoop;
@@ -53,8 +53,8 @@ public class RobotContainer {
   public RobotContainer() {
     this.fieldRelative = Constants.Swerve.isFieldRelative;
     this.openLoop = Constants.Swerve.isOpenLoop;
-    s_Swerve.setDefaultCommand(
-        new TeleopSwerve(s_Swerve, driver, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
+    s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, driver, translationAxis, strafeAxis,
+        rotationAxis, fieldRelative, openLoop));
     autoChooser.setDefaultOption("Example Auto", exampleAuto);
     autoChooser.addOption("Ultrasonic Auto", ultrasonicAuto);
     SmartDashboard.putData("Choose Auto: ", autoChooser);
@@ -63,12 +63,10 @@ public class RobotContainer {
   }
 
   /**
-   * Use this method to define your button->command mappings. Buttons can be
-   * created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
-   * it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   * Use this method to define your button->command mappings. Buttons can be created by
+   * instantiating a {@link GenericHID} or one of its subclasses
+   * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
+   * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
     /* Driver Buttons */
@@ -86,12 +84,8 @@ public class RobotContainer {
    */
 
   /*
-   * switch (autoChooser.getSelected()) {
-   * case "Example Auto":
-   * return new exampleAuto(s_Swerve);
-   * case "Ultrasonic Auto":
-   * return new ultrasonicAuto(s_Swerve);
-   * }
+   * switch (autoChooser.getSelected()) { case "Example Auto": return new exampleAuto(s_Swerve);
+   * case "Ultrasonic Auto": return new ultrasonicAuto(s_Swerve); }
    */
 
   public Command getAutonomousCommand() {
