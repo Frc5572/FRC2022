@@ -1,25 +1,29 @@
 package frc.lib.math;
 
-
+/**
+ * Mathematical conversions for swerve calculations
+ */
 public class Conversions {
 
   /**
    * @param counts Falcon Counts
    * @param gearRatio Gear Ratio between Falcon and Mechanism
    * @return Degrees of Rotation of Mechanism
+   * falconToDegrees
    */
   public static double falconToDegrees(double counts, double gearRatio) {
-      return counts * (360.0 / (gearRatio * 2048.0));
+    return counts * (360.0 / (gearRatio * 2048.0));
   }
 
   /**
    * @param degrees Degrees of rotation of Mechanism
    * @param gearRatio Gear Ratio between Falcon and Mechanism
    * @return Falcon Counts
+   * degreesToFalcon
    */
   public static double degreesToFalcon(double degrees, double gearRatio) {
-      double ticks = degrees / (360.0 / (gearRatio * 2048.0));
-      return ticks;
+    double ticks = degrees / (360.0 / (gearRatio * 2048.0));
+    return ticks;
   }
 
   /**

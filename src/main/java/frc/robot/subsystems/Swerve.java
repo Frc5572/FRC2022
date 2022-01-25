@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
-
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -49,8 +48,8 @@ public class Swerve extends SubsystemBase {
                     : new ChassisSpeeds(translation.getX(), translation.getY(), rotation));
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed);
 
-  for (SwerveModule mod : swerveMods) {
-        mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
+    for (SwerveModule mod : swerveMods) {
+      mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
     }
   }
 
@@ -63,14 +62,16 @@ public class Swerve extends SubsystemBase {
                     fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, getYaw())
                             : new ChassisSpeeds(0, 0, 0));
 
-  for (SwerveModule mod : swerveMods) {
-        mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
+    for (SwerveModule mod : swerveMods) {
+      mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
     }
     System.out.println("Setting Zero!!!!!!");
   }
 
-/* Used by SwerveControllerCommand in Auto */
-public void setModuleStates(SwerveModuleState[] desiredStates) {
+  /**
+  * Used by SwerveControllerCommand in Auto
+  */
+  public void setModuleStates(SwerveModuleState[] desiredStates) {
     SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.Swerve.maxSpeed);
 
     for (SwerveModule mod : swerveMods) {
