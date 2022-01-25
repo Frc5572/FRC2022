@@ -74,16 +74,13 @@ public class RobotContainer {
     }
 
     /**
-     * Use this to pass the autonomous command to the main {@link Robot} class.
+     * Use this to pass the autonomous command to the main {@link Robot} class. switch
+     *
+     * (autoChooser.getSelected()) { case "Example Auto": return new exampleAuto(s_Swerve); case
+     * "Ultrasonic Auto": return new ultrasonicAuto(s_Swerve); }
      *
      * @return the command to run in autonomous
      */
-
-    /*
-     * switch (autoChooser.getSelected()) { case "Example Auto": return new exampleAuto(s_Swerve); case
-     * "Ultrasonic Auto": return new ultrasonicAuto(s_Swerve); }
-     */
-
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
         // autoCommand = new exampleAuto(s_Swerve);
