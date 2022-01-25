@@ -30,9 +30,12 @@
   "java.test.defaultConfig": "WPIlibUnitTests",
   "java.format.settings.url": "formatter.xml",
   "java.format.settings.profile": "GoogleStyle",
-  "editor.defaultFormatter": "redhat.java",
+  "[java]": {
+    "editor.defaultFormatter": "redhat.java",
+  },
   "editor.codeActionsOnSave": {
     "source.organizeImports": true
   },
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true
 }
