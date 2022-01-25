@@ -25,6 +25,7 @@ jobs:
           tool_name: 'testtool'
           fail_on_error: true
           level: error
+          checkstyle_config: checks.xml
   build:
     name: Build
     runs-on: windows-2019
