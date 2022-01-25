@@ -39,9 +39,9 @@ public final class Constants {
 
     public static final SwerveDriveKinematics swerveKinematics =
           new SwerveDriveKinematics(new Translation2d(wheelBase / 2.0, trackWidth / 2.0),
-          new Translation2d(wheelBase / 2.0, -trackWidth / 2.0),
-          new Translation2d(-wheelBase / 2.0, trackWidth / 2.0),
-          new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0));
+            new Translation2d(wheelBase / 2.0, -trackWidth / 2.0),
+            new Translation2d(-wheelBase / 2.0, trackWidth / 2.0),
+            new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0));
 
     /* Swerve Current Limiting */
     public static final int angleContinuousCurrentLimit = 25;
@@ -88,7 +88,7 @@ public final class Constants {
 
     /* Module Specific Constants */
     /**
-     * Front Left Module - Module 0
+     * Front Left Module - Module 0.
     */
     public static final class Mod0 {
       public static final int driveMotorID = 7;
@@ -96,10 +96,10 @@ public final class Constants {
       public static final int canCoderID = 3;
       public static final double angleOffset = 69.69;
       public static final SwerveModuleConstants constants =
-        new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
+          new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
     }
     /**
-     * Front Left Module - Module 1
+     * Front Left Module - Module 1.
     */
     public static final class Mod1 {
       public static final int driveMotorID = 3;
@@ -111,7 +111,7 @@ public final class Constants {
     }
 
     /**
-     * Front Left Module - Module 2
+     * Front Left Module - Module 2.
     */
     public static final class Mod2 {
       public static final int driveMotorID = 6;
@@ -123,7 +123,7 @@ public final class Constants {
     }
 
     /**
-     * Front Left Module - Module 3
+     * Front Left Module - Module 3.
     */
     public static final class Mod3 {
       public static final int driveMotorID = 1;
@@ -136,6 +136,9 @@ public final class Constants {
 
   }
 
+  /**
+   * Autonomous constants for swerve bot.
+   */
   public static final class AutoConstants {
     public static final double kMaxSpeedMetersPerSecond = 1;
     public static final double kMaxAccelerationMetersPerSecondSquared = 1;
@@ -148,6 +151,7 @@ public final class Constants {
 
     //Motion profilied robot angle controller
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
-        new TrapezoidProfile.Constraints(kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+        new TrapezoidProfile.Constraints(kMaxAngularSpeedRadiansPerSecond,
+        kMaxAngularSpeedRadiansPerSecondSquared);
   }
 }

@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 
-import frc.robot.Constants;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -12,6 +11,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.SwerveModule;
 
 /**
@@ -32,12 +32,15 @@ public class Swerve extends SubsystemBase {
     swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getYaw());
 
     swerveMods = new SwerveModule[] {new SwerveModule(0, Constants.Swerve.Mod0.constants),
-            new SwerveModule(1, Constants.Swerve.Mod1.constants),
-            new SwerveModule(2, Constants.Swerve.Mod2.constants),
-            new SwerveModule(3, Constants.Swerve.Mod3.constants)};
-}
+        new SwerveModule(1, Constants.Swerve.Mod1.constants),
+        new SwerveModule(2, Constants.Swerve.Mod2.constants),
+        new SwerveModule(3, Constants.Swerve.Mod3.constants)};
+  }
 
-public void drive(Translation2d translation, double rotation, boolean fieldRelative,
+  /**
+   * Starts and creates drive subsystem.
+   */
+  public void drive(Translation2d translation, double rotation, boolean fieldRelative,
         boolean isOpenLoop) {
     SwerveModuleState[] swerveModuleStates =
             Constants.Swerve.swerveKinematics.toSwerveModuleStates(fieldRelative
@@ -46,22 +49,25 @@ public void drive(Translation2d translation, double rotation, boolean fieldRelat
                     : new ChassisSpeeds(translation.getX(), translation.getY(), rotation));
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed);
 
-    for (SwerveModule mod : swerveMods) {
+  for (SwerveModule mod : swerveMods) {
         mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
     }
-}
+  }
 
-public void setMotorsZero(boolean isOpenLoop, boolean fieldRelative) {
+  /**
+   * Sets motors to 0 or inactive.
+   */
+  public void setMotorsZero(boolean isOpenLoop, boolean fieldRelative) {
     SwerveModuleState[] swerveModuleStates =
             Constants.Swerve.swerveKinematics.toSwerveModuleStates(
                     fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, getYaw())
                             : new ChassisSpeeds(0, 0, 0));
 
-    for (SwerveModule mod : swerveMods) {
+  for (SwerveModule mod : swerveMods) {
         mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
     }
     System.out.println("Setting Zero!!!!!!");
-}
+  }
 
 /* Used by SwerveControllerCommand in Auto */
 public void setModuleStates(SwerveModuleState[] desiredStates) {
