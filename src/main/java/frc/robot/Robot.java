@@ -5,26 +5,17 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
 /**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to
- * each mode, as described in the TimedRobot documentation. If you change the
- * name of this class or
- * the package after creating this project, you must also update the
- * build.gradle file in the
+ * The VM is configured to automatically run this class, and to call the functions corresponding to
+ * each mode, as described in the TimedRobot documentation. If you change the name of this class or
+ * the package after creating this project, you must also update the build.gradle file in the
  * project.
  */
 public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         System.out.println("Robot Init");
-        final MotorControllerGroup leftMotors = new MotorControllerGroup(new WPI_TalonSRX(4),
-                new WPI_TalonSRX(8));
-        final MotorControllerGroup rightMotors = new MotorControllerGroup(new WPI_TalonSRX(3),
-                new WPI_TalonSRX(2));
     }
 
     @Override
@@ -55,21 +46,17 @@ public class Robot extends TimedRobot {
 
     /** This function is called once when the robot is disabled. */
     @Override
-    public void disabledInit() {
-    }
+    public void disabledInit() {}
 
     /** This function is called periodically when disabled. */
     @Override
-    public void disabledPeriodic() {
-    }
+    public void disabledPeriodic() {}
 
     /** This function is called once when test mode is enabled. */
     @Override
-    public void testInit() {
-    }
+    public void testInit() {}
 
     /** This function is called periodically during test mode. */
     @Override
-    public void testPeriodic() {
-    }
+    public void testPeriodic() {}
 }
