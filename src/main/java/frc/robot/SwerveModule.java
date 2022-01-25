@@ -41,14 +41,15 @@ public class SwerveModule {
     }
 
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
-        desiredState = CTREModuleState.optimize(desiredState, getState().angle); // Custom optimize
-                                                                                 // command, since
-                                                                                 // default WPILib
-                                                                                 // optimize assumes
-                                                                                 // continuous
-                                                                                 // controller which
-                                                                                 // CTRE is
-                                                                                 // not
+        desiredState = CTREModuleState.optimize(desiredState, getState().angle);
+        // Custom optimize
+        // command, since
+        // default WPILib
+        // optimize assumes
+        // continuous
+        // controller which
+        // CTRE is
+        // not
 
         if (isOpenLoop) {
             double percentOutput = desiredState.speedMetersPerSecond / Constants.Swerve.maxSpeed;
