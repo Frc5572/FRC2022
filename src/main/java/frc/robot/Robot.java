@@ -20,8 +20,8 @@ public class Robot extends TimedRobot {
 
     // private Ultrasonic ultrasonic = new Ultrasonic();
     /**
-     * This function is run when the robot is first started up and should be used for any
-     * initialization code.
+     * This function is run when the robot is first started up and should be used for any initialization
+     * code.
      */
     @Override
     public void robotInit() {
@@ -37,8 +37,8 @@ public class Robot extends TimedRobot {
      * diagnostics that you want ran during disabled, autonomous, teleoperated and test.
      *
      * <p>
-     * This runs after the mode specific periodic functions, but before LiveWindow and
-     * SmartDashboard integrated updating.
+     * This runs after the mode specific periodic functions, but before LiveWindow and SmartDashboard
+     * integrated updating.
      */
     @Override
     public void robotPeriodic() {
