@@ -11,6 +11,20 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  linting:
+    name: Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2 # v2 minimum required
+      - name: Run check style
+        uses: nikitasavinov/checkstyle-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: 'github-check'
+          tool_name: 'testtool'
+          fail_on_error: true
+          level: error
   build:
     name: Build
     runs-on: windows-2019
