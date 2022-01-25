@@ -2,9 +2,7 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 
-import frc.robot.SwerveModule;
 import frc.robot.Constants;
-
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -14,20 +12,26 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.SwerveModule;
 
+/**
+ * Creates swerve drive and commands for drive.
+ */
 public class Swerve extends SubsystemBase {
-public SwerveDriveOdometry swerveOdometry;
-public SwerveModule[] mSwerveMods;
-public AHRS gyro;
+  public SwerveDriveOdometry swerveOdometry;
+  public SwerveModule[] swerveMods;
+  public AHRS gyro;
 
-public Swerve() {
+  /**
+   * Initalizes swerve modules.
+   */
+  public Swerve() {
     gyro = new AHRS(Constants.Swerve.navXID);
-    // gyro.configFactoryDefault();
     zeroGyro();
 
     swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getYaw());
 
-    mSwerveMods = new SwerveModule[] {new SwerveModule(0, Constants.Swerve.Mod0.constants),
+    swerveMods = new SwerveModule[] {new SwerveModule(0, Constants.Swerve.Mod0.constants),
             new SwerveModule(1, Constants.Swerve.Mod1.constants),
             new SwerveModule(2, Constants.Swerve.Mod2.constants),
             new SwerveModule(3, Constants.Swerve.Mod3.constants)};
@@ -42,7 +46,7 @@ public void drive(Translation2d translation, double rotation, boolean fieldRelat
                     : new ChassisSpeeds(translation.getX(), translation.getY(), rotation));
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed);
 
-    for (SwerveModule mod : mSwerveMods) {
+    for (SwerveModule mod : swerveMods) {
         mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
     }
 }
@@ -53,7 +57,7 @@ public void setMotorsZero(boolean isOpenLoop, boolean fieldRelative) {
                     fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, getYaw())
                             : new ChassisSpeeds(0, 0, 0));
 
-    for (SwerveModule mod : mSwerveMods) {
+    for (SwerveModule mod : swerveMods) {
         mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
     }
     System.out.println("Setting Zero!!!!!!");
@@ -63,7 +67,7 @@ public void setMotorsZero(boolean isOpenLoop, boolean fieldRelative) {
 public void setModuleStates(SwerveModuleState[] desiredStates) {
     SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.Swerve.maxSpeed);
 
-    for (SwerveModule mod : mSwerveMods) {
+    for (SwerveModule mod : swerveMods) {
         mod.setDesiredState(desiredStates[mod.moduleNumber], false);
     }
 }
@@ -78,7 +82,7 @@ public void resetOdometry(Pose2d pose) {
 
 public SwerveModuleState[] getStates() {
     SwerveModuleState[] states = new SwerveModuleState[4];
-    for (SwerveModule mod : mSwerveMods) {
+    for (SwerveModule mod : swerveMods) {
         states[mod.moduleNumber] = mod.getState();
     }
     return states;
@@ -98,7 +102,7 @@ public Rotation2d getYaw() {
 public void periodic() {
     swerveOdometry.update(getYaw(), getStates());
 
-    for (SwerveModule mod : mSwerveMods) {
+    for (SwerveModule mod : swerveMods) {
         SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder",
                 mod.getCanCoder().getDegrees());
         SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Integrated",

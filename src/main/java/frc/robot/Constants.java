@@ -14,12 +14,15 @@ import frc.lib.util.SwerveModuleConstants;
 public final class Constants {
   public static final double stickDeadband = 0.1;
 
+  /**
+   * Creates class and constants for Swerve drive.
+   */
   public static final class Swerve {
     public static final edu.wpi.first.wpilibj.SPI.Port navXID =
         edu.wpi.first.wpilibj.SPI.Port.kMXP;
     public static final boolean invertGyro = true; // Always ensure Gyro is CCW+ CW-
 
-      /* Drivetrain Constants */
+    /* Drivetrain Constants */
     public static final double trackWidth = Units.inchesToMeters(27);
     public static final double wheelBase = Units.inchesToMeters(27);
     public static final double wheelDiameter = Units.inchesToMeters(3.94);
@@ -35,10 +38,10 @@ public final class Constants {
     public static final double angleGearRatio = (12.8 / 1.0); // 12.8:1
 
     public static final SwerveDriveKinematics swerveKinematics =
-        new SwerveDriveKinematics(new Translation2d(wheelBase / 2.0, trackWidth / 2.0),
-        new Translation2d(wheelBase / 2.0, -trackWidth / 2.0),
-        new Translation2d(-wheelBase / 2.0, trackWidth / 2.0),
-        new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0));
+          new SwerveDriveKinematics(new Translation2d(wheelBase / 2.0, trackWidth / 2.0),
+          new Translation2d(wheelBase / 2.0, -trackWidth / 2.0),
+          new Translation2d(-wheelBase / 2.0, trackWidth / 2.0),
+          new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0));
 
     /* Swerve Current Limiting */
     public static final int angleContinuousCurrentLimit = 25;
@@ -83,17 +86,21 @@ public final class Constants {
     /* Angle Encoder Invert */
     public static final boolean canCoderInvert = false;
 
-      /* Module Specific Constants */
-      /* Front Left Module - Module 0 */
+    /* Module Specific Constants */
+    /**
+     * Front Left Module - Module 0
+    */
     public static final class Mod0 {
       public static final int driveMotorID = 7;
       public static final int angleMotorID = 5;
       public static final int canCoderID = 3;
       public static final double angleOffset = 69.69;
       public static final SwerveModuleConstants constants =
-          new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
+        new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
     }
-      /* Front Right Module - Module 1 */
+    /**
+     * Front Left Module - Module 1
+    */
     public static final class Mod1 {
       public static final int driveMotorID = 3;
       public static final int angleMotorID = 2;
@@ -103,24 +110,28 @@ public final class Constants {
           new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
     }
 
-      /* Back Left Module - Module 2 */
+    /**
+     * Front Left Module - Module 2
+    */
     public static final class Mod2 {
       public static final int driveMotorID = 6;
       public static final int angleMotorID = 8;
       public static final int canCoderID = 4;
       public static final double angleOffset = 122.43;
       public static final SwerveModuleConstants constants =
-            new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
+          new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
     }
 
-      /* Back Right Module - Module 3 */
+    /**
+     * Front Left Module - Module 3
+    */
     public static final class Mod3 {
       public static final int driveMotorID = 1;
       public static final int angleMotorID = 4;
       public static final int canCoderID = 1;
       public static final double angleOffset = 11.95;
       public static final SwerveModuleConstants constants =
-            new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
+          new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
     }
 
   }
@@ -135,7 +146,7 @@ public final class Constants {
     public static final double kPYController = 1;
     public static final double kPThetaController = 1;
 
-    // Constraint for the motion profilied robot angle controller
+    //Motion profilied robot angle controller
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
         new TrapezoidProfile.Constraints(kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
   }
