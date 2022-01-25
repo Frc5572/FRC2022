@@ -24,8 +24,10 @@ jobs:
           reporter: 'github-check'
           tool_name: 'testtool'
           fail_on_error: true
+          filter_mode: nofilter
           level: error
           checkstyle_config: checks.xml
+          checkstyle_version: '9.2.1'
   build:
     name: Build
     runs-on: windows-2019
