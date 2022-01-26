@@ -56,22 +56,7 @@ public class TeleopSwerve extends CommandBase {
         raxis = (Math.abs(raxis) < Constants.stickDeadband) ? 0 : raxis;
 
         translation = new Translation2d(yaxis, xaxis).times(Constants.Swerve.maxSpeed);
-        swerveDrive.drive(translation, rotation, fieldRelative, openLoop);
-
-        // Print out ultrasonic value
-        // System.out.println(ultrasonic.getDistanceValue());
-    }
-
-    /**
-     * Aligns the robot with the the target????
-     */
-    public void allign() {
-        double yaxis = -controller.getRawAxis(translationAxis);
-        double xaxis = -controller.getRawAxis(strafeAxis);
-        yaxis = (Math.abs(yaxis) < Constants.stickDeadband) ? 0 : yaxis;
-        xaxis = (Math.abs(xaxis) < Constants.stickDeadband) ? 0 : xaxis;
-        System.out.println("pressed");
-        translation = new Translation2d(yaxis, xaxis).times(Constants.Swerve.maxSpeed);
-        swerveDrive.drive(translation, rotation, fieldRelative, openLoop);
+        // rotation = raxis > 0 ? raxis * Constants.Swerve.maxAngularVelocity : 0;
+        swerveDrive.drive(translation, raxis * Constants.Swerve.maxAngularVelocity, fieldRelative, openLoop);
     }
 }

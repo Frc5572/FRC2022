@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -46,12 +45,7 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-        this.fieldRelative = Constants.Swerve.isFieldRelative;
-        this.openLoop = Constants.Swerve.isOpenLoop;
-        swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, driver, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
-        autoChooser.setDefaultOption("Example Auto", exampleAuto);
-        autoChooser.addOption("Ultrasonic Auto", ultrasonicAuto);
-        SmartDashboard.putData("Choose Auto: ", autoChooser);
+        swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, driver, translationAxis, strafeAxis, rotationAxis, Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop));
         // Configure the button bindings
         configureButtonBindings();
     }
@@ -63,10 +57,6 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
-        // allignSwerve.whileHeld(new TeleopSwerve(swerveDrive, ultrasonic, driver,
-        // translationAxis, strafeAxis, rotationAxis, fieldRelative,
-        // openLoop).allign());
-        // align.whenPressed(new InstantCommand(() -> tele.executeAlign()));
     }
 
     /**
