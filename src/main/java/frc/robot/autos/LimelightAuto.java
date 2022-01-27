@@ -43,8 +43,8 @@ public class LimelightAuto extends SequentialCommandGroup {
             new PIDController(Constants.AutoConstants.kPXController, 0, 0),
             new PIDController(Constants.AutoConstants.kPYController, 0, 0), thetaController,
             swerve::setModuleStates, swerve);
-        ZeroMotorsWaitCommand firstWait = new ZeroMotorsWaitCommand(3);
-        ZeroMotorsWaitCommand secondWait = new ZeroMotorsWaitCommand(.5);
+        ZeroMotorsWaitCommand firstWait = new ZeroMotorsWaitCommand(swerve, 3);
+        ZeroMotorsWaitCommand secondWait = new ZeroMotorsWaitCommand(swerve, .5);
         LimelightAlign align = new LimelightAlign(swerve, vision);
 
         addCommands(
