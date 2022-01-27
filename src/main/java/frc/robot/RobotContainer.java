@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.Vision;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot} periodic
@@ -40,12 +41,14 @@ public class RobotContainer {
 
     /* Subsystems */
     private final Swerve swerveDrive = new Swerve();
+    private Vision vision = new Vision();
+
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-        swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, driver, translationAxis, strafeAxis, rotationAxis, Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop));
+        swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, vision, driver, translationAxis, strafeAxis, rotationAxis, Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop));
         // Configure the button bindings
         configureButtonBindings();
     }
