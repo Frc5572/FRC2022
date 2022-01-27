@@ -5,16 +5,19 @@ import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
+/**
+ * Creates subsystem and functions for the shooter.
+ */
 public class Shooter extends SubsystemBase {
-    private final WPI_TalonSRX mShooter = new WPI_TalonSRX(Constants.shooterID);
+    private final WPI_TalonSRX shooter = new WPI_TalonSRX(Constants.shooterID);
     private final Servo shooterServo = new Servo(Constants.shooterServoID);
 
     public void spin() {
-        mShooter.set(Constants.shooterSpin);
+        shooter.set(Constants.shooterSpin);
     }
 
     public void stop() {
-        mShooter.set(Constants.motorStop);
+        shooter.set(Constants.motorStop);
     }
 
     public void turretUp() {

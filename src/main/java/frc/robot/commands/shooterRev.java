@@ -6,7 +6,7 @@ import frc.robot.subsystems.Shooter;
 /**
  * Revs the shooter.
  */
-public class shooterRev extends CommandBase {
+public class ShooterRev extends CommandBase {
     private Shooter shooter;
 
     /**
@@ -14,7 +14,7 @@ public class shooterRev extends CommandBase {
      *
      * @param shooter shooter subsystem
      */
-    public shooterRev(Shooter shooter) {
+    public ShooterRev(Shooter shooter) {
         this.shooter = shooter;
         addRequirements(shooter);
     }
