@@ -172,6 +172,15 @@ public final class Constants {
             public static final int insideChannel = 0;
         }
 
+        /**
+         * Intake constants
+         */
+        public static final class IntakeConstants {
+            public static final int intakeMotorNum = 0;
+            public static final int intakeModule = 0;
+            public static final int intakeFowardChannel = 0;
+        }
+
     }
 
     /**
@@ -185,16 +194,5 @@ public final class Constants {
         public static final int shooterID = 0;
         public static final int shooterServoID = 0;
     }
-    /**
-     * Intake constants
-     */
-    public static final class IntakeConstants {
 
-        // Motor Constants
-        public static final int intakeMotorNum = 0;
-
-        // Single Solinoid Constants
-        public static final int intakeModule = 0;
-        public static final int intakeFowardChannel = 0;
-    }
 }
