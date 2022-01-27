@@ -156,19 +156,26 @@ public final class Constants {
                 kMaxAngularSpeedRadiansPerSecondSquared);
     }
 
+    /**
+     * Pneumatics CAN id cosntants.
+     */
     public static final class Pneumatics {
         public static final int pcm1 = 0;
         public static final int pcm2 = 0;
 
+        /**
+         * Climber pneumatics constants.
+         */
         public static final class Climber {
-            public static final int forwardChannel1 = 0;
-            public static final int reverseChannel1 = 0;
-            public static final int forwardChannel2 = 0;
-            public static final int reverseChannel2 = 0;
+            public static final int outsideChannel = 0;
+            public static final int insideChannel = 0;
         }
 
     }
 
+    /**
+     * Motor CAN id's.
+     */
     public static final class Motors {
         public static final int outsideClimberMotor1Id = 0;
         public static final int outsideClimberMotor2Id = 0;

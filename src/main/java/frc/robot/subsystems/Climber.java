@@ -2,9 +2,8 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -14,12 +13,10 @@ import frc.robot.Constants;
  */
 public class Climber extends SubsystemBase {
 
-    private final DoubleSolenoid outsideClimberSolenoid = new DoubleSolenoid(
-        Constants.Pneumatics.pcm1, PneumaticsModuleType.CTREPCM,
-        Constants.Pneumatics.Climber.forwardChannel1, Constants.Pneumatics.Climber.reverseChannel1);
-    private final DoubleSolenoid insideClimberSolenoid = new DoubleSolenoid(
-        Constants.Pneumatics.pcm2, PneumaticsModuleType.CTREPCM,
-        Constants.Pneumatics.Climber.forwardChannel2, Constants.Pneumatics.Climber.reverseChannel2);
+    private final Solenoid outsideClimberSolenoid = new Solenoid(Constants.Pneumatics.pcm1,
+        PneumaticsModuleType.CTREPCM, Constants.Pneumatics.Climber.outsideChannel);
+    private final Solenoid insideClimberSolenoid = new Solenoid(Constants.Pneumatics.pcm2,
+        PneumaticsModuleType.CTREPCM, Constants.Pneumatics.Climber.insideChannel);
 
     private final CANSparkMax outsideClimberMotor1 =
         new CANSparkMax(Constants.Motors.outsideClimberMotor1Id, MotorType.kBrushless);
@@ -44,16 +41,16 @@ public class Climber extends SubsystemBase {
     }
 
     public void initialize() {
-        outsideClimberSolenoid.set(Value.kReverse);
-        insideClimberSolenoid.set(Value.kReverse);
+        outsideClimberSolenoid.set(false);
+        insideClimberSolenoid.set(false);
     }
 
     public void deployOutsideClimbers() {
-        outsideClimberSolenoid.set(Value.kForward);
+        outsideClimberSolenoid.set(true);
     }
 
     public void deployInsideClimbers() {
-        insideClimberSolenoid.set(Value.kForward);
+        insideClimberSolenoid.set(true);
     }
 
     public void engageOutsideClimbers() {
