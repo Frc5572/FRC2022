@@ -36,7 +36,8 @@ public class TeleopSwerve extends CommandBase {
      * @param fieldRelative Whether the movement is relative to the field or absolute
      * @param openLoop Open or closed loop system
      */
-    public TeleopSwerve(Swerve swerveDrive, Vision vision, Joystick controller, int translationAxis, int strafeAxis, int rotationAxis, boolean fieldRelative, boolean openLoop) {
+    public TeleopSwerve(Swerve swerveDrive, Vision vision, Joystick controller, int translationAxis,
+        int strafeAxis, int rotationAxis, boolean fieldRelative, boolean openLoop) {
         this.swerveDrive = swerveDrive;
         addRequirements(swerveDrive);
         this.vision = new Vision();
@@ -61,7 +62,10 @@ public class TeleopSwerve extends CommandBase {
         raxis = (Math.abs(raxis) < Constants.stickDeadband) ? 0 : raxis;
 
         translation = new Translation2d(yaxis, xaxis).times(Constants.Swerve.maxSpeed);
-        rotation = (controller.getRawButton(XboxController.Button.kX.value) && vision.getTargetFound()) ? vision.getAimValue() : raxis * Constants.Swerve.maxAngularVelocity;
+        rotation =
+            (controller.getRawButton(XboxController.Button.kX.value) && vision.getTargetFound())
+                ? vision.getAimValue()
+                : raxis * Constants.Swerve.maxAngularVelocity;
         System.out.println(rotation);
         swerveDrive.drive(translation, rotation, fieldRelative, openLoop);
     }
