@@ -145,4 +145,16 @@ public final class Constants {
         // Motion profilied robot angle controller
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
     }
+    /**
+     * Intake constants
+     */
+    public static final class IntakeConstants {
+
+        // Motor Constants
+        public static final int intakeMotorNum = 0;
+
+        // Single Solinoid Constants
+        public static final int intakeModule = 0;
+        public static final int intakeFowardChannel = 0;
+    }
 }
