@@ -23,8 +23,9 @@ public class Vision extends SubsystemBase {
     double deadPocket = Constants.VisionConstants.deadPocket;
 
     /**
-     * 
+     *
      * @return align distance from center of target.
+     *
      */
 
     public double update() {
