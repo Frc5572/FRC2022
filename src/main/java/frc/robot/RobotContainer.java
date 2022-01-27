@@ -3,8 +3,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.autos.LimelightAuto;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
@@ -25,8 +27,8 @@ public class RobotContainer {
 
     // private Command autoCommand;
 
-    // private static final String exampleAuto = "Example Auto";
-    // private static final String limelightAuto = "Limelight Auto";
+    // private static final String ExampleAuto = "Example Auto";
+    // private static final String LimelightAuto = "Limelight Auto";
     // private final Button shooterMotor = new Button(
     // () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4);
     private final Shooter shooter = new Shooter();
@@ -69,5 +71,9 @@ public class RobotContainer {
         /* Driver Buttons */
         zeroGyro.whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
         // shooterMotor.whenHeld(new ShooterRev(shooter));
+    }
+
+    public Command getAutonomousCommand() {
+        return new LimelightAuto(swerveDrive, vision);
     }
 }

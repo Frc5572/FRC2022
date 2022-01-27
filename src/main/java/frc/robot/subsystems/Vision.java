@@ -5,13 +5,27 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
+/**
+ * Vision subsystem.
+ */
+
 public class Vision extends SubsystemBase {
 
-    double disX = 0, disY = 0, tx = 0, ty = 0, ta = 0, tv = 0;
+    double disX = 0;
+    double disY = 0;
+    double tx = 0;
+    double ty = 0;
+    double ta = 0;
+    double tv = 0;
     boolean targetFound = false;
     double roundOff;
 
     double deadPocket = Constants.VisionConstants.deadPocket;
+
+    /**
+     * 
+     * @return align distance from center of target.
+     */
 
     public double update() {
 

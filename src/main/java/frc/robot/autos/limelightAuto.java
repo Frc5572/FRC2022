@@ -13,32 +13,42 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
 import frc.robot.commands.ZeroMotorsWaitCommand;
-import frc.robot.commands.limelightAlign;
+import frc.robot.commands.LimelightAlign;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Vision;
 
-public class limelightAuto extends SequentialCommandGroup {
+public class LimelightAuto extends SequentialCommandGroup {
     Vision vision;
-    Swerve s_Swerve;
+    Swerve swerve;
 
-    public limelightAuto(Swerve s_Swerve, Vision vision) {
-        this.s_Swerve = s_Swerve;
+    public LimelightAuto(Swerve swerve, Vision vision) {
+        this.swerve = swerve;
         System.out.println("Limelight Auto !!");
         TrajectoryConfig config =
-            new TrajectoryConfig(Constants.AutoConstants.kMaxSpeedMetersPerSecond, Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared).setKinematics(Constants.Swerve.swerveKinematics);
+            new TrajectoryConfig(Constants.AutoConstants.kMaxSpeedMetersPerSecond,
+                Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+                    .setKinematics(Constants.Swerve.swerveKinematics);
 
         Trajectory firstHalfTrajectory = TrajectoryGenerator.generateTrajectory(
 
-            List.of(new Pose2d(0, 0, new Rotation2d(0)), new Pose2d(1, 0, new Rotation2d(0)), new Pose2d(1, 1, new Rotation2d(0))), config);
+            List.of(new Pose2d(0, 0, new Rotation2d(0)), new Pose2d(1, 0, new Rotation2d(0)),
+                new Pose2d(1, 1, new Rotation2d(0))),
+            config);
 
-        var thetaController = new ProfiledPIDController(Constants.AutoConstants.kPThetaController, 0, 0, Constants.AutoConstants.kThetaControllerConstraints);
+        var thetaController = new ProfiledPIDController(Constants.AutoConstants.kPThetaController,
+            0, 0, Constants.AutoConstants.kThetaControllerConstraints);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        SwerveControllerCommand firstHalfTraject = new SwerveControllerCommand(firstHalfTrajectory, s_Swerve::getPose, Constants.Swerve.swerveKinematics,
-            new PIDController(Constants.AutoConstants.kPXController, 0, 0), new PIDController(Constants.AutoConstants.kPYController, 0, 0), thetaController, s_Swerve::setModuleStates, s_Swerve);
+        SwerveControllerCommand firstHalfTraject = new SwerveControllerCommand(firstHalfTrajectory,
+            swerve::getPose, Constants.Swerve.swerveKinematics,
+            new PIDController(Constants.AutoConstants.kPXController, 0, 0),
+            new PIDController(Constants.AutoConstants.kPYController, 0, 0), thetaController,
+            swerve::setModuleStates, swerve);
         ZeroMotorsWaitCommand firstWait = new ZeroMotorsWaitCommand(3);
         ZeroMotorsWaitCommand secondWait = new ZeroMotorsWaitCommand(.5);
-        limelightAlign align = new limelightAlign(s_Swerve, vision);
+        LimelightAlign align = new LimelightAlign(swerve, vision);
 
-        addCommands(new InstantCommand(() -> s_Swerve.resetOdometry(firstHalfTrajectory.getInitialPose())), align, firstHalfTraject, firstWait, secondWait);
+        addCommands(
+            new InstantCommand(() -> swerve.resetOdometry(firstHalfTrajectory.getInitialPose())),
+            align, firstHalfTraject, firstWait, secondWait);
     }
 }
