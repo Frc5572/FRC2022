@@ -3,11 +3,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.TeleopSwerve;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Vision;
 
@@ -20,13 +19,17 @@ import frc.robot.subsystems.Vision;
 public class RobotContainer {
     /* Controllers */
     private final Joystick driver = new Joystick(0);
+    private final Joystick operator = new Joystick(1);
 
-    private final SendableChooser<String> autoChooser = new SendableChooser<>();
+    // private final SendableChooser<String> autoChooser = new SendableChooser<>();
 
-    private Command autoCommand;
+    // private Command autoCommand;
 
     // private static final String exampleAuto = "Example Auto";
     // private static final String limelightAuto = "Limelight Auto";
+    // private final Button shooterMotor = new Button(
+    // () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4);
+    private final Shooter shooter = new Shooter();
 
     /* Drive Controls */
     private final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -65,24 +68,6 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
-    }
-
-    /**
-     * Use this to pass the autonomous command to the main {@link Robot} class.
-     *
-     * <p>
-     * switch (autoChooser.getSelected()) { case "Example Auto": return new
-     * exampleAuto(swerveDrive); case "Ultrasonic Auto": return new ultrasonicAuto(swerveDrive); }
-     *
-     * @return the command to run in autonomous
-     */
-    public Command getAutonomousCommand() {
-        if (autoChooser.getSelected() == "Example Auto") {
-            System.out.println("Example Auto!!!!!!!!!!!!!!");
-        } else if (autoChooser.getSelected() == "Ultrasonic Auto") {
-            System.out.println("Ultrasonic Auto!!!!!!!!!!!!!!");
-        }
-        return autoCommand;
-
+        // shooterMotor.whenHeld(new ShooterRev(shooter));
     }
 }
