@@ -21,7 +21,8 @@ public class SwerveModule {
     private TalonFX driveMotor;
     private CANCoder angleEncoder;
     private double lastAngle;
-    SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.Swerve.driveKS, Constants.Swerve.driveKV, Constants.Swerve.driveKA);
+    SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.Swerve.driveKS,
+        Constants.Swerve.driveKV, Constants.Swerve.driveKA);
 
     /**
      * Creates an instance of a Servce Module
@@ -69,14 +70,20 @@ public class SwerveModule {
             double percentOutput = desiredState.speedMetersPerSecond / Constants.Swerve.maxSpeed;
             driveMotor.set(ControlMode.PercentOutput, percentOutput);
         } else {
-            double velocity = Conversions.mpsToFalcon(desiredState.speedMetersPerSecond, Constants.Swerve.wheelCircumference, Constants.Swerve.driveGearRatio);
-            driveMotor.set(ControlMode.Velocity, velocity, DemandType.ArbitraryFeedForward, feedforward.calculate(desiredState.speedMetersPerSecond));
+            double velocity = Conversions.mpsToFalcon(desiredState.speedMetersPerSecond,
+                Constants.Swerve.wheelCircumference, Constants.Swerve.driveGearRatio);
+            driveMotor.set(ControlMode.Velocity, velocity, DemandType.ArbitraryFeedForward,
+                feedforward.calculate(desiredState.speedMetersPerSecond));
         }
 
-        double angle = (Math.abs(desiredState.speedMetersPerSecond) <= (Constants.Swerve.maxSpeed * 0.01)) ? lastAngle : desiredState.angle.getDegrees(); // Prevent rotating module if speed is
+        double angle =
+            (Math.abs(desiredState.speedMetersPerSecond) <= (Constants.Swerve.maxSpeed * 0.01))
+                ? lastAngle
+                : desiredState.angle.getDegrees(); // Prevent rotating module if speed is
         // less then 1%. Prevents
         // Jittering.
-        angleMotor.set(ControlMode.Position, Conversions.degreesToFalcon(angle, Constants.Swerve.angleGearRatio));
+        angleMotor.set(ControlMode.Position,
+            Conversions.degreesToFalcon(angle, Constants.Swerve.angleGearRatio));
         lastAngle = angle;
     }
 
@@ -84,7 +91,8 @@ public class SwerveModule {
      *
      */
     private void resetToAbsolute() {
-        double absolutePosition = Conversions.degreesToFalcon(getCanCoder().getDegrees() - angleOffset, Constants.Swerve.angleGearRatio);
+        double absolutePosition = Conversions.degreesToFalcon(
+            getCanCoder().getDegrees() - angleOffset, Constants.Swerve.angleGearRatio);
         angleMotor.setSelectedSensorPosition(absolutePosition);
     }
 
@@ -94,7 +102,8 @@ public class SwerveModule {
      * @param rotationSpeed Drive motor speed (-1 <= value <= 1)
      */
     public void setTurnAngle(double rotationSpeed) {
-        double absolutePosition = Conversions.degreesToFalcon(getCanCoder().getDegrees() - angleOffset, Constants.Swerve.angleGearRatio);
+        double absolutePosition = Conversions.degreesToFalcon(
+            getCanCoder().getDegrees() - angleOffset, Constants.Swerve.angleGearRatio);
         angleMotor.setSelectedSensorPosition(absolutePosition);
         driveMotor.set(ControlMode.PercentOutput, rotationSpeed);
     }
@@ -144,8 +153,10 @@ public class SwerveModule {
      * @return Swerve module state
      */
     public SwerveModuleState getState() {
-        double velocity = Conversions.falconToMPS(driveMotor.getSelectedSensorVelocity(), Constants.Swerve.wheelCircumference, Constants.Swerve.driveGearRatio);
-        Rotation2d angle = Rotation2d.fromDegrees(Conversions.falconToDegrees(angleMotor.getSelectedSensorPosition(), Constants.Swerve.angleGearRatio));
+        double velocity = Conversions.falconToMPS(driveMotor.getSelectedSensorVelocity(),
+            Constants.Swerve.wheelCircumference, Constants.Swerve.driveGearRatio);
+        Rotation2d angle = Rotation2d.fromDegrees(Conversions.falconToDegrees(
+            angleMotor.getSelectedSensorPosition(), Constants.Swerve.angleGearRatio));
         return new SwerveModuleState(velocity, angle);
     }
 
