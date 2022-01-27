@@ -14,6 +14,11 @@ import frc.robot.modules.swervedrive.SwerveModuleConstants;
 
 public final class Constants {
     public static final double stickDeadband = 0.1;
+    public static final int shooterID = 0;
+    public static final int shooterServoID = 0;
+    public static final double shooterSpin = 0.7;
+    public static final int motorStop = 0;
+    public static final double turretPower = 0.1;
 
     /**
      * Creates class and constants for Swerve drive.
@@ -84,6 +89,7 @@ public final class Constants {
         public static final boolean canCoderInvert = false;
 
         /* Module Specific Constants */
+
         /**
          * Front Left Module - Module 0.
          */

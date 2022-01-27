@@ -6,8 +6,11 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.TeleopSwerve;
+import frc.robot.commands.shooterRev;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
 
 /**
@@ -17,8 +20,12 @@ import frc.robot.subsystems.Swerve;
 public class RobotContainer {
     /* Controllers */
     private final Joystick driver = new Joystick(0);
+    private final Joystick operator = new Joystick(0);
 
     private final SendableChooser<String> autoChooser = new SendableChooser<>();
+
+    private final Button shooterMotor = new Button(() -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4);
+    private final Shooter shooter = new Shooter();
 
     private Command autoCommand;
 
@@ -57,6 +64,7 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
+        shooterMotor.whenHeld(new shooterRev(shooter));
     }
 
     /**
