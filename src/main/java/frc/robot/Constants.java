@@ -145,4 +145,9 @@ public final class Constants {
         // Motion profilied robot angle controller
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
     }
+
+    public static final int PCM = 0;
+    public static final int magazinePort = 0;
+    public static final int magazinecanID = 0;
+    public static final int magazineSensor = 0;
 }
