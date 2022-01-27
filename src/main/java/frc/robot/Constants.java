@@ -145,4 +145,13 @@ public final class Constants {
         // Motion profilied robot angle controller
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
     }
+
+    /**
+     * Vision constants for limelight calculations.
+     */
+
+    public static final class VisionConstants {
+        public static final double deadPocket = 0.2;
+    }
+
 }

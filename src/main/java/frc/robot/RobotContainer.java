@@ -23,8 +23,8 @@ public class RobotContainer {
 
     private Command autoCommand;
 
-    private static final String exampleAuto = "Example Auto";
-    private static final String ultrasonicAuto = "Ultrasonic Auto";
+    // private static final String exampleAuto = "Example Auto";
+    // private static final String limelightAuto = "Limelight Auto";
 
     /* Drive Controls */
     private final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -33,8 +33,6 @@ public class RobotContainer {
 
     /* Driver Buttons */
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
-    // private final JoystickButton moveMotorNew = new JoystickButton(driver, XboxController.Button.kA.value);
-    // private final JoystickButton alignSwerve = new JoystickButton(driver, XboxController.Button.kX.value);
 
     boolean fieldRelative;
     boolean openLoop;
