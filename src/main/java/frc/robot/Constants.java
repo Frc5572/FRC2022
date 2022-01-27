@@ -175,10 +175,6 @@ public final class Constants {
     }
 
     /**
-     * Shooter constants.
-     */
-
-    /**
      * Motor CAN id's.
      */
     public static final class Motors {
