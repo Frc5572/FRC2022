@@ -177,11 +177,6 @@ public final class Constants {
     /**
      * Shooter constants.
      */
-    public static final class Shooter {
-        public static final double shooterSpin = 0.7;
-        public static final int motorStop = 0;
-        public static final double turretPower = 0.1;
-    }
 
     /**
      * Motor CAN id's.
