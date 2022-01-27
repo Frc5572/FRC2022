@@ -87,6 +87,7 @@ public final class Constants {
         public static final boolean canCoderInvert = false;
 
         /* Module Specific Constants */
+
         /**
          * Front Left Module - Module 0.
          */
@@ -181,5 +182,7 @@ public final class Constants {
         public static final int outsideClimberMotor2Id = 0;
         public static final int insideClimberMotor1Id = 0;
         public static final int insideClimberMotor2Id = 0;
+        public static final int shooterID = 0;
+        public static final int shooterServoID = 0;
     }
 }
