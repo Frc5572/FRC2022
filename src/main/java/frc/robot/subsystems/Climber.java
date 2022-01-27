@@ -35,6 +35,9 @@ public class Climber extends SubsystemBase {
     private final MotorControllerGroup insideMotors =
         new MotorControllerGroup(insideClimberMotor1, insideClimberMotor2);
 
+    private static final double motorSpeed = .6;
+    private static final int motorStop = 0;
+
     public Climber() {
         outsideClimberMotor1.setInverted(true);
         insideClimberMotor1.setInverted(true);
@@ -54,18 +57,18 @@ public class Climber extends SubsystemBase {
     }
 
     public void engageOutsideClimbers() {
-        outsideMotors.set(.6);
+        outsideMotors.set(motorSpeed);
     }
 
     public void disengageOutsideClimbers() {
-        outsideMotors.set(0);
+        outsideMotors.set(motorStop);
     }
 
     public void engageInsideClimbers() {
-        insideMotors.set(.6);
+        insideMotors.set(motorSpeed);
     }
 
     public void disengageInsideClimbers() {
-        insideMotors.set(0);
+        insideMotors.set(motorStop);
     }
 }
