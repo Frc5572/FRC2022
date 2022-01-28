@@ -6,29 +6,30 @@ import frc.robot.subsystems.Magazine;
 
 public class pullBall extends CommandBase {
     private Magazine magazine;
-    private DigitalInput sense;
+    private DigitalInput magSense;
 
 
-    public pullBall(Magazine magazine, DigitalInput sense) {
+    public pullBall(Magazine magazine, DigitalInput magSense) {
         this.magazine = magazine;
-        this.sense = sense;
+        this.magSense = magSense;
         addRequirements(magazine);
     }
 
     @Override
     public void execute() {
-        magazine.up();
+        magazine.startIntake();
     }
 
     @Override
     public void end(boolean interrupted) {
-        magazine.stop();
+        if (magSense.get()) {
+            magazine.stopIntake();
+        }
     }
 
     @Override
     public boolean isFinished() {
-        return sense.get();
-
+        return magSense.get();
     }
 
 

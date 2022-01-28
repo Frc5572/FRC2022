@@ -1,6 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -24,7 +23,6 @@ public class RobotContainer {
     // private final Button shooterMotor = new Button(
     // () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4);
     private final Shooter shooter = new Shooter();
-    DigitalInput magSensor = new DigitalInput(Constants.magazineSensor);
 
 
 
