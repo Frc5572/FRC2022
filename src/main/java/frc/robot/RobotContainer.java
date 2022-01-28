@@ -75,6 +75,11 @@ public class RobotContainer {
         // shooterMotor.whenHeld(new ShooterRev(shooter));
     }
 
+    /**
+     * Gets the user's selected autonomous command.
+     *
+     * @return Returns autonomous command selected.
+     */
     public Command getAutonomousCommand() {
 
         if (autoChooser.getSelected() == "Limelight Auto") {
