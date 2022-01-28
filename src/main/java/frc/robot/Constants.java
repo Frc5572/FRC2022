@@ -172,6 +172,15 @@ public final class Constants {
             public static final int insideChannel = 0;
         }
 
+        /**
+         * Intake constants
+         */
+        public static final class IntakeConstants {
+            public static final int intakeMotorNum = 0;
+            public static final int intakeModule = 0;
+            public static final int intakeFowardChannel = 0;
+        }
+
     }
 
     /**
