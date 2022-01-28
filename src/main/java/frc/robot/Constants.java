@@ -195,4 +195,12 @@ public final class Constants {
         public static final int shooterServoID = 0;
     }
 
+    /**
+     * Vision constants for limelight calculations.
+     */
+
+    public static final class VisionConstants {
+        public static final double deadPocket = 0.2;
+    }
+
 }
