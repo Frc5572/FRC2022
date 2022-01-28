@@ -10,8 +10,8 @@ import frc.robot.subsystems.Swerve;
  * Zeros motors then excecutes normal wait command.
  */
 public class ZeroMotorsWaitCommand extends CommandBase {
-    protected Timer m_timer = new Timer();
-    private final double m_duration;
+    protected Timer timer = new Timer();
+    private final double duration;
     private Swerve swerve;
 
     /**
@@ -20,7 +20,7 @@ public class ZeroMotorsWaitCommand extends CommandBase {
      * @param seconds how long the wait command should run
      */
     public ZeroMotorsWaitCommand(Swerve swerve, double seconds) {
-        this.m_duration = seconds;
+        this.duration = seconds;
         SendableRegistry.setName(this, getName() + ": " + seconds + " seconds");
         this.swerve = swerve;
         addRequirements(swerve);
@@ -29,18 +29,18 @@ public class ZeroMotorsWaitCommand extends CommandBase {
     @Override
     public void initialize() {
         swerve.setMotorsZero(Constants.Swerve.isOpenLoop, Constants.Swerve.isFieldRelative);
-        m_timer.reset();
-        m_timer.start();
+        timer.reset();
+        timer.start();
     }
 
     @Override
     public void end(boolean interrupted) {
-        m_timer.stop();
+        timer.stop();
     }
 
     @Override
     public boolean isFinished() {
-        return m_timer.hasElapsed(m_duration);
+        return timer.hasElapsed(duration);
     }
 
     @Override

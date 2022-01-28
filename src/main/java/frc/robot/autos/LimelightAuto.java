@@ -17,10 +17,19 @@ import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Vision;
 
+/**
+ * Autonomous that aligns limelight then excecutes a trajectory.
+ */
 public class LimelightAuto extends SequentialCommandGroup {
     Vision vision;
     Swerve swerve;
 
+    /**
+     * Autonomous that aligns limelight then excecutes a trajectory.
+     *
+     * @param swerve swerve subsystem
+     * @param vision vision subsystem
+     */
     public LimelightAuto(Swerve swerve, Vision vision) {
         this.swerve = swerve;
         System.out.println("Limelight Auto !!");
