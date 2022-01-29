@@ -11,6 +11,12 @@ public class InsideMC extends CommandBase {
     private Climber climber;
     private boolean dir;
 
+    /**
+     * Create and add requirements for InsideMC command
+     *
+     * @param climber passes through climber subsystem
+     * @param dir passes through boolean dir
+     */
     public InsideMC(Climber climber, boolean dir) {
         this.climber = climber;
         this.dir = dir;

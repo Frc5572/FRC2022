@@ -11,6 +11,12 @@ public class OutsideMC extends CommandBase {
     private Climber climber;
     private boolean dir;
 
+    /**
+     * Create and add requirements for OutsideMC command
+     *
+     * @param climber Passes the climber subsystem through
+     * @param dir Passes boolean dir through
+     */
     public OutsideMC(Climber climber, boolean dir) {
         this.climber = climber;
         this.dir = dir;
