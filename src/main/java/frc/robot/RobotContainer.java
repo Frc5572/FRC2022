@@ -9,8 +9,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.LimelightAuto;
+import frc.robot.commands.OutsidePC;
 import frc.robot.commands.TeleopSwerve;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Vision;
 
@@ -25,13 +26,10 @@ public class RobotContainer {
     private final Joystick driver = new Joystick(0);
     private final Joystick operator = new Joystick(1);
 
+    /* Auto Junk */
     private final SendableChooser<String> autoChooser = new SendableChooser<>();
-
     private Command autoCommand;
     private static final String limelightAuto = "Limelight Auto";
-    // private final Button shooterMotor = new Button(
-    // () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4);
-    private final Shooter shooter = new Shooter();
 
     /* Drive Controls */
     private final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -41,6 +39,8 @@ public class RobotContainer {
     /* Driver Buttons */
     private final JoystickButton zeroGyro =
         new JoystickButton(driver, XboxController.Button.kY.value);
+    private final JoystickButton climberTest =
+        new JoystickButton(driver, XboxController.Button.kA.value);
 
     boolean fieldRelative;
     boolean openLoop;
@@ -48,6 +48,7 @@ public class RobotContainer {
     /* Subsystems */
     private final Swerve swerveDrive = new Swerve();
     private Vision vision = new Vision();
+    private final Climber climber = new Climber();
 
 
     /**
@@ -72,7 +73,8 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
-        // shooterMotor.whenHeld(new ShooterRev(shooter));
+        climberTest.whenPressed(new OutsidePC(climber));
+        /* Operator Buttons */
     }
 
     /**

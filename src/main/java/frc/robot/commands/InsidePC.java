@@ -8,20 +8,26 @@ import frc.robot.subsystems.Climber;
  * inside arms.
  */
 public class InsidePC extends CommandBase {
-    private Climber insideArms;
+    private Climber climber;
+    private boolean status = false;
 
-    public InsidePC(Climber insideArms) {
-        this.insideArms = insideArms;
-        addRequirements(insideArms);
+    public InsidePC(Climber climber) {
+        this.climber = climber;
+        addRequirements(climber);
     }
 
     @Override
     public void execute() {
-        this.insideArms.deployInsideClimbers();
+        if (!status) {
+            this.climber.deployInsideClimbers();
+            status = true;
+        } else {
+            this.climber.retractInsideClimbers();
+        }
     }
 
     @Override
-    public void end(boolean interrupt) {
-        this.insideArms.returnInsideClimbers();
+    public boolean isFinished() {
+        return true;
     }
 }

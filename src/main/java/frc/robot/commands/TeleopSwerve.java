@@ -66,7 +66,6 @@ public class TeleopSwerve extends CommandBase {
             (controller.getRawButton(XboxController.Button.kX.value) && vision.getTargetFound())
                 ? vision.getAimValue()
                 : raxis * Constants.Swerve.maxAngularVelocity;
-        System.out.println(rotation);
         swerveDrive.drive(translation, rotation, fieldRelative, openLoop);
     }
 }

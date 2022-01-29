@@ -8,20 +8,26 @@ import frc.robot.subsystems.Climber;
  * arms.
  */
 public class InsideMC extends CommandBase {
-    private Climber insideMotors;
+    private Climber climber;
+    private boolean dir;
 
-    public InsideMC(Climber insideMotors) {
-        this.insideMotors = insideMotors;
-        addRequirements(insideMotors);
+    public InsideMC(Climber climber, boolean dir) {
+        this.climber = climber;
+        this.dir = dir;
+        addRequirements(climber);
     }
 
     @Override
     public void execute() {
-        this.insideMotors.engageInsideMotors();
+        if (dir) {
+            this.climber.engageInsideMotors();
+        } else {
+            this.climber.disengageInsideMotors();
+        }
     }
 
     @Override
     public void end(boolean interrupt) {
-        this.insideMotors.disengageInsideMotors();
+        this.climber.stopInsideMotors();
     }
 }

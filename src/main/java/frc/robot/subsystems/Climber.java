@@ -40,8 +40,8 @@ public class Climber extends SubsystemBase {
 
     // Sets motors to inverted control mode.
     public Climber() {
-        outsideClimberMotor1.setInverted(true);
-        insideClimberMotor1.setInverted(true);
+        // outsideClimberMotor1.setInverted(true);
+        // insideClimberMotor1.setInverted(true);
     }
 
     // Initialize sets solenoids to false, or reverse, which makes it in the "Off" position
@@ -67,7 +67,7 @@ public class Climber extends SubsystemBase {
 
     // This command will stop moving the outside climber's motors.
     public void disengageOutsideMotors() {
-        outsideMotors.set(motorStop);
+        outsideMotors.set(-motorStop);
     }
 
     // This command will start to move the inside climber's motors.
@@ -77,17 +77,25 @@ public class Climber extends SubsystemBase {
 
     // This command will stop moving the inside climber's motors.
     public void disengageInsideMotors() {
-        insideMotors.set(motorStop);
+        insideMotors.set(-motorStop);
     }
 
     // This will set the outside climber's pneumatics back to the default position.
-    public void returnOutsideClimbers() {
+    public void retractOutsideClimbers() {
         outsideClimberSolenoid.set(false);
     }
 
     // This will set the inside climber's pneumatics back to the default position .
     // (hopefully, not sure about double solenoids yet)
-    public void returnInsideClimbers() {
+    public void retractInsideClimbers() {
         insideClimberSolenoid.set(Value.kReverse);
+    }
+
+    public void stopInsideMotors() {
+        insideMotors.set(motorStop);
+    }
+
+    public void stopOutsideMotors() {
+        outsideMotors.set(motorStop);
     }
 }

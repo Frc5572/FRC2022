@@ -8,20 +8,28 @@ import frc.robot.subsystems.Climber;
  * outside arms.
  */
 public class OutsidePC extends CommandBase {
-    private Climber outsideArms;
+    private Climber climber;
+    private boolean status = false;
 
-    public OutsidePC(Climber outsideArms) {
-        this.outsideArms = outsideArms;
-        addRequirements(outsideArms);
+    public OutsidePC(Climber climber) {
+        this.climber = climber;
+        addRequirements(climber);
     }
 
     @Override
     public void execute() {
-        this.outsideArms.deployOutsideClimbers();
+        if (!status) {
+            this.climber.deployOutsideClimbers();
+            status = true;
+        } else {
+            this.climber.retractOutsideClimbers();
+            status = false;
+        }
+        System.out.println(status);
     }
 
     @Override
-    public void end(boolean interrupt) {
-        this.outsideArms.returnOutsideClimbers();
+    public boolean isFinished() {
+        return true;
     }
 }
