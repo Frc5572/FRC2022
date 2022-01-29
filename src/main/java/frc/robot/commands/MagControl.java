@@ -6,19 +6,15 @@ import frc.robot.subsystems.Magazine;
 /**
  * Creates commands for the magazine to run.
  */
-public class InitMag extends CommandBase {
+public class MagControl extends CommandBase {
     private Magazine magazine;
-    private Magazine magSense;
-
 
     /**
      * Initalizes the command for magazine and adds requirements to systems.
      */
-    public InitMag(Magazine magazine, Magazine magSense) {
+    public MagControl(Magazine magazine) {
         this.magazine = magazine;
-        this.magSense = magSense;
         addRequirements(magazine);
-        addRequirements(magSense);
     }
 
     @Override
@@ -30,6 +26,4 @@ public class InitMag extends CommandBase {
     public boolean isFinished() {
         return magazine.magSense.get();
     }
-
-
 }
