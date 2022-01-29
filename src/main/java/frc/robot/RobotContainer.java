@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.LimelightAuto;
-import frc.robot.commands.InitMag;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Magazine;
 import frc.robot.subsystems.Shooter;
@@ -48,10 +47,10 @@ public class RobotContainer {
 
     /* Subsystems */
     private final Swerve swerveDrive = new Swerve();
-    private final Vision vision = new Vision();
     private final Shooter shooter = new Shooter();
     private final Magazine magazine = new Magazine();
-    private final Magazine magSense = new Magazine();
+    private Vision vision = new Vision();
+
 
 
     /**
@@ -63,8 +62,6 @@ public class RobotContainer {
         swerveDrive.setDefaultCommand(
             new TeleopSwerve(swerveDrive, vision, driver, translationAxis, strafeAxis, rotationAxis,
                 Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop));
-        magazine.setDefaultCommand(new InitMag(magazine, magSense));
-
         // Configure the button bindings
         configureButtonBindings();
     }
