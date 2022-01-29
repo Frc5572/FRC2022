@@ -199,4 +199,13 @@ public final class Constants {
     public static final int magazinePort = 0;
     public static final int magazinecanID = 0;
     public static final int magazineSensor = 0;
+
+    /**
+     * Vision constants for limelight calculations.
+     */
+
+    public static final class VisionConstants {
+        public static final double deadPocket = 0.2;
+    }
+
 }

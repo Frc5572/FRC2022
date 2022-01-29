@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.modules.swervedrive.CTREConfigs;
 
@@ -14,6 +15,8 @@ import frc.robot.modules.swervedrive.CTREConfigs;
 public class Robot extends TimedRobot {
     public static CTREConfigs ctreConfigs;
     private RobotContainer robotContainer;
+    private Command autoChooser;
+
 
     // private Ultrasonic ultrasonic = new Ultrasonic();
     /**
@@ -60,7 +63,15 @@ public class Robot extends TimedRobot {
      * This autonomous runs the autonomous command selected by your {@link RobotContainer} class.
      */
     @Override
-    public void autonomousInit() {}
+    public void autonomousInit() {
+        robotContainer.getAutonomousCommand().schedule();
+        autoChooser = robotContainer.getAutonomousCommand();
+
+        // schedule the autonomous command (example)
+        if (autoChooser != null) {
+            autoChooser.schedule();
+        }
+    }
 
     /** This function is called periodically during autonomous. */
     @Override
@@ -68,9 +79,9 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        // This makes sure that the autonomous stops running when teleop starts running.
-        // If you want the autonomous to continue until interrupted by another command, remove this
-        // line or comment it out.
+        if (autoChooser != null) {
+            autoChooser.cancel();
+        }
     }
 
     /** This function is called periodically during operator control. */
