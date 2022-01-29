@@ -33,6 +33,8 @@ public class RobotContainer {
     // () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4);
     private final Shooter shooter = new Shooter();
 
+    private Vision vision = new Vision();
+
     /* Drive Controls */
     private final int translationAxis = XboxController.Axis.kLeftY.value;
     private final int strafeAxis = XboxController.Axis.kLeftX.value;
@@ -47,8 +49,6 @@ public class RobotContainer {
 
     /* Subsystems */
     private final Swerve swerveDrive = new Swerve();
-    private Vision vision = new Vision();
-
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
