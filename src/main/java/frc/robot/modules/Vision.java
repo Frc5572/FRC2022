@@ -1,15 +1,14 @@
-package frc.robot.subsystems;
+package frc.robot.modules;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 /**
  * Vision subsystem.
  */
 
-public class Vision extends SubsystemBase {
+public class Vision {
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     double deadPocket = Constants.VisionConstants.deadPocket;
     double h1 = Constants.VisionConstants.limelightHeight;

@@ -9,10 +9,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.LimelightAuto;
+import frc.robot.commands.PositionHood;
 import frc.robot.commands.TeleopSwerve;
+import frc.robot.modules.Vision;
+import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
-import frc.robot.subsystems.Vision;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -49,6 +51,7 @@ public class RobotContainer {
 
     /* Subsystems */
     private final Swerve swerveDrive = new Swerve();
+    private final Hood hood = new Hood(vision);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -59,6 +62,7 @@ public class RobotContainer {
         swerveDrive.setDefaultCommand(
             new TeleopSwerve(swerveDrive, vision, driver, translationAxis, strafeAxis, rotationAxis,
                 Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop));
+        hood.setDefaultCommand(new PositionHood(vision, hood));
         // Configure the button bindings
         configureButtonBindings();
     }
