@@ -1,35 +1,35 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Magazine;
 
-public class pullBall extends CommandBase {
+public class initMag extends CommandBase {
     private Magazine magazine;
-    private DigitalInput magSense;
+    private Magazine magSense;
 
 
-    public pullBall(Magazine magazine, DigitalInput magSense) {
+    public initMag(Magazine magazine, Magazine magSense) {
         this.magazine = magazine;
         this.magSense = magSense;
         addRequirements(magazine);
+        addRequirements(magSense);
     }
 
     @Override
     public void execute() {
-        magazine.startIntake();
+        magazine.startMagazine();
     }
 
     @Override
     public void end(boolean interrupted) {
-        if (magSense.get()) {
-            magazine.stopIntake();
+        if (magazine.magSense.get()) {
+            magazine.stopMagazine();
         }
     }
 
     @Override
     public boolean isFinished() {
-        return magSense.get();
+        return magazine.magSense.get();
     }
 
 
