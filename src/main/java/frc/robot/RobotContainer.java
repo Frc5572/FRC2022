@@ -50,7 +50,6 @@ public class RobotContainer {
     private Vision vision = new Vision();
     private final Climber climber = new Climber();
 
-
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
