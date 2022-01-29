@@ -170,6 +170,7 @@ public final class Constants {
         public static final class Climber {
             public static final int outsideChannel = 0;
             public static final int insideChannel = 0;
+            public static final int insideChannel2 = 0;
         }
 
         /**
