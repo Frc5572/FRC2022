@@ -51,7 +51,6 @@ public class TeleopSwerve extends CommandBase {
 
     @Override
     public void execute() {
-        vision.update();
         double yaxis = -controller.getRawAxis(translationAxis);
         double xaxis = -controller.getRawAxis(strafeAxis);
         double raxis = -controller.getRawAxis(rotationAxis);
@@ -66,7 +65,6 @@ public class TeleopSwerve extends CommandBase {
             (controller.getRawButton(XboxController.Button.kX.value) && vision.getTargetFound())
                 ? vision.getAimValue()
                 : raxis * Constants.Swerve.maxAngularVelocity;
-        System.out.println(rotation);
         swerveDrive.drive(translation, rotation, fieldRelative, openLoop);
     }
 }
