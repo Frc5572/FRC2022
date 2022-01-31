@@ -1,4 +1,4 @@
-package frc.robot.modules.swerveDrive;
+package frc.robot.modules.SwerveDrive;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;

@@ -11,7 +11,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.modules.swerveDrive.SwerveModule;
+import frc.robot.modules.SwerveDrive.SwerveModule;
 
 /**
  * Creates swerve drive and commands for drive.
