@@ -10,6 +10,9 @@ public class RightTurretMove extends CommandBase {
 
     private Turret turret;
 
+    /**
+     * Moves right turret.
+     */
     public RightTurretMove(Turret turret) {
 
         this.turret = turret;
