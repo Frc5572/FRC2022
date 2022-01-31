@@ -47,7 +47,6 @@ public class AlignSwerve extends CommandBase {
 
     @Override
     public void execute() {
-        vision.update();
         double yaxis = -controller.getRawAxis(translationAxis);
         double xaxis = -controller.getRawAxis(strafeAxis);
 
