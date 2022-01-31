@@ -5,7 +5,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
-import frc.robot.modules.swervedrive.SwerveModuleConstants;
+import frc.robot.modules.swerveDrive.SwerveModuleConstants;
 
 /**
  * Constants file.
@@ -13,6 +13,8 @@ import frc.robot.modules.swervedrive.SwerveModuleConstants;
 
 public final class Constants {
     public static final double stickDeadband = 0.1;
+    public static final int driverID = 0;
+    public static final int operatorID = 1;
 
     /**
      * Creates class and constants for Swerve drive.

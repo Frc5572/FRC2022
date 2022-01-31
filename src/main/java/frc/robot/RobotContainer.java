@@ -20,8 +20,8 @@ import frc.robot.subsystems.Vision;
  */
 public class RobotContainer {
     /* Controllers */
-    private final Joystick driver = new Joystick(0);
-    private final Joystick operator = new Joystick(1);
+    private final Joystick driver = new Joystick(Constants.driverID);
+    private final Joystick operator = new Joystick(Constants.operatorID);
 
     // private final SendableChooser<String> autoChooser = new SendableChooser<>();
 
@@ -37,10 +37,6 @@ public class RobotContainer {
     private final int translationAxis = XboxController.Axis.kLeftY.value;
     private final int strafeAxis = XboxController.Axis.kLeftX.value;
     private final int rotationAxis = XboxController.Axis.kRightX.value;
-
-    /* Driver Buttons */
-    private final JoystickButton zeroGyro =
-        new JoystickButton(driver, XboxController.Button.kY.value);
 
     boolean fieldRelative;
     boolean openLoop;
@@ -69,7 +65,8 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
-        zeroGyro.whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
+        new JoystickButton(driver, XboxController.Button.kY.value)
+            .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
         // shooterMotor.whenHeld(new ShooterRev(shooter));
     }
 

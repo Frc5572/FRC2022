@@ -1,4 +1,4 @@
-package frc.robot.modules.swervedrive;
+package frc.robot.modules.swerveDrive;
 
 /**
  * Custom constants for each swerve module.
