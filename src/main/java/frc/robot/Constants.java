@@ -206,6 +206,9 @@ public final class Constants {
         public static final double limelightAngle = 49;
     }
 
+    /**
+     * This is all constants used for Turret this year.
+     */
     public static final class TurretConstants {
         public static final int canId = 0;
         public static final double spinLeft = -0.1;
