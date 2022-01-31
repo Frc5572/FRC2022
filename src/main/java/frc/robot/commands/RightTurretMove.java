@@ -3,6 +3,9 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Turret;
 
+/**
+ * Right turret move command.
+ */
 public class RightTurretMove extends CommandBase {
 
     private Turret turret;
