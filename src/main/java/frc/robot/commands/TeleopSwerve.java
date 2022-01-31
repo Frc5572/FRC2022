@@ -2,9 +2,11 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.Vision;
 
 /**
  * Creates an command for driving the swerve drive during tele-op
@@ -21,6 +23,7 @@ public class TeleopSwerve extends CommandBase {
     private int translationAxis;
     private int strafeAxis;
     private int rotationAxis;
+    private Vision vision;
 
     /**
      * Creates an command for driving the swerve drive during tele-op
@@ -33,10 +36,11 @@ public class TeleopSwerve extends CommandBase {
      * @param fieldRelative Whether the movement is relative to the field or absolute
      * @param openLoop Open or closed loop system
      */
-    public TeleopSwerve(Swerve swerveDrive, Joystick controller, int translationAxis,
+    public TeleopSwerve(Swerve swerveDrive, Vision vision, Joystick controller, int translationAxis,
         int strafeAxis, int rotationAxis, boolean fieldRelative, boolean openLoop) {
         this.swerveDrive = swerveDrive;
         addRequirements(swerveDrive);
+        this.vision = new Vision();
         this.controller = controller;
         this.translationAxis = translationAxis;
         this.strafeAxis = strafeAxis;
@@ -57,8 +61,10 @@ public class TeleopSwerve extends CommandBase {
         raxis = (Math.abs(raxis) < Constants.stickDeadband) ? 0 : raxis;
 
         translation = new Translation2d(yaxis, xaxis).times(Constants.Swerve.maxSpeed);
-        // rotation = raxis > 0 ? raxis * Constants.Swerve.maxAngularVelocity : 0;
-        swerveDrive.drive(translation, raxis * Constants.Swerve.maxAngularVelocity, fieldRelative,
-            openLoop);
+        rotation =
+            (controller.getRawButton(XboxController.Button.kX.value) && vision.getTargetFound())
+                ? vision.getAimValue()
+                : raxis * Constants.Swerve.maxAngularVelocity;
+        swerveDrive.drive(translation, rotation, fieldRelative, openLoop);
     }
 }

@@ -199,4 +199,26 @@ public final class Constants {
     public static final int magazinePort = 0;
     public static final int magazinecanID = 0;
     public static final int magazineSensor = 0;
+
+    /**
+     * Vision constants for limelight calculations.
+     */
+
+    public static final class VisionConstants {
+        public static final double deadPocket = 0.2;
+        public static final double limelightHeight = 12;
+        public static final double targetHeight = 64;
+        public static final double limelightAngle = 49;
+    }
+
+    /**
+     * This is all constants used for Turret this year.
+     */
+    public static final class TurretConstants {
+        public static final int canId = 0;
+        public static final double spinLeft = -0.1;
+        public static final double spinRight = 0.1;
+        public static final double stop = -0;
+    }
+
 }
