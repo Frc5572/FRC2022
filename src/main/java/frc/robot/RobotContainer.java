@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.LimelightAuto;
+import frc.robot.commands.AlignSwerve;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
@@ -67,6 +68,8 @@ public class RobotContainer {
         /* Driver Buttons */
         new JoystickButton(driver, XboxController.Button.kY.value)
             .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
+        new JoystickButton(driver, XboxController.Button.kX.value).whileHeld(new AlignSwerve(
+            swerveDrive, vision, driver, translationAxis, strafeAxis, fieldRelative, openLoop));
         // shooterMotor.whenHeld(new ShooterRev(shooter));
     }
 
