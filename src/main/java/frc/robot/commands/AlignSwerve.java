@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
@@ -18,9 +17,8 @@ public class AlignSwerve extends CommandBase {
     private boolean openLoop;
 
     private Swerve swerveDrive;
-    private Joystick controller;
-    private int translationAxis;
-    private int strafeAxis;
+    private double yaxis;
+    private double xaxis;
     private Vision vision;
 
     /**
@@ -33,22 +31,19 @@ public class AlignSwerve extends CommandBase {
      * @param fieldRelative Whether the movement is relative to the field or absolute
      * @param openLoop Open or closed loop system
      */
-    public AlignSwerve(Swerve swerveDrive, Vision vision, Joystick controller, int translationAxis,
-        int strafeAxis, boolean fieldRelative, boolean openLoop) {
+    public AlignSwerve(Swerve swerveDrive, Vision vision, double yaxis, double xaxis,
+        boolean fieldRelative, boolean openLoop) {
         this.swerveDrive = swerveDrive;
         addRequirements(swerveDrive);
         this.vision = new Vision();
-        this.controller = controller;
-        this.translationAxis = translationAxis;
-        this.strafeAxis = strafeAxis;
+        this.yaxis = yaxis;
+        this.xaxis = xaxis;
         this.fieldRelative = fieldRelative;
         this.openLoop = openLoop;
     }
 
     @Override
     public void execute() {
-        double yaxis = -controller.getRawAxis(translationAxis);
-        double xaxis = -controller.getRawAxis(strafeAxis);
 
         /* Deadbands */
         yaxis = (Math.abs(yaxis) < Constants.stickDeadband) ? 0 : yaxis;
