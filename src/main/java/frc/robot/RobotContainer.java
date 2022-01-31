@@ -3,6 +3,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -24,15 +26,15 @@ public class RobotContainer {
     private final Joystick driver = new Joystick(Constants.driverID);
     private final Joystick operator = new Joystick(Constants.operatorID);
 
-    // private final SendableChooser<String> autoChooser = new SendableChooser<>();
+    private final SendableChooser<String> autoChooser = new SendableChooser<>();
 
-    // private Command autoCommand;
-
-    // private static final String ExampleAuto = "Example Auto";
-    // private static final String LimelightAuto = "Limelight Auto";
+    private Command autoCommand;
+    private static final String limelightAuto = "Limelight Auto";
     // private final Button shooterMotor = new Button(
     // () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4);
     private final Shooter shooter = new Shooter();
+
+    private Vision vision = new Vision();
 
     /* Drive Controls */
     private final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -44,13 +46,13 @@ public class RobotContainer {
 
     /* Subsystems */
     private final Swerve swerveDrive = new Swerve();
-    private Vision vision = new Vision();
-
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
+        autoChooser.addOption("Limelight Auto", limelightAuto);
+        SmartDashboard.putData("Choose Auto: ", autoChooser);
         swerveDrive.setDefaultCommand(
             new TeleopSwerve(swerveDrive, vision, driver, translationAxis, strafeAxis, rotationAxis,
                 Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop));
@@ -73,7 +75,18 @@ public class RobotContainer {
         // shooterMotor.whenHeld(new ShooterRev(shooter));
     }
 
+    /**
+     * Gets the user's selected autonomous command.
+     *
+     * @return Returns autonomous command selected.
+     */
     public Command getAutonomousCommand() {
-        return new LimelightAuto(swerveDrive, vision);
+
+        if (autoChooser.getSelected() == "Limelight Auto") {
+            System.out.println("Limelight Auto");
+            autoCommand = new LimelightAuto(swerveDrive, vision);
+        }
+        return autoCommand;
+
     }
 }
