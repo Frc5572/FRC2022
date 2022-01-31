@@ -28,10 +28,6 @@ public class TeleopSwerve extends CommandBase {
      * Creates an command for driving the swerve drive during tele-op
      *
      * @param swerveDrive The instance of the swerve drive subsystem
-     * @param controller The instance of the Driver Controller
-     * @param translationAxis The forward-back axis
-     * @param strafeAxis The left-right axis
-     * @param rotationAxis The rotation axis
      * @param fieldRelative Whether the movement is relative to the field or absolute
      * @param openLoop Open or closed loop system
      */
