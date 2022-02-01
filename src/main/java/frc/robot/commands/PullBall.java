@@ -19,8 +19,7 @@ public class PullBall extends CommandBase {
     /**
      * Decalres both objects and magazine
      */
-    public PullBall (Magazine magazine, DigitalInput sense) {
-
+    public PullBall(Magazine magazine, DigitalInput sense) {
         this.magazine = magazine;
         this.sense = sense;
         addRequirements(magazine);
