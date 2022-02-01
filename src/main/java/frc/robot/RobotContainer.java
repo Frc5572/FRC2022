@@ -1,7 +1,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -22,8 +21,8 @@ import frc.robot.subsystems.Vision;
  */
 public class RobotContainer {
     /* Controllers */
-    private final Joystick driver = new Joystick(0);
-    private final Joystick operator = new Joystick(1);
+    private final XboxController driver = new XboxController(Constants.driverID);
+    private final XboxController operator = new XboxController(Constants.operatorID);
 
     private final SendableChooser<String> autoChooser = new SendableChooser<>();
 
@@ -34,15 +33,6 @@ public class RobotContainer {
     private final Shooter shooter = new Shooter();
 
     private Vision vision = new Vision();
-
-    /* Drive Controls */
-    private final int translationAxis = XboxController.Axis.kLeftY.value;
-    private final int strafeAxis = XboxController.Axis.kLeftX.value;
-    private final int rotationAxis = XboxController.Axis.kRightX.value;
-
-    /* Driver Buttons */
-    private final JoystickButton zeroGyro =
-        new JoystickButton(driver, XboxController.Button.kY.value);
 
     boolean fieldRelative;
     boolean openLoop;
@@ -56,9 +46,8 @@ public class RobotContainer {
     public RobotContainer() {
         autoChooser.addOption("Limelight Auto", limelightAuto);
         SmartDashboard.putData("Choose Auto: ", autoChooser);
-        swerveDrive.setDefaultCommand(
-            new TeleopSwerve(swerveDrive, vision, driver, translationAxis, strafeAxis, rotationAxis,
-                Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop));
+        swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, vision, driver,
+            Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, false));
         // Configure the button bindings
         configureButtonBindings();
     }
@@ -71,8 +60,13 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
-        zeroGyro.whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
+        new JoystickButton(driver, XboxController.Button.kY.value)
+            .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
+        new JoystickButton(driver, XboxController.Button.kX.value)
+            .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
+                Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
         // shooterMotor.whenHeld(new ShooterRev(shooter));
+
     }
 
     /**

@@ -13,6 +13,8 @@ import frc.robot.modules.swervedrive.SwerveModuleConstants;
 
 public final class Constants {
     public static final double stickDeadband = 0.1;
+    public static final int driverID = 0;
+    public static final int operatorID = 1;
 
     /**
      * Creates class and constants for Swerve drive.
