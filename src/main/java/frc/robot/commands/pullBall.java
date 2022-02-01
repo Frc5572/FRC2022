@@ -4,12 +4,20 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Magazine;
 
-public class pullBall extends CommandBase {
+/**
+ * Loads ball into shooter
+ */
+public class PullBall extends CommandBase {
+
+    /**
+     * Decalres both objects and magazine
+     */
     private Magazine magazine;
     private DigitalInput sense;
 
 
-    public pullBall(Magazine magazine, DigitalInput sense) {
+    public PullBall(Magazine magazine, DigitalInput sense) {
+
         this.magazine = magazine;
         this.sense = sense;
         addRequirements(magazine);
@@ -20,10 +28,7 @@ public class pullBall extends CommandBase {
         magazine.up();
     }
 
-    @Override
-    public void end(boolean interrupted) {
-        magazine.stop();
-    }
+
 
     @Override
     public boolean isFinished() {
