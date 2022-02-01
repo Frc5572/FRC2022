@@ -197,6 +197,11 @@ public final class Constants {
         public static final int shooterServoID = 0;
     }
 
+    public static final int PCM = 0;
+    public static final int magazinePort = 0;
+    public static final int magazinecanID = 0;
+    public static final int magazineSensor = 0;
+
     /**
      * Vision constants for limelight calculations.
      */
