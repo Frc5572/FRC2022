@@ -7,7 +7,7 @@ import frc.robot.subsystems.Magazine;
 /**
  * Loads ball into shooter
  */
-public class pullBall extends CommandBase {
+public class PullBall extends CommandBase {
 
     /**
      * Decalres both objects and magazine
@@ -19,7 +19,7 @@ public class pullBall extends CommandBase {
     /**
      * Decalres both objects and magazine
      */
-    public pullBall (Magazine magazine, DigitalInput sense) {
+    public PullBall(Magazine magazine, DigitalInput sense) {
 
         this.magazine = magazine;
         this.sense = sense;
