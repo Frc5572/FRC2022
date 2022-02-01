@@ -10,15 +10,14 @@ import frc.robot.Constants;
 public class Magazine extends SubsystemBase {
     private WPI_TalonSRX magazineMotor = new WPI_TalonSRX(Constants.magazinecanID);
 
+    /*
+     * public void stop() { magazineMotor.set(0); }
+     */
     public void up() {
 
         magazineMotor.set(.5);
 
     }
-
-    /*
-     * public void stop() { magazineMotor.set(0); }
-     */
 
 
 
