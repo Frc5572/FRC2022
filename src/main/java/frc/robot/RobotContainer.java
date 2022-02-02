@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.LimelightAuto;
 import frc.robot.commands.TeleopSwerve;
+import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Vision;
@@ -24,10 +25,9 @@ public class RobotContainer {
     private final XboxController driver = new XboxController(Constants.driverID);
     private final XboxController operator = new XboxController(Constants.operatorID);
 
-    private final SendableChooser<String> autoChooser = new SendableChooser<>();
+    private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
     private Command autoCommand;
-    private static final String limelightAuto = "Limelight Auto";
     // private final Button shooterMotor = new Button(
     // () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4);
     private final Shooter shooter = new Shooter();
@@ -44,8 +44,9 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-        autoChooser.addOption("Limelight Auto", limelightAuto);
         SmartDashboard.putData("Choose Auto: ", autoChooser);
+        autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
+        autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, vision));
         swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, vision, driver,
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, false));
         // Configure the button bindings
@@ -75,12 +76,6 @@ public class RobotContainer {
      * @return Returns autonomous command selected.
      */
     public Command getAutonomousCommand() {
-
-        if (autoChooser.getSelected() == "Limelight Auto") {
-            System.out.println("Limelight Auto");
-            autoCommand = new LimelightAuto(swerveDrive, vision);
-        }
-        return autoCommand;
-
+        return autoChooser.getSelected();
     }
 }
