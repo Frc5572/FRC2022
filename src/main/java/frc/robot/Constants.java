@@ -13,6 +13,8 @@ import frc.robot.modules.swervedrive.SwerveModuleConstants;
 
 public final class Constants {
     public static final double stickDeadband = 0.1;
+    public static final int driverID = 0;
+    public static final int operatorID = 1;
 
     /**
      * Creates class and constants for Swerve drive.
@@ -196,6 +198,11 @@ public final class Constants {
         public static final int shooterServoID = 0;
     }
 
+    public static final int PCM = 0;
+    public static final int magazinePort = 0;
+    public static final int magazinecanID = 0;
+    public static final int magazineSensor = 0;
+
     /**
      * Vision constants for limelight calculations.
      */
@@ -205,6 +212,16 @@ public final class Constants {
         public static final double limelightHeight = 12;
         public static final double targetHeight = 64;
         public static final double limelightAngle = 49;
+    }
+
+    /**
+     * This is all constants used for Turret this year.
+     */
+    public static final class TurretConstants {
+        public static final int canId = 0;
+        public static final double spinLeft = -0.1;
+        public static final double spinRight = 0.1;
+        public static final double stop = -0;
     }
 
 }
