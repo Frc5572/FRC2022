@@ -16,10 +16,10 @@ import frc.robot.Constants;
 public class Climber extends SubsystemBase {
 
     private final Solenoid outsideClimberSolenoid = new Solenoid(Constants.Pneumatics.pcm1,
-        PneumaticsModuleType.CTREPCM, Constants.Pneumatics.Climber.outsideChannel);
-    private final DoubleSolenoid insideClimberSolenoid = new DoubleSolenoid(
-        Constants.Pneumatics.pcm2, PneumaticsModuleType.CTREPCM,
-        Constants.Pneumatics.Climber.insideChannel, Constants.Pneumatics.Climber.insideChannel2);
+        PneumaticsModuleType.CTREPCM, Constants.Pneumatics.climberOutsideChannel);
+    private final DoubleSolenoid insideClimberSolenoid =
+        new DoubleSolenoid(Constants.Pneumatics.pcm2, PneumaticsModuleType.CTREPCM,
+            Constants.Pneumatics.climberInsideChannel, Constants.Pneumatics.climberInsideChannel2);
 
     private final CANSparkMax outsideClimberMotor1 =
         new CANSparkMax(Constants.Motors.outsideClimberMotor1Id, MotorType.kBrushless);
