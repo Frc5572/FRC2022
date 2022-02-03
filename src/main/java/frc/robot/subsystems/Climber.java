@@ -45,10 +45,10 @@ public class Climber extends SubsystemBase {
     }
 
     // Initialize sets solenoids to false, or reverse, which makes it in the "Off" position
-    public void initialize() {
-        outsideClimberSolenoid.set(false);
-        insideClimberSolenoid.set(Value.kReverse);
-    }
+    // public void initialize() {
+    // outsideClimberSolenoid.set(false);
+    // insideClimberSolenoid.set(Value.kReverse);
+    // }
 
     // This command will deploy the outside climbers solenoids.
     public void deployOutsideClimbers() {
