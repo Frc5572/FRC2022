@@ -14,14 +14,17 @@ public class Vision {
     double h1 = Constants.VisionConstants.limelightHeight;
     double h2 = Constants.VisionConstants.targetHeight;
     double a1 = Constants.VisionConstants.limelightAngle;
+    int minAngle = Constants.HoodConstants.minAngle;
+    int maxAngle = Constants.HoodConstants.maxAngle;
+    double maxPosition = Constants.HoodConstants.maxPosition;
+    double minPosition = Constants.HoodConstants.minPosition;
+    double calculatedValue;
     double a2;
-    double angle;
     double distance = 0.0;
     double disX = 0;
     double disY = 0;
     double tx = 0;
     double ty = 0;
-    double ta = 0;
     double tv = 0;
     double calculated;
     boolean targetFound = false;
@@ -38,6 +41,15 @@ public class Vision {
         a2 = table.getEntry("ty").getDouble(0.0);
         distance = (h2 - h1) / java.lang.Math.tan(java.lang.Math.toRadians(a1 + a2));
         return distance;
+    }
+
+
+    public double getHoodValue() {
+        // Vertical Offset From Crosshair To Target (LL1: -20.5 degrees to 20.5 degrees | LL2:
+        // -24.85 to 24.85 degrees)
+        a2 = table.getEntry("ty").getDouble(0.0);
+        calculatedValue = (1 / maxAngle - minAngle) * (a2 - maxAngle);
+        return calculatedValue;
     }
 
     /**
