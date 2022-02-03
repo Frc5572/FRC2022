@@ -49,8 +49,8 @@ public class Vision {
         // Horizontal Offset From Crosshair To Target (LL1: -27 degrees to 27 degrees | LL2: -29.8
         // to 29.8 degrees)
         tx = table.getEntry("tx").getDouble(0.0);
-        targetFound = false;
-        disX = 0;
+        // targetFound = false;
+        // disX = 0;
         disX = tx;
         double calculated = -(disX / 125) * 10;
         calculated = (Math.abs(calculated) <= deadPocket) ? 0 : calculated;
