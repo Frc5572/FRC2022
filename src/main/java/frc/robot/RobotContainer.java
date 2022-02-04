@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.autos.LimelightAuto;
+import frc.robot.autos.TestNoZeroGyroAuto;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
@@ -54,6 +54,7 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
+        swerveDrive.zeroGyro();
         swerveDrive.setDefaultCommand(
             new TeleopSwerve(swerveDrive, vision, driver, translationAxis, strafeAxis, rotationAxis,
                 Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop));
@@ -74,6 +75,6 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new LimelightAuto(swerveDrive, vision);
+        return new TestNoZeroGyroAuto(swerveDrive, vision);
     }
 }

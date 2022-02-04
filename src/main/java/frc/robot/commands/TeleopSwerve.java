@@ -60,13 +60,13 @@ public class TeleopSwerve extends CommandBase {
         yaxis = (Math.abs(yaxis) < Constants.stickDeadband) ? 0 : yaxis;
         xaxis = (Math.abs(xaxis) < Constants.stickDeadband) ? 0 : xaxis;
         raxis = (Math.abs(raxis) < Constants.stickDeadband) ? 0 : raxis;
+        System.out.println(swerveDrive.getStringYaw());
 
         translation = new Translation2d(yaxis, xaxis).times(Constants.Swerve.maxSpeed);
         rotation =
             (controller.getRawButton(XboxController.Button.kX.value) && vision.getTargetFound())
                 ? vision.getAimValue()
                 : raxis * Constants.Swerve.maxAngularVelocity;
-        System.out.println(rotation);
         swerveDrive.drive(translation, rotation, fieldRelative, openLoop);
     }
 }

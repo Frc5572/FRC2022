@@ -11,7 +11,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.modules.swervedrive.SwerveModule;
+import frc.robot.modules.swerveDrive.SwerveModule;
 
 /**
  * Creates swerve drive and commands for drive.
@@ -134,6 +134,11 @@ public class Swerve extends SubsystemBase {
         float yaw = gyro.getYaw();
         return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - yaw)
             : Rotation2d.fromDegrees(yaw);
+    }
+
+    public String getStringYaw() {
+        float yaw = gyro.getYaw();
+        return (Constants.Swerve.invertGyro) ? "Yaw: " + (360 - yaw) : "Yaw: " + yaw;
     }
 
     @Override
