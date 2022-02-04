@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.LimelightAuto;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Vision;
@@ -27,21 +28,16 @@ public class RobotContainer {
     private final XboxController operator = new XboxController(Constants.operatorID);
 
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
-
-    // private final Button shooterMotor = new Button(
-    // () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4);
-    private final Shooter shooter = new Shooter();
     DigitalInput magSensor = new DigitalInput(Constants.magazineSensor);
-
-
-
-    private Vision vision = new Vision();
 
     boolean fieldRelative;
     boolean openLoop;
 
     /* Subsystems */
+    private final Shooter shooter = new Shooter();
     private final Swerve swerveDrive = new Swerve();
+    private Vision vision = new Vision();
+    private final Climber climber = new Climber();
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -69,8 +65,6 @@ public class RobotContainer {
         new JoystickButton(driver, XboxController.Button.kX.value)
             .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
                 Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
-        // shooterMotor.whenHeld(new ShooterRev(shooter));
-
     }
 
     /**

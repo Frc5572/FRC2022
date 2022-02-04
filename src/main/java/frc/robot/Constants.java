@@ -17,6 +17,52 @@ public final class Constants {
     public static final int operatorID = 1;
 
     /**
+     * Motor CAN id's.
+     */
+    public static final class Motors {
+        // Climber Motors
+        public static final int outsideClimberMotor1Id = 0;
+        public static final int outsideClimberMotor2Id = 0;
+        public static final int insideClimberMotor1Id = 0;
+        public static final int insideClimberMotor2Id = 0;
+        // Shooter Motors
+        public static final int shooterID = 0;
+        public static final int shooterServoID = 0;
+        // Intake Motors
+        public static final int intakeMotorNum = 0;
+        // Magazine Motors
+        public static final int magazineMotorID = 0;
+        // Turret Motors
+        public static final int turretMotorID = 0;
+    }
+
+    /**
+     * Pneumatics CAN id cosntants.
+     */
+    public static final class Pneumatics {
+        public static final int pcm1 = 0;
+        public static final int pcm2 = 0;
+        // Climber pneumatics constants.
+        public static final int climberOutsideChannel = 0;
+        public static final int climberInsideChannel = 0;
+        public static final int climberInsideChannel2 = 0;
+        // Intake constants
+        public static final int intakeFowardChannel = 0;
+    }
+
+    public static final int magazineSensor = 0;
+
+    /**
+     * Vision constants for limelight calculations.
+     */
+    public static final class VisionConstants {
+        public static final double deadPocket = 0.2;
+        public static final double limelightHeight = 12;
+        public static final double targetHeight = 64;
+        public static final double limelightAngle = 49;
+    }
+
+    /**
      * Creates class and constants for Swerve drive.
      */
     public static final class Swerve {
@@ -158,69 +204,4 @@ public final class Constants {
             new TrapezoidProfile.Constraints(kMaxAngularSpeedRadiansPerSecond,
                 kMaxAngularSpeedRadiansPerSecondSquared);
     }
-
-    /**
-     * Pneumatics CAN id cosntants.
-     */
-    public static final class Pneumatics {
-        public static final int pcm1 = 0;
-        public static final int pcm2 = 0;
-
-        /**
-         * Climber pneumatics constants.
-         */
-        public static final class Climber {
-            public static final int outsideChannel = 0;
-            public static final int insideChannel = 0;
-        }
-
-        /**
-         * Intake constants
-         */
-        public static final class IntakeConstants {
-            public static final int intakeMotorNum = 0;
-            public static final int intakeModule = 0;
-            public static final int intakeFowardChannel = 0;
-        }
-
-    }
-
-    /**
-     * Motor CAN id's.
-     */
-    public static final class Motors {
-        public static final int outsideClimberMotor1Id = 0;
-        public static final int outsideClimberMotor2Id = 0;
-        public static final int insideClimberMotor1Id = 0;
-        public static final int insideClimberMotor2Id = 0;
-        public static final int shooterID = 0;
-        public static final int shooterServoID = 0;
-    }
-
-    public static final int PCM = 0;
-    public static final int magazinePort = 0;
-    public static final int magazinecanID = 0;
-    public static final int magazineSensor = 0;
-
-    /**
-     * Vision constants for limelight calculations.
-     */
-
-    public static final class VisionConstants {
-        public static final double deadPocket = 0.2;
-        public static final double limelightHeight = 12;
-        public static final double targetHeight = 64;
-        public static final double limelightAngle = 49;
-    }
-
-    /**
-     * This is all constants used for Turret this year.
-     */
-    public static final class TurretConstants {
-        public static final int canId = 0;
-        public static final double spinLeft = -0.1;
-        public static final double spinRight = 0.1;
-        public static final double stop = -0;
-    }
-
 }
