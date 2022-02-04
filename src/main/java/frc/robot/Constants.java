@@ -21,33 +21,33 @@ public final class Constants {
      */
     public static final class Motors {
         // Climber Motors
-        public static final int outsideClimberMotor1Id = 0;
-        public static final int outsideClimberMotor2Id = 0;
-        public static final int insideClimberMotor1Id = 0;
-        public static final int insideClimberMotor2Id = 0;
+        public static final int outsideClimberMotor1Id = 100;
+        public static final int outsideClimberMotor2Id = 101;
+        public static final int insideClimberMotor1Id = 102;
+        public static final int insideClimberMotor2Id = 103;
         // Shooter Motors
-        public static final int shooterID = 0;
-        public static final int shooterServoID = 0;
+        public static final int shooterID = 104;
+        public static final int shooterServoID = 10;
         // Intake Motors
-        public static final int intakeMotorNum = 0;
+        public static final int intakeMotorNum = 106;
         // Magazine Motors
-        public static final int magazineMotorID = 0;
+        public static final int magazineMotorID = 106;
         // Turret Motors
-        public static final int turretMotorID = 0;
+        public static final int turretMotorID = 107;
     }
 
     /**
      * Pneumatics CAN id cosntants.
      */
     public static final class Pneumatics {
-        public static final int pcm1 = 0;
-        public static final int pcm2 = 0;
+        public static final int pcm1 = 50;
+        public static final int pcm2 = 51;
         // Climber pneumatics constants.
-        public static final int climberOutsideChannel = 0;
-        public static final int climberInsideChannel = 0;
-        public static final int climberInsideChannel2 = 0;
+        public static final int climberOutsideChannel = 1;
+        public static final int climberInsideChannel = 2;
+        public static final int climberInsideChannel2 = 3;
         // Intake constants
-        public static final int intakeFowardChannel = 0;
+        public static final int intakeFowardChannel = 4;
     }
 
     public static final int magazineSensor = 0;
@@ -71,10 +71,11 @@ public final class Constants {
         public static final boolean invertGyro = true; // Always ensure Gyro is CCW+ CW-
 
         /* Drivetrain Constants */
-        public static final double trackWidth = Units.inchesToMeters(27);
-        public static final double wheelBase = Units.inchesToMeters(27);
+        public static final double trackWidth = Units.inchesToMeters(28);
+        public static final double wheelBase = Units.inchesToMeters(28);
         public static final double wheelDiameter = Units.inchesToMeters(3.94);
         public static final double wheelCircumference = wheelDiameter * Math.PI;
+        public static final double halfBaseWidth = Units.inchesToMeters(13);
 
         public static final boolean isFieldRelative = true;
         public static final boolean isOpenLoop = false;
@@ -190,8 +191,8 @@ public final class Constants {
      * Autonomous constants for swerve bot.
      */
     public static final class AutoConstants {
-        public static final double kMaxSpeedMetersPerSecond = 1;
-        public static final double kMaxAccelerationMetersPerSecondSquared = 1;
+        public static final double kMaxSpeedMetersPerSecond = .5;
+        public static final double kMaxAccelerationMetersPerSecondSquared = .5;
         public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
         public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
