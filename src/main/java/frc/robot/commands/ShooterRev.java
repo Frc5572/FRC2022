@@ -24,8 +24,6 @@ public class ShooterRev extends CommandBase {
         this.shooter.spin();
     }
 
-
-
     @Override
     public void end(boolean interrupted) {
         this.shooter.stop();

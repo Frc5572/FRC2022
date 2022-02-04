@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.LimelightAuto;
 import frc.robot.commands.TeleopSwerve;
@@ -42,6 +43,7 @@ public class RobotContainer {
     private final JoystickButton zeroGyro =
         new JoystickButton(driver, XboxController.Button.kY.value);
 
+
     boolean fieldRelative;
     boolean openLoop;
 
@@ -50,6 +52,8 @@ public class RobotContainer {
     private final Shooter shooter = new Shooter();
     private final Magazine magazine = new Magazine();
     private Vision vision = new Vision();
+    private final Button shooterMotor = new Button(
+        () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4);
 
 
 
@@ -75,7 +79,8 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
-        // shooterMotor.whenHeld(new ShooterRev(shooter));
+        shooterMotor.whenPressed(new InstantCommand(shooter::enable, shooter))
+            .whenReleased(new InstantCommand(shooter::disable, shooter));
     }
 
     /**
