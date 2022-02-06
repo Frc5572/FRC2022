@@ -224,6 +224,8 @@ public final class Constants {
     }
 
     public static final class HoodConstants {
+        public static final int hoodCANCoderID = 5;
+        public static final int hoodServoID = 0;
         public static final int minAngle = 0;
         public static final int maxAngle = 0;
         public static final double maxPosition = 2.5;

@@ -72,6 +72,8 @@ public class RobotContainer {
             .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
                 Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
         // shooterMotor.whenHeld(new ShooterRev(shooter));
+        new JoystickButton(driver, XboxController.Button.kA.value)
+            .whileHeld(new InstantCommand(() -> hood.getCANCoderPos()));
 
     }
 
