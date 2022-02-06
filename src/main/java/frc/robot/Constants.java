@@ -21,19 +21,19 @@ public final class Constants {
      */
     public static final class Motors {
         // Climber Motors
-        public static final int outsideClimberMotor1Id = 0;
-        public static final int outsideClimberMotor2Id = 0;
-        public static final int insideClimberMotor1Id = 0;
-        public static final int insideClimberMotor2Id = 0;
+        public static final int outsideClimberMotor1Id = 100;
+        public static final int outsideClimberMotor2Id = 101;
+        public static final int insideClimberMotor1Id = 102;
+        public static final int insideClimberMotor2Id = 103;
         // Shooter Motors
-        public static final int shooterID = 0;
-        public static final int shooterServoID = 0;
+        public static final int shooterID = 104;
+        public static final int shooterServoID = 10;
         // Intake Motors
-        public static final int intakeMotorNum = 0;
+        public static final int intakeMotorNum = 105;
         // Magazine Motors
-        public static final int magazineMotorID = 0;
+        public static final int magazineMotorID = 106;
         // Turret Motors
-        public static final int turretMotorID = 0;
+        public static final int turretMotorID = 107;
     }
 
     /**
@@ -41,16 +41,15 @@ public final class Constants {
      */
     public static final class Pneumatics {
         public static final int pcm1 = 0;
-        public static final int pcm2 = 0;
         // Climber pneumatics constants.
-        public static final int climberOutsideChannel = 0;
-        public static final int climberInsideChannel = 0;
-        public static final int climberInsideChannel2 = 0;
+        public static final int climberOutsideChannel = 1;
+        public static final int climberInsideChannel = 2;
+        public static final int climberInsideChannel2 = 3;
         // Intake constants
-        public static final int intakeFowardChannel = 0;
+        public static final int intakeFowardChannel = 4;
     }
 
-    public static final int magazineSensor = 0;
+    public static final int magazineSensor = 9;
 
     /**
      * Vision constants for limelight calculations.
