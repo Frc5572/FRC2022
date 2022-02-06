@@ -18,7 +18,7 @@ public class Climber extends SubsystemBase {
     private final Solenoid outsideClimberSolenoid = new Solenoid(Constants.Pneumatics.pcm1,
         PneumaticsModuleType.CTREPCM, Constants.Pneumatics.climberOutsideChannel);
     private final DoubleSolenoid insideClimberSolenoid =
-        new DoubleSolenoid(Constants.Pneumatics.pcm2, PneumaticsModuleType.CTREPCM,
+        new DoubleSolenoid(Constants.Pneumatics.pcm1, PneumaticsModuleType.CTREPCM,
             Constants.Pneumatics.climberInsideChannel, Constants.Pneumatics.climberInsideChannel2);
 
     private final CANSparkMax outsideClimberMotor1 =
