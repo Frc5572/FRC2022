@@ -191,7 +191,7 @@ public final class Constants {
         public static final int outsideClimberMotor2Id = 0;
         public static final int insideClimberMotor1Id = 0;
         public static final int insideClimberMotor2Id = 0;
-        public static final int shooterID = 0;
+        public static final int shooterID = 9;
         public static final int shooterServoID = 0;
     }
 
@@ -212,11 +212,11 @@ public final class Constants {
     }
 
     public static final class ShooterPID {
-        public static final double kP = 1;
-        public static final double kI = 0;
-        public static final double kD = 0;
+        public static final double kP = 0.2;
+        public static final double kI = 0.3;
+        public static final double kD = 0.1;
 
-        public static final double kShooterFreeRPS = 4000;
+        public static final double kShooterFreeRPS = 2000;
         public static final double kShooterTargetRPS = 2000;
         public static final double kShooterToleranceRPS = 50;
 

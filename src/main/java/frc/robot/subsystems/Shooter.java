@@ -4,7 +4,6 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.Constants;
 
@@ -14,7 +13,7 @@ import frc.robot.Constants;
  */
 public class Shooter extends PIDSubsystem {
     private final WPI_TalonFX shooter = new WPI_TalonFX(Constants.Motors.shooterID);
-    private final Servo shooterServo = new Servo(Constants.Motors.shooterServoID);
+    // private final Servo shooterServo = new Servo(Constants.Motors.shooterServoID);
     public static final double shooterSpin = 0.7;
     public static final int motorStop = 0;
     public static final double turretPower = 0.1;
@@ -69,11 +68,11 @@ public class Shooter extends PIDSubsystem {
         shooter.set(motorStop);
     }
 
-    public void turretUp() {
-        shooterServo.set(turretPower);
-    }
+    // public void turretUp() {
+    // shooterServo.set(turretPower);
+    // }
 
-    public void turretDown() {
-        shooterServo.set(-turretPower);
-    }
+    // public void turretDown() {
+    // shooterServo.set(-turretPower);
+    // }
 }
