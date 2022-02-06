@@ -26,12 +26,12 @@ public final class Constants {
         public static final int insideClimberMotor1Id = 102;
         public static final int insideClimberMotor2Id = 103;
         // Shooter Motors
-        public static final int shooterID = 104;
+        public static final int shooterID = 10;
         public static final int shooterServoID = 10;
         // Intake Motors
         public static final int intakeMotorNum = 105;
         // Magazine Motors
-        public static final int magazineMotorID = 106;
+        public static final int magazineMotorID = 11;
         // Turret Motors
         public static final int turretMotorID = 107;
     }
