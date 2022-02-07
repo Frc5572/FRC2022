@@ -15,6 +15,10 @@ public class Shooter extends SubsystemBase {
     public static final int motorStop = 0;
     public static final double turretPower = 0.1;
 
+    public Shooter() {
+        shooter.setInverted(true);
+    }
+
     public void spin() {
         shooter.set(shooterSpin);
     }
