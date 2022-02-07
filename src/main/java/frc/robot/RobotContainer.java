@@ -10,10 +10,10 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.LimelightAuto;
+import frc.robot.autos.TestAuto;
 import frc.robot.commands.ShooterRev;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
-import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Magazine;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
@@ -40,7 +40,7 @@ public class RobotContainer {
     private final Shooter shooter = new Shooter();
     private final Swerve swerveDrive = new Swerve();
     private Vision vision = new Vision();
-    private final Climber climber = new Climber();
+    // private final Climber climber = new Climber();
     private final Magazine magazine = new Magazine();
 
     /**
@@ -81,6 +81,7 @@ public class RobotContainer {
      * @return Returns autonomous command selected.
      */
     public Command getAutonomousCommand() {
-        return autoChooser.getSelected();
+        // return autoChooser.getSelected();
+        return new TestAuto(swerveDrive);
     }
 }

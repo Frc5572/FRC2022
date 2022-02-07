@@ -11,7 +11,7 @@ import frc.robot.Constants;
 public class Shooter extends SubsystemBase {
     private final WPI_TalonSRX shooter = new WPI_TalonSRX(Constants.Motors.shooterID);
     private final Servo shooterServo = new Servo(Constants.Motors.shooterServoID);
-    public static final double shooterSpin = 0.7;
+    public static final double shooterSpin = 1.0;
     public static final int motorStop = 0;
     public static final double turretPower = 0.1;
 
