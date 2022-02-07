@@ -1,4 +1,5 @@
-# Java-Template
-Template repo for Java template
-
-Good examples can be found https://github.com/wpilibsuite/allwpilib/tree/main/wpilibjExamples/src/main/java/edu/wpi/first/wpilibj/examples
+# FRC 2022 Can IDs
+Talon FX 1-8 - Swerve
+Talon FX 9 - Test Motor (future turret)
+Talon FX 10 - Shooter
+Talon FX 11 - Magazine
