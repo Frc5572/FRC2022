@@ -26,6 +26,7 @@ public class Shooter extends PIDSubsystem {
     public Shooter() {
         super(new PIDController(Constants.ShooterPID.kP, Constants.ShooterPID.kI,
             Constants.ShooterPID.kD));
+        shooter.setInverted(true);
         shooter.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 1, 1);
         getController().setTolerance(Constants.ShooterPID.kShooterToleranceRPS);
         setSetpoint(Constants.ShooterPID.kShooterTargetRPS);
