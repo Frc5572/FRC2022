@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.TestAuto;
+import frc.robot.commands.PositionHood;
 import frc.robot.commands.ShooterRev;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
@@ -72,9 +73,8 @@ public class RobotContainer {
             .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
                 Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
         // shooterMotor.whenHeld(new ShooterRev(shooter));
-        new JoystickButton(driver, XboxController.Button.kA.value)
-            .whileHeld(new InstantCommand(() -> hood.setHoodPosition(0)));
-
+        new JoystickButton(driver, XboxController.Button.kRightBumper.value)
+            .whileHeld(new PositionHood(hood));
         new JoystickButton(driver, XboxController.Button.kA.value)
             .whileHeld(new ShooterRev(shooter));
         new JoystickButton(driver, XboxController.Button.kB.value)

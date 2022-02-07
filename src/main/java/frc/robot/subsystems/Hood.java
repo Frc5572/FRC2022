@@ -15,6 +15,7 @@ public class Hood extends SubsystemBase {
     CANCoder hoodCANCoder = new CANCoder(Constants.HoodConstants.hoodCANCoderID);
     Servo hoodServo = new Servo(Constants.HoodConstants.hoodServoID);
     Vision vision;
+    double calculatedPosition;
 
     public Hood(Vision vision) {
         this.vision = vision;
@@ -27,8 +28,8 @@ public class Hood extends SubsystemBase {
     }
 
     public void setHoodPosition() {
-        hoodServo.set(vision.getDistance() / 100);
-        hoodServo.set(vision.getDistance() / 100);
+        hoodServo.set(vision.getHoodValue());
+        hoodServo.set(vision.getHoodValue());
     }
 
     public void setHoodPosition(double position) {

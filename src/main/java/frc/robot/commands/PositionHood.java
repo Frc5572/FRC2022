@@ -1,13 +1,12 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.modules.Vision;
 import frc.robot.subsystems.Hood;
 
 public class PositionHood extends CommandBase {
     Hood hood;
 
-    public PositionHood(Vision vision, Hood hood) {
+    public PositionHood(Hood hood) {
         this.hood = hood;
         addRequirements(hood);
     }
