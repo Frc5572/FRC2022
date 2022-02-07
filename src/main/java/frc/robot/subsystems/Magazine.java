@@ -13,6 +13,10 @@ public class Magazine extends SubsystemBase {
     private WPI_TalonSRX magazineMotor = new WPI_TalonSRX(Constants.Motors.magazineMotorID);
     public DigitalInput magSense = new DigitalInput(Constants.Motors.magazineTouchID);
 
+    public Magazine() {
+        magazineMotor.setInverted(true);
+    }
+
     public void startMagazine() {
         magazineMotor.set(.5);
     }
