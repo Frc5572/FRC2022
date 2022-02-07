@@ -4,15 +4,16 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.Pneumatics.IntakeConstants;
+import frc.robot.Constants;
+import frc.robot.Constants.Pneumatics;
 
 /**
  * Defined intake motors and solenoids
  */
 public class Intake extends SubsystemBase {
-    WPI_TalonSRX intakeMotor = new WPI_TalonSRX(IntakeConstants.intakeMotorNum);
-    Solenoid intakeSol = new Solenoid(IntakeConstants.intakeModule, PneumaticsModuleType.CTREPCM,
-        IntakeConstants.intakeFowardChannel);
+    WPI_TalonSRX intakeMotor = new WPI_TalonSRX(Constants.Motors.intakeMotorNum);
+    Solenoid intakeSol =
+        new Solenoid(Pneumatics.pcm1, PneumaticsModuleType.CTREPCM, Pneumatics.intakeFowardChannel);
 
     private static final double intakeSpeed = .5;
     private static final int intakeStop = 0;
