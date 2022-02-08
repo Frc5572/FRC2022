@@ -208,12 +208,26 @@ public final class Constants {
         public static final double kI = 0;
         public static final double kD = 0;
 
-        public static final double kShooterFreeRPM = 6750;
-        public static final double kShooterTargetRPM = 2000;
-        public static final double kShooterToleranceRPM = 100;
+        public static final double kShooterFreeRPS = 6750; // IN RPS NOT RPM
+        public static final double kShooterTargetRPS = 2000; // IN RPS NOT RPM
+        public static final double kShooterToleranceRPS = 100; // IN RPS NOT RPM
 
         public static final int kUnitsPerRevolution = 2048;
         public static final double kSVolts = 0.63035;
         public static final double kVVoltSecondsPerRotation = 0.10877;
+    }
+
+    public static final class MagazinePID {
+        public static final double kP = 1;
+        public static final double kI = 0;
+        public static final double kD = 0;
+
+        public static final double kMagazineFreeRPS = 0; // IN RPS NOT RPM
+        public static final double kMagazineTargetRPS = 0; // IN RPS NOT RPM
+        public static final double kMagazineToleranceRPS = 0; // IN RPS NOT RPM
+
+        public static final int kUnitsPerRevolution = 2048;
+        public static final double kSVolts = 0;
+        public static final double kVVoltSecondsPerRotation = 0;
     }
 }
