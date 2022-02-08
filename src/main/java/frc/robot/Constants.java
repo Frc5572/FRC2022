@@ -32,7 +32,6 @@ public final class Constants {
         public static final int intakeMotorNum = 105;
         // Magazine Motors
         public static final int magazineMotorID = 11;
-        public static final int magazineTouchID = 11;
         // Turret Motors
         public static final int turretMotorID = 107;
     }
@@ -49,6 +48,8 @@ public final class Constants {
         // Intake constants
         public static final int intakeFowardChannel = 4;
     }
+
+    public static final int magazineSensor = 9;
 
     /**
      * Vision constants for limelight calculations.
@@ -202,15 +203,14 @@ public final class Constants {
             new TrapezoidProfile.Constraints(kMaxAngularSpeedRadiansPerSecond,
                 kMaxAngularSpeedRadiansPerSecondSquared);
     }
-
     public static final class ShooterPID {
-        public static final double kP = 0.491;
-        public static final double kI = 0.3;
+        public static final double kP = 0.13744;
+        public static final double kI = 0;
         public static final double kD = 0;
 
-        public static final double kShooterFreeRPS = 6750;
-        public static final double kShooterTargetRPS = 3000;
-        public static final double kShooterToleranceRPS = 50;
+        public static final double kShooterFreeRPM = 6750;
+        public static final double kShooterTargetRPM = 2000;
+        public static final double kShooterToleranceRPM = 100;
 
         public static final int kUnitsPerRevolution = 2048;
         public static final double kSVolts = 0.63035;

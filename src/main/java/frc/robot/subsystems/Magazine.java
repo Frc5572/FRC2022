@@ -11,7 +11,7 @@ import frc.robot.Constants;
 
 public class Magazine extends SubsystemBase {
     private WPI_TalonSRX magazineMotor = new WPI_TalonSRX(Constants.Motors.magazineMotorID);
-    public DigitalInput magSense = new DigitalInput(Constants.Motors.magazineTouchID);
+    public DigitalInput magSense = new DigitalInput(2);
 
     public Magazine() {
         magazineMotor.setInverted(true);
