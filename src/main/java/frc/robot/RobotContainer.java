@@ -1,7 +1,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -10,7 +9,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.LimelightAuto;
+import frc.robot.commands.ShooterRev;
 import frc.robot.commands.TeleopSwerve;
+import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.subsystems.Magazine;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
@@ -24,12 +25,10 @@ import frc.robot.subsystems.Vision;
  */
 public class RobotContainer {
     /* Controllers */
-    private final Joystick driver = new Joystick(0);
-    private final Joystick operator = new Joystick(1);
+    private final XboxController driver = new XboxController(Constants.driverID);
+    private final XboxController operator = new XboxController(Constants.operatorID);
 
-    private final SendableChooser<String> autoChooser = new SendableChooser<>();
-
-    private Command autoCommand;
+    private final SendableChooser<Command> autoChooser = new SendableChooser<>();
     private static final String limelightAuto = "Limelight Auto";
     // private final Button shooterMotor = new Button(
     // () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4);
@@ -48,8 +47,8 @@ public class RobotContainer {
     boolean openLoop;
 
     /* Subsystems */
-    private final Swerve swerveDrive = new Swerve();
     private final Shooter shooter = new Shooter();
+    private final Swerve swerveDrive = new Swerve();
     private final Magazine magazine = new Magazine();
     private Vision vision = new Vision();
     private final Button shooterCom = new Button(
@@ -65,11 +64,11 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-        autoChooser.addOption("Limelight Auto", limelightAuto);
         SmartDashboard.putData("Choose Auto: ", autoChooser);
-        swerveDrive.setDefaultCommand(
-            new TeleopSwerve(swerveDrive, vision, driver, translationAxis, strafeAxis, rotationAxis,
-                Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop));
+        autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
+        autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, vision));
+        swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, vision, driver,
+            Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, false));
         // Configure the button bindings
         configureButtonBindings();
     }
@@ -82,7 +81,13 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
-        zeroGyro.whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
+        new JoystickButton(driver, XboxController.Button.kY.value)
+            .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
+        new JoystickButton(driver, XboxController.Button.kX.value)
+            .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
+                Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
+        new JoystickButton(driver, XboxController.Button.kA.value)
+            .whileHeld(new ShooterRev(shooter));
     }
 
     /**
@@ -91,12 +96,6 @@ public class RobotContainer {
      * @return Returns autonomous command selected.
      */
     public Command getAutonomousCommand() {
-
-        if (autoChooser.getSelected() == "Limelight Auto") {
-            System.out.println("Limelight Auto");
-            autoCommand = new LimelightAuto(swerveDrive, vision);
-        }
-        return autoCommand;
-
+        return autoChooser.getSelected();
     }
 }
