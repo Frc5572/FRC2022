@@ -42,11 +42,11 @@ public class Shooter extends PIDSubsystem {
     public double getMeasurement() {
         double selSenVel = shooter.getSelectedSensorVelocity(0);
 
-        double RotPerSec = (double) selSenVel / Constants.ShooterPID.kUnitsPerRevolution
+        double rotPerSec = (double) selSenVel / Constants.ShooterPID.kUnitsPerRevolution
             * 10; /* scale per100ms to perSecond */
-        return RotPerSec;
-        // double RotPerMin = RotPerSec * 60.0;
-        // return RotPerMin;
+        return rotPerSec;
+        // double rotPerMin = RotPerSec * 60.0;
+        // return rotPerMin;
     }
 
     @Override
