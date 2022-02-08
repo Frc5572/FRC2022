@@ -13,7 +13,6 @@ import frc.robot.Constants;
  */
 public class Shooter extends PIDSubsystem {
     private final WPI_TalonFX shooter = new WPI_TalonFX(Constants.Motors.shooterID);
-    // private final Servo shooterServo = new Servo(Constants.Motors.shooterServoID);
     public static final double shooterSpin = 0.7;
     public static final int motorStop = 0;
     public static final double turretPower = 0.1;
@@ -73,12 +72,4 @@ public class Shooter extends PIDSubsystem {
     public void stop() {
         shooter.set(motorStop);
     }
-
-    // public void turretUp() {
-    // shooterServo.set(turretPower);
-    // }
-
-    // public void turretDown() {
-    // shooterServo.set(-turretPower);
-    // }
 }
