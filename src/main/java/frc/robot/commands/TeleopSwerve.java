@@ -52,6 +52,7 @@ public class TeleopSwerve extends CommandBase {
         yaxis = (Math.abs(yaxis) < Constants.stickDeadband) ? 0 : yaxis;
         xaxis = (Math.abs(xaxis) < Constants.stickDeadband) ? 0 : xaxis;
         raxis = (Math.abs(raxis) < Constants.stickDeadband) ? 0 : raxis;
+        System.out.println(swerveDrive.getStringYaw());
 
         translation = new Translation2d(yaxis, xaxis).times(Constants.Swerve.maxSpeed);
         rotation = aligning && vision.getTargetFound() ? vision.getAimValue()
