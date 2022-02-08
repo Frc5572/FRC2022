@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
@@ -17,44 +16,37 @@ public class TeleopSwerve extends CommandBase {
     private Translation2d translation;
     private boolean fieldRelative;
     private boolean openLoop;
-
-    private Swerve swerveDrive;
-    private Joystick controller;
-    private int translationAxis;
-    private int strafeAxis;
-    private int rotationAxis;
     private Vision vision;
+    private Swerve swerveDrive;
+    private double yaxis;
+    private double xaxis;
+    private double raxis;
+    private boolean aligning;
+    private XboxController controller;
 
     /**
      * Creates an command for driving the swerve drive during tele-op
      *
      * @param swerveDrive The instance of the swerve drive subsystem
-     * @param controller The instance of the Driver Controller
-     * @param translationAxis The forward-back axis
-     * @param strafeAxis The left-right axis
-     * @param rotationAxis The rotation axis
      * @param fieldRelative Whether the movement is relative to the field or absolute
      * @param openLoop Open or closed loop system
      */
-    public TeleopSwerve(Swerve swerveDrive, Vision vision, Joystick controller, int translationAxis,
-        int strafeAxis, int rotationAxis, boolean fieldRelative, boolean openLoop) {
+    public TeleopSwerve(Swerve swerveDrive, Vision vision, XboxController controller,
+        boolean fieldRelative, boolean openLoop, boolean aligning) {
         this.swerveDrive = swerveDrive;
         addRequirements(swerveDrive);
-        this.vision = new Vision();
-        this.controller = controller;
-        this.translationAxis = translationAxis;
-        this.strafeAxis = strafeAxis;
-        this.rotationAxis = rotationAxis;
+        this.vision = vision;
         this.fieldRelative = fieldRelative;
         this.openLoop = openLoop;
+        this.aligning = aligning;
+        this.controller = controller;
     }
 
     @Override
     public void execute() {
-        vision.update();
-        double yaxis = -controller.getRawAxis(translationAxis);
-        double xaxis = -controller.getRawAxis(strafeAxis);
-        double raxis = -controller.getRawAxis(rotationAxis);
+        this.yaxis = -controller.getLeftY();
+        this.xaxis = -controller.getLeftX();
+        this.raxis = -controller.getRightX();
 
         /* Deadbands */
         yaxis = (Math.abs(yaxis) < Constants.stickDeadband) ? 0 : yaxis;
@@ -63,10 +55,8 @@ public class TeleopSwerve extends CommandBase {
         System.out.println(swerveDrive.getStringYaw());
 
         translation = new Translation2d(yaxis, xaxis).times(Constants.Swerve.maxSpeed);
-        rotation =
-            (controller.getRawButton(XboxController.Button.kX.value) && vision.getTargetFound())
-                ? vision.getAimValue()
-                : raxis * Constants.Swerve.maxAngularVelocity;
+        rotation = aligning && vision.getTargetFound() ? vision.getAimValue()
+            : raxis * Constants.Swerve.maxAngularVelocity;
         swerveDrive.drive(translation, rotation, fieldRelative, openLoop);
     }
 }

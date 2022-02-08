@@ -1,13 +1,20 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.autos.TestNoZeroGyroAuto;
+import frc.robot.autos.LimelightAuto;
+import frc.robot.autos.TestAuto;
+import frc.robot.commands.ShooterRev;
 import frc.robot.commands.TeleopSwerve;
+import frc.robot.commands.ZeroMotorsWaitCommand;
+import frc.robot.subsystems.Magazine;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Vision;
@@ -20,44 +27,32 @@ import frc.robot.subsystems.Vision;
  */
 public class RobotContainer {
     /* Controllers */
-    private final Joystick driver = new Joystick(0);
-    private final Joystick operator = new Joystick(1);
+    private final XboxController driver = new XboxController(Constants.driverID);
+    private final XboxController operator = new XboxController(Constants.operatorID);
 
-    // private final SendableChooser<String> autoChooser = new SendableChooser<>();
-
-    // private Command autoCommand;
-
-    // private static final String ExampleAuto = "Example Auto";
-    // private static final String LimelightAuto = "Limelight Auto";
-    // private final Button shooterMotor = new Button(
-    // () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4);
-    private final Shooter shooter = new Shooter();
-
-    /* Drive Controls */
-    private final int translationAxis = XboxController.Axis.kLeftY.value;
-    private final int strafeAxis = XboxController.Axis.kLeftX.value;
-    private final int rotationAxis = XboxController.Axis.kRightX.value;
-
-    /* Driver Buttons */
-    private final JoystickButton zeroGyro =
-        new JoystickButton(driver, XboxController.Button.kY.value);
+    private final SendableChooser<Command> autoChooser = new SendableChooser<>();
+    DigitalInput magSensor = new DigitalInput(Constants.magazineSensor);
 
     boolean fieldRelative;
     boolean openLoop;
 
     /* Subsystems */
+    private final Shooter shooter = new Shooter();
     private final Swerve swerveDrive = new Swerve();
     private Vision vision = new Vision();
-
+    // private final Climber climber = new Climber();
+    private final Magazine magazine = new Magazine();
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
         swerveDrive.zeroGyro();
-        swerveDrive.setDefaultCommand(
-            new TeleopSwerve(swerveDrive, vision, driver, translationAxis, strafeAxis, rotationAxis,
-                Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop));
+        SmartDashboard.putData("Choose Auto: ", autoChooser);
+        autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
+        autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, vision));
+        swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, vision, driver,
+            Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, false));
         // Configure the button bindings
         configureButtonBindings();
     }
@@ -70,11 +65,24 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
-        zeroGyro.whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
-        // shooterMotor.whenHeld(new ShooterRev(shooter));
+        new JoystickButton(driver, XboxController.Button.kY.value)
+            .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
+        new JoystickButton(driver, XboxController.Button.kX.value)
+            .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
+                Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
+        new JoystickButton(driver, XboxController.Button.kA.value)
+            .whileHeld(new ShooterRev(shooter));
+        new JoystickButton(driver, XboxController.Button.kB.value)
+            .whileHeld(new StartEndCommand(magazine::up, magazine::stop, magazine));
     }
 
+    /**
+     * Gets the user's selected autonomous command.
+     *
+     * @return Returns autonomous command selected.
+     */
     public Command getAutonomousCommand() {
-        return new TestNoZeroGyroAuto(swerveDrive, vision);
+        // return autoChooser.getSelected();
+        return new TestAuto(swerveDrive);
     }
 }
