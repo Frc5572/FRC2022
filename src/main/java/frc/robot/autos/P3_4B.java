@@ -39,6 +39,7 @@ public class P3_4B extends SequentialCommandGroup {
         PathPlannerTrajectory Part1 = PathPlanner.loadPath("Part1", 1, 1);
         PathPlannerTrajectory Part2 = PathPlanner.loadPath("Part2", 1, 1);
         PathPlannerTrajectory Part3 = PathPlanner.loadPath("Part3", 1, 1);
+        PathPlannerTrajectory FullAuto = PathPlanner.loadPath("P3_3B", 1, 1);
 
         var thetaController = new ProfiledPIDController(Constants.AutoConstants.kPThetaController,
             0, 0, Constants.AutoConstants.kThetaControllerConstraints);
@@ -57,10 +58,16 @@ public class P3_4B extends SequentialCommandGroup {
                 swerve::setModuleStates, swerve);
 
         PPSwerveControllerCommand grabFourthBall =
-            new PPSwerveControllerCommand(Part2, swerve::getPose, Constants.Swerve.swerveKinematics,
+            new PPSwerveControllerCommand(Part3, swerve::getPose, Constants.Swerve.swerveKinematics,
                 new PIDController(Constants.AutoConstants.kPXController, 0, 0),
                 new PIDController(Constants.AutoConstants.kPYController, 0, 0), thetaController,
                 swerve::setModuleStates, swerve);
+
+        PPSwerveControllerCommand fullAuto = new PPSwerveControllerCommand(FullAuto,
+            swerve::getPose, Constants.Swerve.swerveKinematics,
+            new PIDController(Constants.AutoConstants.kPXController, 0, 0),
+            new PIDController(Constants.AutoConstants.kPYController, 0, 0), thetaController,
+            swerve::setModuleStates, swerve);
 
 
         // PPSwerveControllerCommand firstHalfTraject = new PPSwerveControllerCommand(examplePath,
@@ -72,6 +79,6 @@ public class P3_4B extends SequentialCommandGroup {
         ZeroMotorsWaitCommand secondWait = new ZeroMotorsWaitCommand(swerve, .5);
 
         addCommands(new InstantCommand(() -> swerve.resetOdometry(Part1.getInitialPose())),
-            grabSecondBall);
+            fullAuto);
     }
 }
