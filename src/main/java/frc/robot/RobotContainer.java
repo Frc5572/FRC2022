@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.LimelightAuto;
@@ -55,12 +54,12 @@ public class RobotContainer {
     private Vision vision = new Vision();
     private final Button shooterCom = new Button(
         () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4)
-            .whenPressed(new InstantCommand(shooter::enable, shooter).andThen(
-                new WaitUntilCommand(shooter::atSetpoint),
-                new InstantCommand(magazine::startMagazine, magazine)))
+            .whenPressed(new InstantCommand(shooter::enable, shooter))
             .whenReleased(new InstantCommand(shooter::disable, shooter));
 
-
+    // .andThen(
+    // new WaitUntilCommand(shooter::atSetpoint),
+    // new InstantCommand(magazine::startMagazine, magazine)))
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.

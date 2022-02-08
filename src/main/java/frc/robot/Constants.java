@@ -212,16 +212,16 @@ public final class Constants {
     }
 
     public static final class ShooterPID {
-        public static final double kP = 0.2;
+        public static final double kP = 0.491;
         public static final double kI = 0.3;
-        public static final double kD = 0.1;
+        public static final double kD = 0;
 
-        public static final double kShooterFreeRPS = 2000;
-        public static final double kShooterTargetRPS = 2000;
+        public static final double kShooterFreeRPS = 6750;
+        public static final double kShooterTargetRPS = 3000;
         public static final double kShooterToleranceRPS = 50;
 
         public static final int kUnitsPerRevolution = 2048;
-        public static final double kSVolts = 0.572;
-        public static final double kVVoltSecondsPerRotation = (0.002 / 60) / kShooterFreeRPS;
+        public static final double kSVolts = 0.63035;
+        public static final double kVVoltSecondsPerRotation = 0.10877;
     }
 }
