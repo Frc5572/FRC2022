@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.LimelightAuto;
-import frc.robot.commands.ShooterRev;
+import frc.robot.commands.MagControl;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.subsystems.Magazine;
@@ -87,7 +87,7 @@ public class RobotContainer {
             .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
                 Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
         new JoystickButton(driver, XboxController.Button.kA.value)
-            .whileHeld(new ShooterRev(shooter));
+            .whileHeld(new MagControl(magazine));
     }
 
     /**
