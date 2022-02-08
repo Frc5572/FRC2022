@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.LimelightAuto;
+import frc.robot.autos.TestAuto;
 import frc.robot.commands.ShooterRev;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
@@ -49,6 +50,7 @@ public class RobotContainer {
     /* Subsystems */
     private final Shooter shooter = new Shooter();
     private final Swerve swerveDrive = new Swerve();
+    // private final Climber climber = new Climber();
     private final Magazine magazine = new Magazine();
     private Vision vision = new Vision();
     private final Button shooterCom = new Button(
@@ -64,6 +66,7 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
+        swerveDrive.zeroGyro();
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
         autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, vision));
@@ -96,6 +99,7 @@ public class RobotContainer {
      * @return Returns autonomous command selected.
      */
     public Command getAutonomousCommand() {
-        return autoChooser.getSelected();
+        // return autoChooser.getSelected();
+        return new TestAuto(swerveDrive);
     }
 }
