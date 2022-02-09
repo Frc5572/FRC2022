@@ -1,18 +1,20 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Magazine;
 
 /**
  * Creates commands for the magazine to run.
  */
-public class MagControl extends CommandBase {
+public class MagControl extends ForceMag {
     private Magazine magazine;
+    private ForceMag forceMag;
 
     /**
      * Initalizes the command for magazine and adds requirements to systems.
      */
-    public MagControl(Magazine magazine) {
+    public MagControl(Magazine magazine, ForceMag forceMag) {
+        super(magazine);
+        this.forceMag = forceMag;
         this.magazine = magazine;
         addRequirements(magazine);
     }

@@ -30,8 +30,6 @@ public class RobotContainer {
 
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
     private static final String limelightAuto = "Limelight Auto";
-    // private final Button shooterMotor = new Button(
-    // () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4);
 
     boolean fieldRelative;
     boolean openLoop;
