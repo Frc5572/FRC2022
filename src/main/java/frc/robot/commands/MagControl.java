@@ -18,11 +18,6 @@ public class MagControl extends CommandBase {
     }
 
     @Override
-    public void execute() {
-        magazine.startMagazine();
-    }
-
-    @Override
     public boolean isFinished() {
         return magazine.magSense.get();
     }
