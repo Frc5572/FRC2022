@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.TestAuto;
-import frc.robot.commands.ShooterRev;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.subsystems.Magazine;
@@ -34,33 +33,14 @@ public class RobotContainer {
     // private final Button shooterMotor = new Button(
     // () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4);
 
-    /* Drive Controls */
-    private final int translationAxis = XboxController.Axis.kLeftY.value;
-    private final int strafeAxis = XboxController.Axis.kLeftX.value;
-    private final int rotationAxis = XboxController.Axis.kRightX.value;
-
-    /* Driver Buttons */
-    private final JoystickButton zeroGyro =
-        new JoystickButton(driver, XboxController.Button.kY.value);
-
-
     boolean fieldRelative;
     boolean openLoop;
 
     /* Subsystems */
     private final Shooter shooter = new Shooter();
     private final Swerve swerveDrive = new Swerve();
-    // private final Climber climber = new Climber();
     private final Magazine magazine = new Magazine();
     private Vision vision = new Vision();
-    private final Button shooterCom = new Button(
-        () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4)
-            .whenPressed(new InstantCommand(shooter::enable, shooter))
-            .whenReleased(new InstantCommand(shooter::disable, shooter));
-
-    // .andThen(
-    // new WaitUntilCommand(shooter::atSetpoint),
-    // new InstantCommand(magazine::startMagazine, magazine)))
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -84,13 +64,15 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
+        final Button shooterCom = new Button(
+            () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4)
+                .whenPressed(new InstantCommand(shooter::enable, shooter))
+                .whenReleased(new InstantCommand(shooter::disable, shooter));
         new JoystickButton(driver, XboxController.Button.kY.value)
             .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
         new JoystickButton(driver, XboxController.Button.kX.value)
             .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
                 Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
-        new JoystickButton(driver, XboxController.Button.kA.value)
-            .whileHeld(new ShooterRev(shooter));
     }
 
     /**

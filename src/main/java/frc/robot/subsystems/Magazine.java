@@ -25,7 +25,7 @@ public class Magazine extends SubsystemBase {
     }
 
     public void startMagazine() {
-        magazineMotor.set(.5);
+        magazineMotor.set(.2);
     }
 
     public void stopMagazine() {
