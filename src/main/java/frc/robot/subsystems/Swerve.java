@@ -136,6 +136,11 @@ public class Swerve extends SubsystemBase {
             : Rotation2d.fromDegrees(yaw);
     }
 
+    public String getStringYaw() {
+        float yaw = gyro.getYaw();
+        return (Constants.Swerve.invertGyro) ? "Yaw: " + (360 - yaw) : "Yaw: " + yaw;
+    }
+
     @Override
     public void periodic() {
         swerveOdometry.update(getYaw(), getStates());
