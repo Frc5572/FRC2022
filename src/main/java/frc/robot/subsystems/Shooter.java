@@ -30,7 +30,7 @@ public class Shooter extends PIDSubsystem {
         shooter.setInverted(true);
         shooter.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 1, 1);
         getController().setTolerance(50);
-        setSetpoint(85); // 5100 RPM, setpoint is in RPS not RPM
+        setSetpoint(75); // 5100 RPM, setpoint is in RPS not RPM
     }
 
     @Override
