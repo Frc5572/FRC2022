@@ -203,6 +203,10 @@ public final class Constants {
             new TrapezoidProfile.Constraints(kMaxAngularSpeedRadiansPerSecond,
                 kMaxAngularSpeedRadiansPerSecondSquared);
     }
+
+    /**
+     * Constants for Shooter PID
+     */
     public static final class ShooterPID {
         public static final double kP = 0.13744;
         public static final double kI = 0;

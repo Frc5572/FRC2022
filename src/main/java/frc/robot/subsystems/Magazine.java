@@ -13,7 +13,7 @@ import frc.robot.Constants;
  */
 
 public class Magazine extends PIDSubsystem {
-    private WPI_TalonFX magazine = new WPI_TalonFX(Constants.Motors.magazineMotorID);
+    private WPI_TalonFX magazineMotor = new WPI_TalonFX(Constants.Motors.magazineMotorID);
     public DigitalInput magSense = new DigitalInput(2);
     private final SimpleMotorFeedforward magazineFeed = new SimpleMotorFeedforward(
         Constants.MagazinePID.kSVolts, Constants.MagazinePID.kVVoltSecondsPerRotation);
@@ -21,20 +21,20 @@ public class Magazine extends PIDSubsystem {
     public Magazine() {
         super(new PIDController(Constants.MagazinePID.kP, Constants.MagazinePID.kI,
             Constants.MagazinePID.kD));
-        magazine.setInverted(true);
-        magazine.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 1, 1);
+        magazineMotor.setInverted(true);
+        magazineMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 1, 1);
         getController().setTolerance(50); // IN RPS NOT RPM
         setSetpoint(10); // IN RPS NOT RPM
     }
 
     @Override
     public void useOutput(double output, double setpoint) {
-        magazine.setVoltage(output + magazineFeed.calculate(setpoint));
+        magazineMotor.setVoltage(output + magazineFeed.calculate(setpoint));
     }
 
     @Override
     public double getMeasurement() {
-        double selSenVel = magazine.getSelectedSensorVelocity(0);
+        double selSenVel = magazineMotor.getSelectedSensorVelocity(0);
 
         double RotPerSec = (double) selSenVel / Constants.MagazinePID.kUnitsPerRevolution
             * 10; /* scale per100ms to perSecond */
@@ -45,25 +45,17 @@ public class Magazine extends PIDSubsystem {
     public void periodic() {
         if (m_enabled) {
             useOutput(m_controller.calculate(getMeasurement(), getSetpoint()), getSetpoint());
-            double selSenVel = magazine.getSelectedSensorVelocity(0);
+            double selSenVel = magazineMotor.getSelectedSensorVelocity(0);
             double RotPerSec = (double) selSenVel / Constants.MagazinePID.kUnitsPerRevolution
                 * 10; /* scale per100ms to perSecond */
             double RotPerMin = RotPerSec * 60.0;
 
             System.out.println("RPM (Speed): " + RotPerMin);
-            System.out.println("Voltage: " + magazine.getMotorOutputVoltage());
+            System.out.println("Voltage: " + magazineMotor.getMotorOutputVoltage());
         }
     }
 
     public boolean atSetpoint() {
         return m_controller.atSetpoint();
-    }
-
-    public void startMagazine() {
-        magazine.set(.5);
-    }
-
-    public void stopMagazine() {
-        magazine.set(0);
     }
 }

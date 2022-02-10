@@ -9,7 +9,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.LimelightAuto;
-import frc.robot.commands.ShooterRev;
+import frc.robot.autos.TestAuto;
+import frc.robot.commands.ForceMag;
+import frc.robot.commands.ReverseMag;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.subsystems.Magazine;
@@ -30,18 +32,6 @@ public class RobotContainer {
 
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
     private static final String limelightAuto = "Limelight Auto";
-    // private final Button shooterMotor = new Button(
-    // () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4);
-
-    /* Drive Controls */
-    private final int translationAxis = XboxController.Axis.kLeftY.value;
-    private final int strafeAxis = XboxController.Axis.kLeftX.value;
-    private final int rotationAxis = XboxController.Axis.kRightX.value;
-
-    /* Driver Buttons */
-    private final JoystickButton zeroGyro =
-        new JoystickButton(driver, XboxController.Button.kY.value);
-
 
     boolean fieldRelative;
     boolean openLoop;
@@ -51,19 +41,12 @@ public class RobotContainer {
     private final Swerve swerveDrive = new Swerve();
     private final Magazine magazine = new Magazine();
     private Vision vision = new Vision();
-    private final Button shooterCom = new Button(
-        () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4)
-            .whenPressed(new InstantCommand(shooter::enable, shooter))
-            .whenReleased(new InstantCommand(shooter::disable, shooter));
-
-    // .andThen(
-    // new WaitUntilCommand(shooter::atSetpoint),
-    // new InstantCommand(magazine::startMagazine, magazine)))
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
+        swerveDrive.zeroGyro();
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
         autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, vision));
@@ -81,13 +64,19 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
+        final Button shooterCom = new Button(
+            () -> Math.abs(driver.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4)
+                .whenPressed(new InstantCommand(shooter::enable, shooter))
+                .whenReleased(new InstantCommand(shooter::disable, shooter));
         new JoystickButton(driver, XboxController.Button.kY.value)
             .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
         new JoystickButton(driver, XboxController.Button.kX.value)
             .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
                 Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
         new JoystickButton(driver, XboxController.Button.kA.value)
-            .whileHeld(new ShooterRev(shooter));
+            .whileHeld(new ForceMag(magazine));
+        new JoystickButton(driver, XboxController.Button.kB.value)
+            .whileHeld(new ReverseMag(magazine));
     }
 
     /**
@@ -96,6 +85,7 @@ public class RobotContainer {
      * @return Returns autonomous command selected.
      */
     public Command getAutonomousCommand() {
-        return autoChooser.getSelected();
+        // return autoChooser.getSelected();
+        return new TestAuto(swerveDrive);
     }
 }

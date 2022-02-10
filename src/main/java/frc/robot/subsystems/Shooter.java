@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.Constants;
 
@@ -13,8 +14,8 @@ import frc.robot.Constants;
  */
 public class Shooter extends PIDSubsystem {
     private final WPI_TalonFX shooter = new WPI_TalonFX(Constants.Motors.shooterID);
-    // private final Servo shooterServo = new Servo(Constants.Motors.shooterServoID);
-    public static final double shooterSpin = 0.7;
+    private final Servo shooterServo = new Servo(Constants.Motors.shooterServoID);
+    public static final double shooterSpin = 1.0;
     public static final int motorStop = 0;
     public static final double turretPower = 0.1;
     private final SimpleMotorFeedforward shooterFeed = new SimpleMotorFeedforward(
@@ -28,8 +29,8 @@ public class Shooter extends PIDSubsystem {
             Constants.ShooterPID.kD));
         shooter.setInverted(true);
         shooter.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 1, 1);
-        getController().setTolerance(50); // IN RPS NOT RPM
-        setSetpoint(85); // IN RPS NOT RPM
+        getController().setTolerance(50);
+        setSetpoint(75); // 5100 RPM, setpoint is in RPS not RPM
     }
 
     @Override
@@ -41,44 +42,22 @@ public class Shooter extends PIDSubsystem {
     public double getMeasurement() {
         double selSenVel = shooter.getSelectedSensorVelocity(0);
 
-        double RotPerSec = (double) selSenVel / Constants.ShooterPID.kUnitsPerRevolution
+        double rotPerSec = (double) selSenVel / Constants.ShooterPID.kUnitsPerRevolution
             * 10; /* scale per100ms to perSecond */
-        return RotPerSec;
-        // double RotPerMin = RotPerSec * 60.0;
-        // return RotPerMin;
+
+        // System.out.println("RPM (Speed): " + rotPerSec * 60);
+        // System.out.println("Voltage: " + shooter.getMotorOutputVoltage());
+        return rotPerSec;
     }
 
     @Override
     public void periodic() {
         if (m_enabled) {
             useOutput(m_controller.calculate(getMeasurement(), getSetpoint()), getSetpoint());
-            double selSenVel = shooter.getSelectedSensorVelocity(0);
-            double RotPerSec = (double) selSenVel / Constants.ShooterPID.kUnitsPerRevolution
-                * 10; /* scale per100ms to perSecond */
-            double RotPerMin = RotPerSec * 60.0;
-
-            System.out.println("RPM (Speed): " + RotPerMin);
-            System.out.println("Voltage: " + shooter.getMotorOutputVoltage());
         }
     }
 
     public boolean atSetpoint() {
         return m_controller.atSetpoint();
     }
-
-    public void spin() {
-        shooter.set(shooterSpin);
-    }
-
-    public void stop() {
-        shooter.set(motorStop);
-    }
-
-    // public void turretUp() {
-    // shooterServo.set(turretPower);
-    // }
-
-    // public void turretDown() {
-    // shooterServo.set(-turretPower);
-    // }
 }
