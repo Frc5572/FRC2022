@@ -1,6 +1,6 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -10,7 +10,7 @@ import frc.robot.Constants;
  */
 
 public class Magazine extends SubsystemBase {
-    private WPI_TalonSRX magazineMotor = new WPI_TalonSRX(Constants.Motors.magazineMotorID);
+    private WPI_TalonFX magazineMotor = new WPI_TalonFX(Constants.Motors.magazineMotorID);
     public DigitalInput magSense = new DigitalInput(2);
 
     public Magazine() {
@@ -19,6 +19,11 @@ public class Magazine extends SubsystemBase {
 
     public void startMagazine() {
         magazineMotor.set(.7);
+        double selSenVel = magazineMotor.getSelectedSensorVelocity(0);
+        double RotPerSec = (double) selSenVel / 2048 * 10; /* scale per100ms to perSecond */
+        double RotPerMin = RotPerSec * 60.0;
+
+        System.out.println("RPM (Speed): " + RotPerMin);
     }
 
     public void reverseMagazine() {
