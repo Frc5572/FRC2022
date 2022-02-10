@@ -222,16 +222,16 @@ public final class Constants {
     }
 
     public static final class MagazinePID {
-        public static final double kP = 1;
+        public static final double kP = 1.366;
         public static final double kI = 0;
         public static final double kD = 0;
 
-        public static final double kMagazineFreeRPS = 0; // IN RPS NOT RPM
-        public static final double kMagazineTargetRPS = 0; // IN RPS NOT RPM
-        public static final double kMagazineToleranceRPS = 0; // IN RPS NOT RPM
+        public static final double kMagazineFreeRPS = 112.5; // IN RPS NOT RPM
+        public static final double kMagazineTargetRPS = 10; // IN RPS NOT RPM
+        public static final double kMagazineToleranceRPS = 1; // IN RPS NOT RPM
 
         public static final int kUnitsPerRevolution = 2048;
-        public static final double kSVolts = 0;
-        public static final double kVVoltSecondsPerRotation = 0;
+        public static final double kSVolts = 0.87948;
+        public static final double kVVoltSecondsPerRotation = 0.10969;
     }
 }
