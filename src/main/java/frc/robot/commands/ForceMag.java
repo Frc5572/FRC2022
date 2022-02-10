@@ -17,13 +17,13 @@ public class ForceMag extends CommandBase {
         addRequirements(magazine);
     }
 
-    @Override
-    public void execute() {
-        magazine.startMagazine();
-    }
+    // @Override
+    // public void execute() {
+    // magazine.startMagazine();
+    // }
 
-    @Override
-    public void end(boolean interrupt) {
-        magazine.stopMagazine();
-    }
+    // @Override
+    // public void end(boolean interrupt) {
+    // magazine.stopMagazine();
+    // }
 }
