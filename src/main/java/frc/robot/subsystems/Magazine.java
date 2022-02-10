@@ -23,8 +23,8 @@ public class Magazine extends PIDSubsystem {
             Constants.MagazinePID.kD));
         magazineMotor.setInverted(true);
         magazineMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 1, 1);
-        getController().setTolerance(50); // IN RPS NOT RPM
-        setSetpoint(10); // IN RPS NOT RPM
+        getController().setTolerance(1); // IN RPS NOT RPM
+        setSetpoint(60); // 3600 rpm - IN RPS NOT RPM
     }
 
     @Override

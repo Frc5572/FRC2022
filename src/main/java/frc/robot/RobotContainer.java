@@ -10,8 +10,6 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.TestAuto;
-import frc.robot.commands.ForceMag;
-import frc.robot.commands.ReverseMag;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.subsystems.Magazine;
@@ -65,18 +63,17 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         final Button shooterCom = new Button(
-            () -> Math.abs(driver.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4)
+            () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4)
                 .whenPressed(new InstantCommand(shooter::enable, shooter))
                 .whenReleased(new InstantCommand(shooter::disable, shooter));
+        new JoystickButton(driver, XboxController.Button.kA.value)
+            .whenPressed(new InstantCommand(magazine::enable, magazine))
+            .whenReleased(new InstantCommand(magazine::disable, magazine));
         new JoystickButton(driver, XboxController.Button.kY.value)
             .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
         new JoystickButton(driver, XboxController.Button.kX.value)
             .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
                 Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
-        new JoystickButton(driver, XboxController.Button.kA.value)
-            .whileHeld(new ForceMag(magazine));
-        new JoystickButton(driver, XboxController.Button.kB.value)
-            .whileHeld(new ReverseMag(magazine));
     }
 
     /**
