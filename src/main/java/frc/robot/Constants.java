@@ -222,7 +222,7 @@ public final class Constants {
     }
 
     public static final class MagazinePID {
-        public static final double kP = 1.366;
+        public static final double kP = 0.17032;
         public static final double kI = 0;
         public static final double kD = 0;
 
