@@ -14,7 +14,7 @@ import frc.robot.Constants;
 
 public class Magazine extends PIDSubsystem {
     private WPI_TalonFX magazineMotor = new WPI_TalonFX(Constants.Motors.magazineMotorID);
-    public DigitalInput magSense = new DigitalInput(2);
+    public DigitalInput magSense = new DigitalInput(1);
     private final SimpleMotorFeedforward magazineFeed = new SimpleMotorFeedforward(
         Constants.MagazinePID.kSVolts, Constants.MagazinePID.kVVoltSecondsPerRotation);
 
@@ -52,6 +52,7 @@ public class Magazine extends PIDSubsystem {
 
             System.out.println("RPM (Speed): " + RotPerMin);
             System.out.println("Voltage: " + magazineMotor.getMotorOutputVoltage());
+            System.out.println(magSense.get());
         }
     }
 

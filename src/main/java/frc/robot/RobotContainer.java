@@ -5,7 +5,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.LimelightAuto;
@@ -62,15 +64,25 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
-        final Button shooterCom = new Button(
+        new JoystickButton(driver, XboxController.Button.kB.value)
+            .whenPressed(new InstantCommand(shooter::enable, shooter).andThen(
+                new WaitUntilCommand(() -> shooter.atSetpoint()),
+                new InstantCommand(magazine::enable, magazine)))
+            .whenReleased(new InstantCommand(shooter::disable, shooter))
+            .whenReleased(new InstantCommand(magazine::disable, magazine));
+
+        new Button(
             () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4)
                 .whenPressed(new InstantCommand(shooter::enable, shooter))
                 .whenReleased(new InstantCommand(shooter::disable, shooter));
-        new JoystickButton(driver, XboxController.Button.kA.value)
-            .whenPressed(new InstantCommand(magazine::enable, magazine))
-            .whenReleased(new InstantCommand(magazine::disable, magazine));
+        // new JoystickButton(driver, XboxController.Button.kA.value)
+        // .whenPressed(new InstantCommand(magazine::enable, magazine))
+        // .whenReleased(new InstantCommand(magazine::disable, magazine));
         new JoystickButton(driver, XboxController.Button.kY.value)
             .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
+        new JoystickButton(driver, XboxController.Button.kA.value)
+            .whileHeld(new FunctionalCommand(magazine::enable, () -> {
+            }, interrupted -> magazine.disable(), () -> magazine.magSense.get(), magazine));
         new JoystickButton(driver, XboxController.Button.kX.value)
             .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
                 Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
