@@ -18,13 +18,16 @@ public class Magazine extends PIDSubsystem {
     private final SimpleMotorFeedforward magazineFeed = new SimpleMotorFeedforward(
         Constants.MagazinePID.kSVolts, Constants.MagazinePID.kVVoltSecondsPerRotation);
 
+    /**
+     * Initalize PID for the Magazine.
+     */
     public Magazine() {
         super(new PIDController(Constants.MagazinePID.kP, Constants.MagazinePID.kI,
             Constants.MagazinePID.kD));
         magazineMotor.setInverted(true);
         magazineMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 1, 1);
-        getController().setTolerance(1); // IN RPS NOT RPM
-        setSetpoint(60); // 3600 rpm - IN RPS NOT RPM
+        getController().setTolerance(Constants.MagazinePID.kMagazineToleranceRPS); // IN RPS NOT RPM
+        setSetpoint(Constants.MagazinePID.kMagazineTargetRPS); // 3600 rpm - IN RPS NOT RPM
     }
 
     @Override
@@ -36,23 +39,18 @@ public class Magazine extends PIDSubsystem {
     public double getMeasurement() {
         double selSenVel = magazineMotor.getSelectedSensorVelocity(0);
 
-        double RotPerSec = (double) selSenVel / Constants.MagazinePID.kUnitsPerRevolution
+        double rotPerSec = (double) selSenVel / Constants.MagazinePID.kUnitsPerRevolution
             * 10; /* scale per100ms to perSecond */
-        return RotPerSec;
+        return rotPerSec;
+
+        // System.out.println("RPM (Speed): " + rotPerSec * 60);
+        // System.out.println("Voltage: " + magazine.getMotorOutputVoltage());
     }
 
     @Override
     public void periodic() {
         if (m_enabled) {
             useOutput(m_controller.calculate(getMeasurement(), getSetpoint()), getSetpoint());
-            double selSenVel = magazineMotor.getSelectedSensorVelocity(0);
-            double RotPerSec = (double) selSenVel / Constants.MagazinePID.kUnitsPerRevolution
-                * 10; /* scale per100ms to perSecond */
-            double RotPerMin = RotPerSec * 60.0;
-
-            System.out.println("RPM (Speed): " + RotPerMin);
-            System.out.println("Voltage: " + magazineMotor.getMotorOutputVoltage());
-            System.out.println(magSense.get());
         }
     }
 

@@ -75,9 +75,7 @@ public class RobotContainer {
             () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4)
                 .whenPressed(new InstantCommand(shooter::enable, shooter))
                 .whenReleased(new InstantCommand(shooter::disable, shooter));
-        // new JoystickButton(driver, XboxController.Button.kA.value)
-        // .whenPressed(new InstantCommand(magazine::enable, magazine))
-        // .whenReleased(new InstantCommand(magazine::disable, magazine));
+
         new JoystickButton(driver, XboxController.Button.kY.value)
             .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
         new JoystickButton(driver, XboxController.Button.kA.value)
