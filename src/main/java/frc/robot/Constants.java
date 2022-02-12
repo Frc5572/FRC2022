@@ -119,7 +119,7 @@ public final class Constants {
         public static final double driveKA = (0.27 / 12);
 
         /* Swerve Profiling Values */
-        public static final double maxSpeed = 2; // meters per second
+        public static final double maxSpeed = 4; // meters per second
         public static final double maxAngularVelocity = 2;
 
         /* Neutral Modes */
@@ -212,12 +212,29 @@ public final class Constants {
         public static final double kI = 0;
         public static final double kD = 0;
 
-        public static final double kShooterFreeRPM = 6750;
-        public static final double kShooterTargetRPM = 2000;
-        public static final double kShooterToleranceRPM = 100;
+        public static final double kShooterFreeRPS = 112.5; // IN RPS NOT RPM
+        public static final double kShooterTargetRPS = 85; // IN RPS NOT RPM
+        public static final double kShooterToleranceRPS = 1; // IN RPS NOT RPM
 
         public static final int kUnitsPerRevolution = 2048;
         public static final double kSVolts = 0.63035;
         public static final double kVVoltSecondsPerRotation = 0.10877;
+    }
+
+    /**
+     * Constants for Magazine PID
+     */
+    public static final class MagazinePID {
+        public static final double kP = 0.17032;
+        public static final double kI = 0;
+        public static final double kD = 0;
+
+        public static final double kMagazineFreeRPS = 112.5; // IN RPS NOT RPM
+        public static final double kMagazineTargetRPS = 60; // IN RPS NOT RPM
+        public static final double kMagazineToleranceRPS = 1; // IN RPS NOT RPM
+
+        public static final int kUnitsPerRevolution = 2048;
+        public static final double kSVolts = 0.87948;
+        public static final double kVVoltSecondsPerRotation = 0.10969;
     }
 }
