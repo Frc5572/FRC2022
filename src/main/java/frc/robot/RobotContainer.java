@@ -70,12 +70,6 @@ public class RobotContainer {
                 new InstantCommand(magazine::enable, magazine)))
             .whenReleased(new InstantCommand(shooter::disable, shooter))
             .whenReleased(new InstantCommand(magazine::disable, magazine));
-
-        new Button(
-            () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4)
-                .whenPressed(new InstantCommand(shooter::enable, shooter))
-                .whenReleased(new InstantCommand(shooter::disable, shooter));
-
         new JoystickButton(driver, XboxController.Button.kY.value)
             .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
         new JoystickButton(driver, XboxController.Button.kA.value)
