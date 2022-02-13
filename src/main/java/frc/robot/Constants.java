@@ -29,15 +29,15 @@ public final class Constants {
         public static final int shooterID = 10;
         public static final int shooterServoID = 10;
         // Intake Motors
-        public static final int intakeMotorNum = 105;
+        public static final int intakeMotorNum = 9;
         // Magazine Motors
         public static final int magazineMotorID = 11;
         // Turret Motors
-        public static final int turretMotorID = 107;
+        public static final int turretMotorID = 12;
     }
 
     /**
-     * Pneumatics CAN id cosntants.
+     * Pneumatics CAN id constants.
      */
     public static final class Pneumatics {
         public static final int pcm1 = 0;
