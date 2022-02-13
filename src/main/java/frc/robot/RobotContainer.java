@@ -9,14 +9,19 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.TestAuto;
+import frc.robot.commands.LeftTurretMove;
+import frc.robot.commands.RightTurretMove;
 import frc.robot.commands.ShooterRev;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Magazine;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.Turret;
 import frc.robot.subsystems.Vision;
 
 /**
@@ -42,6 +47,8 @@ public class RobotContainer {
     private Vision vision = new Vision();
     // private final Climber climber = new Climber();
     private final Magazine magazine = new Magazine();
+    private final Intake intake = new Intake();
+    private final Turret turret = new Turret();
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -74,6 +81,15 @@ public class RobotContainer {
             .whileHeld(new ShooterRev(shooter));
         new JoystickButton(driver, XboxController.Button.kB.value)
             .whileHeld(new StartEndCommand(magazine::up, magazine::stop, magazine));
+        new JoystickButton(driver, XboxController.Button.kRightBumper.value)
+            .whileHeld(new RightTurretMove(turret));
+        new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
+            .whileHeld(new LeftTurretMove(turret));
+
+        new Button(() -> Math.abs(driver.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4)
+        .whileHeld(new StartEndCommand(intake::in, intake::stop, intake));
+        new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
+            .whileHeld(new LeftTurretMove(turret));
     }
 
     /**
