@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.LimelightAuto;
+import frc.robot.autos.P2_2B;
 import frc.robot.autos.TestAuto;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
@@ -80,6 +81,6 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // return autoChooser.getSelected();
-        return new TestAuto(swerveDrive);
+        return new P2_2B(swerveDrive);
     }
 }
