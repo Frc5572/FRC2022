@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.LimelightAuto;
+import frc.robot.autos.P1_2B;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
@@ -29,6 +30,8 @@ public class RobotContainer {
 
     private Command autoCommand;
     private static final String limelightAuto = "Limelight Auto";
+    private static final String P1_2B = "P1_2B";
+    private static final String P3_2B = "P3_2B";
     // private final Button shooterMotor = new Button(
     // () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4);
     private final Shooter shooter = new Shooter();
@@ -49,6 +52,9 @@ public class RobotContainer {
      */
     public RobotContainer() {
         autoChooser.addOption("Limelight Auto", limelightAuto);
+        autoChooser.addOption("P1_2B", P1_2B);
+        // autoChooser.addOption("P3_2B", P3_2B);
+
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, vision, driver,
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, false));
@@ -85,7 +91,9 @@ public class RobotContainer {
             autoCommand = new LimelightAuto(swerveDrive, vision);
         }
 
-        return autoCommand;
+        return new P1_2B(swerveDrive);
 
     }
+
+
 }
