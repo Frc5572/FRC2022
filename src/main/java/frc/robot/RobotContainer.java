@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.TestAuto;
-import frc.robot.commands.PositionHood;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.modules.Vision;
@@ -73,8 +72,11 @@ public class RobotContainer {
                 new InstantCommand(magazine::enable, magazine)))
             .whenReleased(new InstantCommand(shooter::disable, shooter))
             .whenReleased(new InstantCommand(magazine::disable, magazine));
-        new JoystickButton(driver, XboxController.Button.kY.value)
-            .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
+        // new JoystickButton(driver, XboxController.Button.kY.value)
+        // .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
+        // new JoystickButton(driver, XboxController.Button.kY.value)
+        // .whileHeld(new InstantCommand(() -> hood.getServoPos()));
+
         new JoystickButton(driver, XboxController.Button.kA.value)
             .whileHeld(new FunctionalCommand(magazine::enable, () -> {
             }, interrupted -> magazine.disable(), () -> magazine.magSense.get(), magazine));
@@ -82,7 +84,11 @@ public class RobotContainer {
             .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
                 Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
         new JoystickButton(driver, XboxController.Button.kRightBumper.value)
-            .whileHeld(new PositionHood(hood));
+            .whenPressed(new InstantCommand(() -> hood.hoodServo.set(-.1)));
+        new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
+            .whenPressed(new InstantCommand(() -> hood.hoodServo.set(0)));
+        new JoystickButton(driver, XboxController.Button.kLeftStick.value)
+            .whenPressed(new InstantCommand(() -> hood.hoodServo.set(.1)));
     }
 
     /**

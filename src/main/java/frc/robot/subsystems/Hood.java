@@ -13,7 +13,7 @@ import frc.robot.modules.Vision;
 public class Hood extends SubsystemBase {
     CANCoderConfiguration hoodCanCoderConfig = new CANCoderConfiguration();
     CANCoder hoodCANCoder = new CANCoder(Constants.HoodConstants.hoodCANCoderID);
-    Servo hoodServo = new Servo(Constants.HoodConstants.hoodServoID);
+    public Servo hoodServo = new Servo(Constants.HoodConstants.hoodServoID);
     Vision vision;
     double calculatedPosition;
 
@@ -39,6 +39,12 @@ public class Hood extends SubsystemBase {
 
     public void getCANCoderPos() {
         System.out.println(hoodCANCoder.getAbsolutePosition());
+    }
+
+    public void getServoPos() {
+        // System.out.println(hoodServo.getPosition());
+        System.out.println(hoodServo.getAngle());
+        hoodServo.setAngle(270);
     }
 
 }
