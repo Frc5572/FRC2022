@@ -22,13 +22,13 @@ public class Climber extends SubsystemBase {
             Constants.Pneumatics.climberInsideChannel, Constants.Pneumatics.climberInsideChannel2);
 
     private final CANSparkMax outsideClimberMotor1 =
-        new CANSparkMax(Constants.Motors.outsideClimberMotor1Id, MotorType.kBrushless);
+        new CANSparkMax(Constants.Motors.outsideClimberMotorRightId, MotorType.kBrushless);
     private final CANSparkMax outsideClimberMotor2 =
-        new CANSparkMax(Constants.Motors.outsideClimberMotor2Id, MotorType.kBrushless);
+        new CANSparkMax(Constants.Motors.outsideClimberMotorLeftId, MotorType.kBrushless);
     private final CANSparkMax insideClimberMotor1 =
-        new CANSparkMax(Constants.Motors.insideClimberMotor1Id, MotorType.kBrushless);
+        new CANSparkMax(Constants.Motors.insideClimberMotorRightId, MotorType.kBrushless);
     private final CANSparkMax insideClimberMotor2 =
-        new CANSparkMax(Constants.Motors.insideClimberMotor2Id, MotorType.kBrushless);
+        new CANSparkMax(Constants.Motors.insideClimberMotorLeftId, MotorType.kBrushless);
 
     private final MotorControllerGroup outsideMotors =
         new MotorControllerGroup(outsideClimberMotor1, outsideClimberMotor2);
