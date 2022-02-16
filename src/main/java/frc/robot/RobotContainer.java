@@ -5,15 +5,11 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.TestAuto;
-import frc.robot.commands.LeftTurretMove;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.modules.Vision;
@@ -73,50 +69,52 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
-        new JoystickButton(operator, XboxController.Button.kB.value)
-            .whenPressed(new InstantCommand(shooter::enable, shooter).andThen(
-                new WaitUntilCommand(() -> shooter.atSetpoint()),
-                new InstantCommand(magazine::enable, magazine)))
-            .whenReleased(new InstantCommand(shooter::disable, shooter))
-            .whenReleased(new InstantCommand(magazine::disable, magazine));
+        // new JoystickButton(operator, XboxController.Button.kB.value)
+        // .whenPressed(new InstantCommand(shooter::enable, shooter).andThen(
+        // new WaitUntilCommand(() -> shooter.atSetpoint()),
+        // new InstantCommand(magazine::enable, magazine)))
+        // .whenReleased(new InstantCommand(shooter::disable, shooter))
+        // .whenReleased(new InstantCommand(magazine::disable, magazine));
         // new JoystickButton(driver, XboxController.Button.kY.value)
         // .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
         // new JoystickButton(driver, XboxController.Button.kY.value)
         // .whileHeld(new InstantCommand(() -> hood.getServoPos()));
 
-        new JoystickButton(driver, XboxController.Button.kA.value)
-            .whileHeld(new FunctionalCommand(magazine::enable, () -> {
-            }, interrupted -> magazine.disable(), () -> magazine.magSense.get(), magazine));
-        new JoystickButton(driver, XboxController.Button.kX.value)
-            .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
-                Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
-
-
-        new JoystickButton(driver, XboxController.Button.kRightStick.value)
-            .whenPressed(new InstantCommand(() -> hood.hoodServo.setPosition(0)));
-        new JoystickButton(driver, XboxController.Button.kRightBumper.value)
-            .whenPressed(new InstantCommand(() -> hood.hoodServo.setPosition(1)));
-        new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
-            .whenPressed(new InstantCommand(() -> hood.hoodServo.set(0)));
-        new JoystickButton(driver, XboxController.Button.kLeftStick.value)
-            .whenPressed(new InstantCommand(() -> hood.hoodServo.set(.5)));
-        new JoystickButton(driver, XboxController.Button.kY.value)
-            .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
         // new JoystickButton(driver, XboxController.Button.kA.value)
         // .whileHeld(new FunctionalCommand(magazine::enable, () -> {
         // }, interrupted -> magazine.disable(), () -> magazine.magSense.get(), magazine));
-        new JoystickButton(driver, XboxController.Button.kX.value)
-            .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
-                Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
-        // new JoystickButton(driver, XboxController.Button.kRightBumper.value)
-        // .whileHeld(new RightTurretMove(turret));
+        // new JoystickButton(driver, XboxController.Button.kX.value)
+        // .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
+        // Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
+
+
+        // new JoystickButton(driver, XboxController.Button.kA.value)
+        // .whenPressed(new InstantCommand(() -> hood.hoodServo.setPosition(0)));
+        // new JoystickButton(driver, XboxController.Button.kB.value)
+        // .whenPressed(new InstantCommand(() -> hood.hoodServo.setPosition(1)));
+        new JoystickButton(driver, XboxController.Button.kY.value)
+            .whenPressed(new InstantCommand(() -> hood.hoodServo.setPosition(200)));
+        new JoystickButton(driver, XboxController.Button.kX.value).whenPressed(
+            new ParallelRaceGroup(new InstantCommand(() -> hood.hoodServo.setPosition(.5)),
+                new InstantCommand(() -> System.out.println(hood.hoodServo.getPosition()))));
+        // new JoystickButton(driver, XboxController.Button.kY.value)
+        // .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
+        // new JoystickButton(driver, XboxController.Button.kA.value)
+        // .whileHeld(new FunctionalCommand(magazine::enable, () -> {
+        // }, interrupted -> magazine.disable(), () -> magazine.magSense.get(), magazine));
+        // new JoystickButton(driver, XboxController.Button.kX.value)
+        // .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
+        // Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
+        // // new JoystickButton(driver, XboxController.Button.kRightBumper.value)
+        // // .whileHeld(new RightTurretMove(turret));
+        // // new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
+        // // .whileHeld(new LeftTurretMove(turret));
+
+        // new Button(() -> Math.abs(driver.getRawAxis(XboxController.Axis.kRightTrigger.value)) >
+        // .4)
+        // .whileHeld(new StartEndCommand(intake::in, intake::stop, intake));
         // new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
         // .whileHeld(new LeftTurretMove(turret));
-
-        new Button(() -> Math.abs(driver.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4)
-            .whileHeld(new StartEndCommand(intake::in, intake::stop, intake));
-        new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
-            .whileHeld(new LeftTurretMove(turret));
     }
 
     /**
