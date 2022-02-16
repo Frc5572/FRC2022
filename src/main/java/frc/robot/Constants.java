@@ -237,4 +237,14 @@ public final class Constants {
         public static final double kSVolts = 0.87948;
         public static final double kVVoltSecondsPerRotation = 0.10969;
     }
+
+    /**
+     * Constants for LEDs
+     */
+    public static final class LEDConstants {
+        // https://www.revrobotics.com/content/docs/REV-11-1105-UM.pdf
+        public static final int LEDPort = 0;
+        public static final double red = 0.61;
+        public static final double green = 0.77;
+    }
 }
