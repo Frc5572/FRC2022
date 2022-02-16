@@ -83,12 +83,16 @@ public class RobotContainer {
         new JoystickButton(driver, XboxController.Button.kX.value)
             .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
                 Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
+
+
+        new JoystickButton(driver, XboxController.Button.kRightStick.value)
+            .whenPressed(new InstantCommand(() -> hood.hoodServo.setPosition(0)));
         new JoystickButton(driver, XboxController.Button.kRightBumper.value)
-            .whenPressed(new InstantCommand(() -> hood.hoodServo.set(-.1)));
+            .whenPressed(new InstantCommand(() -> hood.hoodServo.setPosition(1)));
         new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
             .whenPressed(new InstantCommand(() -> hood.hoodServo.set(0)));
         new JoystickButton(driver, XboxController.Button.kLeftStick.value)
-            .whenPressed(new InstantCommand(() -> hood.hoodServo.set(.1)));
+            .whenPressed(new InstantCommand(() -> hood.hoodServo.set(.5)));
     }
 
     /**
