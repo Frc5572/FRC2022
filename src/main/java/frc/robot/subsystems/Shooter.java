@@ -4,7 +4,6 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.Constants;
 
@@ -14,10 +13,6 @@ import frc.robot.Constants;
  */
 public class Shooter extends PIDSubsystem {
     private final WPI_TalonFX shooter = new WPI_TalonFX(Constants.Motors.shooterID);
-    private final Servo shooterServo = new Servo(Constants.Motors.shooterServoID);
-    public static final double shooterSpin = 1.0;
-    public static final int motorStop = 0;
-    public static final double turretPower = 0.1;
     private final SimpleMotorFeedforward shooterFeed = new SimpleMotorFeedforward(
         Constants.ShooterPID.kSVolts, Constants.ShooterPID.kVVoltSecondsPerRotation);
 
@@ -29,8 +24,8 @@ public class Shooter extends PIDSubsystem {
             Constants.ShooterPID.kD));
         shooter.setInverted(true);
         shooter.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 1, 1);
-        getController().setTolerance(50);
-        setSetpoint(85); // 5100 RPM, setpoint is in RPS not RPM
+        getController().setTolerance(Constants.ShooterPID.kShooterToleranceRPS); // IN RPS NOT RPM
+        setSetpoint(Constants.ShooterPID.kShooterTargetRPS); // IN RPS NOT RPM
     }
 
     @Override
