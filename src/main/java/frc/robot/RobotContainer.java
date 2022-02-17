@@ -31,7 +31,6 @@ public class RobotContainer {
     private final XboxController operator = new XboxController(Constants.operatorID);
 
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
-    private static final String limelightAuto = "Limelight Auto";
 
     boolean fieldRelative;
     boolean openLoop;
@@ -54,6 +53,7 @@ public class RobotContainer {
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
         autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, vision));
+        autoChooser.addOption("Test Auto", new TestAuto(swerveDrive));
         swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, vision, driver,
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, false));
         // Configure the button bindings
@@ -96,6 +96,13 @@ public class RobotContainer {
         // new JoystickButton(driver, XboxController.Button.kX.value)
         // .whenPressed(new ParallelRaceGroup(new InstantCommand(() -> hood.hoodServo.set(.4)),
         // new InstantCommand(() -> System.out.println(hood.hoodServo.getPosition()))));
+        new JoystickButton(driver, XboxController.Button.kX.value)
+            .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
+                Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
+        // new JoystickButton(driver, XboxController.Button.kRightBumper.value)
+        // .whileHeld(new RightTurretMove(turret));
+        // new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
+        // .whileHeld(new LeftTurretMove(turret));
 
         // new JoystickButton(driver, XboxController.Button.kY.value)
         // .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
@@ -123,7 +130,6 @@ public class RobotContainer {
      * @return Returns autonomous command selected.
      */
     public Command getAutonomousCommand() {
-        // return autoChooser.getSelected();
-        return new TestAuto(swerveDrive);
+        return autoChooser.getSelected();
     }
 }
