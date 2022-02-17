@@ -39,7 +39,7 @@ public class P3_4B extends SequentialCommandGroup {
         PathPlannerTrajectory Part1 = PathPlanner.loadPath("Part1", 1, 1);
         PathPlannerTrajectory Part2 = PathPlanner.loadPath("Part2", 1, 1);
         PathPlannerTrajectory Part3 = PathPlanner.loadPath("Part3", 1, 1);
-        PathPlannerTrajectory FullAuto = PathPlanner.loadPath("P3_3B", 1, 1);
+        PathPlannerTrajectory FullAuto = PathPlanner.loadPath("P3_4B", 1, 1);
 
         var thetaController = new ProfiledPIDController(Constants.AutoConstants.kPThetaController,
             0, 0, Constants.AutoConstants.kThetaControllerConstraints);
