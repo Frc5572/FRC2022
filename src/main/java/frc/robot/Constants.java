@@ -29,15 +29,15 @@ public final class Constants {
         public static final int shooterID = 10;
         public static final int shooterServoID = 10;
         // Intake Motors
-        public static final int intakeMotorNum = 105;
+        public static final int intakeMotorNum = 9;
         // Magazine Motors
         public static final int magazineMotorID = 11;
         // Turret Motors
-        public static final int turretMotorID = 107;
+        public static final int turretMotorID = 12;
     }
 
     /**
-     * Pneumatics CAN id cosntants.
+     * Pneumatics CAN id constants.
      */
     public static final class Pneumatics {
         public static final int pcm1 = 0;
@@ -67,11 +67,11 @@ public final class Constants {
     public static final class Swerve {
         public static final edu.wpi.first.wpilibj.SPI.Port navXID =
             edu.wpi.first.wpilibj.SPI.Port.kMXP;
-        public static final boolean invertGyro = true; // Always ensure Gyro is CCW+ CW-
+        public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
 
         /* Drivetrain Constants */
-        public static final double trackWidth = Units.inchesToMeters(27);
-        public static final double wheelBase = Units.inchesToMeters(27);
+        public static final double trackWidth = Units.inchesToMeters(23);
+        public static final double wheelBase = Units.inchesToMeters(23);
         public static final double wheelDiameter = Units.inchesToMeters(3.94);
         public static final double wheelCircumference = wheelDiameter * Math.PI;
 
@@ -119,7 +119,7 @@ public final class Constants {
         public static final double driveKA = (0.27 / 12);
 
         /* Swerve Profiling Values */
-        public static final double maxSpeed = 2; // meters per second
+        public static final double maxSpeed = 1; // meters per second
         public static final double maxAngularVelocity = 2;
 
         /* Neutral Modes */
@@ -139,46 +139,46 @@ public final class Constants {
          * Front Left Module - Module 0.
          */
         public static final class Mod0 {
-            public static final int driveMotorID = 7;
-            public static final int angleMotorID = 5;
-            public static final int canCoderID = 3;
-            public static final double angleOffset = 69.69;
+            public static final int driveMotorID = 1;
+            public static final int angleMotorID = 4;
+            public static final int canCoderID = 1;
+            public static final double angleOffset = 190.72;
             public static final SwerveModuleConstants constants =
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
         /**
-         * Front Left Module - Module 1.
+         * Front Right Module - Module 1.
          */
 
         public static final class Mod1 {
             public static final int driveMotorID = 3;
             public static final int angleMotorID = 2;
             public static final int canCoderID = 2;
-            public static final double angleOffset = 290.91;
+            public static final double angleOffset = 291.18;
             public static final SwerveModuleConstants constants =
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
 
         /**
-         * Front Left Module - Module 2.
+         * Back Left Module - Module 2.
          */
         public static final class Mod2 {
             public static final int driveMotorID = 6;
             public static final int angleMotorID = 8;
             public static final int canCoderID = 4;
-            public static final double angleOffset = 122.43;
+            public static final double angleOffset = 123.66;
             public static final SwerveModuleConstants constants =
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
 
         /**
-         * Front Left Module - Module 3.
+         * Back Right Module - Module 3.
          */
         public static final class Mod3 {
-            public static final int driveMotorID = 1;
-            public static final int angleMotorID = 4;
-            public static final int canCoderID = 1;
-            public static final double angleOffset = 11.95;
+            public static final int driveMotorID = 7;
+            public static final int angleMotorID = 5;
+            public static final int canCoderID = 3;
+            public static final double angleOffset = 249.52;
             public static final SwerveModuleConstants constants =
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -202,5 +202,39 @@ public final class Constants {
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
             new TrapezoidProfile.Constraints(kMaxAngularSpeedRadiansPerSecond,
                 kMaxAngularSpeedRadiansPerSecondSquared);
+    }
+
+    /**
+     * Constants for Shooter PID
+     */
+    public static final class ShooterPID {
+        public static final double kP = 0.13744;
+        public static final double kI = 0;
+        public static final double kD = 0;
+
+        public static final double kShooterFreeRPS = 112.5; // IN RPS NOT RPM
+        public static final double kShooterTargetRPS = 85; // IN RPS NOT RPM
+        public static final double kShooterToleranceRPS = 1; // IN RPS NOT RPM
+
+        public static final int kUnitsPerRevolution = 2048;
+        public static final double kSVolts = 0.63035;
+        public static final double kVVoltSecondsPerRotation = 0.10877;
+    }
+
+    /**
+     * Constants for Magazine PID
+     */
+    public static final class MagazinePID {
+        public static final double kP = 0.17032;
+        public static final double kI = 0;
+        public static final double kD = 0;
+
+        public static final double kMagazineFreeRPS = 112.5; // IN RPS NOT RPM
+        public static final double kMagazineTargetRPS = 60; // IN RPS NOT RPM
+        public static final double kMagazineToleranceRPS = 1; // IN RPS NOT RPM
+
+        public static final int kUnitsPerRevolution = 2048;
+        public static final double kSVolts = 0.87948;
+        public static final double kVVoltSecondsPerRotation = 0.10969;
     }
 }
