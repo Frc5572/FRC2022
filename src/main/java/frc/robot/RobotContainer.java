@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.TestAuto;
@@ -58,6 +57,7 @@ public class RobotContainer {
         swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, vision, driver,
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, false));
         // Configure the button bindings
+        // hood.getCANCoderPos();
         configureButtonBindings();
     }
 
@@ -87,16 +87,16 @@ public class RobotContainer {
         // .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
         // Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
 
-
-        // new JoystickButton(driver, XboxController.Button.kA.value)
-        // .whenPressed(new InstantCommand(() -> hood.hoodServo.setPosition(0)));
+        new JoystickButton(driver, XboxController.Button.kA.value)
+            .whileHeld(new InstantCommand(() -> hood.getCANCoderPos()));
         // new JoystickButton(driver, XboxController.Button.kB.value)
         // .whenPressed(new InstantCommand(() -> hood.hoodServo.setPosition(1)));
-        new JoystickButton(driver, XboxController.Button.kY.value)
-            .whenPressed(new InstantCommand(() -> hood.hoodServo.setPosition(200)));
-        new JoystickButton(driver, XboxController.Button.kX.value).whenPressed(
-            new ParallelRaceGroup(new InstantCommand(() -> hood.hoodServo.setPosition(.5)),
-                new InstantCommand(() -> System.out.println(hood.hoodServo.getPosition()))));
+        // new JoystickButton(driver, XboxController.Button.kY.value)
+        // .whenPressed(new InstantCommand(() -> hood.hoodServo.set(.1)));
+        // new JoystickButton(driver, XboxController.Button.kX.value)
+        // .whenPressed(new ParallelRaceGroup(new InstantCommand(() -> hood.hoodServo.set(.4)),
+        // new InstantCommand(() -> System.out.println(hood.hoodServo.getPosition()))));
+
         // new JoystickButton(driver, XboxController.Button.kY.value)
         // .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
         // new JoystickButton(driver, XboxController.Button.kA.value)

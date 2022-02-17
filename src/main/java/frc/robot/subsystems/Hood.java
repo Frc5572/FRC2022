@@ -37,8 +37,9 @@ public class Hood extends SubsystemBase {
         hoodServo.set(position);
     }
 
-    public void getCANCoderPos() {
+    public String getCANCoderPos() {
         System.out.println(hoodCANCoder.getAbsolutePosition());
+        return "CANCoder Pos: " + hoodCANCoder.getAbsolutePosition();
     }
 
     public void getServoPos() {
