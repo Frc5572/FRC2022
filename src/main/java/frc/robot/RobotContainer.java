@@ -59,6 +59,7 @@ public class RobotContainer {
         swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, vision, driver,
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, false));
         // Configure the button bindings
+        // hood.getCANCoderPos();
         configureButtonBindings();
     }
 
@@ -78,12 +79,22 @@ public class RobotContainer {
             .whenReleased(new InstantCommand(magazine::disable, magazine));
         new JoystickButton(driver, XboxController.Button.kY.value)
             .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
+        // new JoystickButton(operator, XboxController.Button.kA.value)
+        // .whileHeld(new InstantCommand(() -> System.out.println(magazine.magSense.get())));
         new JoystickButton(operator, XboxController.Button.kA.value)
-            .whileHeld(new FunctionalCommand(magazine::enable, () -> {
-            }, interrupted -> magazine.disable(), () -> !magazine.magSense.get(), magazine));
-        new JoystickButton(driver, XboxController.Button.kX.value)
-            .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
-                Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
+            .whenPressed(new FunctionalCommand(magazine::enable, () -> {
+            }, interrupted -> magazine.disable(), () -> magazine.magSense.get(), magazine))
+            .whenReleased(new InstantCommand(magazine::disable, magazine));
+        // new JoystickButton(driver, XboxController.Button.kB.value)
+        // .whenPressed(new InstantCommand(() -> hood.hoodServo.setPosition(1)));
+        // new JoystickButton(driver, XboxController.Button.kY.value)
+        // .whenPressed(new InstantCommand(() -> hood.hoodServo.set(.1)));
+        // new JoystickButton(driver, XboxController.Button.kX.value)
+        // .whenPressed(new ParallelRaceGroup(new InstantCommand(() -> hood.hoodServo.set(.4)),
+        // new InstantCommand(() -> System.out.println(hood.hoodServo.getPosition()))));
+        // new JoystickButton(driver, XboxController.Button.kX.value)
+        // .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
+        // Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
         // new JoystickButton(driver, XboxController.Button.kRightBumper.value)
         // .whileHeld(new RightTurretMove(turret));
         // new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
