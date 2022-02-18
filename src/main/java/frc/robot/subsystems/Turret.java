@@ -20,6 +20,10 @@ public class Turret extends SubsystemBase {
         turretMotor.set(spinRight);
     }
 
+    public void turretSet(double power) {
+        turretMotor.set(power);
+    }
+
     public void turretStop() {
         turretMotor.set(0);
     }

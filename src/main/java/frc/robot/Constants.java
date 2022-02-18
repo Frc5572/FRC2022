@@ -55,7 +55,7 @@ public final class Constants {
      * Vision constants for limelight calculations.
      */
     public static final class VisionConstants {
-        public static final double deadPocket = 0.2;
+        public static final double deadPocket = 0.02;
         public static final double limelightHeight = 24;
         public static final double targetHeight = 98;
         public static final double limelightAngle = 35;
@@ -119,7 +119,7 @@ public final class Constants {
         public static final double driveKA = (0.27 / 12);
 
         /* Swerve Profiling Values */
-        public static final double maxSpeed = 1; // meters per second
+        public static final double maxSpeed = 4; // meters per second
         public static final double maxAngularVelocity = 2;
 
         /* Neutral Modes */
