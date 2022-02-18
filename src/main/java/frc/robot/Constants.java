@@ -57,8 +57,8 @@ public final class Constants {
     public static final class VisionConstants {
         public static final double deadPocket = 0.2;
         public static final double limelightHeight = 24;
-        public static final double targetHeight = 64;
-        public static final double limelightAngle = 60;
+        public static final double targetHeight = 98;
+        public static final double limelightAngle = 35;
     }
 
     /**
@@ -213,8 +213,8 @@ public final class Constants {
         public static final int hoodServoID = 9;
         public static final int minAngle = 0;
         public static final int maxAngle = 0;
-        public static final double maxPosition = 2.5;
-        public static final double minPosition = 0;
+        public static final double maxPosition = 250;
+        public static final double minPosition = 30;
         public static final boolean hoodCanCoderInvert = false;
     }
 

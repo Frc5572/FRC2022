@@ -89,6 +89,9 @@ public class RobotContainer {
 
         new JoystickButton(driver, XboxController.Button.kA.value)
             .whileHeld(new InstantCommand(() -> hood.getCANCoderPos()));
+
+        new JoystickButton(driver, XboxController.Button.kX.value)
+            .whileHeld(new InstantCommand(() -> System.out.println(vision.getDistance())));
         // new JoystickButton(driver, XboxController.Button.kB.value)
         // .whenPressed(new InstantCommand(() -> hood.hoodServo.setPosition(1)));
         // new JoystickButton(driver, XboxController.Button.kY.value)
@@ -96,9 +99,9 @@ public class RobotContainer {
         // new JoystickButton(driver, XboxController.Button.kX.value)
         // .whenPressed(new ParallelRaceGroup(new InstantCommand(() -> hood.hoodServo.set(.4)),
         // new InstantCommand(() -> System.out.println(hood.hoodServo.getPosition()))));
-        new JoystickButton(driver, XboxController.Button.kX.value)
-            .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
-                Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
+        // new JoystickButton(driver, XboxController.Button.kX.value)
+        // .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
+        // Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
         // new JoystickButton(driver, XboxController.Button.kRightBumper.value)
         // .whileHeld(new RightTurretMove(turret));
         // new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
