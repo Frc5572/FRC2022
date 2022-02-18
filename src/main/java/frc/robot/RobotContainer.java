@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
@@ -77,9 +78,9 @@ public class RobotContainer {
             .whenReleased(new InstantCommand(magazine::disable, magazine));
         new JoystickButton(driver, XboxController.Button.kY.value)
             .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
-        // new JoystickButton(driver, XboxController.Button.kA.value)
-        // .whileHeld(new FunctionalCommand(magazine::enable, () -> {
-        // }, interrupted -> magazine.disable(), () -> magazine.magSense.get(), magazine));
+        new JoystickButton(driver, XboxController.Button.kA.value)
+            .whileHeld(new FunctionalCommand(magazine::enable, () -> {
+            }, interrupted -> magazine.disable(), () -> magazine.magSense.get(), magazine));
         new JoystickButton(driver, XboxController.Button.kX.value)
             .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
                 Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
@@ -88,8 +89,9 @@ public class RobotContainer {
         // new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
         // .whileHeld(new LeftTurretMove(turret));
 
-        new Button(() -> Math.abs(driver.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4)
-            .whileHeld(new StartEndCommand(intake::in, intake::stop, intake));
+        new Button(
+            () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4)
+                .whileHeld(new StartEndCommand(intake::in, intake::stop, intake));
         new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
             .whileHeld(new LeftTurretMove(turret));
     }
