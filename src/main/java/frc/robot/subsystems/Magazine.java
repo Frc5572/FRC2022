@@ -44,13 +44,21 @@ public class Magazine extends PIDSubsystem {
         return rotPerSec;
 
         // System.out.println("RPM (Speed): " + rotPerSec * 60);
-        // System.out.println("Voltage: " + magazine.getMotorOutputVoltage());
+        // System.out.println("Voltage: " + magazineMotor.getMotorOutputVoltage());
     }
 
     @Override
     public void periodic() {
         if (m_enabled) {
             useOutput(m_controller.calculate(getMeasurement(), getSetpoint()), getSetpoint());
+
+            double selSenVel = magazineMotor.getSelectedSensorVelocity(0);
+
+            double rotPerSec = (double) selSenVel / Constants.MagazinePID.kUnitsPerRevolution
+                * 10; /* scale per100ms to perSecond */
+
+            System.out.println("RPM (Speed): " + rotPerSec * 60);
+            System.out.println("Voltage: " + magazineMotor.getMotorOutputVoltage());
         }
     }
 
