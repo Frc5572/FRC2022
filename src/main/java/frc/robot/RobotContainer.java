@@ -78,9 +78,9 @@ public class RobotContainer {
             .whenReleased(new InstantCommand(magazine::disable, magazine));
         new JoystickButton(driver, XboxController.Button.kY.value)
             .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
-        new JoystickButton(driver, XboxController.Button.kA.value)
+        new JoystickButton(operator, XboxController.Button.kA.value)
             .whileHeld(new FunctionalCommand(magazine::enable, () -> {
-            }, interrupted -> magazine.disable(), () -> magazine.magSense.get(), magazine));
+            }, interrupted -> magazine.disable(), () -> !magazine.magSense.get(), magazine));
         new JoystickButton(driver, XboxController.Button.kX.value)
             .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
                 Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
@@ -88,6 +88,9 @@ public class RobotContainer {
         // .whileHeld(new RightTurretMove(turret));
         // new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
         // .whileHeld(new LeftTurretMove(turret));
+
+        new JoystickButton(operator, XboxController.Button.kY.value)
+            .whileHeld(new StartEndCommand(shooter::enable, shooter::disable, shooter));
 
         new Button(
             () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4)
