@@ -5,20 +5,27 @@ import frc.robot.subsystems.Hood;
 
 public class PositionHood extends CommandBase {
     Hood hood;
+    double position;
 
-    public PositionHood(Hood hood) {
+    public PositionHood(Hood hood, double position) {
         this.hood = hood;
+        this.position = position;
         addRequirements(hood);
     }
 
     @Override
     public void execute() {
-        hood.setHoodPosition();
+        hood.setHoodPosition(position);
     }
 
-    @Override
-    public void end(boolean interrupted) {
-        hood.setHoodPosition(0);
-    }
+    // @Override
+    // public void end(boolean interrupted) {
+    // hood.hoodServo.set(0);
+    // }
+
+    // @Override
+    // public boolean isFinished() {
+    // return hood.getHoodCANCoderSet(position);
+    // }
 
 }

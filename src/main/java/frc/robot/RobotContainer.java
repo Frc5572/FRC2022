@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.TestAuto;
+import frc.robot.commands.PositionHood;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.modules.Vision;
@@ -50,6 +51,7 @@ public class RobotContainer {
      */
     public RobotContainer() {
         swerveDrive.zeroGyro();
+        hood.setDefaultCommand(new PositionHood(hood, vision.getHoodValue()));
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
         autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, vision));
@@ -125,7 +127,12 @@ public class RobotContainer {
         // .whileHeld(new StartEndCommand(intake::in, intake::stop, intake));
         // new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
         // .whileHeld(new LeftTurretMove(turret));
+
+
+        // new JoystickButton(driver, XboxController.Button.kY.value).whileHeld(new StartEndCommand(
+        // () -> hood.hoodServo.setSpeed(.5), () -> hood.hoodServo.setSpeed(0), hood));
     }
+
 
     /**
      * Gets the user's selected autonomous command.

@@ -14,6 +14,7 @@ public class Hood extends SubsystemBase {
     CANCoderConfiguration hoodCanCoderConfig = new CANCoderConfiguration();
     CANCoder hoodCANCoder = new CANCoder(Constants.HoodConstants.hoodCANCoderID);
     public Servo hoodServo = new Servo(Constants.HoodConstants.hoodServoID);
+    // public PWM test = new PWM(Constants.HoodConstants.hoodServoID);
     Vision vision;
     double calculatedPosition;
 
@@ -25,27 +26,25 @@ public class Hood extends SubsystemBase {
         hoodCanCoderConfig.initializationStrategy =
             SensorInitializationStrategy.BootToAbsolutePosition;
         hoodCanCoderConfig.sensorTimeBase = SensorTimeBase.PerSecond;
-    }
-
-    public void setHoodPosition() {
-        hoodServo.set(vision.getHoodValue());
-        hoodServo.set(vision.getHoodValue());
+        hoodServo.setBounds(2.5, 1.52, 1.5, 1.48, 0.5);
     }
 
     public void setHoodPosition(double position) {
-        hoodServo.set(position);
-        hoodServo.set(position);
+        double error = position - hoodCANCoder.getAbsolutePosition();
+        // System.out.println("RAW POSITION: " + hoodCANCoder.getAbsolutePosition());
+        // System.out.println("ERROR" + error);
+        double speed = (Math.abs(error) < 5 ? 0.0 : -.5);
+        // System.out.println("SPEED: " + speed);
+        hoodServo.setSpeed(speed);
     }
 
-    public String getCANCoderPos() {
+    public double getCANCoderPos() {
         System.out.println(hoodCANCoder.getAbsolutePosition());
-        return "CANCoder Pos: " + hoodCANCoder.getAbsolutePosition();
+        return hoodCANCoder.getAbsolutePosition();
     }
 
-    public void getServoPos() {
-        // System.out.println(hoodServo.getPosition());
-        System.out.println(hoodServo.getAngle());
-        hoodServo.setAngle(270);
+    public boolean getHoodCANCoderSet(double position) {
+        return Math.abs(getCANCoderPos() - position) < 100;
     }
 
 }
