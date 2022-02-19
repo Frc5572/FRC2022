@@ -31,20 +31,13 @@ public class Hood extends SubsystemBase {
 
     public void setHoodPosition(double position) {
         double error = position - hoodCANCoder.getAbsolutePosition();
-        // System.out.println("RAW POSITION: " + hoodCANCoder.getAbsolutePosition());
-        // System.out.println("ERROR" + error);
-        double speed = (Math.abs(error) < 5 ? 0.0 : -.5);
-        // System.out.println("SPEED: " + speed);
+        double speed = Math.abs(error) < 5 ? 0.0 : error < 0 ? .5 : -.5;
         hoodServo.setSpeed(speed);
     }
 
     public double getCANCoderPos() {
         System.out.println(hoodCANCoder.getAbsolutePosition());
         return hoodCANCoder.getAbsolutePosition();
-    }
-
-    public boolean getHoodCANCoderSet(double position) {
-        return Math.abs(getCANCoderPos() - position) < 100;
     }
 
 }

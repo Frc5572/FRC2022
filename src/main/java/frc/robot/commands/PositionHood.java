@@ -18,14 +18,4 @@ public class PositionHood extends CommandBase {
         hood.setHoodPosition(position);
     }
 
-    // @Override
-    // public void end(boolean interrupted) {
-    // hood.hoodServo.set(0);
-    // }
-
-    // @Override
-    // public boolean isFinished() {
-    // return hood.getHoodCANCoderSet(position);
-    // }
-
 }
