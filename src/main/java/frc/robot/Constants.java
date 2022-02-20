@@ -21,12 +21,10 @@ public final class Constants {
      */
     public static final class Motors {
         // Climber Motors
-        public static final int outsideClimberMotorRightId = 13;
-        public static final int outsideClimberMotorLeftId = 15; // Need to Flash motor & update CAN
-                                                                // ID
-        public static final int insideClimberMotorRightId = 14;
-        public static final int insideClimberMotorLeftId = 16; // Need to Flash motor & update CAN
-                                                               // ID
+        public static final int outsideClimberMotorRightId = 14;
+        public static final int outsideClimberMotorLeftId = 15;
+        public static final int insideClimberMotorRightId = 13;
+        public static final int insideClimberMotorLeftId = 16;
         // Shooter Motors
         public static final int shooterID = 10;
         public static final int shooterServoID = 10;
