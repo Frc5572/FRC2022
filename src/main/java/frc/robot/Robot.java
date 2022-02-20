@@ -15,7 +15,7 @@ import frc.robot.modules.swervedrive.CTREConfigs;
  * Runs tasks on Roborio in this file.
  */
 public class Robot extends TimedRobot {
-    Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
+    Compressor compressor = new Compressor(PneumaticsModuleType.REVPH);
     public static CTREConfigs ctreConfigs;
     private RobotContainer robotContainer;
     private Command autoChooser;
