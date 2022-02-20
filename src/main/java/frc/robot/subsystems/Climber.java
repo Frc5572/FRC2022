@@ -72,13 +72,11 @@ public class Climber extends SubsystemBase {
     // This command will start to move the inside climber's motors.
     public void engageInsideMotors() {
         insideMotors.set(motorSpeed);
-        System.out.println("INSIDE MOTORS FORWARD");
     }
 
     // This command will stop moving the inside climber's motors.
     public void disengageInsideMotors() {
         insideMotors.set(-motorSpeed);
-        System.out.println("INSIDE MOTORS BACKWARD");
     }
 
     // This will set the outside climber's pneumatics back to the default position.
