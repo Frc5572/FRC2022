@@ -11,11 +11,13 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.TestAuto;
 import frc.robot.commands.LeftTurretMove;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Magazine;
 import frc.robot.subsystems.Shooter;
@@ -46,6 +48,7 @@ public class RobotContainer {
     private final Intake intake = new Intake();
     private final Turret turret = new Turret();
     private Vision vision = new Vision();
+    private final Climber climber = new Climber();
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -108,6 +111,14 @@ public class RobotContainer {
                 .whileHeld(new StartEndCommand(intake::in, intake::stop, intake));
         new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
             .whileHeld(new LeftTurretMove(turret));
+        new POVButton(driver, 0).whileHeld(new StartEndCommand(() -> climber.engageOutsideMotors(),
+            () -> climber.stopOutsideMotors()));
+        new POVButton(driver, 180).whileHeld(new StartEndCommand(
+            () -> climber.disengageOutsideMotors(), () -> climber.stopOutsideMotors()));
+        new POVButton(driver, 90).whileHeld(new StartEndCommand(() -> climber.engageInsideMotors(),
+            () -> climber.stopInsideMotors()));
+        new POVButton(driver, 270).whileHeld(new StartEndCommand(
+            () -> climber.disengageInsideMotors(), () -> climber.stopInsideMotors()));
     }
 
     /**
