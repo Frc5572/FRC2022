@@ -54,8 +54,10 @@ public class Vision {
         // -24.85 to 24.85 degrees)
         // a2 = table.getEntry("ty").getDouble(0.0);
         // calculatedValue =
-        // ((1 / (maxAngle - minAngle) * (a2 - maxAngle))) * (maxPosition * (1 / minPosition));
-        calculatedValue = Constants.HoodConstants.maxPosition;
+        calculatedValue =
+            ((1 / (maxAngle - minAngle) * (a2 - maxAngle))) * (maxPosition * (1 / minPosition));
+        // calculatedValue = Constants.HoodConstants.maxPosition;
+        System.out.println(calculatedValue);
         return calculatedValue;
     }
 

@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.modules.Vision;
 import frc.robot.subsystems.Hood;
 
 /**
@@ -10,17 +11,17 @@ import frc.robot.subsystems.Hood;
 
 public class PositionHood extends CommandBase {
     Hood hood;
-    double position;
+    Vision vision;
 
-    public PositionHood(Hood hood, double position) {
+    public PositionHood(Hood hood, Vision vision) {
         this.hood = hood;
-        this.position = position;
+        this.vision = vision;
         addRequirements(hood);
     }
 
     @Override
     public void execute() {
-        hood.setHoodPosition(position);
+        hood.setHoodPosition(vision.getHoodValue());
     }
 
 }

@@ -64,7 +64,7 @@ public class RobotContainer {
         climber = new Climber(ph);
         intake = new Intake(ph);
         swerveDrive.zeroGyro();
-        hood.setDefaultCommand(new PositionHood(hood, vision.getHoodValue()));
+        hood.setDefaultCommand(new PositionHood(hood, vision));
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
         autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, vision));
