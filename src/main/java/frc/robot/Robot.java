@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -16,8 +15,6 @@ import frc.robot.modules.swervedrive.CTREConfigs;
  */
 public class Robot extends TimedRobot {
     public PneumaticHub ph = new PneumaticHub();
-    Compressor compressor = ph.makeCompressor();
-    // Compressor compressor = new Compressor(1, PneumaticsModuleType.REVPH);
     public static CTREConfigs ctreConfigs;
     private RobotContainer robotContainer;
     private Command autoChooser;
