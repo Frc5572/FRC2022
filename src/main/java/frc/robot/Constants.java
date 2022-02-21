@@ -21,10 +21,10 @@ public final class Constants {
      */
     public static final class Motors {
         // Climber Motors
-        public static final int outsideClimberMotor1Id = 100;
-        public static final int outsideClimberMotor2Id = 101;
-        public static final int insideClimberMotor1Id = 102;
-        public static final int insideClimberMotor2Id = 103;
+        public static final int outsideClimberMotorRightId = 14;
+        public static final int outsideClimberMotorLeftId = 15;
+        public static final int insideClimberMotorRightId = 13;
+        public static final int insideClimberMotorLeftId = 16;
         // Shooter Motors
         public static final int shooterID = 10;
         public static final int shooterServoID = 10;
@@ -40,13 +40,12 @@ public final class Constants {
      * Pneumatics CAN id constants.
      */
     public static final class Pneumatics {
-        public static final int pcm1 = 0;
         // Climber pneumatics constants.
-        public static final int climberOutsideChannel = 1;
-        public static final int climberInsideChannel = 2;
-        public static final int climberInsideChannel2 = 3;
+        public static final int climberOutsideChannel = 2;
+        public static final int climberInsideChannel = 0;
+        public static final int climberInsideChannel2 = 1;
         // Intake constants
-        public static final int intakeFowardChannel = 4;
+        public static final int intakeFowardChannel = 3;
     }
 
     public static final int magazineSensor = 9;
@@ -223,11 +222,11 @@ public final class Constants {
      */
     public static final class ShooterPID {
         public static final double kP = 0.13744;
-        public static final double kI = 0;
+        public static final double kI = 10;
         public static final double kD = 0;
 
         public static final double kShooterFreeRPS = 112.5; // IN RPS NOT RPM
-        public static final double kShooterTargetRPS = 85; // IN RPS NOT RPM
+        public static final double kShooterTargetRPS = 4100 / 60; // IN RPS NOT RPM
         public static final double kShooterToleranceRPS = 1; // IN RPS NOT RPM
 
         public static final int kUnitsPerRevolution = 2048;
@@ -244,7 +243,7 @@ public final class Constants {
         public static final double kD = 0;
 
         public static final double kMagazineFreeRPS = 112.5; // IN RPS NOT RPM
-        public static final double kMagazineTargetRPS = 60; // IN RPS NOT RPM
+        public static final double kMagazineTargetRPS = 1000 / 60; // IN RPS NOT RPM old value 3600
         public static final double kMagazineToleranceRPS = 1; // IN RPS NOT RPM
 
         public static final int kUnitsPerRevolution = 2048;

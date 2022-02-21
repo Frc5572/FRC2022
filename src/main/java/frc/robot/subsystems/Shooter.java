@@ -36,7 +36,6 @@ public class Shooter extends PIDSubsystem {
     @Override
     public double getMeasurement() {
         double selSenVel = shooter.getSelectedSensorVelocity(0);
-
         double rotPerSec = (double) selSenVel / Constants.ShooterPID.kUnitsPerRevolution
             * 10; /* scale per100ms to perSecond */
 
