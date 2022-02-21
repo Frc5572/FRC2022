@@ -6,6 +6,7 @@ import frc.robot.subsystems.Hood;
 /**
  *
  * Hood command
+ *
  */
 
 public class PositionHood extends CommandBase {
