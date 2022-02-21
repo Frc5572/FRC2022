@@ -10,6 +10,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.modules.Vision;
 
+/**
+ *
+ * Hood subsystem.
+ */
+
 public class Hood extends SubsystemBase {
     CANCoderConfiguration hoodCanCoderConfig = new CANCoderConfiguration();
     CANCoder hoodCANCoder = new CANCoder(Constants.HoodConstants.hoodCANCoderID);
@@ -17,6 +22,11 @@ public class Hood extends SubsystemBase {
     // public PWM test = new PWM(Constants.HoodConstants.hoodServoID);
     Vision vision;
     double calculatedPosition;
+
+    /**
+     *
+     * Hood subsystem.
+     */
 
     public Hood(Vision vision) {
         this.vision = vision;
@@ -28,6 +38,11 @@ public class Hood extends SubsystemBase {
         hoodCanCoderConfig.sensorTimeBase = SensorTimeBase.PerSecond;
         hoodServo.setBounds(2.5, 1.52, 1.5, 1.48, 0.5);
     }
+
+    /**
+     *
+     * Set hood position.
+     */
 
     public void setHoodPosition(double position) {
         double error = position - hoodCANCoder.getAbsolutePosition();

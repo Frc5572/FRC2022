@@ -3,6 +3,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Hood;
 
+/**
+ *
+ * Hood command
+ */
+
 public class PositionHood extends CommandBase {
     Hood hood;
     double position;

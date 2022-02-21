@@ -44,6 +44,11 @@ public class Vision {
     }
 
 
+    /**
+     *
+     * @return value to set hood
+     */
+
     public double getHoodValue() {
         // Vertical Offset From Crosshair To Target (LL1: -20.5 degrees to 20.5 degrees | LL2:
         // -24.85 to 24.85 degrees)
