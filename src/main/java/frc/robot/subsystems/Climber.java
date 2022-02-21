@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -21,21 +20,21 @@ public class Climber extends SubsystemBase {
         new DoubleSolenoid(Constants.Pneumatics.pcm1, PneumaticsModuleType.CTREPCM,
             Constants.Pneumatics.climberInsideChannel, Constants.Pneumatics.climberInsideChannel2);
 
-    private final CANSparkMax outsideClimberMotor1 =
-        new CANSparkMax(Constants.Motors.outsideClimberMotor1Id, MotorType.kBrushless);
-    private final CANSparkMax outsideClimberMotor2 =
-        new CANSparkMax(Constants.Motors.outsideClimberMotor2Id, MotorType.kBrushless);
-    private final CANSparkMax insideClimberMotor1 =
-        new CANSparkMax(Constants.Motors.insideClimberMotor1Id, MotorType.kBrushless);
-    private final CANSparkMax insideClimberMotor2 =
-        new CANSparkMax(Constants.Motors.insideClimberMotor2Id, MotorType.kBrushless);
+    private final WPI_TalonFX outsideClimberMotor1 =
+        new WPI_TalonFX(Constants.Motors.outsideClimberMotorRightId);
+    private final WPI_TalonFX outsideClimberMotor2 =
+        new WPI_TalonFX(Constants.Motors.outsideClimberMotorLeftId);
+    private final WPI_TalonFX insideClimberMotor1 =
+        new WPI_TalonFX(Constants.Motors.insideClimberMotorRightId);
+    private final WPI_TalonFX insideClimberMotor2 =
+        new WPI_TalonFX(Constants.Motors.insideClimberMotorLeftId);
 
     private final MotorControllerGroup outsideMotors =
         new MotorControllerGroup(outsideClimberMotor1, outsideClimberMotor2);
     private final MotorControllerGroup insideMotors =
         new MotorControllerGroup(insideClimberMotor1, insideClimberMotor2);
 
-    private static final double motorSpeed = .6;
+    private static final double motorSpeed = .1;
     private static final int motorStop = 0;
 
     // Sets motors to inverted control mode.
