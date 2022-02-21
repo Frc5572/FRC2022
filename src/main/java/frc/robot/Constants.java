@@ -54,7 +54,7 @@ public final class Constants {
      * Vision constants for limelight calculations.
      */
     public static final class VisionConstants {
-        public static final double deadPocket = 0.2;
+        public static final double deadPocket = 0.02;
         public static final double limelightHeight = 24;
         public static final double targetHeight = 98;
         public static final double limelightAngle = 35;
@@ -66,7 +66,7 @@ public final class Constants {
     public static final class Swerve {
         public static final edu.wpi.first.wpilibj.SPI.Port navXID =
             edu.wpi.first.wpilibj.SPI.Port.kMXP;
-        public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
+        public static final boolean invertGyro = true; // Always ensure Gyro is CCW+ CW-
 
         /* Drivetrain Constants */
         public static final double trackWidth = Units.inchesToMeters(23);
@@ -118,7 +118,7 @@ public final class Constants {
         public static final double driveKA = (0.27 / 12);
 
         /* Swerve Profiling Values */
-        public static final double maxSpeed = 1; // meters per second
+        public static final double maxSpeed = 4; // meters per second
         public static final double maxAngularVelocity = 2;
 
         /* Neutral Modes */
@@ -218,7 +218,7 @@ public final class Constants {
         public static final boolean hoodCanCoderInvert = false;
     }
 
-    /*
+    /**
      * Constants for Shooter PID
      */
 

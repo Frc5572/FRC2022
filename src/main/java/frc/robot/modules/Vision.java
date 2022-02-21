@@ -73,7 +73,7 @@ public class Vision {
         // targetFound = false;
         // disX = 0;
         disX = tx;
-        double calculated = -(disX / 125) * 10;
+        double calculated = (disX / 100) * 3;
         calculated = (Math.abs(calculated) <= deadPocket) ? 0 : calculated;
         return calculated;
     }

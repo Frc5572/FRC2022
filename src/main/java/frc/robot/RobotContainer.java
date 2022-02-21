@@ -71,6 +71,9 @@ public class RobotContainer {
         autoChooser.addOption("Test Auto", new TestAuto(swerveDrive));
         swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, vision, driver,
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, false));
+        turret.setDefaultCommand(new FunctionalCommand(() -> {
+        }, () -> turret.turretSet(vision.getTargetFound() ? vision.getAimValue() : 0), interupt -> {
+        }, () -> false, turret));
         // Configure the button bindings
         // hood.getCANCoderPos();
         configureButtonBindings();
