@@ -16,6 +16,11 @@ public class Intake extends SubsystemBase {
     private static final double intakeSpeed = .5;
     private static final int intakeStop = 0;
 
+    /**
+     * Constructs the Intake Subsystem
+     *
+     * @param ph PneumaticHub to create solenoids
+     */
     public Intake(PneumaticHub ph) {
         super();
         this.intakeSol = ph.makeSolenoid(Pneumatics.intakeFowardChannel);

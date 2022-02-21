@@ -34,7 +34,11 @@ public class Climber extends SubsystemBase {
     private static final double motorSpeed = .1;
     private static final int motorStop = 0;
 
-    // Sets motors to inverted control mode.
+    /**
+     * Constructs the Climber Subsystem
+     *
+     * @param ph PneumaticHub to create solenoids
+     */
     public Climber(PneumaticHub ph) {
         super();
         this.outsideClimberMotor1.setInverted(true);
@@ -43,12 +47,6 @@ public class Climber extends SubsystemBase {
         this.insideClimberSolenoid = ph.makeDoubleSolenoid(
             Constants.Pneumatics.climberInsideChannel, Constants.Pneumatics.climberInsideChannel2);
     }
-
-    // Initialize sets solenoids to false, or reverse, which makes it in the "Off" position
-    // public void initialize() {
-    // outsideClimberSolenoid.set(false);
-    // insideClimberSolenoid.set(Value.kReverse);
-    // }
 
     // This command will deploy the outside climbers solenoids.
     public void deployOutsideClimbers() {
