@@ -11,7 +11,7 @@ import frc.robot.Constants;
 import frc.robot.modules.Vision;
 
 /**
- *
+ * <p>
  * Hood subsystem.
  * </p>
  */
@@ -25,7 +25,7 @@ public class Hood extends SubsystemBase {
     double calculatedPosition;
 
     /**
-     *
+     * <p>
      * Hood subsystem.
      * </p>
      */
@@ -42,7 +42,7 @@ public class Hood extends SubsystemBase {
     }
 
     /**
-     *
+     * <p>
      * Set hood position.
      * </p>
      */

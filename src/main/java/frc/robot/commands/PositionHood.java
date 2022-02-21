@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Hood;
 
 /**
- *
+ * <p>
  * Hood command
  * </p>
  */
@@ -14,7 +14,7 @@ public class PositionHood extends CommandBase {
     double position;
 
     /**
-     *
+     * <p>
      * Hood command
      * </p>
      */
