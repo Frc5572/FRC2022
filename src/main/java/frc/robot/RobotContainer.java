@@ -9,12 +9,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.TestAuto;
 import frc.robot.commands.LeftTurretMove;
+import frc.robot.commands.PositionHood;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.modules.Vision;
@@ -62,6 +64,7 @@ public class RobotContainer {
         climber = new Climber(ph);
         intake = new Intake(ph);
         swerveDrive.zeroGyro();
+        hood.setDefaultCommand(new PositionHood(hood, vision.getHoodValue()));
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
         autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, vision));
@@ -84,12 +87,12 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
-        // new JoystickButton(operator, XboxController.Button.kB.value)
-        // .whenPressed(new InstantCommand(shooter::enable, shooter).andThen(
-        // new WaitUntilCommand(() -> shooter.atSetpoint()),
-        // new InstantCommand(magazine::enable, magazine)))
-        // .whenReleased(new InstantCommand(shooter::disable, shooter))
-        // .whenReleased(new InstantCommand(magazine::disable, magazine));
+        new JoystickButton(operator, XboxController.Button.kB.value)
+            .whenPressed(new InstantCommand(shooter::enable, shooter).andThen(
+                new WaitUntilCommand(() -> shooter.atSetpoint()),
+                new InstantCommand(magazine::enable, magazine)))
+            .whenReleased(new InstantCommand(shooter::disable, shooter))
+            .whenReleased(new InstantCommand(magazine::disable, magazine));
         new JoystickButton(driver, XboxController.Button.kY.value)
             .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
         // new JoystickButton(operator, XboxController.Button.kA.value)
@@ -130,6 +133,7 @@ public class RobotContainer {
         new POVButton(driver, 270).whileHeld(new StartEndCommand(
             () -> climber.disengageInsideMotors(), () -> climber.stopInsideMotors()));
     }
+
 
     /**
      * Gets the user's selected autonomous command.

@@ -44,12 +44,18 @@ public class Vision {
     }
 
 
+    /**
+     *
+     * @return value to set hood
+     */
+
     public double getHoodValue() {
         // Vertical Offset From Crosshair To Target (LL1: -20.5 degrees to 20.5 degrees | LL2:
         // -24.85 to 24.85 degrees)
-        a2 = table.getEntry("ty").getDouble(0.0);
-        calculatedValue =
-            ((1 / (maxAngle - minAngle) * (a2 - maxAngle))) * (maxPosition * (1 / minPosition)) + 1;
+        // a2 = table.getEntry("ty").getDouble(0.0);
+        // calculatedValue =
+        // ((1 / (maxAngle - minAngle) * (a2 - maxAngle))) * (maxPosition * (1 / minPosition));
+        calculatedValue = Constants.HoodConstants.maxPosition;
         return calculatedValue;
     }
 

@@ -10,12 +10,23 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.modules.Vision;
 
+/**
+ *
+ * Hood subsystem.
+ */
+
 public class Hood extends SubsystemBase {
     CANCoderConfiguration hoodCanCoderConfig = new CANCoderConfiguration();
     CANCoder hoodCANCoder = new CANCoder(Constants.HoodConstants.hoodCANCoderID);
     public Servo hoodServo = new Servo(Constants.HoodConstants.hoodServoID);
+    // public PWM test = new PWM(Constants.HoodConstants.hoodServoID);
     Vision vision;
     double calculatedPosition;
+
+    /**
+     *
+     * Hood subsystem.
+     */
 
     public Hood(Vision vision) {
         this.vision = vision;
@@ -25,27 +36,23 @@ public class Hood extends SubsystemBase {
         hoodCanCoderConfig.initializationStrategy =
             SensorInitializationStrategy.BootToAbsolutePosition;
         hoodCanCoderConfig.sensorTimeBase = SensorTimeBase.PerSecond;
+        hoodServo.setBounds(2.5, 1.52, 1.5, 1.48, 0.5);
     }
 
-    public void setHoodPosition() {
-        hoodServo.set(vision.getHoodValue());
-        hoodServo.set(vision.getHoodValue());
-    }
+    /**
+     *
+     * Set hood position.
+     */
 
     public void setHoodPosition(double position) {
-        hoodServo.set(position);
-        hoodServo.set(position);
+        double error = position - hoodCANCoder.getAbsolutePosition();
+        double speed = Math.abs(error) < 5 ? 0.0 : error < 0 ? .5 : -.5;
+        hoodServo.setSpeed(speed);
     }
 
-    public String getCANCoderPos() {
+    public double getCANCoderPos() {
         System.out.println(hoodCANCoder.getAbsolutePosition());
-        return "CANCoder Pos: " + hoodCANCoder.getAbsolutePosition();
-    }
-
-    public void getServoPos() {
-        // System.out.println(hoodServo.getPosition());
-        System.out.println(hoodServo.getAngle());
-        hoodServo.setAngle(270);
+        return hoodCANCoder.getAbsolutePosition();
     }
 
 }

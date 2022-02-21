@@ -210,16 +210,18 @@ public final class Constants {
     public static final class HoodConstants {
         public static final int hoodCANCoderID = 5;
         public static final int hoodServoID = 9;
-        public static final int minAngle = 0;
-        public static final int maxAngle = 0;
-        public static final double maxPosition = 250;
-        public static final double minPosition = 30;
+        public static final int minAngle = 40;
+        public static final int maxAngle = 55;
+        public static final double servoSpeed = 0.2;
+        public static final double maxPosition = 239.8;
+        public static final double minPosition = 22.5;
         public static final boolean hoodCanCoderInvert = false;
     }
 
     /*
      * Constants for Shooter PID
      */
+
     public static final class ShooterPID {
         public static final double kP = 0.13744;
         public static final double kI = 10;
