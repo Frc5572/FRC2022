@@ -14,8 +14,8 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
 import frc.robot.commands.LimelightAlign;
 import frc.robot.commands.ZeroMotorsWaitCommand;
+import frc.robot.modules.Vision;
 import frc.robot.subsystems.Swerve;
-import frc.robot.subsystems.Vision;
 
 /**
  * Autonomous that aligns limelight then excecutes a trajectory.
