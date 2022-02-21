@@ -5,7 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -15,7 +15,9 @@ import frc.robot.modules.swervedrive.CTREConfigs;
  * Runs tasks on Roborio in this file.
  */
 public class Robot extends TimedRobot {
-    Compressor compressor = new Compressor(PneumaticsModuleType.REVPH);
+    public PneumaticHub ph = new PneumaticHub();
+    Compressor compressor = ph.makeCompressor();
+    // Compressor compressor = new Compressor(1, PneumaticsModuleType.REVPH);
     public static CTREConfigs ctreConfigs;
     private RobotContainer robotContainer;
     private Command autoChooser;
@@ -32,9 +34,8 @@ public class Robot extends TimedRobot {
         // Instantiate our RobotContainer. This will perform all our button bindings,
         // and put our
         // autonomous chooser on the dashboard.
-        robotContainer = new RobotContainer();
-        compressor.enableDigital();
-
+        ph.enableCompressorAnalog(100, 120);
+        robotContainer = new RobotContainer(ph);
     }
 
     /**
@@ -55,7 +56,6 @@ public class Robot extends TimedRobot {
         // order for
         // anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
-        // Systemultrasonic.getDistanceValue();
     }
 
     @Override

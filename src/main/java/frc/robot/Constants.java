@@ -40,13 +40,13 @@ public final class Constants {
      * Pneumatics CAN id constants.
      */
     public static final class Pneumatics {
-        public static final int pcm1 = 0;
+        public static final int pcm1 = 1;
         // Climber pneumatics constants.
-        public static final int climberOutsideChannel = 1;
-        public static final int climberInsideChannel = 2;
-        public static final int climberInsideChannel2 = 3;
+        public static final int climberOutsideChannel = 2;
+        public static final int climberInsideChannel = 0;
+        public static final int climberInsideChannel2 = 1;
         // Intake constants
-        public static final int intakeFowardChannel = 4;
+        public static final int intakeFowardChannel = 3;
     }
 
     public static final int magazineSensor = 9;

@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -45,15 +46,17 @@ public class RobotContainer {
     private final Shooter shooter = new Shooter();
     private final Swerve swerveDrive = new Swerve();
     private final Magazine magazine = new Magazine();
-    private final Intake intake = new Intake();
+    private final Intake intake;
     private final Turret turret = new Turret();
     private Vision vision = new Vision();
-    private final Climber climber = new Climber();
+    private final Climber climber;
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
-    public RobotContainer() {
+    public RobotContainer(PneumaticHub ph) {
+        climber = new Climber(ph);
+        intake = new Intake(ph);
         swerveDrive.zeroGyro();
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
