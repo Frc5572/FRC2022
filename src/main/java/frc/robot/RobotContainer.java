@@ -108,8 +108,8 @@ public class RobotContainer {
         // new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
         // .whileHeld(new LeftTurretMove(turret));
 
-        new JoystickButton(operator, XboxController.Button.kY.value)
-            .whileHeld(new StartEndCommand(shooter::enable, shooter::disable, shooter));
+        new JoystickButton(operator, XboxController.Button.kY.value).whileHeld(
+            new StartEndCommand(() -> intake.intakeDeploy(), () -> intake.intakeRetract(), intake));
 
         new Button(
             () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4)
