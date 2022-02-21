@@ -50,7 +50,6 @@ public class Robot extends TimedRobot {
         // order for
         // anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
-        // Systemultrasonic.getDistanceValue();
     }
 
     @Override

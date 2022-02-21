@@ -1,18 +1,27 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.P1_2B;
+import frc.robot.commands.LeftTurretMove;
 import frc.robot.commands.TeleopSwerve;
+import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Magazine;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.Turret;
 import frc.robot.subsystems.Vision;
 
 /**
@@ -44,6 +53,12 @@ public class RobotContainer {
 
     /* Subsystems */
     private final Swerve swerveDrive = new Swerve();
+    private final Magazine magazine = new Magazine();
+    private final Intake intake;
+    private final Turret turret = new Turret();
+    private Vision vision = new Vision();
+    private final Climber climber;
+    public PneumaticHub ph = new PneumaticHub();
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -53,10 +68,15 @@ public class RobotContainer {
         autoChooser.addOption("P1_2B", P1_2B);
         // autoChooser.addOption("P3_2B", P3_2B);
 
+        ph.enableCompressorAnalog(100, 120);
+        climber = new Climber(ph);
+        intake = new Intake(ph);
+        swerveDrive.zeroGyro();
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, vision, driver,
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, false));
         // Configure the button bindings
+        // hood.getCANCoderPos();
         configureButtonBindings();
     }
 
@@ -79,6 +99,43 @@ public class RobotContainer {
                 Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
         // shooterMotor.whenHeld(new ShooterRev(shooter));
 
+        // new JoystickButton(operator, XboxController.Button.kA.value)
+        // .whileHeld(new InstantCommand(() -> System.out.println(magazine.magSense.get())));
+        new JoystickButton(operator, XboxController.Button.kA.value)
+            .whenPressed(new FunctionalCommand(magazine::enable, () -> {
+            }, interrupted -> magazine.disable(), () -> magazine.magSense.get(), magazine))
+            .whenReleased(new InstantCommand(magazine::disable, magazine));
+        // new JoystickButton(driver, XboxController.Button.kB.value)
+        // .whenPressed(new InstantCommand(() -> hood.hoodServo.setPosition(1)));
+        // new JoystickButton(driver, XboxController.Button.kY.value)
+        // .whenPressed(new InstantCommand(() -> hood.hoodServo.set(.1)));
+        // new JoystickButton(driver, XboxController.Button.kX.value)
+        // .whenPressed(new ParallelRaceGroup(new InstantCommand(() -> hood.hoodServo.set(.4)),
+        // new InstantCommand(() -> System.out.println(hood.hoodServo.getPosition()))));
+        // new JoystickButton(driver, XboxController.Button.kX.value)
+        // .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
+        // Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
+        // new JoystickButton(driver, XboxController.Button.kRightBumper.value)
+        // .whileHeld(new RightTurretMove(turret));
+        // new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
+        // .whileHeld(new LeftTurretMove(turret));
+
+        new JoystickButton(operator, XboxController.Button.kY.value)
+            .whileHeld(new StartEndCommand(shooter::enable, shooter::disable, shooter));
+
+        new Button(
+            () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4)
+                .whileHeld(new StartEndCommand(intake::in, intake::stop, intake));
+        new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
+            .whileHeld(new LeftTurretMove(turret));
+        new POVButton(driver, 0).whileHeld(new StartEndCommand(() -> climber.engageOutsideMotors(),
+            () -> climber.stopOutsideMotors()));
+        new POVButton(driver, 180).whileHeld(new StartEndCommand(
+            () -> climber.disengageOutsideMotors(), () -> climber.stopOutsideMotors()));
+        new POVButton(driver, 90).whileHeld(new StartEndCommand(() -> climber.engageInsideMotors(),
+            () -> climber.stopInsideMotors()));
+        new POVButton(driver, 270).whileHeld(new StartEndCommand(
+            () -> climber.disengageInsideMotors(), () -> climber.stopInsideMotors()));
     }
 
     /**
