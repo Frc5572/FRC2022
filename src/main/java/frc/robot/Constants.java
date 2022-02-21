@@ -219,7 +219,7 @@ public final class Constants {
     }
 
     /*
-     * Constants for Shooter PID
+     * Constants for Shooter PID </p>
      */
 
     public static final class ShooterPID {
