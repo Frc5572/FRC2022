@@ -1,7 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -12,27 +12,35 @@ import frc.robot.Constants.Pneumatics;
  */
 public class Intake extends SubsystemBase {
     WPI_TalonSRX intakeMotor = new WPI_TalonSRX(Constants.Motors.intakeMotorNum);
-    Solenoid intakeSol =
-        new Solenoid(Pneumatics.pcm1, PneumaticsModuleType.CTREPCM, Pneumatics.intakeFowardChannel);
-
+    Solenoid intakeSol;
     private static final double intakeSpeed = .5;
     private static final int intakeStop = 0;
 
+    /**
+     * Constructs the Intake Subsystem
+     *
+     * @param ph PneumaticHub to create solenoids
+     */
+    public Intake(PneumaticHub ph) {
+        super();
+        this.intakeSol = ph.makeSolenoid(Pneumatics.intakeFowardChannel);
+    }
+
     public void intakeRetract() {
-        intakeMotor.set(intakeStop);
-        intakeSol.set(false);
+        this.intakeMotor.set(intakeStop);
+        this.intakeSol.set(false);
     }
 
     public void intakeDeploy() {
-        intakeMotor.set(intakeSpeed);
-        intakeSol.set(true);
+        this.intakeMotor.set(intakeSpeed);
+        this.intakeSol.set(true);
     }
 
     public void in() {
-        intakeMotor.set(.8);
+        this.intakeMotor.set(.8);
     }
 
     public void stop() {
-        intakeMotor.set(0);
+        this.intakeMotor.set(0);
     }
 }
