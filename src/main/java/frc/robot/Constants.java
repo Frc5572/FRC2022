@@ -218,7 +218,7 @@ public final class Constants {
         public static final boolean hoodCanCoderInvert = false;
     }
 
-    /*
+    /**
      * Constants for Shooter PID
      */
 
