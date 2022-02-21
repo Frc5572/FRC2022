@@ -1,28 +1,30 @@
-package frc.robot.subsystems;
+package frc.robot.modules;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 /**
  * Vision subsystem.
  */
 
-public class Vision extends SubsystemBase {
+public class Vision {
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     double deadPocket = Constants.VisionConstants.deadPocket;
     double h1 = Constants.VisionConstants.limelightHeight;
     double h2 = Constants.VisionConstants.targetHeight;
     double a1 = Constants.VisionConstants.limelightAngle;
+    int minAngle = Constants.HoodConstants.minAngle;
+    int maxAngle = Constants.HoodConstants.maxAngle;
+    double maxPosition = Constants.HoodConstants.maxPosition;
+    double minPosition = Constants.HoodConstants.minPosition;
+    double calculatedValue;
     double a2;
-    double angle;
     double distance = 0.0;
     double disX = 0;
     double disY = 0;
     double tx = 0;
     double ty = 0;
-    double ta = 0;
     double tv = 0;
     double calculated;
     boolean targetFound = false;
@@ -41,6 +43,22 @@ public class Vision extends SubsystemBase {
         return distance;
     }
 
+
+    /**
+     *
+     * @return value to set hood
+     */
+
+    public double getHoodValue() {
+        // Vertical Offset From Crosshair To Target (LL1: -20.5 degrees to 20.5 degrees | LL2:
+        // -24.85 to 24.85 degrees)
+        // a2 = table.getEntry("ty").getDouble(0.0);
+        // calculatedValue =
+        // ((1 / (maxAngle - minAngle) * (a2 - maxAngle))) * (maxPosition * (1 / minPosition));
+        calculatedValue = Constants.HoodConstants.maxPosition;
+        return calculatedValue;
+    }
+
     /**
      *
      * @return distance from center of target
@@ -53,7 +71,7 @@ public class Vision extends SubsystemBase {
         // targetFound = false;
         // disX = 0;
         disX = tx;
-        double calculated = -(disX / 125) * 10;
+        double calculated = (disX / 100) * 3;
         calculated = (Math.abs(calculated) <= deadPocket) ? 0 : calculated;
         return calculated;
     }
