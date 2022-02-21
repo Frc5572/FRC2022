@@ -17,6 +17,7 @@ import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.TestAuto;
 import frc.robot.commands.LeftTurretMove;
 import frc.robot.commands.PositionHood;
+import frc.robot.commands.RightTurretMove;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.modules.Vision;
@@ -111,10 +112,10 @@ public class RobotContainer {
         // new JoystickButton(driver, XboxController.Button.kX.value)
         // .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
         // Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
-        // new JoystickButton(driver, XboxController.Button.kRightBumper.value)
-        // .whileHeld(new RightTurretMove(turret));
-        // new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
-        // .whileHeld(new LeftTurretMove(turret));
+        new JoystickButton(driver, XboxController.Button.kRightBumper.value)
+            .whileHeld(new RightTurretMove(turret));
+        new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
+            .whileHeld(new LeftTurretMove(turret));
 
         new JoystickButton(operator, XboxController.Button.kY.value).whileHeld(
             new StartEndCommand(() -> intake.intakeDeploy(), () -> intake.intakeRetract(), intake));
@@ -122,8 +123,6 @@ public class RobotContainer {
         new Button(
             () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4)
                 .whileHeld(new StartEndCommand(intake::in, intake::stop, intake));
-        new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
-            .whileHeld(new LeftTurretMove(turret));
         new POVButton(driver, 0).whileHeld(new StartEndCommand(() -> climber.engageOutsideMotors(),
             () -> climber.stopOutsideMotors()));
         new POVButton(driver, 180).whileHeld(new StartEndCommand(
