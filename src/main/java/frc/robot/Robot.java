@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -14,7 +13,6 @@ import frc.robot.modules.swervedrive.CTREConfigs;
  * Runs tasks on Roborio in this file.
  */
 public class Robot extends TimedRobot {
-    public PneumaticHub ph = new PneumaticHub();
     public static CTREConfigs ctreConfigs;
     private RobotContainer robotContainer;
     private Command autoChooser;
@@ -31,8 +29,7 @@ public class Robot extends TimedRobot {
         // Instantiate our RobotContainer. This will perform all our button bindings,
         // and put our
         // autonomous chooser on the dashboard.
-        ph.enableCompressorAnalog(100, 120);
-        robotContainer = new RobotContainer(ph);
+        robotContainer = new RobotContainer();
     }
 
     /**

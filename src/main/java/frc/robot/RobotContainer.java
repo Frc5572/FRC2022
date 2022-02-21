@@ -50,11 +50,13 @@ public class RobotContainer {
     private final Turret turret = new Turret();
     private Vision vision = new Vision();
     private final Climber climber;
+    public PneumaticHub ph = new PneumaticHub();
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
-    public RobotContainer(PneumaticHub ph) {
+    public RobotContainer() {
+        ph.enableCompressorAnalog(100, 120);
         climber = new Climber(ph);
         intake = new Intake(ph);
         swerveDrive.zeroGyro();
