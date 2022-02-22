@@ -95,10 +95,10 @@ public class RobotContainer {
                 new InstantCommand(magazine::enable, magazine)))
             .whenReleased(new InstantCommand(shooter::disable, shooter))
             .whenReleased(new InstantCommand(magazine::disable, magazine));
-        new JoystickButton(driver, XboxController.Button.kY.value)
-            .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
-        // new JoystickButton(operator, XboxController.Button.kA.value)
-        // .whileHeld(new InstantCommand(() -> System.out.println(magazine.magSense.get())));
+        new JoystickButton(driver, XboxController.Button.kY.value).whenPressed(
+            new StartEndCommand(() -> shooter.enable(), () -> shooter.disable(), shooter));
+        new JoystickButton(operator, XboxController.Button.kA.value)
+            .whileHeld(new InstantCommand(() -> System.out.println(magazine.magSense.get())));
         new JoystickButton(operator, XboxController.Button.kA.value)
             .whenPressed(new FunctionalCommand(magazine::enable, () -> {
             }, interrupted -> magazine.disable(), () -> magazine.magSense.get(), magazine))
@@ -118,8 +118,8 @@ public class RobotContainer {
         new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
             .whileHeld(new LeftTurretMove(turret));
 
-        new JoystickButton(operator, XboxController.Button.kY.value).whileHeld(
-            new StartEndCommand(() -> intake.intakeDeploy(), () -> intake.intakeRetract(), intake));
+        // new JoystickButton(operator, XboxController.Button.kY.value).whileHeld(
+        // new StartEndCommand(() -> intake.intakeDeploy(), () -> intake.intakeRetract(), intake));
 
         new Button(
             () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4)
