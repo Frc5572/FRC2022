@@ -52,8 +52,7 @@ public class Vision {
     public double getHoodValue() {
         // Vertical Offset From Crosshair To Target (LL1: -20.5 degrees to 20.5 degrees | LL2:
         // -24.85 to 24.85 degrees)
-        // a2 = table.getEntry("ty").getDouble(0.0);
-        // calculatedValue =
+        a2 = table.getEntry("ty").getDouble(0.0);
         calculatedValue =
             ((1 / (maxAngle - minAngle) * (a2 - maxAngle))) * (maxPosition * (1 / minPosition));
         // calculatedValue = Constants.HoodConstants.maxPosition;
@@ -86,6 +85,11 @@ public class Vision {
         // Whether the limelight has any valid targets (0 or 1)
         tv = table.getEntry("tv").getDouble(0.0);
         return tv == 1.0;
+    }
+
+    public double getShooterSpeed() {
+        distance = getDistance() * 12;
+        return 6 * Math.pow(distance, 2) + (90 * distance) + 3500;
     }
 
     /**
