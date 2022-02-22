@@ -56,8 +56,9 @@ public class Vision {
         calculatedValue =
             ((1 / (maxAngle - minAngle) * (a2 - maxAngle))) * (maxPosition * (1 / minPosition));
         // calculatedValue = Constants.HoodConstants.maxPosition;
-        System.out.println(calculatedValue);
-        return calculatedValue;
+        // System.out.println(calculatedValue);
+        // return calculatedValue;
+        return Constants.HoodConstants.maxPosition;
     }
 
     /**

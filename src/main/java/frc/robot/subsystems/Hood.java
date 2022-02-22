@@ -11,14 +11,13 @@ import frc.robot.Constants;
 import frc.robot.modules.Vision;
 
 /**
-<<<<<<< HEAD
+ * <<<<<<< HEAD
  *
- * Hood subsystem.
-=======
+ * Hood subsystem. =======
  * <p>
  * Hood subsystem.
  * </p>
->>>>>>> origin/main
+ * >>>>>>> origin/main
  */
 
 public class Hood extends SubsystemBase {
@@ -30,14 +29,13 @@ public class Hood extends SubsystemBase {
     double calculatedPosition;
 
     /**
-<<<<<<< HEAD
+     * <<<<<<< HEAD
      *
-     * Hood subsystem.
-=======
+     * Hood subsystem. =======
      * <p>
      * Hood subsystem.
      * </p>
->>>>>>> origin/main
+     * >>>>>>> origin/main
      */
 
     public Hood(Vision vision) {
@@ -52,24 +50,21 @@ public class Hood extends SubsystemBase {
     }
 
     /**
-<<<<<<< HEAD
-     *
-     * Set hood position.
-=======
      * <p>
      * Set hood position.
      * </p>
->>>>>>> origin/main
      */
 
     public void setHoodPosition(double position) {
         double error = position - hoodCANCoder.getAbsolutePosition();
+        System.out.println(error);
         double speed = Math.abs(error) < 5 ? 0.0 : error < 0 ? .5 : -.5;
+        System.out.println(speed);
         hoodServo.setSpeed(speed);
     }
 
     public double getCANCoderPos() {
-        System.out.println(hoodCANCoder.getAbsolutePosition());
+        // System.out.println(hoodCANCoder.getAbsolutePosition());
         return hoodCANCoder.getAbsolutePosition();
     }
 

@@ -46,12 +46,13 @@ public class RobotContainer {
     boolean openLoop;
 
     /* Subsystems */
-    private final Shooter shooter = new Shooter();
+
     private final Swerve swerveDrive = new Swerve();
     private final Magazine magazine = new Magazine();
     private final Intake intake;
     private final Turret turret = new Turret();
     private Vision vision = new Vision();
+    private final Shooter shooter = new Shooter(vision);
     private final Hood hood = new Hood(vision);
     // private final Climber climber = new Climber();
     private final Climber climber;
@@ -61,7 +62,7 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-        ph.enableCompressorAnalog(100, 120);
+        // ph.enableCompressorAnalog(100, 120);
         climber = new Climber(ph);
         intake = new Intake(ph);
         swerveDrive.zeroGyro();
