@@ -224,12 +224,12 @@ public final class Constants {
 
     public static final class ShooterPID {
         public static final double kP = 0.13744;
-        public static final double kI = 10;
+        public static final double kI = 0;
         public static final double kD = 0;
 
         public static final double kShooterFreeRPS = 112.5; // IN RPS NOT RPM
         public static final double kShooterTargetRPS = 4100 / 60; // IN RPS NOT RPM
-        public static final double kShooterToleranceRPS = 1; // IN RPS NOT RPM
+        public static final double kShooterToleranceRPS = 2; // IN RPS NOT RPM
 
         public static final int kUnitsPerRevolution = 2048;
         public static final double kSVolts = 0.63035;
