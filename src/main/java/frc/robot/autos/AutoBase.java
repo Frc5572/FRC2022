@@ -5,6 +5,9 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
 
+/**
+ * Parent class for all autonomous commands
+ */
 public class AutoBase extends SequentialCommandGroup {
     Swerve swerve;
     ProfiledPIDController thetaController =
