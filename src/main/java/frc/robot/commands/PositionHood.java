@@ -8,7 +8,7 @@ import frc.robot.subsystems.Hood;
  * <p>
  * Hood command
  * </p>
->>>>>>> origin/main
+ * >>>>>>> origin/main
  */
 
 public class PositionHood extends CommandBase {
@@ -23,7 +23,7 @@ public class PositionHood extends CommandBase {
 
     @Override
     public void execute() {
-        hood.setHoodPosition(vision.getHoodValue());
+        hood.setHoodPosition();
     }
 
 }

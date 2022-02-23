@@ -78,7 +78,7 @@ public final class Constants {
         public static final boolean isOpenLoop = false;
 
         public static final double openLoopRamp = 0.25;
-        public static final double closedLoopRamp = 0.0;
+        public static final double closedLoopRamp = 0.25;
 
         public static final double driveGearRatio = (8.14 / 1.0); // 6.86:1
         public static final double angleGearRatio = (12.8 / 1.0); // 12.8:1
@@ -113,7 +113,8 @@ public final class Constants {
         public static final double driveKF = 0.0;
 
         /* Drive Motor Characterization Values */
-        public static final double driveKS = (0.667 / 12); // divide by 12 to convert from volts to
+        // divide by 12 to convert from volts to percent output for CTRE
+        public static final double driveKS = (0.667 / 12);
         public static final double driveKV = (2.44 / 12);
         public static final double driveKA = (0.27 / 12);
 
