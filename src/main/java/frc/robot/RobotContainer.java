@@ -56,7 +56,7 @@ public class RobotContainer {
     private final Magazine magazine = new Magazine();
     private final Intake intake;
     private final Turret turret = new Turret();
-    private Vision vision = new Vision();
+    private final Vision Vision = new Vision();
     private final Climber climber;
     public PneumaticHub ph = new PneumaticHub();
 

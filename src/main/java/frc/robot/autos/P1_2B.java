@@ -26,6 +26,9 @@ public class P1_2B extends SequentialCommandGroup {
         System.out.println("P1_2B");
 
         PathPlannerTrajectory P12B = PathPlanner.loadPath("P1_2B", 1, 1);
+        PathPlannerTrajectory P12B_part_2 = PathPlanner.loadPath("P1_2B", 1, 1);
+
+        new InstantCommand(() -> swerve.resetOdometry(P12B.getInitialPose()));
 
         var thetaController = new ProfiledPIDController(Constants.AutoConstants.kPThetaController,
             0, 0, Constants.AutoConstants.kThetaControllerConstraints);
@@ -35,9 +38,14 @@ public class P1_2B extends SequentialCommandGroup {
                 new PIDController(Constants.AutoConstants.kPXController, 0, 0),
                 new PIDController(Constants.AutoConstants.kPYController, 0, 0), thetaController,
                 swerve::setModuleStates, swerve);
+        PPSwerveControllerCommand pickUpBallPart2 = new PPSwerveControllerCommand(P12B_part_2,
+            swerve::getPose, Constants.Swerve.swerveKinematics,
+            new PIDController(Constants.AutoConstants.kPXController, 0, 0),
+            new PIDController(Constants.AutoConstants.kPYController, 0, 0), thetaController,
+            swerve::setModuleStates, swerve);
 
 
-        addCommands(new InstantCommand(() -> swerve.resetOdometry(P12B.getInitialPose())),
-            pickUpBall);
+        addCommands(new InstantCommand(() -> P12B.getInitialPose()), pickUpBall,
+            new InstantCommand(() -> P12B_part_2.getInitialPose()), pickUpBallPart2);
     }
 }
