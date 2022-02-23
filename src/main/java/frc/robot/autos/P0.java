@@ -14,7 +14,7 @@ import frc.robot.subsystems.Swerve;
 /**
  * Autonomous that aligns limelight then excecutes a trajectory.
  */
-public class TestAuto extends SequentialCommandGroup {
+public class P0 extends SequentialCommandGroup {
     Swerve swerve;
 
     /**
@@ -22,7 +22,7 @@ public class TestAuto extends SequentialCommandGroup {
      *
      * @param swerve swerve subsystem
      */
-    public TestAuto(Swerve swerve) {
+    public P0(Swerve swerve) {
         this.swerve = swerve;
         System.out.println("Test Auto !!");
         // TrajectoryConfig config =
@@ -36,16 +36,16 @@ public class TestAuto extends SequentialCommandGroup {
         // new Pose2d(1, 1, new Rotation2d(0))),
         // config);
 
-        PathPlannerTrajectory examplePath = PathPlanner.loadPath("Rusinski's", 1, 1);
+        PathPlannerTrajectory P0 = PathPlanner.loadPath("P0", 1, 1);
 
         var thetaController = new ProfiledPIDController(Constants.AutoConstants.kPThetaController,
             0, 0, Constants.AutoConstants.kThetaControllerConstraints);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        PPSwerveControllerCommand firstHalfTraject = new PPSwerveControllerCommand(examplePath,
-            swerve::getPose, Constants.Swerve.swerveKinematics,
-            new PIDController(Constants.AutoConstants.kPXController, 0, 0),
-            new PIDController(Constants.AutoConstants.kPYController, 0, 0), thetaController,
-            swerve::setModuleStates, swerve);
+        PPSwerveControllerCommand firstHalfTraject =
+            new PPSwerveControllerCommand(P0, swerve::getPose, Constants.Swerve.swerveKinematics,
+                new PIDController(Constants.AutoConstants.kPXController, 0, 0),
+                new PIDController(Constants.AutoConstants.kPYController, 0, 0), thetaController,
+                swerve::setModuleStates, swerve);
         // PPSwerveControllerCommand firstHalfTraject = new PPSwerveControllerCommand(examplePath,
         // swerve::getPose, Constants.Swerve.swerveKinematics,
         // new PIDController(Constants.AutoConstants.kPXController, 0, 0),
@@ -54,7 +54,7 @@ public class TestAuto extends SequentialCommandGroup {
         ZeroMotorsWaitCommand firstWait = new ZeroMotorsWaitCommand(swerve, 3);
         ZeroMotorsWaitCommand secondWait = new ZeroMotorsWaitCommand(swerve, .5);
 
-        addCommands(new InstantCommand(() -> swerve.resetOdometry(examplePath.getInitialPose())),
+        addCommands(new InstantCommand(() -> swerve.resetOdometry(P0.getInitialPose())),
             firstHalfTraject);
     }
 }
