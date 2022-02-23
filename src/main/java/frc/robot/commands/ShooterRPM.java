@@ -43,6 +43,7 @@ public class ShooterRPM extends CommandBase {
         if (Math.abs(curDisRPM - newDisRPM) >= 50) {
             newDisRPM = curDisRPM;
         }
+        System.out.println(newDisRPM);
         this.shooter.setSetpoint(newDisRPM);
     }
 }
