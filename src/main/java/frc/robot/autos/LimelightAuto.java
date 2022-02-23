@@ -2,14 +2,12 @@ package frc.robot.autos;
 
 import java.util.List;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
 import frc.robot.commands.LimelightAlign;
@@ -20,7 +18,7 @@ import frc.robot.subsystems.Swerve;
 /**
  * Autonomous that aligns limelight then excecutes a trajectory.
  */
-public class LimelightAuto extends SequentialCommandGroup {
+public class LimelightAuto extends AutoBase {
     Vision vision;
     Swerve swerve;
 
@@ -31,6 +29,7 @@ public class LimelightAuto extends SequentialCommandGroup {
      * @param vision vision subsystem
      */
     public LimelightAuto(Swerve swerve, Vision vision) {
+        super(swerve);
         this.swerve = swerve;
         System.out.println("Limelight Auto !!");
         TrajectoryConfig config =
@@ -44,9 +43,6 @@ public class LimelightAuto extends SequentialCommandGroup {
                 new Pose2d(1, 1, new Rotation2d(0))),
             config);
 
-        var thetaController = new ProfiledPIDController(Constants.AutoConstants.kPThetaController,
-            0, 0, Constants.AutoConstants.kThetaControllerConstraints);
-        thetaController.enableContinuousInput(-Math.PI, Math.PI);
         SwerveControllerCommand firstHalfTraject = new SwerveControllerCommand(firstHalfTrajectory,
             swerve::getPose, Constants.Swerve.swerveKinematics,
             new PIDController(Constants.AutoConstants.kPXController, 0, 0),
