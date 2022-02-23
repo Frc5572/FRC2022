@@ -8,7 +8,6 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
-import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.subsystems.Swerve;
 
 /**
@@ -46,13 +45,6 @@ public class P0 extends SequentialCommandGroup {
                 new PIDController(Constants.AutoConstants.kPXController, 0, 0),
                 new PIDController(Constants.AutoConstants.kPYController, 0, 0), thetaController,
                 swerve::setModuleStates, swerve);
-        // PPSwerveControllerCommand firstHalfTraject = new PPSwerveControllerCommand(examplePath,
-        // swerve::getPose, Constants.Swerve.swerveKinematics,
-        // new PIDController(Constants.AutoConstants.kPXController, 0, 0),
-        // new PIDController(Constants.AutoConstants.kPYController, 0, 0), thetaController,
-        // swerve::setModuleStates, swerve);
-        ZeroMotorsWaitCommand firstWait = new ZeroMotorsWaitCommand(swerve, 3);
-        ZeroMotorsWaitCommand secondWait = new ZeroMotorsWaitCommand(swerve, .5);
 
         addCommands(new InstantCommand(() -> swerve.resetOdometry(P0.getInitialPose())),
             firstHalfTraject);
