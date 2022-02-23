@@ -18,6 +18,7 @@ import frc.robot.autos.TestAuto;
 import frc.robot.commands.LeftTurretMove;
 import frc.robot.commands.PositionHood;
 import frc.robot.commands.RightTurretMove;
+import frc.robot.commands.ShooterRPM;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.modules.Vision;
@@ -95,8 +96,8 @@ public class RobotContainer {
                 new InstantCommand(magazine::enable, magazine)))
             .whenReleased(new InstantCommand(shooter::disable, shooter))
             .whenReleased(new InstantCommand(magazine::disable, magazine));
-        new JoystickButton(driver, XboxController.Button.kY.value).whenPressed(
-            new StartEndCommand(() -> shooter.enable(), () -> shooter.disable(), shooter));
+        new JoystickButton(driver, XboxController.Button.kY.value)
+            .whileHeld(new ShooterRPM(shooter, vision));
         new JoystickButton(operator, XboxController.Button.kA.value)
             .whileHeld(new InstantCommand(() -> System.out.println(magazine.magSense.get())));
         new JoystickButton(operator, XboxController.Button.kA.value)

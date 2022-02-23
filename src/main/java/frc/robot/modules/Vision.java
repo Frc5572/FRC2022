@@ -73,14 +73,12 @@ public class Vision {
         return tv == 1.0;
     }
 
+    /**
+     * @return our new shooter rpm based on distance from target
+     */
     public double getShooterSpeed() {
         distance = getDistance() * 12;
-        calcRPM = 6 * Math.pow(distance, 2) + (90 * distance) + 3500;
-        if (Math.abs(calcRPM - calcRPM2) >= 50) {
-            calcRPM2 = calcRPM;
-            return calcRPM;
-        }
-        return calcRPM2;
+        return 6 * Math.pow(distance, 2) + (90 * distance) + 3500;
     }
 
     /**
