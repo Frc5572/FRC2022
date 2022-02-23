@@ -26,6 +26,9 @@ public class Vision {
     double tx = 0;
     double ty = 0;
     double tv = 0;
+    double calcRPM = 0;
+    double calcRPM2 = 0;
+    double totalRPM = 0;
     double calculated;
     boolean targetFound = false;
 
@@ -90,7 +93,12 @@ public class Vision {
 
     public double getShooterSpeed() {
         distance = getDistance() * 12;
-        return 6 * Math.pow(distance, 2) + (90 * distance) + 3500;
+        calcRPM = 6 * Math.pow(distance, 2) + (90 * distance) + 3500;
+        if (Math.abs(calcRPM - calcRPM2) >= 50) {
+            calcRPM2 = calcRPM;
+            return calcRPM;
+        }
+        return calcRPM2;
     }
 
     /**
