@@ -144,6 +144,5 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // return autoChooser.getSelected();
         return new P2_2B(swerveDrive);
-        return autoChooser.getSelected();
     }
 }
