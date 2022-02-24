@@ -25,27 +25,20 @@ public class P1_2B extends SequentialCommandGroup {
         this.swerve = swerve;
         System.out.println("P1_2B");
 
-        PathPlannerTrajectory P12B = PathPlanner.loadPath("P1_2B", 1, 1);
-        PathPlannerTrajectory P12B_part_2 = PathPlanner.loadPath("P1_2B", 1, 1);
+        PathPlannerTrajectory full_P12B = PathPlanner.loadPath("full_P12B", 1, 1);
 
-        new InstantCommand(() -> swerve.resetOdometry(P12B.getInitialPose()));
+        new InstantCommand(() -> swerve.resetOdometry(full_P12B.getInitialPose()));
 
         var thetaController = new ProfiledPIDController(Constants.AutoConstants.kPThetaController,
             0, 0, Constants.AutoConstants.kThetaControllerConstraints);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        PPSwerveControllerCommand pickUpBall =
-            new PPSwerveControllerCommand(P12B, swerve::getPose, Constants.Swerve.swerveKinematics,
-                new PIDController(Constants.AutoConstants.kPXController, 0, 0),
-                new PIDController(Constants.AutoConstants.kPYController, 0, 0), thetaController,
-                swerve::setModuleStates, swerve);
-        PPSwerveControllerCommand pickUpBallPart2 = new PPSwerveControllerCommand(P12B_part_2,
+        PPSwerveControllerCommand pickUpBall = new PPSwerveControllerCommand(full_P12B,
             swerve::getPose, Constants.Swerve.swerveKinematics,
             new PIDController(Constants.AutoConstants.kPXController, 0, 0),
             new PIDController(Constants.AutoConstants.kPYController, 0, 0), thetaController,
             swerve::setModuleStates, swerve);
 
 
-        addCommands(new InstantCommand(() -> P12B.getInitialPose()), pickUpBall,
-            new InstantCommand(() -> P12B_part_2.getInitialPose()), pickUpBallPart2);
+        addCommands(new InstantCommand(() -> full_P12B.getInitialPose()), pickUpBall);
     }
 }

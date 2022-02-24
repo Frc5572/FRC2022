@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.P1_2B;
 import frc.robot.commands.LeftTurretMove;
 import frc.robot.commands.PositionHood;
@@ -152,13 +151,12 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
 
-        if (autoChooser.getSelected() == "Limelight Auto") {
-            System.out.println("Limelight Auto");
-            autoCommand = new LimelightAuto(swerveDrive, vision);
-        }
+        // if (autoChooser.getSelected() == "Limelight Auto") {
+        // System.out.println("Limelight Auto");
+        // autoCommand = new LimelightAuto(swerveDrive, vision);
+        // }
 
         return new P1_2B(swerveDrive);
-
     }
 
 
