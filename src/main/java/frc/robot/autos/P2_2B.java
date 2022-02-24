@@ -1,47 +1,43 @@
 package frc.robot.autos;
 
-import java.util.List;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
 
+/**
+ * Autonomous that aligns limelight then excecutes a trajectory.
+ */
 public class P2_2B extends SequentialCommandGroup {
-    public P2_2B(Swerve s_Swerve) {
-        TrajectoryConfig config =
-            new TrajectoryConfig(Constants.AutoConstants.kMaxSpeedMetersPerSecond,
-                Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-                    .setKinematics(Constants.Swerve.swerveKinematics);
+    Swerve swerve;
 
-        // An example trajectory to follow. All units in meters.
-        Trajectory Move68Inches = TrajectoryGenerator.generateTrajectory(
-            // Start at the origin facing the +X direction
-            new Pose2d(0, 0, new Rotation2d(0)),
-            // Pass through these two interior waypoints, making an 's' curve path
-            List.of(new Translation2d(.5, 2)),
-            // End 3 meters straight ahead of where we started, facing forward
-            new Pose2d(0, -1.73, new Rotation2d(0)), config);
+    /**
+     * Autonomous that aligns limelight then excecutes a trajectory.
+     *
+     * @param swerve swerve subsystem
+     */
+    public P2_2B(Swerve swerve) {
+        this.swerve = swerve;
+        System.out.println("P1_2B");
+
+        PathPlannerTrajectory P2B2 = PathPlanner.loadPath("P22B", 1, 1);
+
+        new InstantCommand(() -> swerve.resetOdometry(P2B2.getInitialPose()));
 
         var thetaController = new ProfiledPIDController(Constants.AutoConstants.kPThetaController,
             0, 0, Constants.AutoConstants.kThetaControllerConstraints);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(Move68Inches,
-            s_Swerve::getPose, Constants.Swerve.swerveKinematics,
-            new PIDController(Constants.AutoConstants.kPXController, 0, 0),
-            new PIDController(Constants.AutoConstants.kPYController, 0, 0), thetaController,
-            s_Swerve::setModuleStates, s_Swerve);
+        PPSwerveControllerCommand pickUpBall =
+            new PPSwerveControllerCommand(P2B2, swerve::getPose, Constants.Swerve.swerveKinematics,
+                new PIDController(Constants.AutoConstants.kPXController, 0, 0),
+                new PIDController(Constants.AutoConstants.kPYController, 0, 0), thetaController,
+                swerve::setModuleStates, swerve);
 
-
-        addCommands(new InstantCommand(() -> s_Swerve.resetOdometry(Move68Inches.getInitialPose())),
-            swerveControllerCommand);
+        addCommands(new InstantCommand(() -> P2B2.getInitialPose()), pickUpBall);
     }
 }
