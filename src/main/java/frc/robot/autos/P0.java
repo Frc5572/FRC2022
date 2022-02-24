@@ -20,8 +20,6 @@ public class P0 extends AutoBase {
      */
     public P0(Swerve swerve) {
         super(swerve);
-        System.out.println("Test Auto !!");
-
         PathPlannerTrajectory P0 = PathPlanner.loadPath("P0", 1, 1);
         PPSwerveControllerCommand firstCommand = baseSwerveCommand(P0);
 
