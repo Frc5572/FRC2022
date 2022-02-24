@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-import frc.robot.autos.LimelightAuto;
+// import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.TestAuto;
 import frc.robot.commands.AlignTurret;
 import frc.robot.commands.PositionHood;
@@ -71,7 +71,7 @@ public class RobotContainer {
         hood.setDefaultCommand(new PositionHood(hood, vision));
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
-        autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, vision));
+        // autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, vision));
         autoChooser.addOption("Test Auto", new TestAuto(swerveDrive));
         swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, vision, driver,
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, false));
@@ -114,9 +114,9 @@ public class RobotContainer {
         // .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
         // Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
         new JoystickButton(driver, XboxController.Button.kRightBumper.value)
-            .whileHeld(new InstantCommand(() -> turret.turretRight()));
+            .whileHeld(new InstantCommand(() -> turret.turretRight(), turret));
         new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
-            .whileHeld(new InstantCommand(() -> turret.turretLeft()));
+            .whileHeld(new InstantCommand(() -> turret.turretLeft(), turret));
         new JoystickButton(driver, XboxController.Button.kX.value)
             .whenPressed(new InstantCommand(() -> turret.setStatusFalse()));
 

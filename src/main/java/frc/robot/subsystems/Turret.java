@@ -22,6 +22,7 @@ public class Turret extends SubsystemBase {
 
     public void turretSet(double power) {
         turretMotor.set(power);
+        System.out.println(status);
     }
 
     public void turretStop() {

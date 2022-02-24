@@ -13,12 +13,15 @@ public class AlignTurret extends CommandBase {
         this.turret = turret;
         this.vision = vision;
         this.status = status;
+        addRequirements(turret);
     }
 
     @Override
     public void execute() {
-        if (vision.getTargetFound() && status) {
-            turret.turretSet(vision.getAimValue());
+        if (status) {
+            if (vision.getTargetFound()) {
+                turret.turretSet(vision.getAimValue());
+            }
         } else {
             turret.turretSet(0);
         }
