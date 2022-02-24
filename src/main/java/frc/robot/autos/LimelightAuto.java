@@ -1,7 +1,6 @@
 package frc.robot.autos;
 
 import java.util.List;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
@@ -12,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
 import frc.robot.commands.LimelightAlign;
 import frc.robot.commands.ZeroMotorsWaitCommand;
+import frc.robot.modules.AutoBase;
 import frc.robot.modules.Vision;
 import frc.robot.subsystems.Swerve;
 
@@ -20,7 +20,6 @@ import frc.robot.subsystems.Swerve;
  */
 public class LimelightAuto extends AutoBase {
     Vision vision;
-    Swerve swerve;
 
     /**
      * Autonomous that aligns limelight then excecutes a trajectory.
@@ -30,7 +29,6 @@ public class LimelightAuto extends AutoBase {
      */
     public LimelightAuto(Swerve swerve, Vision vision) {
         super(swerve);
-        this.swerve = swerve;
         System.out.println("Limelight Auto !!");
         TrajectoryConfig config =
             new TrajectoryConfig(Constants.AutoConstants.kMaxSpeedMetersPerSecond,
@@ -43,11 +41,7 @@ public class LimelightAuto extends AutoBase {
                 new Pose2d(1, 1, new Rotation2d(0))),
             config);
 
-        SwerveControllerCommand firstHalfTraject = new SwerveControllerCommand(firstHalfTrajectory,
-            swerve::getPose, Constants.Swerve.swerveKinematics,
-            new PIDController(Constants.AutoConstants.kPXController, 0, 0),
-            new PIDController(Constants.AutoConstants.kPYController, 0, 0), thetaController,
-            swerve::setModuleStates, swerve);
+        SwerveControllerCommand firstHalfTraject = baseSwerveCommand(firstHalfTrajectory);
         ZeroMotorsWaitCommand firstWait = new ZeroMotorsWaitCommand(swerve, 3);
         ZeroMotorsWaitCommand secondWait = new ZeroMotorsWaitCommand(swerve, .5);
         LimelightAlign align = new LimelightAlign(swerve, vision);
