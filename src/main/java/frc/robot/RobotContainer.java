@@ -15,9 +15,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.TestAuto;
-import frc.robot.commands.LeftTurretMove;
+import frc.robot.commands.AlignTurret;
 import frc.robot.commands.PositionHood;
-import frc.robot.commands.RightTurretMove;
 import frc.robot.commands.ShooterRPM;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
@@ -45,6 +44,8 @@ public class RobotContainer {
 
     boolean fieldRelative;
     boolean openLoop;
+    boolean status = true;
+
 
     /* Subsystems */
 
@@ -74,9 +75,7 @@ public class RobotContainer {
         autoChooser.addOption("Test Auto", new TestAuto(swerveDrive));
         swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, vision, driver,
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, false));
-        turret.setDefaultCommand(new FunctionalCommand(() -> {
-        }, () -> turret.turretSet(vision.getTargetFound() ? vision.getAimValue() : 0), interupt -> {
-        }, () -> false, turret));
+        turret.setDefaultCommand(new AlignTurret(turret, vision, turret.getStatus()));
         // Configure the button bindings
         // hood.getCANCoderPos();
         configureButtonBindings();
@@ -115,9 +114,11 @@ public class RobotContainer {
         // .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
         // Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
         new JoystickButton(driver, XboxController.Button.kRightBumper.value)
-            .whileHeld(new RightTurretMove(turret));
+            .whileHeld(new InstantCommand(() -> turret.turretRight()));
         new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
-            .whileHeld(new LeftTurretMove(turret));
+            .whileHeld(new InstantCommand(() -> turret.turretLeft()));
+        new JoystickButton(driver, XboxController.Button.kX.value)
+            .whenPressed(new InstantCommand(() -> turret.setStatusFalse()));
 
         // new JoystickButton(operator, XboxController.Button.kY.value).whileHeld(
         // new StartEndCommand(() -> intake.intakeDeploy(), () -> intake.intakeRetract(), intake));
