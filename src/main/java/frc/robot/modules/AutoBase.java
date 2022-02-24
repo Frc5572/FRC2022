@@ -29,6 +29,12 @@ public class AutoBase extends SequentialCommandGroup {
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
     }
 
+    /**
+     * Creates a SwerveControllerCommand from a Trajectory
+     *
+     * @param trajectory Trajectory to run
+     * @return A SwerveControllerCommand for the robot to move
+     */
     public SwerveControllerCommand baseSwerveCommand(Trajectory trajectory) {
         SwerveControllerCommand command = new SwerveControllerCommand(trajectory, swerve::getPose,
             Constants.Swerve.swerveKinematics,
@@ -38,7 +44,12 @@ public class AutoBase extends SequentialCommandGroup {
         return command;
     }
 
-
+    /**
+     * Creates a SwerveController Command using a Path Planner Trajectory
+     *
+     * @param trajectory a Path Planner Trajectory
+     * @return A SwerveControllerCommand for the robot to move
+     */
     public PPSwerveControllerCommand baseSwerveCommand(PathPlannerTrajectory trajectory) {
         PPSwerveControllerCommand command = new PPSwerveControllerCommand(trajectory,
             swerve::getPose, Constants.Swerve.swerveKinematics,
