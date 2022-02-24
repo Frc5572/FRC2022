@@ -141,7 +141,6 @@ public class RobotContainer {
      * @return Returns autonomous command selected.
      */
     public Command getAutonomousCommand() {
-        // return autoChooser.getSelected();
-        return new TestAuto(swerveDrive);
+        return autoChooser.getSelected();
     }
 }
