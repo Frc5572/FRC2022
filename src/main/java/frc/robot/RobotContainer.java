@@ -75,7 +75,7 @@ public class RobotContainer {
         autoChooser.addOption("Test Auto", new TestAuto(swerveDrive));
         swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, vision, driver,
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, false));
-        turret.setDefaultCommand(new AlignTurret(turret, vision, turret.getStatus()));
+        turret.setDefaultCommand(new AlignTurret(turret, vision));
         // Configure the button bindings
         // hood.getCANCoderPos();
         configureButtonBindings();
@@ -118,7 +118,7 @@ public class RobotContainer {
         new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
             .whileHeld(new InstantCommand(() -> turret.turretLeft(), turret));
         new JoystickButton(driver, XboxController.Button.kX.value)
-            .whenPressed(new InstantCommand(() -> turret.setStatusFalse()));
+            .whenPressed(new InstantCommand(() -> turret.status = false));
 
         // new JoystickButton(operator, XboxController.Button.kY.value).whileHeld(
         // new StartEndCommand(() -> intake.intakeDeploy(), () -> intake.intakeRetract(), intake));

@@ -7,18 +7,16 @@ import frc.robot.subsystems.Turret;
 public class AlignTurret extends CommandBase {
     Turret turret;
     Vision vision;
-    boolean status;
 
-    public AlignTurret(Turret turret, Vision vision, boolean status) {
+    public AlignTurret(Turret turret, Vision vision) {
         this.turret = turret;
         this.vision = vision;
-        this.status = status;
         addRequirements(turret);
     }
 
     @Override
     public void execute() {
-        if (status) {
+        if (this.turret.status) {
             if (vision.getTargetFound()) {
                 turret.turretSet(vision.getAimValue());
             }
