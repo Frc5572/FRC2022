@@ -16,21 +16,21 @@ import frc.robot.subsystems.Swerve;
 /**
  * Autonomous that aligns limelight then excecutes a trajectory.
  */
-public class P1_3B extends AutoBase {
+public class P13B extends AutoBase {
 
     /**
      * Autonomous that aligns limelight then excecutes a trajectory.
      *
      * @param swerve swerve subsystem
      */
-    public P1_3B(Swerve swerve, Shooter shooter, Magazine magazine, Intake intake) {
+    public P13B(Swerve swerve, Shooter shooter, Magazine magazine, Intake intake) {
         super(swerve);
 
-        PathPlannerTrajectory P1_3B = PathPlanner.loadPath("P1_3B", 1, 1);
-        PPSwerveControllerCommand testCommand = baseSwerveCommand(P1_3B);
+        PathPlannerTrajectory p1_3b = PathPlanner.loadPath("P1_3B", 1, 1);
+        PPSwerveControllerCommand testCommand = baseSwerveCommand(p1_3b);
 
         addCommands(new ParallelCommandGroup(
-            new InstantCommand(() -> swerve.resetOdometry(P1_3B.getInitialPose())),
+            new InstantCommand(() -> swerve.resetOdometry(p1_3b.getInitialPose())),
             new InstantCommand(() -> shooter.enable())
                 .andThen(new WaitUntilCommand(() -> shooter.atSetpoint()),
                     new InstantCommand(() -> magazine.enable()), new WaitCommand(2))
