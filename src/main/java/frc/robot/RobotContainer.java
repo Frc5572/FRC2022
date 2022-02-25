@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-import frc.robot.autos.P1_2B;
+import frc.robot.autos.P1_P3;
 import frc.robot.commands.LeftTurretMove;
 import frc.robot.commands.PositionHood;
 import frc.robot.commands.TeleopSwerve;
@@ -40,7 +40,7 @@ public class RobotContainer {
 
     private Command autoCommand;
     private static final String limelightAuto = "Limelight Auto";
-    private static final String P1_2B = "P1_2B";
+    private static final String P1_P3 = "P1_P3";
     // private final Button shooterMotor = new Button(
     // () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4);
     private final Shooter shooter = new Shooter();
@@ -66,7 +66,7 @@ public class RobotContainer {
      */
     public RobotContainer() {
         autoChooser.addOption("Limelight Auto", limelightAuto);
-        autoChooser.addOption("P1_2B", P1_2B);
+        autoChooser.addOption("P1_P3", P1_P3);
         // autoChooser.addOption("P3_2B", P3_2B);
 
         ph.enableCompressorAnalog(100, 120);
@@ -156,7 +156,7 @@ public class RobotContainer {
         // autoCommand = new LimelightAuto(swerveDrive, vision);
         // }
 
-        return new P1_2B(swerveDrive);
+        return new P1_P3(swerveDrive, shooter, magazine, intake);
     }
 
 
