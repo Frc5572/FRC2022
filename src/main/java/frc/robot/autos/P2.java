@@ -25,11 +25,11 @@ public class P2 extends AutoBase {
     public P2(Swerve swerve, Shooter shooter, Magazine magazine, Intake intake) {
         super(swerve);
 
-        PathPlannerTrajectory P2 = PathPlanner.loadPath("P2_B2", 1, 1);
-        PPSwerveControllerCommand testCommand = baseSwerveCommand(P2);
+        PathPlannerTrajectory p2 = PathPlanner.loadPath("P2_B2", 1, 1);
+        PPSwerveControllerCommand testCommand = baseSwerveCommand(p2);
 
         addCommands(new ParallelCommandGroup(
-            new InstantCommand(() -> swerve.resetOdometry(P2.getInitialPose())),
+            new InstantCommand(() -> swerve.resetOdometry(p2.getInitialPose())),
             new InstantCommand(() -> intake.intakeDeploy()), testCommand, new WaitCommand(2),
             new InstantCommand(() -> intake.intakeRetract()),
             new InstantCommand(() -> shooter.enable())
