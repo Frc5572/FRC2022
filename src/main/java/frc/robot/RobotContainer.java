@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.autos.LimelightAuto;
-import frc.robot.autos.P2_2B;
+import frc.robot.autos.P2;
 import frc.robot.autos.TestAuto;
 import frc.robot.commands.LeftTurretMove;
 import frc.robot.commands.PositionHood;
@@ -143,6 +143,6 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // return autoChooser.getSelected();
-        return new P2_2B(swerveDrive);
+        return new P2(swerveDrive);
     }
 }
