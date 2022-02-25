@@ -59,7 +59,8 @@ public class Vision {
         // disX = 0;
         disX = tx;
         double calculated = (disX / 125) * 3;
-        calculated = (Math.abs(calculated) <= deadPocket) ? 0 : (calculated >= .3) ? 0 : calculated;
+        calculated =
+            (Math.abs(calculated) <= deadPocket) ? 0 : (calculated >= .3) ? .3 : calculated;
         return calculated;
     }
 
