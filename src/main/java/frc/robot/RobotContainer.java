@@ -69,6 +69,7 @@ public class RobotContainer {
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
         autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, vision));
+        autoChooser.addOption("P2 Auto", new P2(swerveDrive, shooter, magazine, intake));
         autoChooser.addOption("Test Auto", new TestAuto(swerveDrive));
         swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, vision, driver,
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, false));
@@ -143,6 +144,6 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // return autoChooser.getSelected();
-        return new P2(swerveDrive);
+        return new P2(swerveDrive, shooter, magazine, intake);
     }
 }
