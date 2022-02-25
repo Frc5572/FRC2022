@@ -26,11 +26,11 @@ public class P13B extends AutoBase {
     public P13B(Swerve swerve, Shooter shooter, Magazine magazine, Intake intake) {
         super(swerve);
 
-        PathPlannerTrajectory p1_3b = PathPlanner.loadPath("P1_3B", 1, 1);
-        PPSwerveControllerCommand testCommand = baseSwerveCommand(p1_3b);
+        PathPlannerTrajectory p1b3 = PathPlanner.loadPath("P1_3B", 1, 1);
+        PPSwerveControllerCommand testCommand = baseSwerveCommand(p1b3);
 
         addCommands(new ParallelCommandGroup(
-            new InstantCommand(() -> swerve.resetOdometry(p1_3b.getInitialPose())),
+            new InstantCommand(() -> swerve.resetOdometry(p1b3.getInitialPose())),
             new InstantCommand(() -> shooter.enable())
                 .andThen(new WaitUntilCommand(() -> shooter.atSetpoint()),
                     new InstantCommand(() -> magazine.enable()), new WaitCommand(2))
