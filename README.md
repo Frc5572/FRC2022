@@ -16,3 +16,21 @@ Talon FX 14 - Outside Climber Motor Right
 Talon FX 15 - Outside Climber Motor Left
 
 Talon FX 16 - Inside Climber Motor Left
+
+# Controls
+## Driver
+Joysticks - Swerve
+
+## Operator
+Intake - B
+
+Mag/Shooter Combo - A
+
+Climber Motors - D-Pad
+
+Climber Piston (Inside) - X
+
+Climber Piston (Outside) - Y
+
+Turret - Bumpers
+
