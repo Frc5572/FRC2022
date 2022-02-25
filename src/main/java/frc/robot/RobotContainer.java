@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.autos.LimelightAuto;
-import frc.robot.autos.TestAuto;
+import frc.robot.autos.P1_3B;
 import frc.robot.commands.LeftTurretMove;
 import frc.robot.commands.PositionHood;
 import frc.robot.commands.TeleopSwerve;
@@ -68,7 +68,7 @@ public class RobotContainer {
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
         autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, vision));
-        autoChooser.addOption("Test Auto", new TestAuto(swerveDrive));
+        autoChooser.addOption("Test Auto", new P1_3B(swerveDrive, shooter, magazine, intake));
         swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, vision, driver,
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, false));
         turret.setDefaultCommand(new FunctionalCommand(() -> {
