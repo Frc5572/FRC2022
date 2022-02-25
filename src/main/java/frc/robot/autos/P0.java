@@ -20,10 +20,10 @@ public class P0 extends AutoBase {
      */
     public P0(Swerve swerve) {
         super(swerve);
-        PathPlannerTrajectory P0 = PathPlanner.loadPath("P0", 1, 1);
-        PPSwerveControllerCommand firstCommand = baseSwerveCommand(P0);
+        PathPlannerTrajectory p0 = PathPlanner.loadPath("P0", 1, 1);
+        PPSwerveControllerCommand firstCommand = baseSwerveCommand(p0);
 
-        addCommands(new InstantCommand(() -> swerve.resetOdometry(P0.getInitialPose())),
+        addCommands(new InstantCommand(() -> swerve.resetOdometry(p0.getInitialPose())),
             firstCommand);
 
     }
