@@ -27,9 +27,4 @@ public class AlignTurret extends CommandBase {
         }
     }
 
-    @Override
-    public boolean isFinished() {
-        return vision.getTargetAligned();
-    }
-
 }
