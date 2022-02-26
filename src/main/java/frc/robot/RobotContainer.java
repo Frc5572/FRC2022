@@ -12,10 +12,13 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import frc.robot.autos.LimelightAuto;
+import frc.robot.autos.P0;
 import frc.robot.autos.P1_P3;
 import frc.robot.commands.LeftTurretMove;
 import frc.robot.commands.PositionHood;
 import frc.robot.commands.TeleopSwerve;
+import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.modules.Vision;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Hood;
@@ -36,11 +39,9 @@ public class RobotContainer {
     private final XboxController driver = new XboxController(Constants.driverID);
     private final XboxController operator = new XboxController(Constants.operatorID);
 
-    private final SendableChooser<String> autoChooser = new SendableChooser<>();
+    private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
     private Command autoCommand;
-    private static final String limelightAuto = "Limelight Auto";
-    private static final String P1_P3 = "P1_P3";
     // private final Button shooterMotor = new Button(
     // () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4);
     private final Shooter shooter = new Shooter();
@@ -65,16 +66,16 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-        autoChooser.addOption("Limelight Auto", limelightAuto);
-        autoChooser.addOption("P1_P3", P1_P3);
-        // autoChooser.addOption("P3_2B", P3_2B);
-
         ph.enableCompressorAnalog(100, 120);
         climber = new Climber(ph);
         intake = new Intake(ph);
         swerveDrive.zeroGyro();
         hood.setDefaultCommand(new PositionHood(hood, vision.getHoodValue()));
         SmartDashboard.putData("Choose Auto: ", autoChooser);
+        autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
+        autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, vision));
+        autoChooser.addOption("P0", new P0(swerveDrive));
+        autoChooser.addOption("P1/P3", new P1_P3(swerveDrive, shooter, magazine, intake));
         swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, vision, driver,
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, false));
         turret.setDefaultCommand(new FunctionalCommand(() -> {
