@@ -6,9 +6,11 @@ import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.modules.AutoBase;
 import frc.robot.modules.Vision;
 import frc.robot.subsystems.Intake;
@@ -37,19 +39,22 @@ public class P1_P3 extends AutoBase {
 
         addCommands(new InstantCommand(() -> swerve.resetOdometry(P1_P3.getInitialPose())),
             new ParallelCommandGroup(
-                new SequentialCommandGroup(new FunctionalCommand(() -> turret.turretLeft(), () -> {
-                }, interupt -> turret.turretStop(), () -> vision.getTargetAligned(), turret),
+                new SequentialCommandGroup(
+                    new ParallelDeadlineGroup(new WaitCommand(.5),
+                        new InstantCommand(() -> turret.turretLeft())),
                     new FunctionalCommand(() -> {
                     }, () -> turret.turretSet(vision.getTargetFound() ? vision.getAimValue() : 0),
                         interupt -> {
                         }, () -> false, turret)),
-                new SequentialCommandGroup(
-                    new ParallelCommandGroup(new InstantCommand(() -> intake.intakeDeploy()),
-                        autoDrive),
-                    new WaitCommand(2), new InstantCommand(() -> shooter.enable()),
-                    new InstantCommand(() -> intake.intakeRetract()),
+                new SequentialCommandGroup(new InstantCommand(() -> shooter.enable()),
+                    new ZeroMotorsWaitCommand(swerve, 1),
                     new WaitUntilCommand(() -> shooter.atSetpoint()),
-                    new InstantCommand(() -> magazine.enable()), new WaitCommand(5),
+                    new InstantCommand(() -> magazine.enable()), new WaitCommand(3),
+                    new ParallelCommandGroup(new InstantCommand(() -> intake.intakeDeploy()),
+                        autoDrive, new InstantCommand(() -> shooter.setSetpoint(4700 / 60))),
+                    new ZeroMotorsWaitCommand(swerve, 1),
+                    new InstantCommand(() -> intake.intakeRetract()),
+                    new ZeroMotorsWaitCommand(swerve, 3),
                     new InstantCommand(() -> shooter.disable()),
                     new InstantCommand(() -> magazine.disable()))
 

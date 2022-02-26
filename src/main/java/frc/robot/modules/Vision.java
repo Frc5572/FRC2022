@@ -26,7 +26,7 @@ public class Vision {
     double tx = 0;
     double ty = 0;
     double tv = 0;
-    double calculated;
+    public double calculated;
     boolean targetFound = false;
 
     /**

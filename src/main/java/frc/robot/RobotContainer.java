@@ -17,6 +17,7 @@ import frc.robot.autos.P0;
 import frc.robot.autos.P1_P3;
 import frc.robot.commands.LeftTurretMove;
 import frc.robot.commands.PositionHood;
+import frc.robot.commands.RightTurretMove;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.modules.Vision;
@@ -75,7 +76,8 @@ public class RobotContainer {
         autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
         autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, vision));
         autoChooser.addOption("P0", new P0(swerveDrive));
-        autoChooser.addOption("P1/P3", new P1_P3(swerveDrive, shooter, magazine, intake));
+        // autoChooser.addOption("P1/P3", new P1_P3(swerveDrive, shooter, magazine, intake, turret,
+        // vision));
         swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, vision, driver,
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, false));
         turret.setDefaultCommand(new FunctionalCommand(() -> {
@@ -121,19 +123,14 @@ public class RobotContainer {
         // new JoystickButton(driver, XboxController.Button.kX.value)
         // .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
         // Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
-        // new JoystickButton(driver, XboxController.Button.kRightBumper.value)
-        // .whileHeld(new RightTurretMove(turret));
-        // new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
-        // .whileHeld(new LeftTurretMove(turret));
+        new JoystickButton(driver, XboxController.Button.kRightBumper.value)
+            .whileHeld(new RightTurretMove(turret));
+        new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
+            .whileHeld(new LeftTurretMove(turret));
 
         new JoystickButton(operator, XboxController.Button.kY.value).whileHeld(
             new StartEndCommand(() -> intake.intakeDeploy(), () -> intake.intakeRetract(), intake));
 
-        new Button(
-            () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4)
-                .whileHeld(new StartEndCommand(intake::in, intake::stop, intake));
-        new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
-            .whileHeld(new LeftTurretMove(turret));
         new POVButton(driver, 0).whileHeld(new StartEndCommand(() -> climber.engageOutsideMotors(),
             () -> climber.stopOutsideMotors()));
         new POVButton(driver, 180).whileHeld(new StartEndCommand(
