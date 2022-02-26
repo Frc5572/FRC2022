@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import frc.robot.Constants;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.modules.AutoBase;
 import frc.robot.modules.Vision;
@@ -38,9 +39,10 @@ public class P1_P3 extends AutoBase {
         PPSwerveControllerCommand autoDrive = baseSwerveCommand(P1_P3);
 
         addCommands(new InstantCommand(() -> swerve.resetOdometry(P1_P3.getInitialPose())),
+            new InstantCommand(() -> shooter.setSetpoint(Constants.ShooterPID.kShooterTargetRPS)),
             new ParallelCommandGroup(
                 new SequentialCommandGroup(
-                    new ParallelDeadlineGroup(new WaitCommand(.5),
+                    new ParallelDeadlineGroup(new WaitCommand(.6),
                         new InstantCommand(() -> turret.turretLeft())),
                     new FunctionalCommand(() -> {
                     }, () -> turret.turretSet(vision.getTargetFound() ? vision.getAimValue() : 0),
