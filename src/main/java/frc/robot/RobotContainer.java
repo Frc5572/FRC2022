@@ -39,26 +39,21 @@ public class RobotContainer {
     private final XboxController driver = new XboxController(Constants.driverID);
     private final XboxController operator = new XboxController(Constants.operatorID);
 
+    // Initialize AutoChooser Sendable
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
-    private Command autoCommand;
-    // private final Button shooterMotor = new Button(
-    // () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4);
-    private final Shooter shooter = new Shooter();
-
-
-
+    // Field Relative and openLoop Variables
     boolean fieldRelative;
     boolean openLoop;
 
     /* Subsystems */
     private final Swerve swerveDrive = new Swerve();
     private final Magazine magazine = new Magazine();
+    private final Shooter shooter = new Shooter();
     private final Intake intake;
     private final Turret turret = new Turret();
     private Vision vision = new Vision();
     private final Hood hood = new Hood(vision);
-    // private final Climber climber = new Climber();
     private final Climber climber;
     public PneumaticHub ph = new PneumaticHub();
 
@@ -69,21 +64,22 @@ public class RobotContainer {
         ph.enableCompressorAnalog(100, 120);
         climber = new Climber(ph);
         intake = new Intake(ph);
-        swerveDrive.zeroGyro();
         hood.setDefaultCommand(new PositionHood(hood, vision.getHoodValue()));
+        // Adding AutoChooser Options
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
         autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, vision));
         autoChooser.addOption("P0", new P0(swerveDrive));
         autoChooser.addOption("P_2B",
             new P_2B(swerveDrive, shooter, magazine, intake, turret, vision));
+        // Default Swerve Command
         swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, vision, driver,
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, false));
+        // Turret Default Command
         turret.setDefaultCommand(new FunctionalCommand(() -> {
         }, () -> turret.turretSet(vision.getTargetFound() ? vision.getAimValue() : 0), interupt -> {
         }, () -> false, turret));
         // Configure the button bindings
-        // hood.getCANCoderPos();
         configureButtonBindings();
     }
 
@@ -134,7 +130,6 @@ public class RobotContainer {
             () -> climber.disengageInsideMotors(), () -> climber.stopInsideMotors()));
     }
 
-
     /**
      * Gets the user's selected autonomous command.
      *
@@ -143,6 +138,5 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         return autoChooser.getSelected();
     }
-
 
 }
