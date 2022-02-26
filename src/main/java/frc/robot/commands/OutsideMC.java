@@ -28,7 +28,7 @@ public class OutsideMC extends CommandBase {
         if (dir) {
             this.climber.engageOutsideMotors();
         } else {
-            this.climber.disengageOutsideMotors();
+            this.climber.retractOutsideMotors();
         }
     }
 

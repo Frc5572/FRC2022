@@ -31,7 +31,7 @@ public class Climber extends SubsystemBase {
     private final MotorControllerGroup insideMotors =
         new MotorControllerGroup(insideClimberMotor1, insideClimberMotor2);
 
-    private static final double motorSpeed = .1;
+    private static final double motorSpeed = .5;
     private static final int motorStop = 0;
 
     /**
@@ -65,7 +65,7 @@ public class Climber extends SubsystemBase {
     }
 
     // This command will stop moving the outside climber's motors.
-    public void disengageOutsideMotors() {
+    public void retractOutsideMotors() {
         this.outsideMotors.set(-motorSpeed);
     }
 
@@ -75,7 +75,7 @@ public class Climber extends SubsystemBase {
     }
 
     // This command will stop moving the inside climber's motors.
-    public void disengageInsideMotors() {
+    public void retractInsideMotors() {
         this.insideMotors.set(-motorSpeed);
     }
 
