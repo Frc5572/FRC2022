@@ -23,14 +23,14 @@ import frc.robot.subsystems.Turret;
 /**
  * Autonomous that aligns limelight then excecutes a trajectory.
  */
-public class P_2B extends AutoBase {
+public class P123_2B extends AutoBase {
 
     /**
      * Autonomous that aligns limelight then excecutes a trajectory.
      *
      * @param swerve swerve subsystem
      */
-    public P_2B(Swerve swerve, Shooter shooter, Magazine magazine, Intake intake, Turret turret,
+    public P123_2B(Swerve swerve, Shooter shooter, Magazine magazine, Intake intake, Turret turret,
         Vision vision) {
         super(swerve);
         addRequirements(shooter, magazine, intake, turret);
