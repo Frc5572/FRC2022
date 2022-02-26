@@ -12,7 +12,8 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.autos.LimelightAuto;
-import frc.robot.autos.TestAuto;
+import frc.robot.autos.P0;
+import frc.robot.autos.P_2B;
 import frc.robot.commands.LeftTurretMove;
 import frc.robot.commands.PositionHood;
 import frc.robot.commands.RightTurretMove;
@@ -40,11 +41,17 @@ public class RobotContainer {
 
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
+    private Command autoCommand;
+    // private final Button shooterMotor = new Button(
+    // () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4);
+    private final Shooter shooter = new Shooter();
+
+
+
     boolean fieldRelative;
     boolean openLoop;
 
     /* Subsystems */
-    private final Shooter shooter = new Shooter();
     private final Swerve swerveDrive = new Swerve();
     private final Magazine magazine = new Magazine();
     private final Intake intake;
@@ -67,7 +74,9 @@ public class RobotContainer {
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
         autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, vision));
-        autoChooser.addOption("Test Auto", new TestAuto(swerveDrive));
+        autoChooser.addOption("P0", new P0(swerveDrive));
+        autoChooser.addOption("P_2B",
+            new P_2B(swerveDrive, shooter, magazine, intake, turret, vision));
         swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, vision, driver,
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, false));
         turret.setDefaultCommand(new FunctionalCommand(() -> {
@@ -134,4 +143,6 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         return autoChooser.getSelected();
     }
+
+
 }
