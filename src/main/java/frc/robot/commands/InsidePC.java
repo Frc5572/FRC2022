@@ -17,14 +17,18 @@ public class InsidePC extends CommandBase {
     }
 
     @Override
-    public void execute() {
+    public void initialize() {
         if (!status) {
             this.climber.deployInsideClimbers();
             status = true;
         } else {
             this.climber.retractInsideClimbers();
+            status = false;
         }
     }
+
+    @Override
+    public void execute() {}
 
     @Override
     public boolean isFinished() {

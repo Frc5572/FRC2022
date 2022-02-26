@@ -17,7 +17,7 @@ public class OutsidePC extends CommandBase {
     }
 
     @Override
-    public void execute() {
+    public void initialize() {
         if (!status) {
             this.climber.deployOutsideClimbers();
             status = true;

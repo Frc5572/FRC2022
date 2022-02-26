@@ -9,12 +9,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.TestAuto;
+import frc.robot.commands.InsidePC;
 import frc.robot.commands.LeftTurretMove;
+import frc.robot.commands.OutsidePC;
 import frc.robot.commands.PositionHood;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
@@ -86,20 +87,24 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
-        new JoystickButton(operator, XboxController.Button.kB.value)
-            .whenPressed(new InstantCommand(shooter::enable, shooter).andThen(
-                new WaitUntilCommand(() -> shooter.atSetpoint()),
-                new InstantCommand(magazine::enable, magazine)))
-            .whenReleased(new InstantCommand(shooter::disable, shooter))
-            .whenReleased(new InstantCommand(magazine::disable, magazine));
+        // new JoystickButton(operator, XboxController.Button.kB.value)
+        // .whenPressed(new InstantCommand(shooter::enable, shooter).andThen(
+        // new WaitUntilCommand(() -> shooter.atSetpoint()),
+        // new InstantCommand(magazine::enable, magazine)))
+        // .whenReleased(new InstantCommand(shooter::disable, shooter))
+        // .whenReleased(new InstantCommand(magazine::disable, magazine));
         new JoystickButton(driver, XboxController.Button.kY.value)
             .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
         // new JoystickButton(operator, XboxController.Button.kA.value)
         // .whileHeld(new InstantCommand(() -> System.out.println(magazine.magSense.get())));
-        new JoystickButton(operator, XboxController.Button.kA.value)
-            .whenPressed(new FunctionalCommand(magazine::enable, () -> {
-            }, interrupted -> magazine.disable(), () -> magazine.magSense.get(), magazine))
-            .whenReleased(new InstantCommand(magazine::disable, magazine));
+        // new JoystickButton(operator, XboxController.Button.kA.value)
+        // .whenPressed(new FunctionalCommand(magazine::enable, () -> {
+        // }, interrupted -> magazine.disable(), () -> magazine.magSense.get(), magazine))
+        // .whenReleased(new InstantCommand(magazine::disable, magazine));
+        new JoystickButton(driver, XboxController.Button.kA.value)
+            .whenPressed(new InsidePC(climber));
+        new JoystickButton(driver, XboxController.Button.kB.value)
+            .whenPressed(new OutsidePC(climber));
         // new JoystickButton(driver, XboxController.Button.kB.value)
         // .whenPressed(new InstantCommand(() -> hood.hoodServo.setPosition(1)));
         // new JoystickButton(driver, XboxController.Button.kY.value)
@@ -115,7 +120,7 @@ public class RobotContainer {
         // new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
         // .whileHeld(new LeftTurretMove(turret));
 
-        new JoystickButton(operator, XboxController.Button.kY.value).whileHeld(
+        new JoystickButton(driver, XboxController.Button.kY.value).whileHeld(
             new StartEndCommand(() -> intake.intakeDeploy(), () -> intake.intakeRetract(), intake));
         new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
             .whileHeld(new LeftTurretMove(turret));

@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -35,7 +36,7 @@ public class Climber extends SubsystemBase {
     private final MotorControllerGroup insideMotors =
         new MotorControllerGroup(insideClimberMotor1, insideClimberMotor2);
 
-    private static final double motorSpeed = .1;
+    private static final double motorSpeed = .5;
     private static final int motorStop = 0;
 
     /**
@@ -53,6 +54,7 @@ public class Climber extends SubsystemBase {
             motor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 5000);
             motor.setStatusFramePeriod(StatusFrameEnhanced.Status_14_Turn_PIDF1, 5000);
             motor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1000);
+            motor.setNeutralMode(NeutralMode.Brake);
         }
 
         this.outsideClimberSolenoid = ph.makeSolenoid(Constants.Pneumatics.climberOutsideChannel);
