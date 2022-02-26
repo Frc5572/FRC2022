@@ -9,14 +9,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.TestAuto;
 import frc.robot.commands.LeftTurretMove;
 import frc.robot.commands.PositionHood;
+import frc.robot.commands.RightTurretMove;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.modules.Vision;
@@ -86,50 +85,42 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
+
         /* Driver Buttons */
-        new JoystickButton(operator, XboxController.Button.kB.value)
-            .whenPressed(new InstantCommand(shooter::enable, shooter).andThen(
-                new WaitUntilCommand(() -> shooter.atSetpoint()),
-                new InstantCommand(magazine::enable, magazine)))
-            .whenReleased(new InstantCommand(shooter::disable, shooter))
-            .whenReleased(new InstantCommand(magazine::disable, magazine));
+
+        // Reset Gyro on Driver Y pressed
         new JoystickButton(driver, XboxController.Button.kY.value)
             .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
-        // new JoystickButton(operator, XboxController.Button.kA.value)
-        // .whileHeld(new InstantCommand(() -> System.out.println(magazine.magSense.get())));
+
+        /* Operator Buttons */
+
+        // Enable Shooter Magazine Combo While Operator A Button Held
         new JoystickButton(operator, XboxController.Button.kA.value)
             .whenPressed(new FunctionalCommand(magazine::enable, () -> {
             }, interrupted -> magazine.disable(), () -> magazine.magSense.get(), magazine))
             .whenReleased(new InstantCommand(magazine::disable, magazine));
-        // new JoystickButton(driver, XboxController.Button.kB.value)
-        // .whenPressed(new InstantCommand(() -> hood.hoodServo.setPosition(1)));
-        // new JoystickButton(driver, XboxController.Button.kY.value)
-        // .whenPressed(new InstantCommand(() -> hood.hoodServo.set(.1)));
-        // new JoystickButton(driver, XboxController.Button.kX.value)
-        // .whenPressed(new ParallelRaceGroup(new InstantCommand(() -> hood.hoodServo.set(.4)),
-        // new InstantCommand(() -> System.out.println(hood.hoodServo.getPosition()))));
-        // new JoystickButton(driver, XboxController.Button.kX.value)
-        // .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
-        // Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
-        // new JoystickButton(driver, XboxController.Button.kRightBumper.value)
-        // .whileHeld(new RightTurretMove(turret));
-        // new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
-        // .whileHeld(new LeftTurretMove(turret));
-
-        new JoystickButton(operator, XboxController.Button.kY.value).whileHeld(
+        // Deploy Intake While Operator B Held
+        new JoystickButton(operator, XboxController.Button.kB.value).whileHeld(
             new StartEndCommand(() -> intake.intakeDeploy(), () -> intake.intakeRetract(), intake));
-
-        new Button(
-            () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4)
-                .whileHeld(new StartEndCommand(intake::in, intake::stop, intake));
-        new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
+        // Right Turret Move While Operator Right Bumper Held
+        new JoystickButton(operator, XboxController.Button.kRightBumper.value)
+            .whileHeld(new RightTurretMove(turret));
+        // Left Turret Move While Operator Left Bumper Held
+        new JoystickButton(operator, XboxController.Button.kLeftBumper.value)
             .whileHeld(new LeftTurretMove(turret));
+
+        /* POV Button Mappings for Climber Motors */
+
+        // Operator POV Up - Outside Motors Out
         new POVButton(driver, 0).whileHeld(new StartEndCommand(() -> climber.engageOutsideMotors(),
             () -> climber.stopOutsideMotors()));
+        // Operator POV Down - Outside Motors In
         new POVButton(driver, 180).whileHeld(new StartEndCommand(
             () -> climber.disengageOutsideMotors(), () -> climber.stopOutsideMotors()));
+        // Operator POV Right - Inside Motors Out
         new POVButton(driver, 90).whileHeld(new StartEndCommand(() -> climber.engageInsideMotors(),
             () -> climber.stopInsideMotors()));
+        // Operator POV Left - Inside Motors In
         new POVButton(driver, 270).whileHeld(new StartEndCommand(
             () -> climber.disengageInsideMotors(), () -> climber.stopInsideMotors()));
     }
