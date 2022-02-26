@@ -129,13 +129,13 @@ public class RobotContainer {
             () -> climber.stopOutsideMotors()));
         // Operator POV Down - Outside Motors In
         new POVButton(driver, 180).whileHeld(new StartEndCommand(
-            () -> climber.disengageOutsideMotors(), () -> climber.stopOutsideMotors()));
+            () -> climber.retractOutsideMotors(), () -> climber.stopOutsideMotors()));
         // Operator POV Right - Inside Motors Out
         new POVButton(driver, 90).whileHeld(new StartEndCommand(() -> climber.engageInsideMotors(),
             () -> climber.stopInsideMotors()));
         // Operator POV Left - Inside Motors In
         new POVButton(driver, 270).whileHeld(new StartEndCommand(
-            () -> climber.disengageInsideMotors(), () -> climber.stopInsideMotors()));
+            () -> climber.retractInsideMotors(), () -> climber.stopInsideMotors()));
     }
 
     /**

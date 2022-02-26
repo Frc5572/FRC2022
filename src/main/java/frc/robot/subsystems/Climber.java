@@ -65,7 +65,7 @@ public class Climber extends SubsystemBase {
     }
 
     // This command will stop moving the outside climber's motors.
-    public void disengageOutsideMotors() {
+    public void retractOutsideMotors() {
         this.outsideMotors.set(-motorSpeed);
     }
 
@@ -75,7 +75,7 @@ public class Climber extends SubsystemBase {
     }
 
     // This command will stop moving the inside climber's motors.
-    public void disengageInsideMotors() {
+    public void retractInsideMotors() {
         this.insideMotors.set(-motorSpeed);
     }
 
