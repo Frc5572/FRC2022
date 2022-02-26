@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.P0;
-import frc.robot.autos.P13B;
+import frc.robot.autos.P1_3B;
 import frc.robot.autos.P_2B;
 import frc.robot.commands.LeftTurretMove;
 import frc.robot.commands.PositionHood;
@@ -76,10 +76,11 @@ public class RobotContainer {
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
         autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, vision));
-        autoChooser.addOption("Test Auto", new P13B(swerveDrive, shooter, magazine, intake));
         autoChooser.addOption("P0", new P0(swerveDrive));
         autoChooser.addOption("P_2B",
             new P_2B(swerveDrive, shooter, magazine, intake, turret, vision));
+        autoChooser.addOption("P1_3B",
+            new P1_3B(swerveDrive, shooter, magazine, intake, turret, vision));
         swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, vision, driver,
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, false));
         turret.setDefaultCommand(new FunctionalCommand(() -> {
@@ -150,7 +151,8 @@ public class RobotContainer {
      * @return Returns autonomous command selected.
      */
     public Command getAutonomousCommand() {
-        return new P13B(swerveDrive, shooter, magazine, intake);
+        // return autoChooser.getSelected();
+        return new P1_3B(swerveDrive, shooter, magazine, intake, turret, vision);
     }
 
 

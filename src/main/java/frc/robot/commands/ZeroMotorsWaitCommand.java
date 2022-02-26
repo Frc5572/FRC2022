@@ -26,6 +26,16 @@ public class ZeroMotorsWaitCommand extends CommandBase {
         addRequirements(swerve);
     }
 
+    /**
+     * Zeros motors then excecutes normal wait command. No seconds parameter defaults to 0 seconds
+     * (no wait)
+     */
+    public ZeroMotorsWaitCommand(Swerve swerve) {
+        this.duration = 0;
+        this.swerve = swerve;
+        addRequirements(swerve);
+    }
+
     @Override
     public void initialize() {
         swerve.setMotorsZero(Constants.Swerve.isOpenLoop, Constants.Swerve.isFieldRelative);
