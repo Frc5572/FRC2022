@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -25,6 +27,8 @@ public class Climber extends SubsystemBase {
         new WPI_TalonFX(Constants.Motors.insideClimberMotorRightId);
     private final WPI_TalonFX insideClimberMotor2 =
         new WPI_TalonFX(Constants.Motors.insideClimberMotorLeftId);
+    private final TalonFX[] climberMotors = new TalonFX[] {outsideClimberMotor1,
+        outsideClimberMotor2, insideClimberMotor1, insideClimberMotor2};
 
     private final MotorControllerGroup outsideMotors =
         new MotorControllerGroup(outsideClimberMotor1, outsideClimberMotor2);
@@ -40,9 +44,17 @@ public class Climber extends SubsystemBase {
      * @param ph PneumaticHub to create solenoids
      */
     public Climber(PneumaticHub ph) {
-        super();
         this.outsideClimberMotor1.setInverted(true);
         this.insideClimberMotor1.setInverted(true);
+        for (TalonFX motor : climberMotors) {
+            motor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 5000);
+            motor.setStatusFramePeriod(StatusFrameEnhanced.Status_Brushless_Current, 1000);
+            motor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 5000);
+            motor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 5000);
+            motor.setStatusFramePeriod(StatusFrameEnhanced.Status_14_Turn_PIDF1, 5000);
+            motor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1000);
+        }
+
         this.outsideClimberSolenoid = ph.makeSolenoid(Constants.Pneumatics.climberOutsideChannel);
         this.insideClimberSolenoid = ph.makeDoubleSolenoid(
             Constants.Pneumatics.climberInsideChannel, Constants.Pneumatics.climberInsideChannel2);
