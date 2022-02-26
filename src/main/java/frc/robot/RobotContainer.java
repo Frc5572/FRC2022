@@ -157,7 +157,7 @@ public class RobotContainer {
         // autoCommand = new LimelightAuto(swerveDrive, vision);
         // }
 
-        return new P1_P3(swerveDrive, shooter, magazine, intake);
+        return new P1_P3(swerveDrive, shooter, magazine, intake, turret, vision);
     }
 
 
