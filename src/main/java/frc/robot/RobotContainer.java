@@ -3,14 +3,15 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -21,6 +22,7 @@ import frc.robot.commands.LeftTurretMove;
 import frc.robot.commands.PositionHood;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
+import frc.robot.modules.LEDs;
 import frc.robot.modules.Vision;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Hood;
@@ -41,8 +43,6 @@ public class RobotContainer {
     private final XboxController driver = new XboxController(Constants.driverID);
     private final XboxController operator = new XboxController(Constants.operatorID);
 
-    private final Spark LEDs = new Spark(Constants.LEDConstants.LEDPort);
-
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
     boolean fieldRelative;
@@ -53,6 +53,7 @@ public class RobotContainer {
     private final Swerve swerveDrive = new Swerve();
     private final Magazine magazine = new Magazine();
     private final Intake intake;
+    private final LEDs leds;
     private final Turret turret = new Turret();
     private Vision vision = new Vision();
     private final Hood hood = new Hood(vision);
@@ -64,10 +65,10 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-        LEDs.set(0.61);
         ph.enableCompressorAnalog(100, 120);
         climber = new Climber(ph);
         intake = new Intake(ph);
+        leds = new LEDs(Constants.LEDPort);
         swerveDrive.zeroGyro();
         hood.setDefaultCommand(new PositionHood(hood, vision.getHoodValue()));
         SmartDashboard.putData("Choose Auto: ", autoChooser);
@@ -94,10 +95,10 @@ public class RobotContainer {
         /* Driver Buttons */
         new JoystickButton(operator, XboxController.Button.kB.value)
             .whenPressed(new ParallelRaceGroup(new InstantCommand(shooter::enable, shooter),
-                new InstantCommand(() -> LEDs.set(Constants.LEDConstants.red))).andThen(
+                new InstantCommand(() -> leds.setRed())).andThen(
                     new WaitUntilCommand(() -> shooter.atSetpoint()),
                     new ParallelRaceGroup(new InstantCommand(magazine::enable, magazine),
-                        new InstantCommand(() -> LEDs.set(Constants.LEDConstants.green)))))
+                        new InstantCommand(() -> leds.setGreen()))))
             .whenReleased(new InstantCommand(shooter::disable, shooter))
             .whenReleased(new InstantCommand(magazine::disable, magazine));
         new JoystickButton(driver, XboxController.Button.kY.value)
@@ -122,6 +123,14 @@ public class RobotContainer {
         // .whileHeld(new RightTurretMove(turret));
         // new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
         // .whileHeld(new LeftTurretMove(turret));
+
+        new JoystickButton(driver, XboxController.Button.kX.value).whenPressed(
+            new SequentialCommandGroup(new InstantCommand(() -> leds.setGlitterRainbow()),
+                new WaitCommand(2), new InstantCommand(() -> leds.setLarsonScanGray())));
+        // new WaitCommand(5), new InstantCommand(() -> leds.setGlitterRainbow()),
+        // new WaitCommand(5), new InstantCommand(() -> leds.setBreathBlue()),
+        // new WaitCommand(5), new InstantCommand(() -> leds.setColorWaveOcean()),
+        // new WaitCommand(5), new InstantCommand(() -> leds.setSinelonLava())));
 
         new JoystickButton(operator, XboxController.Button.kY.value).whileHeld(
             new StartEndCommand(() -> intake.intakeDeploy(), () -> intake.intakeRetract(), intake));
