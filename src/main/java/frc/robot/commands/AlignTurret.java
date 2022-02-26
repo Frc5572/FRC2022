@@ -19,6 +19,8 @@ public class AlignTurret extends CommandBase {
         if (this.turret.status) {
             if (vision.getTargetFound()) {
                 turret.turretSet(vision.getAimValue());
+            } else {
+                turret.turretSet(0);
             }
         } else {
             turret.turretSet(0);

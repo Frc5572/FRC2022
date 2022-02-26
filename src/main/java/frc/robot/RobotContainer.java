@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 // import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.TestAuto;
+import frc.robot.commands.AlignTurret;
 import frc.robot.commands.PositionHood;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
@@ -74,7 +75,7 @@ public class RobotContainer {
         autoChooser.addOption("Test Auto", new TestAuto(swerveDrive));
         swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, vision, driver,
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, false));
-        // turret.setDefaultCommand(new AlignTurret(turret, vision));
+        turret.setDefaultCommand(new AlignTurret(turret, vision));
         // Configure the button bindings
         // hood.getCANCoderPos();
         configureButtonBindings();
