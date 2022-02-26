@@ -9,14 +9,16 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.autos.LimelightAuto;
+import frc.robot.autos.P0;
 import frc.robot.autos.P13B;
+import frc.robot.autos.P_2B;
 import frc.robot.commands.LeftTurretMove;
 import frc.robot.commands.PositionHood;
+import frc.robot.commands.RightTurretMove;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.modules.Vision;
@@ -41,11 +43,17 @@ public class RobotContainer {
 
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
+    private Command autoCommand;
+    // private final Button shooterMotor = new Button(
+    // () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4);
+    private final Shooter shooter = new Shooter();
+
+
+
     boolean fieldRelative;
     boolean openLoop;
 
     /* Subsystems */
-    private final Shooter shooter = new Shooter();
     private final Swerve swerveDrive = new Swerve();
     private final Magazine magazine = new Magazine();
     private final Intake intake;
@@ -69,6 +77,9 @@ public class RobotContainer {
         autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
         autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, vision));
         autoChooser.addOption("Test Auto", new P13B(swerveDrive, shooter, magazine, intake));
+        autoChooser.addOption("P0", new P0(swerveDrive));
+        autoChooser.addOption("P_2B",
+            new P_2B(swerveDrive, shooter, magazine, intake, turret, vision));
         swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, vision, driver,
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, false));
         turret.setDefaultCommand(new FunctionalCommand(() -> {
@@ -87,14 +98,17 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
-        new JoystickButton(operator, XboxController.Button.kB.value)
-            .whenPressed(new InstantCommand(shooter::enable, shooter).andThen(
-                new WaitUntilCommand(() -> shooter.atSetpoint()),
-                new InstantCommand(magazine::enable, magazine)))
-            .whenReleased(new InstantCommand(shooter::disable, shooter))
-            .whenReleased(new InstantCommand(magazine::disable, magazine));
+        final Button shooterCom = new Button(
+            () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4)
+                .whenPressed(new InstantCommand(shooter::enable, shooter))
+                .whenReleased(new InstantCommand(shooter::disable, shooter));
         new JoystickButton(driver, XboxController.Button.kY.value)
             .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
+        new JoystickButton(driver, XboxController.Button.kX.value)
+            .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
+                Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
+        // shooterMotor.whenHeld(new ShooterRev(shooter));
+
         // new JoystickButton(operator, XboxController.Button.kA.value)
         // .whileHeld(new InstantCommand(() -> System.out.println(magazine.magSense.get())));
         new JoystickButton(operator, XboxController.Button.kA.value)
@@ -111,19 +125,14 @@ public class RobotContainer {
         // new JoystickButton(driver, XboxController.Button.kX.value)
         // .whileHeld(new TeleopSwerve(swerveDrive, vision, driver,
         // Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, true));
-        // new JoystickButton(driver, XboxController.Button.kRightBumper.value)
-        // .whileHeld(new RightTurretMove(turret));
-        // new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
-        // .whileHeld(new LeftTurretMove(turret));
+        new JoystickButton(driver, XboxController.Button.kRightBumper.value)
+            .whileHeld(new RightTurretMove(turret));
+        new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
+            .whileHeld(new LeftTurretMove(turret));
 
         new JoystickButton(operator, XboxController.Button.kY.value).whileHeld(
             new StartEndCommand(() -> intake.intakeDeploy(), () -> intake.intakeRetract(), intake));
 
-        new Button(
-            () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4)
-                .whileHeld(new StartEndCommand(intake::in, intake::stop, intake));
-        new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
-            .whileHeld(new LeftTurretMove(turret));
         new POVButton(driver, 0).whileHeld(new StartEndCommand(() -> climber.engageOutsideMotors(),
             () -> climber.stopOutsideMotors()));
         new POVButton(driver, 180).whileHeld(new StartEndCommand(
@@ -143,4 +152,6 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         return new P13B(swerveDrive, shooter, magazine, intake);
     }
+
+
 }

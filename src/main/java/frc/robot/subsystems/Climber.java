@@ -46,6 +46,7 @@ public class Climber extends SubsystemBase {
         this.outsideClimberSolenoid = ph.makeSolenoid(Constants.Pneumatics.climberOutsideChannel);
         this.insideClimberSolenoid = ph.makeDoubleSolenoid(
             Constants.Pneumatics.climberInsideChannel, Constants.Pneumatics.climberInsideChannel2);
+        this.insideClimberSolenoid.set(Value.kReverse);
     }
 
     // This command will deploy the outside climbers solenoids.
