@@ -23,22 +23,22 @@ import frc.robot.subsystems.Turret;
 /**
  * Autonomous that aligns limelight then excecutes a trajectory.
  */
-public class P1_P3 extends AutoBase {
+public class P_2B extends AutoBase {
 
     /**
      * Autonomous that aligns limelight then excecutes a trajectory.
      *
      * @param swerve swerve subsystem
      */
-    public P1_P3(Swerve swerve, Shooter shooter, Magazine magazine, Intake intake, Turret turret,
+    public P_2B(Swerve swerve, Shooter shooter, Magazine magazine, Intake intake, Turret turret,
         Vision vision) {
         super(swerve);
         addRequirements(shooter, magazine, intake, turret);
 
-        PathPlannerTrajectory P1_P3 = PathPlanner.loadPath("P1_P3", 1, 1);
-        PPSwerveControllerCommand autoDrive = baseSwerveCommand(P1_P3);
+        PathPlannerTrajectory P_2B = PathPlanner.loadPath("P_2B", 1, 1);
+        PPSwerveControllerCommand autoDrive = baseSwerveCommand(P_2B);
 
-        addCommands(new InstantCommand(() -> swerve.resetOdometry(P1_P3.getInitialPose())),
+        addCommands(new InstantCommand(() -> swerve.resetOdometry(P_2B.getInitialPose())),
             new InstantCommand(() -> shooter.setSetpoint(Constants.ShooterPID.kShooterTargetRPS)),
             new ParallelCommandGroup(
                 new SequentialCommandGroup(
