@@ -36,10 +36,6 @@ public class Intake extends SubsystemBase {
         this.intakeSol.set(true);
     }
 
-    public void in() {
-        this.intakeMotor.set(.8);
-    }
-
     public void stop() {
         this.intakeMotor.set(0);
     }
