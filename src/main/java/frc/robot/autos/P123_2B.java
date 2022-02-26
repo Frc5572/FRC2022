@@ -35,10 +35,10 @@ public class P123_2B extends AutoBase {
         super(swerve);
         addRequirements(shooter, magazine, intake, turret);
 
-        PathPlannerTrajectory P_2B = PathPlanner.loadPath("P_2B", 1, 1);
-        PPSwerveControllerCommand autoDrive = baseSwerveCommand(P_2B);
+        PathPlannerTrajectory p123_2B = PathPlanner.loadPath("P_2B", 1, 1);
+        PPSwerveControllerCommand autoDrive = baseSwerveCommand(p123_2B);
 
-        addCommands(new InstantCommand(() -> swerve.resetOdometry(P_2B.getInitialPose())),
+        addCommands(new InstantCommand(() -> swerve.resetOdometry(p123_2B.getInitialPose())),
             new InstantCommand(() -> shooter.setSetpoint(Constants.ShooterPID.kShooterTargetRPS)),
             new ParallelCommandGroup(
                 new SequentialCommandGroup(
