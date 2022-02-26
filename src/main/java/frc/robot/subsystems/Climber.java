@@ -1,10 +1,9 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -15,87 +14,87 @@ import frc.robot.Constants;
  */
 public class Climber extends SubsystemBase {
 
-    private final Solenoid outsideClimberSolenoid = new Solenoid(Constants.Pneumatics.pcm1,
-        PneumaticsModuleType.CTREPCM, Constants.Pneumatics.climberOutsideChannel);
-    private final DoubleSolenoid insideClimberSolenoid =
-        new DoubleSolenoid(Constants.Pneumatics.pcm1, PneumaticsModuleType.CTREPCM,
-            Constants.Pneumatics.climberInsideChannel, Constants.Pneumatics.climberInsideChannel2);
+    private final Solenoid outsideClimberSolenoid;
+    private final DoubleSolenoid insideClimberSolenoid;
 
-    private final CANSparkMax outsideClimberMotor1 =
-        new CANSparkMax(Constants.Motors.outsideClimberMotor1Id, MotorType.kBrushless);
-    private final CANSparkMax outsideClimberMotor2 =
-        new CANSparkMax(Constants.Motors.outsideClimberMotor2Id, MotorType.kBrushless);
-    private final CANSparkMax insideClimberMotor1 =
-        new CANSparkMax(Constants.Motors.insideClimberMotor1Id, MotorType.kBrushless);
-    private final CANSparkMax insideClimberMotor2 =
-        new CANSparkMax(Constants.Motors.insideClimberMotor2Id, MotorType.kBrushless);
+    private final WPI_TalonFX outsideClimberMotor1 =
+        new WPI_TalonFX(Constants.Motors.outsideClimberMotorRightId);
+    private final WPI_TalonFX outsideClimberMotor2 =
+        new WPI_TalonFX(Constants.Motors.outsideClimberMotorLeftId);
+    private final WPI_TalonFX insideClimberMotor1 =
+        new WPI_TalonFX(Constants.Motors.insideClimberMotorRightId);
+    private final WPI_TalonFX insideClimberMotor2 =
+        new WPI_TalonFX(Constants.Motors.insideClimberMotorLeftId);
 
     private final MotorControllerGroup outsideMotors =
         new MotorControllerGroup(outsideClimberMotor1, outsideClimberMotor2);
     private final MotorControllerGroup insideMotors =
         new MotorControllerGroup(insideClimberMotor1, insideClimberMotor2);
 
-    private static final double motorSpeed = .6;
+    private static final double motorSpeed = .1;
     private static final int motorStop = 0;
 
-    // Sets motors to inverted control mode.
-    public Climber() {
-        outsideClimberMotor1.setInverted(true);
-        insideClimberMotor1.setInverted(true);
+    /**
+     * Constructs the Climber Subsystem
+     *
+     * @param ph PneumaticHub to create solenoids
+     */
+    public Climber(PneumaticHub ph) {
+        super();
+        this.outsideClimberMotor1.setInverted(true);
+        this.insideClimberMotor1.setInverted(true);
+        this.outsideClimberSolenoid = ph.makeSolenoid(Constants.Pneumatics.climberOutsideChannel);
+        this.insideClimberSolenoid = ph.makeDoubleSolenoid(
+            Constants.Pneumatics.climberInsideChannel, Constants.Pneumatics.climberInsideChannel2);
+        this.insideClimberSolenoid.set(Value.kReverse);
     }
-
-    // Initialize sets solenoids to false, or reverse, which makes it in the "Off" position
-    // public void initialize() {
-    // outsideClimberSolenoid.set(false);
-    // insideClimberSolenoid.set(Value.kReverse);
-    // }
 
     // This command will deploy the outside climbers solenoids.
     public void deployOutsideClimbers() {
-        outsideClimberSolenoid.set(true);
+        this.outsideClimberSolenoid.set(true);
     }
 
     // This command will deploy the inside climbers solenoids.
     public void deployInsideClimbers() {
-        insideClimberSolenoid.set(Value.kForward);
+        this.insideClimberSolenoid.set(Value.kForward);
     }
 
     // This command will start to move the outside climber's motors.
     public void engageOutsideMotors() {
-        outsideMotors.set(motorSpeed);
+        this.outsideMotors.set(motorSpeed);
     }
 
     // This command will stop moving the outside climber's motors.
     public void disengageOutsideMotors() {
-        outsideMotors.set(-motorSpeed);
+        this.outsideMotors.set(-motorSpeed);
     }
 
     // This command will start to move the inside climber's motors.
     public void engageInsideMotors() {
-        insideMotors.set(motorSpeed);
+        this.insideMotors.set(motorSpeed);
     }
 
     // This command will stop moving the inside climber's motors.
     public void disengageInsideMotors() {
-        insideMotors.set(-motorSpeed);
+        this.insideMotors.set(-motorSpeed);
     }
 
     // This will set the outside climber's pneumatics back to the default position.
     public void retractOutsideClimbers() {
-        outsideClimberSolenoid.set(false);
+        this.outsideClimberSolenoid.set(false);
     }
 
     // This will set the inside climber's pneumatics back to the default position .
     // (hopefully, not sure about double solenoids yet)
     public void retractInsideClimbers() {
-        insideClimberSolenoid.set(Value.kReverse);
+        this.insideClimberSolenoid.set(Value.kReverse);
     }
 
     public void stopInsideMotors() {
-        insideMotors.set(motorStop);
+        this.insideMotors.set(motorStop);
     }
 
     public void stopOutsideMotors() {
-        outsideMotors.set(motorStop);
+        this.outsideMotors.set(motorStop);
     }
 }
