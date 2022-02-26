@@ -14,7 +14,9 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.P0;
 import frc.robot.autos.P_2B;
+import frc.robot.commands.InsidePC;
 import frc.robot.commands.LeftTurretMove;
+import frc.robot.commands.OutsidePC;
 import frc.robot.commands.PositionHood;
 import frc.robot.commands.RightTurretMove;
 import frc.robot.commands.TeleopSwerve;
@@ -113,6 +115,12 @@ public class RobotContainer {
         // Left Turret Move While Operator Left Bumper Held
         new JoystickButton(operator, XboxController.Button.kLeftBumper.value)
             .whileHeld(new LeftTurretMove(turret));
+        // Inside Pneumatics Activate On Operator
+        new JoystickButton(driver, XboxController.Button.kX.value)
+            .whenPressed(new InsidePC(climber));
+        // Outside Pneumatics Activate On Operator
+        new JoystickButton(driver, XboxController.Button.kY.value)
+            .whenPressed(new OutsidePC(climber));
 
         /* POV Button Mappings for Climber Motors */
 
