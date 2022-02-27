@@ -10,8 +10,8 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.P0;
 import frc.robot.autos.P_2B;
@@ -21,10 +21,11 @@ import frc.robot.commands.OutsidePC;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.modules.Vision;
-import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.InsideClimber;
 // import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Magazine;
+import frc.robot.subsystems.OutsideClimber;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Turret;
@@ -57,7 +58,8 @@ public class RobotContainer {
     private Vision vision = new Vision();
     private final Shooter shooter = new Shooter();
     // private final Hood hood = new Hood(vision);
-    private final Climber climber;
+    private final InsideClimber insideClimber;
+    private final OutsideClimber outsideClimber;
     public PneumaticHub ph = new PneumaticHub();
 
     /**
@@ -65,7 +67,8 @@ public class RobotContainer {
      */
     public RobotContainer() {
         ph.enableCompressorAnalog(100, 120);
-        climber = new Climber(ph);
+        insideClimber = new InsideClimber(ph);
+        outsideClimber = new OutsideClimber(ph);
         intake = new Intake(ph);
         turret.setDefaultCommand(new AlignTurret(turret, vision));
         // hood.setDefaultCommand(new PositionHood(hood, vision.getHoodValue()));
@@ -101,18 +104,43 @@ public class RobotContainer {
 
         /* POV Button Mappings for Climber Motors */
 
-        // Operator POV Up - Outside Motors Out
-        new POVButton(driver, 0).whileHeld(new StartEndCommand(() -> climber.engageInsideMotors(),
-            () -> climber.stopInsideMotors()));
-        // Operator POV Down - Outside Motors In
-        new POVButton(driver, 180).whileHeld(new StartEndCommand(
-            () -> climber.retractOutsideMotors(), () -> climber.stopOutsideMotors()));
-        // Operator POV Right - Inside Motors Out
-        new POVButton(driver, 90).whileHeld(new StartEndCommand(() -> climber.engageOutsideMotors(),
-            () -> climber.stopOutsideMotors()));
-        // Operator POV Left - Inside Motors In
-        new POVButton(driver, 270).whileHeld(new StartEndCommand(
-            () -> climber.engageOutsideMotors(), () -> climber.stopOutsideMotors()));
+
+        new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
+            .whileHeld(new StartEndCommand(() -> outsideClimber.engageOutsideMotors(),
+                () -> outsideClimber.stopOutsideMotors(), outsideClimber));
+        new Button(() -> Math.abs(driver.getRawAxis(XboxController.Axis.kLeftTrigger.value)) > .4)
+            .whileHeld(new StartEndCommand(() -> outsideClimber.retractOutsideMotors(),
+                () -> outsideClimber.stopOutsideMotors(), outsideClimber));
+
+        new JoystickButton(driver, XboxController.Button.kRightBumper.value)
+            .whileHeld(new StartEndCommand(() -> insideClimber.engageInsideMotors(),
+                () -> insideClimber.stopInsideMotors(), insideClimber));
+        new Button(() -> Math.abs(driver.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4)
+            .whileHeld(new StartEndCommand(() -> insideClimber.retractInsideMotors(),
+                () -> insideClimber.stopInsideMotors(), insideClimber));
+
+        // Inside Pneumatics Activate On Operator
+        new JoystickButton(driver, XboxController.Button.kA.value)
+            .whenPressed(new InsidePC(insideClimber));
+        // Outside Pneumatics Activate On Operator
+        new JoystickButton(driver, XboxController.Button.kB.value)
+            .whenPressed(new OutsidePC(outsideClimber));
+        new JoystickButton(driver, XboxController.Button.kStart.value)
+            .whenPressed(new InstantCommand(() -> insideClimber.enableClimbers())
+                .andThen(new InstantCommand(() -> outsideClimber.enableClimbers())));
+
+        // // Operator POV Up - INside Motors Out
+        // new POVButton(driver, 0).whileHeld(new StartEndCommand(
+        // () -> insideClimber.engageInsideMotors(), () -> insideClimber.stopInsideMotors()));
+        // // Operator POV Down - Inside Motors In
+        // new POVButton(driver, 90).whileHeld(new StartEndCommand(
+        // () -> insideClimber.retractInsideMotors(), () -> insideClimber.stopInsideMotors()));
+        // // Operator POV Right - Outside Motors In
+        // new POVButton(driver, 180).whileHeld(new StartEndCommand(
+        // () -> insideClimber.retractOutsideMotors(), () -> insideClimber.stopOutsideMotors()));
+        // // Operator POV Left - Outside Motors OUt
+        // new POVButton(driver, 270).whileHeld(new StartEndCommand(
+        // () -> insideClimber.engageOutsideMotors(), () -> insideClimber.stopOutsideMotors()));
 
         /* Operator Buttons */
 
@@ -136,12 +164,13 @@ public class RobotContainer {
         // Left Turret Move While Operator Left Bumper Held
         new JoystickButton(operator, XboxController.Button.kLeftBumper.value).whileHeld(
             new StartEndCommand(() -> turret.turretLeft(), () -> turret.turretStop(), turret));
-        // Inside Pneumatics Activate On Operator
-        new JoystickButton(operator, XboxController.Button.kX.value)
-            .whenPressed(new InsidePC(climber));
-        // Outside Pneumatics Activate On Operator
-        new JoystickButton(operator, XboxController.Button.kY.value)
-            .whenPressed(new OutsidePC(climber));
+
+        // new JoystickButton(operator, XboxController.Button.kA.value)
+        // .whenPressed(new InstantCommand(shooter::enable, shooter).andThen(
+        // new WaitUntilCommand(() -> shooter.atSetpoint()),
+        // new InstantCommand(magazine::enable, magazine)))
+        // .whenReleased(new InstantCommand(shooter::disable, shooter))
+        // .whenRelease
     }
 
     /**

@@ -1,29 +1,29 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.InsideClimber;
 
 /**
  * Inside PC stands for "Inside Pneumatic Control". This command controls the pneumatics for the
  * inside arms.
  */
 public class InsidePC extends CommandBase {
-    private Climber climber;
+    private InsideClimber climber;
     private boolean status = false;
 
-    public InsidePC(Climber climber) {
+    public InsidePC(InsideClimber climber) {
         this.climber = climber;
         addRequirements(climber);
     }
 
     @Override
     public void initialize() {
-        if (!status) {
+        if (status) {
             this.climber.deployInsideClimbers();
-            status = true;
+            status = false;
         } else {
             this.climber.retractInsideClimbers();
-            status = false;
+            status = true;
         }
     }
 
