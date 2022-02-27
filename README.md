@@ -34,7 +34,7 @@ Mag/Shooter Combo - A
 
 Outside Motors In - DPad Up
 
-Outside Motors Out DPad Down
+Outside Motors Out - DPad Down
 
 Inside Motors In - Dpad Right
 
