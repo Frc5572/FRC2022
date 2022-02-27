@@ -8,16 +8,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.P0;
 import frc.robot.autos.P_2B;
-import frc.robot.commands.InsidePC;
-import frc.robot.commands.LeftTurretMove;
 import frc.robot.commands.OutsidePC;
 import frc.robot.commands.PositionHood;
 import frc.robot.commands.RightTurretMove;
@@ -50,6 +51,9 @@ public class RobotContainer {
     // Field Relative and openLoop Variables
     boolean fieldRelative;
     boolean openLoop;
+
+    // Climber LEDs Integer
+    int ledClimber = 0;
 
     /* Subsystems */
     private final Swerve swerveDrive = new Swerve();
@@ -85,9 +89,16 @@ public class RobotContainer {
         swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, vision, driver,
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, false));
         // Turret Default Command
-        turret.setDefaultCommand(new FunctionalCommand(() -> {
+        turret.setDefaultCommand(new ParallelCommandGroup(new FunctionalCommand(() -> {
+        }, () -> {
+            if (vision.getTargetAligned())
+                leds.setBlue();
+            else
+                leds.setRed();
+        }, interupt -> {
+        }, () -> false), new FunctionalCommand(() -> {
         }, () -> turret.turretSet(vision.getTargetFound() ? vision.getAimValue() : 0), interupt -> {
-        }, () -> false, turret));
+        }, () -> false, turret)));
         // Configure the button bindings
         configureButtonBindings();
     }
@@ -127,10 +138,20 @@ public class RobotContainer {
             .whileHeld(new RightTurretMove(turret));
         // Left Turret Move While Operator Left Bumper Held
         new JoystickButton(operator, XboxController.Button.kLeftBumper.value)
-            .whileHeld(new LeftTurretMove(turret));
+            .whenPressed(new SequentialCommandGroup(new InstantCommand(() -> leds.setRainbow()),
+                new WaitCommand(5), new InstantCommand(() -> leds.setGlitterRainbow()),
+                new WaitCommand(5), new InstantCommand(() -> leds.setTwinkleRainbow()),
+                new WaitCommand(5), new InstantCommand(() -> leds.setColorWaveRainbow())));
         // Inside Pneumatics Activate On Operator
-        new JoystickButton(driver, XboxController.Button.kX.value)
-            .whenPressed(new InsidePC(climber));
+        // new JoystickButton(driver, XboxController.Button.kX.value)
+        // .whenPressed(new ParallelCommandGroup(new FunctionalCommand(() -> {}, () -> {
+        // if(ledClimber == 0){
+        // led.setYellow();
+        // ledClimber += 1;
+        // } else {
+        // led.setRed();
+        // }
+        // }), new InsidePC(climber));
         // Outside Pneumatics Activate On Operator
         new JoystickButton(driver, XboxController.Button.kY.value)
             .whenPressed(new OutsidePC(climber));
