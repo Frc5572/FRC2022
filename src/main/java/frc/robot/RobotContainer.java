@@ -96,7 +96,7 @@ public class RobotContainer {
             .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
         // Turn Off Turret For Rest of Match on Driver X Pressed
         new JoystickButton(driver, XboxController.Button.kX.value)
-            .whenPressed(new InstantCommand(() -> turret.alignEnabled = false));
+            .whenPressed(new InstantCommand(() -> turret.alignEnabled = !turret.alignEnabled));
 
         /* Operator Buttons */
 
