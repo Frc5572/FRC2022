@@ -28,7 +28,7 @@ Disable Turret AutoAlignment - X
 Align Gyro - Y
 
 ## Operator
-Intake - B
+Intake/Magazine Combo - B
 
 Mag/Shooter Combo - A
 
