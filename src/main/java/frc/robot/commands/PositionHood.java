@@ -1,7 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.modules.Vision;
+import frc.robot.modules.Limelight;
 import frc.robot.subsystems.Hood;
 
 /**
@@ -12,16 +12,16 @@ import frc.robot.subsystems.Hood;
 
 public class PositionHood extends CommandBase {
     Hood hood;
-    Vision vision;
+    Limelight limelight;
 
     /**
      *
      * @param hood hood subsystem
-     * @param vision vision subsystem
+     * @param limelight limelight subsystem
      */
-    public PositionHood(Hood hood, Vision vision) {
+    public PositionHood(Hood hood, Limelight limelight) {
         this.hood = hood;
-        this.vision = vision;
+        this.limelight = limelight;
         addRequirements(hood);
     }
 

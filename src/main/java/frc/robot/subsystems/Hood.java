@@ -8,7 +8,7 @@ import com.ctre.phoenix.sensors.SensorTimeBase;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.modules.Vision;
+import frc.robot.modules.Limelight;
 
 /**
  * <p>
@@ -21,7 +21,7 @@ public class Hood extends SubsystemBase {
     CANCoder hoodCANCoder = new CANCoder(Constants.HoodConstants.hoodCANCoderID);
     public Servo hoodServo = new Servo(Constants.HoodConstants.hoodServoID);
     // public PWM test = new PWM(Constants.HoodConstants.hoodServoID);
-    Vision vision;
+    Limelight limelight;
     double position;
     double calculatedPosition;
 
@@ -32,8 +32,8 @@ public class Hood extends SubsystemBase {
      * </p>
      */
 
-    public Hood(Vision vision) {
-        this.vision = vision;
+    public Hood(Limelight limelight) {
+        this.limelight = limelight;
         /* hood CANCoder Configuration */
         hoodCanCoderConfig.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
         hoodCanCoderConfig.sensorDirection = Constants.HoodConstants.hoodCanCoderInvert;
@@ -52,7 +52,7 @@ public class Hood extends SubsystemBase {
     public void setHoodPosition() {
         // replace this line with hood position calculation using
         // distance!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        position = vision.getDistance();
+        position = limelight.getDistance();
         calculatedPosition = Math.pow(position, 2) * position + 3000000;
         double error = position - hoodCANCoder.getAbsolutePosition();
         System.out.println(error);

@@ -19,7 +19,7 @@ import frc.robot.commands.InsidePC;
 import frc.robot.commands.OutsidePC;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
-import frc.robot.modules.Vision;
+import frc.robot.modules.Limelight;
 import frc.robot.subsystems.Climber;
 // import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Intake;
@@ -53,7 +53,7 @@ public class RobotContainer {
     private final Magazine magazine = new Magazine();
     private final Intake intake;
     private final Turret turret = new Turret();
-    private Vision vision = new Vision();
+    private Limelight limelight = new Limelight();
     private final Shooter shooter = new Shooter();
     // private final Hood hood = new Hood(vision);
     private final Climber climber;
@@ -66,15 +66,15 @@ public class RobotContainer {
         ph.enableCompressorAnalog(100, 120);
         climber = new Climber(ph);
         intake = new Intake(ph);
-        turret.setDefaultCommand(new AlignTurret(turret, vision));
+        turret.setDefaultCommand(new AlignTurret(turret, limelight));
         // hood.setDefaultCommand(new PositionHood(hood, vision.getHoodValue()));
         // Adding AutoChooser Options
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
-        autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, turret, vision));
+        autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, turret, limelight));
         autoChooser.addOption("P0", new P0(swerveDrive));
         autoChooser.addOption("P_2B",
-            new P_2B(swerveDrive, shooter, magazine, intake, turret, vision));
+            new P_2B(swerveDrive, shooter, magazine, intake, turret, limelight));
         // Default Swerve Command
         swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, driver,
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop));

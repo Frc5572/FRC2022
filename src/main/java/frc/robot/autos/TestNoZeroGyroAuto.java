@@ -10,22 +10,22 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.modules.AutoBase;
-import frc.robot.modules.Vision;
+import frc.robot.modules.Limelight;
 import frc.robot.subsystems.Swerve;
 
 /**
  * Autonomous that aligns limelight then excecutes a trajectory.
  */
 public class TestNoZeroGyroAuto extends AutoBase {
-    Vision vision;
+    Limelight limelight;
 
     /**
      * Autonomous that aligns limelight then excecutes a trajectory.
      *
      * @param swerve swerve subsystem
-     * @param vision vision subsystem
+     * @param limelight limelight subsystem
      */
-    public TestNoZeroGyroAuto(Swerve swerve, Vision vision) {
+    public TestNoZeroGyroAuto(Swerve swerve, Limelight limelight) {
         super(swerve);
         System.out.println("Limelight Auto !!");
         TrajectoryConfig config =

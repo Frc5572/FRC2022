@@ -1,7 +1,9 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.modules.Vision;
+import frc.robot.Constants;
+import frc.robot.modules.Limelight;
+import frc.robot.modules.Limelight.VisionState;
 import frc.robot.subsystems.Turret;
 
 /**
@@ -10,26 +12,35 @@ import frc.robot.subsystems.Turret;
 
 public class AlignTurret extends CommandBase {
     Turret turret;
-    Vision vision;
+    Limelight limelight;
 
     /**
      *
      * @param turret turret subsystem
-     * @param vision vision subsystem
+     * @param limelight limelight subsystem
      */
-    public AlignTurret(Turret turret, Vision vision) {
+    public AlignTurret(Turret turret, Limelight limelight) {
         this.turret = turret;
-        this.vision = vision;
+        this.limelight = limelight;
         addRequirements(turret);
     }
 
     @Override
     public void execute() {
-        if (this.turret.alignEnabled && vision.getTargetFound()) {
-            turret.turretSet(vision.getAimValue());
+        if (this.turret.alignEnabled && limelight.getTargetFound()) {
+            VisionState state = limelight.getState();
+            double calculated = (state.xOffset / 125) * 3;
+            calculated = (Math.abs(calculated) <= Constants.VisionConstants.deadPocket) ? 0
+                : (calculated >= .3) ? .3 : calculated;
+
+            turret.turretSet(calculated);
         } else {
             turret.turretSet(0);
         }
     }
 
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
 }
