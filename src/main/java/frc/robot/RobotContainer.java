@@ -138,7 +138,10 @@ public class RobotContainer {
         new POVButton(driver, 270).whileHeld(new StartEndCommand(
             () -> climber.retractInsideMotors(), () -> climber.stopInsideMotors()));
 
-        // AxisButton test = new AxisButton(driver, XboxController.Axis.kRightTrigger.value);
+        // new AxisButton(driver, XboxController.Axis.kLeftTrigger.value).whileHeld(
+        // new StartEndCommand(() -> turret.turretLeft(), () -> turret.turretStop(), turret));
+        // new AxisButton(driver, XboxController.Axis.kRightTrigger.value).whileHeld(
+        // new StartEndCommand(() -> turret.turretRight(), () -> turret.turretStop(), turret));
     }
 
     /**
