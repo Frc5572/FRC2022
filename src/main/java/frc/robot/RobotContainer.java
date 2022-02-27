@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
@@ -19,12 +18,11 @@ import frc.robot.autos.P_2B;
 import frc.robot.commands.AlignTurret;
 import frc.robot.commands.InsidePC;
 import frc.robot.commands.OutsidePC;
-import frc.robot.commands.PositionHood;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.modules.Vision;
 import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.Hood;
+// import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Magazine;
 import frc.robot.subsystems.Shooter;
@@ -59,7 +57,7 @@ public class RobotContainer {
     private final Turret turret = new Turret();
     private Vision vision = new Vision();
     private final Shooter shooter = new Shooter(vision);
-    private final Hood hood = new Hood(vision);
+    // private final Hood hood = new Hood(vision);
     private final Climber climber;
     public PneumaticHub ph = new PneumaticHub();
 
@@ -68,13 +66,11 @@ public class RobotContainer {
      */
     public RobotContainer() {
         ph.enableCompressorAnalog(100, 120);
-        // ph.enableCompressorAnalog(100, 120);
         climber = new Climber(ph);
         intake = new Intake(ph);
         swerveDrive.zeroGyro();
-        hood.setDefaultCommand(new PositionHood(hood, vision));
-        swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, vision, driver,
-            Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, false));
+        swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, driver,
+            Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop));
         turret.setDefaultCommand(new AlignTurret(turret, vision));
         // hood.setDefaultCommand(new PositionHood(hood, vision.getHoodValue()));
         // Adding AutoChooser Options
@@ -85,8 +81,8 @@ public class RobotContainer {
         autoChooser.addOption("P_2B",
             new P_2B(swerveDrive, shooter, magazine, intake, turret, vision));
         // Default Swerve Command
-        swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, vision, driver,
-            Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, false));
+        swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, driver,
+            Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop));
         // Configure the button bindings
         configureButtonBindings();
     }
@@ -100,29 +96,25 @@ public class RobotContainer {
     private void configureButtonBindings() {
 
         /* Driver Buttons */
-        new JoystickButton(operator, XboxController.Button.kB.value)
-            .whenPressed(new InstantCommand(shooter::enable, shooter).andThen(
-                new WaitUntilCommand(() -> shooter.atSetpoint()),
-                new InstantCommand(magazine::enable, magazine)))
-            .whenReleased(new InstantCommand(shooter::disable, shooter))
-            .whenReleased(new InstantCommand(magazine::disable, magazine));
         new JoystickButton(operator, XboxController.Button.kA.value)
             .whileHeld(new InstantCommand(() -> System.out.println(magazine.magSense.get())));
-
         // Reset Gyro on Driver Y pressed
         new JoystickButton(driver, XboxController.Button.kY.value)
             .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
+        // Turn Off Turret For Rest of Match on Driver X Pressed
+        new JoystickButton(driver, XboxController.Button.kX.value)
+            .whenPressed(new InstantCommand(() -> turret.status = false));
 
         /* Operator Buttons */
 
         // Enable Shooter Magazine Combo While Operator A Button Held
         new JoystickButton(operator, XboxController.Button.kA.value)
-            .whenPressed(new FunctionalCommand(magazine::enable, () -> {
-            }, interrupted -> magazine.disable(), () -> magazine.magSense.get(), magazine))
+            .whenPressed(new InstantCommand(shooter::enable, shooter).andThen(
+                new WaitUntilCommand(() -> shooter.atSetpoint()),
+                new InstantCommand(magazine::enable, magazine)))
+            .whenReleased(new InstantCommand(shooter::disable, shooter))
             .whenReleased(new InstantCommand(magazine::disable, magazine));
 
-        new JoystickButton(driver, XboxController.Button.kX.value)
-            .whenPressed(new InstantCommand(() -> turret.status = false));
 
         new Button(
             () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4)
