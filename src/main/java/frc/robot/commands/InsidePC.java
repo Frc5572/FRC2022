@@ -23,6 +23,7 @@ public class InsidePC extends CommandBase {
             status = true;
         } else {
             this.climber.retractInsideClimbers();
+            status = false;
         }
     }
 

@@ -10,20 +10,21 @@ import frc.robot.subsystems.Swerve;
 /**
  * Autonomous that aligns limelight then excecutes a trajectory.
  */
-public class TestAuto extends AutoBase {
+public class P0 extends AutoBase {
+    Swerve swerve;
 
     /**
      * Autonomous that aligns limelight then excecutes a trajectory.
      *
      * @param swerve swerve subsystem
      */
-    public TestAuto(Swerve swerve) {
+    public P0(Swerve swerve) {
         super(swerve);
+        PathPlannerTrajectory p0 = PathPlanner.loadPath("P0", 1, 1);
+        PPSwerveControllerCommand firstCommand = baseSwerveCommand(p0);
 
-        PathPlannerTrajectory examplePath = PathPlanner.loadPath("Rusinski's", 1, 1);
-        PPSwerveControllerCommand testCommand = baseSwerveCommand(examplePath);
+        addCommands(new InstantCommand(() -> swerve.resetOdometry(p0.getInitialPose())),
+            firstCommand);
 
-        addCommands(new InstantCommand(() -> swerve.resetOdometry(examplePath.getInitialPose())),
-            testCommand);
     }
 }

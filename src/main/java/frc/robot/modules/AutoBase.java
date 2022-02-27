@@ -26,6 +26,7 @@ public class AutoBase extends SequentialCommandGroup {
      */
     public AutoBase(Swerve swerve) {
         this.swerve = swerve;
+        addRequirements(swerve);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
     }
 
