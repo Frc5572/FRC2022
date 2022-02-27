@@ -23,7 +23,6 @@ public class Intake extends SubsystemBase {
      * @param ph PneumaticHub to create solenoids
      */
     public Intake(PneumaticHub ph) {
-        super();
         this.intakeSol = ph.makeSolenoid(Pneumatics.intakeFowardChannel);
         intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 5000);
         intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_Brushless_Current, 1000);
