@@ -86,7 +86,6 @@ public class Limelight {
     /**
      * @return whether target is found
      */
-
     public boolean getTargetFound() {
         // Whether the limelight has any valid targets (0 or 1)
         return limelightTable.getEntry("tv").getDouble(0.0) == 1.0;
@@ -99,11 +98,17 @@ public class Limelight {
         return calculated == 0;
     }
 
+    /**
+     * State of the Limelight data
+     */
     public static class VisionState {
         public final double xOffset;
         public final double yOffset;
         public final double timestamp;
 
+        /**
+         * State of the Limelight data
+         */
         public VisionState(double xOffset, double yOffset, double timestamp) {
             this.xOffset = xOffset;
             this.yOffset = yOffset;
