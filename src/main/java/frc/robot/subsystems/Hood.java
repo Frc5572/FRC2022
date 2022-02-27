@@ -26,7 +26,6 @@ public class Hood extends SubsystemBase {
     double calculatedPosition;
 
     /**
-     *
      * Hood subsystem.
      * <p>
      * Hood subsystem.
