@@ -29,7 +29,6 @@ public class Shooter extends PIDSubsystem {
         shooter.setInverted(true);
         shooter.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 1, 1);
         getController().setTolerance(Constants.ShooterPID.kShooterToleranceRPS); // IN RPS NOT RPM
-        setSetpoint(vision.getShooterSpeed()); // IN RPS NOT RPM
     }
 
     @Override
