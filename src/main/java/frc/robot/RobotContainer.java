@@ -137,6 +137,8 @@ public class RobotContainer {
         // Operator POV Left - Inside Motors In
         new POVButton(driver, 270).whileHeld(new StartEndCommand(
             () -> climber.retractInsideMotors(), () -> climber.stopInsideMotors()));
+
+        // AxisButton test = new AxisButton(driver, XboxController.Axis.kRightTrigger.value);
     }
 
     /**
