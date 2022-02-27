@@ -28,7 +28,7 @@ public class InsideMC extends CommandBase {
         if (dir) {
             this.climber.engageInsideMotors();
         } else {
-            this.climber.disengageInsideMotors();
+            this.climber.retractInsideMotors();
         }
     }
 
