@@ -42,8 +42,6 @@ public class RobotContainer {
     private final XboxController operator = new XboxController(Constants.operatorID);
 
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
-
-    private Command autoCommand;
     // private final Button shooterMotor = new Button(
     // () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4);
     private final Shooter shooter = new Shooter();
@@ -143,7 +141,6 @@ public class RobotContainer {
         new POVButton(driver, 270).whileHeld(new StartEndCommand(
             () -> climber.disengageInsideMotors(), () -> climber.stopInsideMotors()));
     }
-
 
     /**
      * Gets the user's selected autonomous command.
