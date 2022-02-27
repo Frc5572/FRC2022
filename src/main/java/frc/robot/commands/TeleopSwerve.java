@@ -4,7 +4,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.modules.Vision;
 import frc.robot.subsystems.Swerve;
 
 /**
@@ -16,12 +15,10 @@ public class TeleopSwerve extends CommandBase {
     private Translation2d translation;
     private boolean fieldRelative;
     private boolean openLoop;
-    private Vision vision;
     private Swerve swerveDrive;
     private double yaxis;
     private double xaxis;
     private double raxis;
-    private boolean aligning;
     private XboxController controller;
 
     /**
@@ -31,14 +28,12 @@ public class TeleopSwerve extends CommandBase {
      * @param fieldRelative Whether the movement is relative to the field or absolute
      * @param openLoop Open or closed loop system
      */
-    public TeleopSwerve(Swerve swerveDrive, Vision vision, XboxController controller,
-        boolean fieldRelative, boolean openLoop, boolean aligning) {
+    public TeleopSwerve(Swerve swerveDrive, XboxController controller, boolean fieldRelative,
+        boolean openLoop) {
         this.swerveDrive = swerveDrive;
         addRequirements(swerveDrive);
-        this.vision = vision;
         this.fieldRelative = fieldRelative;
         this.openLoop = openLoop;
-        this.aligning = aligning;
         this.controller = controller;
     }
 
@@ -55,8 +50,7 @@ public class TeleopSwerve extends CommandBase {
         // System.out.println(swerveDrive.getStringYaw());
 
         translation = new Translation2d(yaxis, xaxis).times(Constants.Swerve.maxSpeed);
-        rotation = aligning && vision.getTargetFound() ? vision.getAimValue()
-            : raxis * Constants.Swerve.maxAngularVelocity;
+        rotation = raxis * Constants.Swerve.maxAngularVelocity;
         swerveDrive.drive(translation, rotation, fieldRelative, openLoop);
     }
 }

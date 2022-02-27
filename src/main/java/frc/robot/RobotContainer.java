@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
@@ -15,16 +14,14 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.P0;
 import frc.robot.autos.P_2B;
+import frc.robot.commands.AlignTurret;
 import frc.robot.commands.InsidePC;
-import frc.robot.commands.LeftTurretMove;
 import frc.robot.commands.OutsidePC;
-import frc.robot.commands.PositionHood;
-import frc.robot.commands.RightTurretMove;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.modules.Vision;
 import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.Hood;
+// import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Magazine;
 import frc.robot.subsystems.Shooter;
@@ -49,14 +46,16 @@ public class RobotContainer {
     boolean fieldRelative;
     boolean openLoop;
 
+
     /* Subsystems */
+
     private final Swerve swerveDrive = new Swerve();
     private final Magazine magazine = new Magazine();
-    private final Shooter shooter = new Shooter();
     private final Intake intake;
     private final Turret turret = new Turret();
     private Vision vision = new Vision();
-    private final Hood hood = new Hood(vision);
+    private final Shooter shooter = new Shooter();
+    // private final Hood hood = new Hood(vision);
     private final Climber climber;
     public PneumaticHub ph = new PneumaticHub();
 
@@ -67,21 +66,18 @@ public class RobotContainer {
         ph.enableCompressorAnalog(100, 120);
         climber = new Climber(ph);
         intake = new Intake(ph);
-        hood.setDefaultCommand(new PositionHood(hood, vision.getHoodValue()));
+        turret.setDefaultCommand(new AlignTurret(turret, vision));
+        // hood.setDefaultCommand(new PositionHood(hood, vision.getHoodValue()));
         // Adding AutoChooser Options
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
-        autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, vision));
+        autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, turret, vision));
         autoChooser.addOption("P0", new P0(swerveDrive));
         autoChooser.addOption("P_2B",
             new P_2B(swerveDrive, shooter, magazine, intake, turret, vision));
         // Default Swerve Command
-        swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, vision, driver,
-            Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, false));
-        // Turret Default Command
-        turret.setDefaultCommand(new FunctionalCommand(() -> {
-        }, () -> turret.turretSet(vision.getTargetFound() ? vision.getAimValue() : 0), interupt -> {
-        }, () -> false, turret));
+        swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, driver,
+            Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop));
         // Configure the button bindings
         configureButtonBindings();
     }
@@ -95,10 +91,12 @@ public class RobotContainer {
     private void configureButtonBindings() {
 
         /* Driver Buttons */
-
         // Reset Gyro on Driver Y pressed
         new JoystickButton(driver, XboxController.Button.kY.value)
             .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
+        // Turn Off Turret For Rest of Match on Driver X Pressed
+        new JoystickButton(driver, XboxController.Button.kX.value)
+            .whenPressed(new InstantCommand(() -> turret.alignEnabled = !turret.alignEnabled));
 
         /* Operator Buttons */
 
@@ -113,13 +111,13 @@ public class RobotContainer {
         new JoystickButton(operator, XboxController.Button.kB.value).whileHeld(
             new StartEndCommand(() -> intake.intakeDeploy(), () -> intake.intakeRetract(), intake));
         // Right Turret Move While Operator Right Bumper Held
-        new JoystickButton(operator, XboxController.Button.kRightBumper.value)
-            .whileHeld(new RightTurretMove(turret));
+        new JoystickButton(operator, XboxController.Button.kRightBumper.value).whileHeld(
+            new StartEndCommand(() -> turret.turretRight(), () -> turret.turretStop(), turret));
         // Left Turret Move While Operator Left Bumper Held
-        new JoystickButton(operator, XboxController.Button.kLeftBumper.value)
-            .whileHeld(new LeftTurretMove(turret));
+        new JoystickButton(operator, XboxController.Button.kLeftBumper.value).whileHeld(
+            new StartEndCommand(() -> turret.turretLeft(), () -> turret.turretStop(), turret));
         // Inside Pneumatics Activate On Operator
-        new JoystickButton(driver, XboxController.Button.kX.value)
+        new JoystickButton(operator, XboxController.Button.kX.value)
             .whenPressed(new InsidePC(climber));
         // Outside Pneumatics Activate On Operator
         new JoystickButton(driver, XboxController.Button.kY.value)
