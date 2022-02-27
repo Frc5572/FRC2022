@@ -69,6 +69,7 @@ public class RobotContainer {
         climber = new Climber(ph);
         intake = new Intake(ph);
         leds = new LEDs(Constants.LEDPort);
+        leds.setRed();
         swerveDrive.zeroGyro();
         hood.setDefaultCommand(new PositionHood(hood, vision.getHoodValue()));
         SmartDashboard.putData("Choose Auto: ", autoChooser);
