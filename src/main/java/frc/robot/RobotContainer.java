@@ -96,7 +96,7 @@ public class RobotContainer {
             .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
         // Turn Off Turret For Rest of Match on Driver X Pressed
         new JoystickButton(driver, XboxController.Button.kX.value)
-            .whenPressed(new InstantCommand(() -> turret.alignEnabled = false));
+            .whenPressed(new InstantCommand(() -> turret.alignEnabled = !turret.alignEnabled));
 
         /* Operator Buttons */
 
@@ -111,13 +111,13 @@ public class RobotContainer {
         new JoystickButton(operator, XboxController.Button.kB.value).whileHeld(
             new StartEndCommand(() -> intake.intakeDeploy(), () -> intake.intakeRetract(), intake));
         // Right Turret Move While Operator Right Bumper Held
-        new JoystickButton(driver, XboxController.Button.kRightBumper.value).whileHeld(
+        new JoystickButton(operator, XboxController.Button.kRightBumper.value).whileHeld(
             new StartEndCommand(() -> turret.turretRight(), () -> turret.turretStop(), turret));
         // Left Turret Move While Operator Left Bumper Held
-        new JoystickButton(driver, XboxController.Button.kLeftBumper.value).whileHeld(
+        new JoystickButton(operator, XboxController.Button.kLeftBumper.value).whileHeld(
             new StartEndCommand(() -> turret.turretLeft(), () -> turret.turretStop(), turret));
         // Inside Pneumatics Activate On Operator
-        new JoystickButton(driver, XboxController.Button.kX.value)
+        new JoystickButton(operator, XboxController.Button.kX.value)
             .whenPressed(new InsidePC(climber));
         // Outside Pneumatics Activate On Operator
         new JoystickButton(driver, XboxController.Button.kY.value)

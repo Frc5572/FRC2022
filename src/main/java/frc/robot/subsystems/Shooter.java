@@ -6,7 +6,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.Constants;
-import frc.robot.modules.Vision;
 
 
 /**
@@ -17,15 +16,12 @@ public class Shooter extends PIDSubsystem {
     private final SimpleMotorFeedforward shooterFeed = new SimpleMotorFeedforward(
         Constants.ShooterPID.kSVolts, Constants.ShooterPID.kVVoltSecondsPerRotation);
 
-    Vision vision;
-
     /**
      * Create shooter class for PID
      */
-    public Shooter(Vision vision) {
+    public Shooter() {
         super(new PIDController(Constants.ShooterPID.kP, Constants.ShooterPID.kI,
             Constants.ShooterPID.kD));
-        this.vision = vision;
         shooter.setInverted(true);
         shooter.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 1, 1);
         getController().setTolerance(Constants.ShooterPID.kShooterToleranceRPS); // IN RPS NOT RPM
