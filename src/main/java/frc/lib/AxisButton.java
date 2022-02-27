@@ -2,8 +2,13 @@ package frc.lib;
 
 import static edu.wpi.first.wpilibj.util.ErrorMessages.requireNonNullParam;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj2.command.button.Button;
 
+
+/**
+ * A {@link Axis} treated as a {@link Button} that gets its state from a {@link GenericHID}.
+ */
 public class AxisButton extends Button {
     private final GenericHID m_joystick;
     private final int m_axisNumber;
