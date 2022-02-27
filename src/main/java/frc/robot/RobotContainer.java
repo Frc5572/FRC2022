@@ -130,6 +130,12 @@ public class RobotContainer {
             .whenPressed(new FunctionalCommand(magazine::enable, () -> {
             }, interrupted -> magazine.disable(), () -> magazine.magSense.get(), magazine))
             .whenReleased(new InstantCommand(magazine::disable, magazine));
+        // Run hopper up with POV up (0)
+        new POVButton(operator, 0)
+            .whileHeld(new StartEndCommand(() -> magazine.enable(), () -> magazine.disable()));
+        // Run hopper up with POV down (180))
+        new POVButton(driver, 180).whileHeld(new StartEndCommand(
+            () -> magazine.magazineMotor.set(-.5), () -> magazine.magazineMotor.set(0)));
         // Right Turret Move While Operator Right Bumper Held
         new JoystickButton(operator, XboxController.Button.kRightBumper.value).whileHeld(
             new StartEndCommand(() -> turret.turretRight(), () -> turret.turretStop(), turret));
