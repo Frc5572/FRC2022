@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.autos.LimelightAuto;
@@ -46,7 +45,6 @@ public class RobotContainer {
     // Field Relative and openLoop Variables
     boolean fieldRelative;
     boolean openLoop;
-    boolean status = true;
 
 
     /* Subsystems */
@@ -68,9 +66,6 @@ public class RobotContainer {
         ph.enableCompressorAnalog(100, 120);
         climber = new Climber(ph);
         intake = new Intake(ph);
-        swerveDrive.zeroGyro();
-        swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, driver,
-            Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop));
         turret.setDefaultCommand(new AlignTurret(turret, vision));
         // hood.setDefaultCommand(new PositionHood(hood, vision.getHoodValue()));
         // Adding AutoChooser Options
@@ -96,14 +91,12 @@ public class RobotContainer {
     private void configureButtonBindings() {
 
         /* Driver Buttons */
-        new JoystickButton(operator, XboxController.Button.kA.value)
-            .whileHeld(new InstantCommand(() -> System.out.println(magazine.magSense.get())));
         // Reset Gyro on Driver Y pressed
         new JoystickButton(driver, XboxController.Button.kY.value)
             .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
         // Turn Off Turret For Rest of Match on Driver X Pressed
         new JoystickButton(driver, XboxController.Button.kX.value)
-            .whenPressed(new InstantCommand(() -> turret.status = false));
+            .whenPressed(new InstantCommand(() -> turret.alignEnabled = false));
 
         /* Operator Buttons */
 
@@ -114,12 +107,6 @@ public class RobotContainer {
                 new InstantCommand(magazine::enable, magazine)))
             .whenReleased(new InstantCommand(shooter::disable, shooter))
             .whenReleased(new InstantCommand(magazine::disable, magazine));
-
-
-        new Button(
-            () -> Math.abs(operator.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4)
-                .whileHeld(
-                    new StartEndCommand(intake::intakeDeploy, intake::intakeRetract, intake));
         // Deploy Intake While Operator B Held
         new JoystickButton(operator, XboxController.Button.kB.value).whileHeld(
             new StartEndCommand(() -> intake.intakeDeploy(), () -> intake.intakeRetract(), intake));

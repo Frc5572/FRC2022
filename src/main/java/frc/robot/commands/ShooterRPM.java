@@ -14,7 +14,11 @@ public class ShooterRPM extends CommandBase {
     double curDisRPM = 0;
     double newDisRPM = 0;
 
-
+    /**
+     *
+     * @param shooter shooter subsystem
+     * @param vision vision subsystem
+     */
     public ShooterRPM(Shooter shooter, Vision vision) {
         this.shooter = shooter;
         this.vision = vision;
