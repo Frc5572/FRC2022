@@ -26,9 +26,6 @@ public class Vision {
     double tx = 0;
     double ty = 0;
     double tv = 0;
-    double calcRPM = 0;
-    double calcRPM2 = 0;
-    double totalRPM = 0;
     double calculated;
     boolean targetFound = false;
 

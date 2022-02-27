@@ -19,14 +19,26 @@ Talon FX 16 - Inside Climber Motor Left
 
 # Controls
 ## Driver
-Joysticks - Swerve
+Left Joystick - Swerve Position
+
+Right Joystick - Swerve Rotation
+
+Disable Turret AutoAlignment - X
+
+Align Gyro - Y
 
 ## Operator
 Intake - B
 
 Mag/Shooter Combo - A
 
-Climber Motors - D-Pad
+Outside Motors In - DPad Up
+
+Outside Motors Out DPad Down
+
+Inside Motors In - Dpad Right
+
+Inside Motors Out - DPad Left
 
 Climber Piston (Inside) - X
 
