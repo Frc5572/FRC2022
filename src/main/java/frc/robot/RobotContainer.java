@@ -98,6 +98,21 @@ public class RobotContainer {
         new JoystickButton(driver, XboxController.Button.kX.value)
             .whenPressed(new InstantCommand(() -> turret.alignEnabled = !turret.alignEnabled));
 
+        /* POV Button Mappings for Climber Motors */
+
+        // Operator POV Up - Outside Motors Out
+        new POVButton(driver, 0).whileHeld(new StartEndCommand(() -> climber.engageInsideMotors(),
+            () -> climber.stopInsideMotors()));
+        // Operator POV Down - Outside Motors In
+        new POVButton(driver, 180).whileHeld(new StartEndCommand(
+            () -> climber.retractOutsideMotors(), () -> climber.stopOutsideMotors()));
+        // Operator POV Right - Inside Motors Out
+        new POVButton(driver, 90).whileHeld(new StartEndCommand(() -> climber.engageOutsideMotors(),
+            () -> climber.stopOutsideMotors()));
+        // Operator POV Left - Inside Motors In
+        new POVButton(driver, 270).whileHeld(new StartEndCommand(
+            () -> climber.engageOutsideMotors(), () -> climber.stopOutsideMotors()));
+
         /* Operator Buttons */
 
         // Enable Shooter Magazine Combo While Operator A Button Held
@@ -120,23 +135,8 @@ public class RobotContainer {
         new JoystickButton(operator, XboxController.Button.kX.value)
             .whenPressed(new InsidePC(climber));
         // Outside Pneumatics Activate On Operator
-        new JoystickButton(driver, XboxController.Button.kY.value)
+        new JoystickButton(operator, XboxController.Button.kY.value)
             .whenPressed(new OutsidePC(climber));
-
-        /* POV Button Mappings for Climber Motors */
-
-        // Operator POV Up - Outside Motors Out
-        new POVButton(driver, 0).whileHeld(new StartEndCommand(() -> climber.engageOutsideMotors(),
-            () -> climber.stopOutsideMotors()));
-        // Operator POV Down - Outside Motors In
-        new POVButton(driver, 180).whileHeld(new StartEndCommand(
-            () -> climber.retractOutsideMotors(), () -> climber.stopOutsideMotors()));
-        // Operator POV Right - Inside Motors Out
-        new POVButton(driver, 90).whileHeld(new StartEndCommand(() -> climber.engageInsideMotors(),
-            () -> climber.stopInsideMotors()));
-        // Operator POV Left - Inside Motors In
-        new POVButton(driver, 270).whileHeld(new StartEndCommand(
-            () -> climber.retractInsideMotors(), () -> climber.stopInsideMotors()));
     }
 
     /**
