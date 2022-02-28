@@ -21,10 +21,10 @@ public final class Constants {
      */
     public static final class Motors {
         // Climber Motors
-        public static final int outsideClimberMotorRightId = 14;
-        public static final int outsideClimberMotorLeftId = 15;
-        public static final int insideClimberMotorRightId = 13;
-        public static final int insideClimberMotorLeftId = 16;
+        public static final int outsideClimberMotorRightId = 13;
+        public static final int outsideClimberMotorLeftId = 16;
+        public static final int insideClimberMotorRightId = 14;
+        public static final int insideClimberMotorLeftId = 15;
         // Shooter Motors
         public static final int shooterID = 10;
         public static final int shooterServoID = 10;
@@ -54,7 +54,7 @@ public final class Constants {
      * Vision constants for limelight calculations.
      */
     public static final class VisionConstants {
-        public static final double deadPocket = 0.02;
+        public static final double deadPocket = 0.05;
         public static final double limelightHeight = 24;
         public static final double targetHeight = 98;
         public static final double limelightAngle = 35;
@@ -78,7 +78,7 @@ public final class Constants {
         public static final boolean isOpenLoop = false;
 
         public static final double openLoopRamp = 0.25;
-        public static final double closedLoopRamp = 0.0;
+        public static final double closedLoopRamp = 0.25;
 
         public static final double driveGearRatio = (8.14 / 1.0); // 6.86:1
         public static final double angleGearRatio = (12.8 / 1.0); // 12.8:1
@@ -113,13 +113,14 @@ public final class Constants {
         public static final double driveKF = 0.0;
 
         /* Drive Motor Characterization Values */
-        public static final double driveKS = (0.667 / 12); // divide by 12 to convert from volts to
+        // divide by 12 to convert from volts to percent output for CTRE
+        public static final double driveKS = (0.667 / 12);
         public static final double driveKV = (2.44 / 12);
         public static final double driveKA = (0.27 / 12);
 
         /* Swerve Profiling Values */
         public static final double maxSpeed = 4; // meters per second
-        public static final double maxAngularVelocity = 2;
+        public static final double maxAngularVelocity = 3;
 
         /* Neutral Modes */
         public static final NeutralMode angleNeutralMode = NeutralMode.Coast;
@@ -213,8 +214,8 @@ public final class Constants {
         public static final int minAngle = 40;
         public static final int maxAngle = 55;
         public static final double servoSpeed = 0.2;
-        public static final double maxPosition = 239.8;
-        public static final double minPosition = 22.5;
+        public static final double maxPosition = 225.527;
+        public static final double minPosition = 51.68;
         public static final boolean hoodCanCoderInvert = false;
     }
 
@@ -228,7 +229,7 @@ public final class Constants {
         public static final double kD = 0;
 
         public static final double kShooterFreeRPS = 112.5; // IN RPS NOT RPM
-        public static final double kShooterTargetRPS = 4100 / 60; // IN RPS NOT RPM
+        public static final double kShooterTargetRPS = 5000 / 60; // IN RPS NOT RPM
         public static final double kShooterToleranceRPS = 2; // IN RPS NOT RPM
 
         public static final int kUnitsPerRevolution = 2048;

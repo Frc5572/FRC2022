@@ -26,7 +26,7 @@ public class Vision {
     double tx = 0;
     double ty = 0;
     double tv = 0;
-    public double calculated;
+    double calculated;
     boolean targetFound = false;
 
     /**
@@ -43,22 +43,6 @@ public class Vision {
         return distance;
     }
 
-
-    /**
-     *
-     * @return value to set hood
-     */
-
-    public double getHoodValue() {
-        // Vertical Offset From Crosshair To Target (LL1: -20.5 degrees to 20.5 degrees | LL2:
-        // -24.85 to 24.85 degrees)
-        // a2 = table.getEntry("ty").getDouble(0.0);
-        // calculatedValue =
-        // ((1 / (maxAngle - minAngle) * (a2 - maxAngle))) * (maxPosition * (1 / minPosition));
-        calculatedValue = Constants.HoodConstants.maxPosition;
-        return calculatedValue;
-    }
-
     /**
      *
      * @return distance from center of target
@@ -71,8 +55,9 @@ public class Vision {
         // targetFound = false;
         // disX = 0;
         disX = tx;
-        double calculated = (disX / 100) * 3;
-        calculated = (Math.abs(calculated) <= deadPocket) ? 0 : calculated;
+        double calculated = (disX / 125) * 3;
+        calculated =
+            (Math.abs(calculated) <= deadPocket) ? 0 : (calculated >= .3) ? .3 : calculated;
         return calculated;
     }
 

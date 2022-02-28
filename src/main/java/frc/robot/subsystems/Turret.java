@@ -10,6 +10,7 @@ import frc.robot.Constants;
 public class Turret extends SubsystemBase {
     private final WPI_TalonSRX turretMotor = new WPI_TalonSRX(Constants.Motors.turretMotorID);
     public static final double spinLeft = -0.2;
+    public boolean alignEnabled = true;
 
     public void turretLeft() {
         turretMotor.set(spinLeft);
