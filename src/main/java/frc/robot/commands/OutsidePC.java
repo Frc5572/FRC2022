@@ -1,29 +1,29 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.OutsideClimber;
 
 /**
  * Outside PC stands for "Outside Pneumatic Control". This command controls the pneumatics for the
  * outside arms.
  */
 public class OutsidePC extends CommandBase {
-    private Climber climber;
+    private OutsideClimber climber;
     private boolean status = false;
 
-    public OutsidePC(Climber climber) {
+    public OutsidePC(OutsideClimber climber) {
         this.climber = climber;
         addRequirements(climber);
     }
 
     @Override
     public void execute() {
-        if (!status) {
-            this.climber.deployOutsideClimbers();
-            status = true;
-        } else {
-            this.climber.retractOutsideClimbers();
+        if (status) {
+            this.climber.deployClimbers();
             status = false;
+        } else {
+            this.climber.retractClimbers();
+            status = true;
         }
         System.out.println(status);
     }
