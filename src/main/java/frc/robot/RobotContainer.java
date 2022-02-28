@@ -6,10 +6,18 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.lib.AxisButton;
 import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.P0;
 import frc.robot.autos.P_2B;
 import frc.robot.commands.AlignTurret;
+import frc.robot.commands.InsidePC;
+import frc.robot.commands.OutsidePC;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.modules.Limelight;
@@ -100,7 +108,7 @@ public class RobotContainer {
             .whileHeld(new StartEndCommand(() -> outsideClimber.engageMotors(),
                 () -> outsideClimber.stopMotors(), outsideClimber));
         // Retract the Outside climber arms
-        new Button(() -> Math.abs(driver.getRawAxis(XboxController.Axis.kLeftTrigger.value)) > .4)
+        new AxisButton(driver, XboxController.Axis.kLeftTrigger.value)
             .whileHeld(new StartEndCommand(() -> outsideClimber.retractMotors(),
                 () -> outsideClimber.stopMotors(), outsideClimber));
         // Extend the Inside climber arms
@@ -108,14 +116,14 @@ public class RobotContainer {
             .whileHeld(new StartEndCommand(() -> insideClimber.engageMotors(),
                 () -> insideClimber.stopMotors(), insideClimber));
         // Retract the Inside climber arms
-        new Button(() -> Math.abs(driver.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4)
+        new AxisButton(driver, XboxController.Axis.kRightTrigger.value)
             .whileHeld(new StartEndCommand(() -> insideClimber.retractMotors(),
                 () -> insideClimber.stopMotors(), insideClimber));
 
-        // Inside Pneumatics Activate On Operator
+        // Inside Pneumatics Activate on drive
         new JoystickButton(driver, XboxController.Button.kA.value)
             .whenPressed(new InsidePC(insideClimber));
-        // Outside Pneumatics Activate On Operator
+        // Outside Pneumatics Activate on driver
         new JoystickButton(driver, XboxController.Button.kB.value)
             .whenPressed(new OutsidePC(outsideClimber));
         new JoystickButton(driver, XboxController.Button.kStart.value)
@@ -157,11 +165,7 @@ public class RobotContainer {
         // Left Turret Move While Operator Left Bumper Held
         new JoystickButton(operator, XboxController.Button.kLeftBumper.value).whileHeld(
             new StartEndCommand(() -> turret.turretLeft(), () -> turret.turretStop(), turret));
-
-        // new AxisButton(driver, XboxController.Axis.kLeftTrigger.value).whileHeld(
-        // new StartEndCommand(() -> turret.turretLeft(), () -> turret.turretStop(), turret));
-        // new AxisButton(driver, XboxController.Axis.kRightTrigger.value).whileHeld(
-        // new StartEndCommand(() -> turret.turretRight(), () -> turret.turretStop(), turret));    }
+    }
 
     /**
      * Gets the user's selected autonomous command.
