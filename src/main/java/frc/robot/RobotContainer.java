@@ -82,8 +82,8 @@ public class RobotContainer {
             new P_2B(swerveDrive, shooter, magazine, intake, turret, vision));
         autoChooser.addOption("P1_3B",
             new P1_3B(swerveDrive, shooter, magazine, intake, turret, vision));
-        swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, vision, driver,
-            Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, false));
+        swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, driver,
+            Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop));
         turret.setDefaultCommand(new FunctionalCommand(() -> {
         }, () -> turret.turretSet(vision.getTargetFound() ? vision.getAimValue() : 0), interupt -> {
         }, () -> false, turret));
