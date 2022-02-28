@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -24,12 +23,6 @@ public class Intake extends SubsystemBase {
      */
     public Intake(PneumaticHub ph) {
         this.intakeSol = ph.makeSolenoid(Pneumatics.intakeFowardChannel);
-        intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 5000);
-        intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_Brushless_Current, 1000);
-        intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 5000);
-        intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 5000);
-        intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_14_Turn_PIDF1, 5000);
-        intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1000);
     }
 
     public void intakeRetract() {
