@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -21,11 +20,10 @@ public class OutsideClimber extends SubsystemBase {
         new WPI_TalonFX(Constants.Motors.outsideClimberMotorRightId);
     private final WPI_TalonFX outsideClimberMotor2 =
         new WPI_TalonFX(Constants.Motors.outsideClimberMotorLeftId);
-    private final TalonFX[] climberMotors =
-        new TalonFX[] {outsideClimberMotor1, outsideClimberMotor2};
+    private final WPI_TalonFX[] climberMotors =
+        new WPI_TalonFX[] {outsideClimberMotor1, outsideClimberMotor2};
 
-    private final MotorControllerGroup outsideMotors =
-        new MotorControllerGroup(outsideClimberMotor1, outsideClimberMotor2);
+    private final MotorControllerGroup outsideMotors = new MotorControllerGroup(climberMotors);
 
     private static final double motorSpeed = .5;
     private static final int motorStop = 0;
@@ -38,7 +36,7 @@ public class OutsideClimber extends SubsystemBase {
      */
     public OutsideClimber(PneumaticHub ph) {
         this.outsideClimberMotor1.setInverted(true);
-        for (TalonFX motor : climberMotors) {
+        for (WPI_TalonFX motor : climberMotors) {
             motor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 5000);
             motor.setStatusFramePeriod(StatusFrameEnhanced.Status_Brushless_Current, 1000);
             motor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 5000);
@@ -52,34 +50,52 @@ public class OutsideClimber extends SubsystemBase {
         this.outsideClimberSolenoid.set(true);
     }
 
-    // This command will deploy the outside climbers solenoids.
-    public void deployOutsideClimbers() {
-        if (enabled)
+    /**
+     * This command will deploy the outside climbers solenoids.
+     */
+    public void deployClimbers() {
+        if (enabled) {
             this.outsideClimberSolenoid.set(true);
+        }
     }
 
-    // This command will start to move the outside climber's motors.
-    public void engageOutsideMotors() {
-        if (enabled)
+    /**
+     * This command will start to move the outside climber's motors.
+     */
+    public void engageMotors() {
+        if (enabled) {
             this.outsideMotors.set(motorSpeed);
+        }
     }
 
-    // This command will stop moving the outside climber's motors.
-    public void retractOutsideMotors() {
-        if (enabled)
+    /**
+     * This command will stop moving the outside climber's motors.
+     */
+    public void retractMotors() {
+        if (enabled) {
             this.outsideMotors.set(-motorSpeed);
+        }
     }
 
-    // This will set the outside climber's pneumatics back to the default position.
-    public void retractOutsideClimbers() {
-        if (enabled)
+    /**
+     * This will set the outside climber's pneumatics back to the default position.
+     */
+    public void retractClimbers() {
+        if (enabled) {
             this.outsideClimberSolenoid.set(false);
+        }
     }
 
-    public void stopOutsideMotors() {
+    /**
+     * Stop the motors
+     */
+    public void stopMotors() {
         this.outsideMotors.set(motorStop);
     }
 
+    /**
+     * Enable the use of the Climber
+     */
     public void enableClimbers() {
         this.enabled = true;
     }

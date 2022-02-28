@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -22,11 +21,10 @@ public class InsideClimber extends SubsystemBase {
         new WPI_TalonFX(Constants.Motors.insideClimberMotorRightId);
     private final WPI_TalonFX insideClimberMotor2 =
         new WPI_TalonFX(Constants.Motors.insideClimberMotorLeftId);
-    private final TalonFX[] climberMotors =
-        new TalonFX[] {insideClimberMotor1, insideClimberMotor2};
+    private final WPI_TalonFX[] climberMotors =
+        new WPI_TalonFX[] {insideClimberMotor1, insideClimberMotor2};
 
-    private final MotorControllerGroup insideMotors =
-        new MotorControllerGroup(insideClimberMotor1, insideClimberMotor2);
+    private final MotorControllerGroup insideMotors = new MotorControllerGroup(climberMotors);
 
     private static final double motorSpeed = .5;
     private static final int motorStop = 0;
@@ -39,7 +37,7 @@ public class InsideClimber extends SubsystemBase {
      */
     public InsideClimber(PneumaticHub ph) {
         this.insideClimberMotor1.setInverted(true);
-        for (TalonFX motor : climberMotors) {
+        for (WPI_TalonFX motor : climberMotors) {
             motor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 5000);
             motor.setStatusFramePeriod(StatusFrameEnhanced.Status_Brushless_Current, 1000);
             motor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 5000);
@@ -54,35 +52,53 @@ public class InsideClimber extends SubsystemBase {
         this.insideClimberSolenoid.set(Value.kReverse);
     }
 
-    // This command will deploy the inside climbers solenoids.
-    public void deployInsideClimbers() {
-        if (enabled)
+    /**
+     * This command will deploy the inside climbers solenoids.
+     */
+    public void deployClimbers() {
+        if (enabled) {
             this.insideClimberSolenoid.set(Value.kReverse);
+        }
     }
 
-    // This command will start to move the inside climber's motors.
-    public void engageInsideMotors() {
-        if (enabled)
+    /**
+     * This command will start to move the inside climber's motors.
+     */
+    public void engageMotors() {
+        if (enabled) {
             this.insideMotors.set(-motorSpeed);
+        }
     }
 
-    // This command will stop moving the inside climber's motors.
-    public void retractInsideMotors() {
-        if (enabled)
+    /**
+     * This command will stop moving the inside climber's motors.
+     */
+    public void retractMotors() {
+        if (enabled) {
             this.insideMotors.set(motorSpeed);
+        }
     }
 
-    // This will set the inside climber's pneumatics back to the default position .
-    // (hopefully, not sure about double solenoids yet)
-    public void retractInsideClimbers() {
-        if (enabled)
+    /**
+     * This will set the inside climber's pneumatics back to the default position. (hopefully, not
+     * sure about double solenoids yet)
+     */
+    public void retractClimbers() {
+        if (enabled) {
             this.insideClimberSolenoid.set(Value.kForward);
+        }
     }
 
-    public void stopInsideMotors() {
+    /**
+     * Stop the motors
+     */
+    public void stopMotors() {
         this.insideMotors.set(motorStop);
     }
 
+    /**
+     * Enable the use of the Climber
+     */
     public void enableClimbers() {
         this.enabled = true;
     }

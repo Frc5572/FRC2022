@@ -102,22 +102,23 @@ public class RobotContainer {
         new JoystickButton(driver, XboxController.Button.kX.value)
             .whenPressed(new InstantCommand(() -> turret.alignEnabled = !turret.alignEnabled));
 
-        /* POV Button Mappings for Climber Motors */
-
-
+        /* Button Mappings for Climber Motors */
+        // Extend the Outside climber arms
         new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
-            .whileHeld(new StartEndCommand(() -> outsideClimber.engageOutsideMotors(),
-                () -> outsideClimber.stopOutsideMotors(), outsideClimber));
+            .whileHeld(new StartEndCommand(() -> outsideClimber.engageMotors(),
+                () -> outsideClimber.stopMotors(), outsideClimber));
+        // Retract the Outside climber arms
         new Button(() -> Math.abs(driver.getRawAxis(XboxController.Axis.kLeftTrigger.value)) > .4)
-            .whileHeld(new StartEndCommand(() -> outsideClimber.retractOutsideMotors(),
-                () -> outsideClimber.stopOutsideMotors(), outsideClimber));
-
+            .whileHeld(new StartEndCommand(() -> outsideClimber.retractMotors(),
+                () -> outsideClimber.stopMotors(), outsideClimber));
+        // Extend the Inside climber arms
         new JoystickButton(driver, XboxController.Button.kRightBumper.value)
-            .whileHeld(new StartEndCommand(() -> insideClimber.engageInsideMotors(),
-                () -> insideClimber.stopInsideMotors(), insideClimber));
+            .whileHeld(new StartEndCommand(() -> insideClimber.engageMotors(),
+                () -> insideClimber.stopMotors(), insideClimber));
+        // Retract the Inside climber arms
         new Button(() -> Math.abs(driver.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4)
-            .whileHeld(new StartEndCommand(() -> insideClimber.retractInsideMotors(),
-                () -> insideClimber.stopInsideMotors(), insideClimber));
+            .whileHeld(new StartEndCommand(() -> insideClimber.retractMotors(),
+                () -> insideClimber.stopMotors(), insideClimber));
 
         // Inside Pneumatics Activate On Operator
         new JoystickButton(driver, XboxController.Button.kA.value)
@@ -164,13 +165,6 @@ public class RobotContainer {
         // Left Turret Move While Operator Left Bumper Held
         new JoystickButton(operator, XboxController.Button.kLeftBumper.value).whileHeld(
             new StartEndCommand(() -> turret.turretLeft(), () -> turret.turretStop(), turret));
-
-        // new JoystickButton(operator, XboxController.Button.kA.value)
-        // .whenPressed(new InstantCommand(shooter::enable, shooter).andThen(
-        // new WaitUntilCommand(() -> shooter.atSetpoint()),
-        // new InstantCommand(magazine::enable, magazine)))
-        // .whenReleased(new InstantCommand(shooter::disable, shooter))
-        // .whenRelease
     }
 
     /**

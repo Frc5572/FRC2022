@@ -19,12 +19,11 @@ public class InsidePC extends CommandBase {
     @Override
     public void initialize() {
         if (status) {
-            this.climber.deployInsideClimbers();
-            status = false;
+            this.climber.deployClimbers();
         } else {
-            this.climber.retractInsideClimbers();
-            status = true;
+            this.climber.retractClimbers();
         }
+        status = !status;
     }
 
     @Override
