@@ -42,38 +42,52 @@ public class OutsideClimber extends SubsystemBase {
         this.outsideClimberSolenoid.set(true);
     }
 
-    // This command will deploy the outside climbers solenoids.
+    /**
+     * This command will deploy the outside climbers solenoids.
+     */
     public void deployClimbers() {
         if (enabled) {
             this.outsideClimberSolenoid.set(true);
         }
     }
 
-    // This command will start to move the outside climber's motors.
+    /**
+     * This command will start to move the outside climber's motors.
+     */
     public void engageMotors() {
         if (enabled) {
             this.outsideMotors.set(motorSpeed);
         }
     }
 
-    // This command will stop moving the outside climber's motors.
+    /**
+     * This command will stop moving the outside climber's motors.
+     */
     public void retractMotors() {
         if (enabled) {
             this.outsideMotors.set(-motorSpeed);
         }
     }
 
-    // This will set the outside climber's pneumatics back to the default position.
+    /**
+     * This will set the outside climber's pneumatics back to the default position.
+     */
     public void retractClimbers() {
         if (enabled) {
             this.outsideClimberSolenoid.set(false);
         }
     }
 
+    /**
+     * Stop the motors
+     */
     public void stopMotors() {
         this.outsideMotors.set(motorStop);
     }
 
+    /**
+     * Enable the use of the Climber
+     */
     public void enableClimbers() {
         this.enabled = true;
     }
