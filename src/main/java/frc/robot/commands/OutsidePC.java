@@ -20,12 +20,10 @@ public class OutsidePC extends CommandBase {
     public void execute() {
         if (status) {
             this.climber.deployClimbers();
-            status = false;
         } else {
             this.climber.retractClimbers();
-            status = true;
         }
-        System.out.println(status);
+        status = !status;
     }
 
     @Override
