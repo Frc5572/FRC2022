@@ -22,7 +22,6 @@ public class Intake extends SubsystemBase {
      * @param ph PneumaticHub to create solenoids
      */
     public Intake(PneumaticHub ph) {
-        super();
         this.intakeSol = ph.makeSolenoid(Pneumatics.intakeFowardChannel);
     }
 
