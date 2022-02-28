@@ -47,27 +47,31 @@ public class InsideClimber extends SubsystemBase {
 
     // This command will deploy the inside climbers solenoids.
     public void deployClimbers() {
-        if (enabled)
+        if (enabled) {
             this.insideClimberSolenoid.set(Value.kReverse);
+        }
     }
 
     // This command will start to move the inside climber's motors.
     public void engageMotors() {
-        if (enabled)
+        if (enabled) {
             this.insideMotors.set(-motorSpeed);
+        }
     }
 
     // This command will stop moving the inside climber's motors.
     public void retractMotors() {
-        if (enabled)
+        if (enabled) {
             this.insideMotors.set(motorSpeed);
+        }
     }
 
     // This will set the inside climber's pneumatics back to the default position .
     // (hopefully, not sure about double solenoids yet)
     public void retractClimbers() {
-        if (enabled)
+        if (enabled) {
             this.insideClimberSolenoid.set(Value.kForward);
+        }
     }
 
     public void stopMotors() {
