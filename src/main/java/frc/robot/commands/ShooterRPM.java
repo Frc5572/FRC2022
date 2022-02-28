@@ -42,9 +42,12 @@ public class ShooterRPM extends CommandBase {
     }
 
     private void updateSetpoint() {
-        double distance = this.vision.getDistance() * 12;
-        newDisRPM = 6 * Math.pow(distance, 2) + (90 * distance) + 3500; // IN RPS NOT RPM
-        if (Math.abs(curDisRPM - newDisRPM) >= 50) {
+        double distance = this.vision.getDistance() / 12;
+        newDisRPM = (6 * Math.pow(distance, 2) + (90 * distance) + 3500) / 60; // IN RPS NOT RPM
+        // if (Math.abs(curDisRPM - newDisRPM) >= 4) {
+        // newDisRPM = curDisRPM; this is causing issue
+        // }
+        if (newDisRPM > (6500 / 60)) {
             newDisRPM = curDisRPM;
         }
         this.shooter.setSetpoint(newDisRPM);
