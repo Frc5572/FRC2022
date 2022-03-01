@@ -214,8 +214,8 @@ public final class Constants {
         public static final int minAngle = 40;
         public static final int maxAngle = 55;
         public static final double servoSpeed = 0.2;
-        public static final double maxPosition = 225.527;
-        public static final double minPosition = 51.68;
+        public static final double maxPosition = 350.07;
+        public static final double minPosition = 60.21;
         public static final boolean hoodCanCoderInvert = false;
     }
 

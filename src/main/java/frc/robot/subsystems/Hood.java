@@ -59,11 +59,12 @@ public class Hood extends SubsystemBase {
     public void setHoodPosition() {
         // replace this line with hood position calculation using
         // distance!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        position = vision.getDistance();
+        // position = vision.getDistance();
+        position = Constants.HoodConstants.maxPosition;
         calculatedPosition = Math.pow(position, 2) * position + 3000000;
         double error = position - hoodCANCoder.getAbsolutePosition();
         System.out.println(error);
-        double speed = Math.abs(error) < 5 ? 0.0 : error < 0 ? .5 : -.5;
+        double speed = Math.abs(error) < 5 ? 0.0 : error < 0 ? .9 : -.9;
         System.out.println(speed);
         hoodServo.setSpeed(speed);
     }
