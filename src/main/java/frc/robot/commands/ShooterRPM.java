@@ -27,17 +27,23 @@ public class ShooterRPM extends CommandBase {
 
     @Override
     public void initialize() {
-        updateSetpoint();
+        System.out.println("STARTING SHOOTER");
+        // updateSetpoint();
+        System.out.println("Initial RPM: " + this.shooter.getSetpoint());
+        this.shooter.setSetpoint(5750 / 60);
         this.shooter.enable();
     }
 
     @Override
     public void execute() {
-        updateSetpoint();
+        // updateSetpoint();
+        System.out.println("SETPOINT: " + this.shooter.getSetpoint());
     }
 
     @Override
     public void end(boolean interrupted) {
+        curDisRPM = 0;
+        shooter.setSetpoint(curDisRPM);
         this.shooter.disable();
     }
 

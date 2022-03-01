@@ -9,8 +9,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -151,17 +153,18 @@ public class RobotContainer {
         // Enable Shooter Magazine Combo While Operator A Button Held
         new JoystickButton(operator, XboxController.Button.kA.value)
             .whileHeld(new ParallelCommandGroup(new ShooterRPM(shooter, vision),
-                new SequentialCommandGroup(new WaitUntilCommand(() -> shooter.atSetpoint()),
+                new SequentialCommandGroup(new PrintCommand("Shooter at setpoint"),
+                    new WaitCommand(.5),
+                    new WaitUntilCommand(() -> shooter.getSetpoint() > 0 && shooter.atSetpoint()),
                     new InstantCommand(magazine::enable, magazine))))
             .whenReleased(new InstantCommand(shooter::disable, shooter))
             .whenReleased(new InstantCommand(magazine::disable, magazine));
         // Deploy Intake and Run Magazine While Operator B Held
-        new JoystickButton(operator, XboxController.Button.kB.value).whileHeld(
-            new StartEndCommand(() -> intake.intakeDeploy(), () -> intake.intakeRetract(), intake));
         new JoystickButton(operator, XboxController.Button.kB.value)
-            .whenPressed(new FunctionalCommand(magazine::enable, () -> {
-            }, interrupted -> magazine.disable(), () -> magazine.magSense.get(), magazine))
-            .whenReleased(new InstantCommand(magazine::disable, magazine));
+            .whileHeld(new StartEndCommand(() -> intake.intakeDeploy(),
+                () -> intake.intakeRetract(), intake))
+            .whileHeld(new FunctionalCommand(magazine::enable, () -> {
+            }, interrupted -> magazine.disable(), () -> magazine.magSense.get(), magazine));
         // Right Turret Move While Operator Right Bumper Held
         new JoystickButton(operator, XboxController.Button.kRightBumper.value).whileHeld(
             new StartEndCommand(() -> turret.turretRight(), () -> turret.turretStop(), turret));
