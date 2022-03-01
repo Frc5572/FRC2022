@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.P0;
 import frc.robot.autos.P_2B;
@@ -159,6 +160,9 @@ public class RobotContainer {
             .whenPressed(new FunctionalCommand(magazine::enable, () -> {
             }, interrupted -> magazine.disable(), () -> magazine.magSense.get(), magazine))
             .whenReleased(new InstantCommand(magazine::disable, magazine));
+        // Run hopper dowb with POV down (180))
+        new POVButton(operator, 180).whileHeld(
+            new StartEndCommand(() -> magazine.magazineDown(), () -> magazine.magazineStop()));
         // Right Turret Move While Operator Right Bumper Held
         new JoystickButton(operator, XboxController.Button.kRightBumper.value).whileHeld(
             new StartEndCommand(() -> turret.turretRight(), () -> turret.turretStop(), turret));

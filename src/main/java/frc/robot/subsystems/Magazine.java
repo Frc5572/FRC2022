@@ -35,6 +35,20 @@ public class Magazine extends PIDSubsystem {
         magazineMotor.setVoltage(output + magazineFeed.calculate(setpoint));
     }
 
+    /**
+     * Runs magazine down.
+     */
+    public void magazineDown() {
+        magazineMotor.set(-.5);
+    }
+
+    /**
+     * Stops magazine.
+     */
+    public void magazineStop() {
+        magazineMotor.set(0);
+    }
+
     @Override
     public double getMeasurement() {
         double selSenVel = magazineMotor.getSelectedSensorVelocity(0);
