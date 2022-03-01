@@ -11,15 +11,8 @@ import frc.robot.Constants;
 import frc.robot.modules.Vision;
 
 /**
- * <<<<<<< HEAD
- *
- * Hood subsystem. =======
- * <p>
  * Hood subsystem.
- * </p>
- * >>>>>>> origin/main
  */
-
 public class Hood extends SubsystemBase {
     CANCoderConfiguration hoodCanCoderConfig = new CANCoderConfiguration();
     CANCoder hoodCANCoder = new CANCoder(Constants.HoodConstants.hoodCANCoderID);
@@ -30,15 +23,8 @@ public class Hood extends SubsystemBase {
     double calculatedPosition;
 
     /**
-     * <<<<<<< HEAD
-     *
-     * Hood subsystem. =======
-     * <p>
      * Hood subsystem.
-     * </p>
-     * >>>>>>> origin/main
      */
-
     public Hood(Vision vision) {
         this.vision = vision;
         /* hood CANCoder Configuration */
@@ -55,7 +41,6 @@ public class Hood extends SubsystemBase {
      * Set hood position.
      * </p>
      */
-
     public void setHoodPosition() {
         // replace this line with hood position calculation using
         // distance!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

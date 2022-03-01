@@ -21,10 +21,10 @@ public final class Constants {
      */
     public static final class Motors {
         // Climber Motors
-        public static final int outsideClimberMotorRightId = 14;
-        public static final int outsideClimberMotorLeftId = 15;
-        public static final int insideClimberMotorRightId = 13;
-        public static final int insideClimberMotorLeftId = 16;
+        public static final int outsideClimberMotorRightId = 13;
+        public static final int outsideClimberMotorLeftId = 16;
+        public static final int insideClimberMotorRightId = 14;
+        public static final int insideClimberMotorLeftId = 15;
         // Shooter Motors
         public static final int shooterID = 10;
         public static final int shooterServoID = 10;
@@ -54,7 +54,7 @@ public final class Constants {
      * Vision constants for limelight calculations.
      */
     public static final class VisionConstants {
-        public static final double deadPocket = 0.2;
+        public static final double deadPocket = 0.05;
         public static final double limelightHeight = 24;
         public static final double targetHeight = 98;
         public static final double limelightAngle = 35;
@@ -120,7 +120,7 @@ public final class Constants {
 
         /* Swerve Profiling Values */
         public static final double maxSpeed = 4; // meters per second
-        public static final double maxAngularVelocity = 2;
+        public static final double maxAngularVelocity = 3;
 
         /* Neutral Modes */
         public static final NeutralMode angleNeutralMode = NeutralMode.Coast;
@@ -229,7 +229,7 @@ public final class Constants {
         public static final double kD = 0;
 
         public static final double kShooterFreeRPS = 112.5; // IN RPS NOT RPM
-        public static final double kShooterTargetRPS = 3500 / 60; // IN RPS NOT RPM
+        public static final double kShooterTargetRPS = 5000 / 60; // IN RPS NOT RPM
         public static final double kShooterToleranceRPS = 2; // IN RPS NOT RPM
 
         public static final int kUnitsPerRevolution = 2048;
