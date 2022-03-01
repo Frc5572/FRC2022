@@ -28,6 +28,20 @@ public class Shooter extends PIDSubsystem {
         setSetpoint(Constants.ShooterPID.kShooterTargetRPS); // IN RPS NOT RPM
     }
 
+    /**
+     * Spins shooter.
+     */
+    public void spinShooter() {
+        shooter.set(.3);
+    }
+
+    /**
+     * Stops the shooter.
+     */
+    public void stopShooter() {
+        shooter.set(0);
+    }
+
     @Override
     public void useOutput(double output, double setpoint) {
         shooter.setVoltage(output + shooterFeed.calculate(setpoint));
