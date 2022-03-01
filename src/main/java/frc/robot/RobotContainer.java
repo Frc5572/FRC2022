@@ -7,7 +7,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.autos.LimelightAuto;
@@ -101,14 +104,13 @@ public class RobotContainer {
         /* Operator Buttons */
 
         // Enable Shooter Magazine Combo While Operator A Button Held
-        // new JoystickButton(operator, XboxController.Button.kA.value)
-        // .whenPressed(new InstantCommand(shooter::enable, shooter).andThen(
-        // new WaitUntilCommand(() -> shooter.atSetpoint()),
-        // new InstantCommand(magazine::enable, magazine)))
-        // .whenReleased(new InstantCommand(shooter::disable, shooter))
-        // .whenReleased(new InstantCommand(magazine::disable, magazine));
         new JoystickButton(operator, XboxController.Button.kA.value)
-            .whileHeld(new ShooterRPM(shooter, vision));
+            .whileHeld(new ParallelCommandGroup(new ShooterRPM(shooter, vision),
+                new SequentialCommandGroup(new WaitUntilCommand(() -> shooter.atSetpoint()),
+                    new InstantCommand(magazine::enable, magazine))))
+            .whenReleased(new InstantCommand(shooter::disable, shooter))
+            .whenReleased(new InstantCommand(magazine::disable, magazine));
+
         // Deploy Intake While Operator B Held
         new JoystickButton(operator, XboxController.Button.kB.value).whileHeld(
             new StartEndCommand(() -> intake.intakeDeploy(), () -> intake.intakeRetract(), intake));
