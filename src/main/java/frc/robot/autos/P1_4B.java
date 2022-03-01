@@ -32,7 +32,7 @@ public class P1_4B extends AutoBase {
         PathPlannerTrajectory trajectory_pt4 = PathPlanner.loadPath("P1_4B pt4", 1, 1);
 
 
-        PPSwerveControllerCommand autoDrive = baseSwerveCommand(trajectory);
+        // PPSwerveControllerCommand autoDrive = baseSwerveCommand(trajectory);
         PPSwerveControllerCommand autoDrive_pt1 = baseSwerveCommand(trajectory_pt1);
         PPSwerveControllerCommand autoDrive_pt2 = baseSwerveCommand(trajectory_pt2);
         PPSwerveControllerCommand autoDrive_pt3 = baseSwerveCommand(trajectory_pt3);
@@ -57,6 +57,13 @@ public class P1_4B extends AutoBase {
                     // new ZeroMotorsWaitCommand(swerve, 1),
                     new ParallelCommandGroup(new InstantCommand(() -> intake.intakeDeploy()),
                         autoDrive_pt1, new InstantCommand(() -> shooter.setSetpoint(4700 / 60)),
+                        new FunctionalCommand(magazine::enable, () -> {
+                        }, interrupted -> magazine.disable(), () -> magazine.magSense.get(),
+                            magazine)),
+                    autoDrive_pt2,
+                    new ParallelCommandGroup(new InstantCommand(() -> intake.intakeDeploy()),
+                        new SequentialCommandGroup(autoDrive_pt3, autoDrive_pt4),
+                        new InstantCommand(() -> shooter.setSetpoint(4700 / 60)),
                         new FunctionalCommand(magazine::enable, () -> {
                         }, interrupted -> magazine.disable(), () -> magazine.magSense.get(),
                             magazine)),
