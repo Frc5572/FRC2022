@@ -63,7 +63,7 @@ public class RobotContainer {
     private final Intake intake;
     private final Turret turret = new Turret();
     private Vision vision = new Vision();
-    private final Shooter shooter = new Shooter(vision);
+    private final Shooter shooter = new Shooter();
     // private final Hood hood = new Hood(vision);
     private final InsideClimber insideClimber;
     private final OutsideClimber outsideClimber;
