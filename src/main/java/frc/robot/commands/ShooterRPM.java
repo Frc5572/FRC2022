@@ -27,17 +27,16 @@ public class ShooterRPM extends CommandBase {
 
     @Override
     public void initialize() {
-        System.out.println("STARTING SHOOTER");
-        // updateSetpoint();
-        System.out.println("Initial RPM: " + this.shooter.getSetpoint());
-        this.shooter.setSetpoint(5750 / 60);
+        // System.out.println("STARTING SHOOTER");
+        updateSetpoint();
+        // System.out.println("Initial RPM: " + this.shooter.getSetpoint());
         this.shooter.enable();
     }
 
     @Override
     public void execute() {
-        // updateSetpoint();
-        System.out.println("SETPOINT: " + this.shooter.getSetpoint());
+        updateSetpoint();
+        // System.out.println("SETPOINT: " + this.shooter.getSetpoint());
     }
 
     @Override
@@ -49,10 +48,13 @@ public class ShooterRPM extends CommandBase {
 
     private void updateSetpoint() {
         double distance = this.vision.getDistance() / 12;
-        newDisRPM = (6 * Math.pow(distance, 2) + (90 * distance) + 3500); // IN RPS NOT RPM
+        newDisRPM =
+            3.452380952381 * Math.pow(distance, 3) - 61.7857142857143 * Math.pow(distance, 2)
+                + 402.6190476190476 * Math.pow(distance, 1) + 2800;
+        // newDisRPM = (6 * Math.pow(distance, 2) + (90 * distance) + 3500); // IN RPS NOT RPM
         if (Math.abs(curDisRPM - newDisRPM) >= 100) {
             curDisRPM = newDisRPM;
-            this.shooter.setSetpoint(curDisRPM > 6500 ? (6500 / 60) : (curDisRPM / 60));
+            this.shooter.setSetpoint(curDisRPM > 6000 ? (6000 / 60) : (curDisRPM / 60));
         }
     }
 }
