@@ -5,7 +5,7 @@ import frc.robot.subsystems.Magazine;
 import frc.robot.subsystems.Shooter;
 
 /**
- * Controls Shooter RPM based on
+ * Controls Magazines RPM based on Shooter's Setpoint
  */
 public class MagazineRPM extends CommandBase {
 
@@ -15,7 +15,7 @@ public class MagazineRPM extends CommandBase {
     /**
      *
      * @param shooter shooter subsystem
-     * @param magazine vision subsystem
+     * @param magazine magazine subsystem
      */
     public MagazineRPM(Shooter shooter, Magazine magazine) {
         this.shooter = shooter;
@@ -36,7 +36,7 @@ public class MagazineRPM extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        this.shooter.disable();
+        this.magazine.disable();
     }
 
     private void updateSetpoint() {
