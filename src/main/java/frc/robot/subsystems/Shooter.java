@@ -7,7 +7,6 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.Constants;
 
-
 /**
  * Creates subsystem and functions for the shooter.
  */
@@ -25,7 +24,7 @@ public class Shooter extends PIDSubsystem {
         shooter.setInverted(true);
         shooter.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 1, 1);
         getController().setTolerance(Constants.ShooterPID.kShooterToleranceRPS); // IN RPS NOT RPM
-        setSetpoint(Constants.ShooterPID.kShooterTargetRPS); // IN RPS NOT RPM
+        setSetpoint(0); // IN RPS NOT RPM
     }
 
     /**

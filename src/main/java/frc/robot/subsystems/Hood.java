@@ -27,9 +27,6 @@ public class Hood extends SubsystemBase {
 
     /**
      * Hood subsystem.
-     * <p>
-     * Hood subsystem.
-     * </p>
      */
 
     public Hood(Vision vision) {
