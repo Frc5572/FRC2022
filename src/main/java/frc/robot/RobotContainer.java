@@ -22,6 +22,7 @@ import frc.robot.autos.P0;
 import frc.robot.autos.P_2B;
 import frc.robot.commands.AlignTurret;
 import frc.robot.commands.InsidePC;
+import frc.robot.commands.MagazineRPM;
 import frc.robot.commands.OutsidePC;
 import frc.robot.commands.ShooterRPM;
 import frc.robot.commands.TeleopSwerve;
@@ -153,11 +154,11 @@ public class RobotContainer {
 
         // Enable Shooter Magazine Combo While Operator A Button Held
         new JoystickButton(operator, XboxController.Button.kA.value)
-            .whileHeld(new ParallelCommandGroup(new ShooterRPM(shooter, magazine, vision),
+            .whileHeld(new ParallelCommandGroup(new ShooterRPM(shooter, vision),
                 new SequentialCommandGroup(new PrintCommand("Shooter at setpoint"),
                     new WaitCommand(.5),
                     new WaitUntilCommand(() -> shooter.getSetpoint() > 0 && shooter.atSetpoint()),
-                    new InstantCommand(magazine::enable, magazine))))
+                    new MagazineRPM(shooter, magazine))))
             .whenReleased(new InstantCommand(shooter::disable, shooter))
             .whenReleased(new InstantCommand(magazine::disable, magazine));
 

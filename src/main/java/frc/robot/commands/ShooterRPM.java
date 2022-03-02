@@ -2,7 +2,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.modules.Vision;
-import frc.robot.subsystems.Magazine;
 import frc.robot.subsystems.Shooter;
 
 /**
@@ -11,7 +10,6 @@ import frc.robot.subsystems.Shooter;
 public class ShooterRPM extends CommandBase {
 
     private Shooter shooter;
-    private Magazine magazine;
     private Vision vision;
     double curDisRPM = 0;
     double newDisRPM = 0;
@@ -21,9 +19,8 @@ public class ShooterRPM extends CommandBase {
      * @param shooter shooter subsystem
      * @param vision vision subsystem
      */
-    public ShooterRPM(Shooter shooter, Magazine magazine, Vision vision) {
+    public ShooterRPM(Shooter shooter, Vision vision) {
         this.shooter = shooter;
-        this.magazine = magazine;
         this.vision = vision;
         addRequirements(shooter);
     }
@@ -32,11 +29,6 @@ public class ShooterRPM extends CommandBase {
     public void initialize() {
         // System.out.println("STARTING SHOOTER");
         updateSetpoint();
-        if (shooter.getSetpoint() >= (5800 / 60)) {
-            this.magazine.setSetpoint(1000 / 60);
-        } else {
-            this.magazine.setSetpoint(2000 / 60);
-        }
         // System.out.println("Initial RPM: " + this.shooter.getSetpoint());
         this.shooter.enable();
     }
