@@ -3,7 +3,6 @@ package frc.robot.autos;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
@@ -11,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants;
+import frc.robot.commands.AlignTurret;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.modules.AutoBase;
 import frc.robot.modules.Vision;
@@ -44,10 +44,7 @@ public class P_2B extends AutoBase {
                 new SequentialCommandGroup(
                     new ParallelDeadlineGroup(new WaitCommand(.6),
                         new InstantCommand(() -> turret.turretLeft())),
-                    new FunctionalCommand(() -> {
-                    }, () -> turret.turretSet(vision.getTargetFound() ? vision.getAimValue() : 0),
-                        interupt -> {
-                        }, () -> false, turret)),
+                    new AlignTurret(turret, vision)),
                 new SequentialCommandGroup(new InstantCommand(() -> shooter.enable()),
                     new ZeroMotorsWaitCommand(swerve, 1),
                     new WaitUntilCommand(() -> shooter.atSetpoint()),

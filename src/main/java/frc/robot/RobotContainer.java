@@ -14,9 +14,9 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import frc.lib.AxisButton;
 import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.P0;
 import frc.robot.autos.P_2B;
@@ -115,7 +115,7 @@ public class RobotContainer {
             .whileHeld(new StartEndCommand(() -> outsideClimber.engageMotors(),
                 () -> outsideClimber.stopMotors(), outsideClimber));
         // Retract the Outside climber arms
-        new Button(() -> Math.abs(driver.getRawAxis(XboxController.Axis.kLeftTrigger.value)) > .4)
+        new AxisButton(driver, XboxController.Axis.kLeftTrigger.value)
             .whileHeld(new StartEndCommand(() -> outsideClimber.retractMotors(),
                 () -> outsideClimber.stopMotors(), outsideClimber));
         // Extend the Inside climber arms
@@ -123,14 +123,14 @@ public class RobotContainer {
             .whileHeld(new StartEndCommand(() -> insideClimber.engageMotors(),
                 () -> insideClimber.stopMotors(), insideClimber));
         // Retract the Inside climber arms
-        new Button(() -> Math.abs(driver.getRawAxis(XboxController.Axis.kRightTrigger.value)) > .4)
+        new AxisButton(driver, XboxController.Axis.kRightTrigger.value)
             .whileHeld(new StartEndCommand(() -> insideClimber.retractMotors(),
                 () -> insideClimber.stopMotors(), insideClimber));
 
-        // Inside Pneumatics Activate On Operator
+        // Inside Pneumatics Activate on drive
         new JoystickButton(driver, XboxController.Button.kA.value)
             .whenPressed(new InsidePC(insideClimber));
-        // Outside Pneumatics Activate On Operator
+        // Outside Pneumatics Activate on driver
         new JoystickButton(driver, XboxController.Button.kB.value)
             .whenPressed(new OutsidePC(outsideClimber));
         new JoystickButton(driver, XboxController.Button.kStart.value)
