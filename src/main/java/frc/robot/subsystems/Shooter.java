@@ -62,11 +62,11 @@ public class Shooter extends PIDSubsystem {
         if (m_enabled) {
             useOutput(m_controller.calculate(getMeasurement(), getSetpoint()), getSetpoint());
 
-            // double selSenVel = shooter.getSelectedSensorVelocity(0);
-            // double rotPerSec = (double) selSenVel / Constants.ShooterPID.kUnitsPerRevolution
-            // * 10; /* scale per100ms to perSecond */
+            double selSenVel = shooter.getSelectedSensorVelocity(0);
+            double rotPerSec = (double) selSenVel / Constants.ShooterPID.kUnitsPerRevolution
+                * 10; /* scale per100ms to perSecond */
 
-            // System.out.println("RPM (Speed): " + rotPerSec * 60);
+            System.out.println("RPM (Speed): " + rotPerSec * 60);
         }
     }
 

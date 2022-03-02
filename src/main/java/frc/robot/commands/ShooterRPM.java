@@ -52,13 +52,14 @@ public class ShooterRPM extends CommandBase {
             3.452380952381 * Math.pow(distance, 3) - 61.7857142857143 * Math.pow(distance, 2)
                 + 402.6190476190476 * Math.pow(distance, 1) + 2800;
         if (Math.abs(curDisRPM - newDisRPM) >= 100) {
-            curDisRPM = newDisRPM;
-            if (curDisRPM >= 6000) {
-                curDisRPM = 6000 / 60;
-            } else if (curDisRPM <= 3500) {
-                curDisRPM = 3500 / 60;
+            if (newDisRPM >= 6000) {
+                curDisRPM = 6000;
+            } else if (newDisRPM <= 3500) {
+                curDisRPM = 3500;
+            } else {
+                curDisRPM = newDisRPM;
             }
-            this.shooter.setSetpoint(curDisRPM);
+            this.shooter.setSetpoint(curDisRPM / 60);
         }
     }
 }
