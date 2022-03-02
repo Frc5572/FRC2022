@@ -153,7 +153,7 @@ public class RobotContainer {
 
         // Enable Shooter Magazine Combo While Operator A Button Held
         new JoystickButton(operator, XboxController.Button.kA.value)
-            .whileHeld(new ParallelCommandGroup(new ShooterRPM(shooter, vision),
+            .whileHeld(new ParallelCommandGroup(new ShooterRPM(shooter, magazine, vision),
                 new SequentialCommandGroup(new PrintCommand("Shooter at setpoint"),
                     new WaitCommand(.5),
                     new WaitUntilCommand(() -> shooter.getSetpoint() > 0 && shooter.atSetpoint()),
