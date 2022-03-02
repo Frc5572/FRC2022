@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.P0;
 import frc.robot.autos.P_2B;
@@ -104,7 +105,7 @@ public class RobotContainer {
         new JoystickButton(driver, XboxController.Button.kY.value)
             .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
         // Turn Off Turret For Rest of Match on Driver X Pressed
-        new JoystickButton(driver, XboxController.Button.kX.value)
+        new JoystickButton(operator, XboxController.Button.kX.value)
             .whenPressed(new InstantCommand(() -> turret.alignEnabled = !turret.alignEnabled));
 
         /* Button Mappings for Climber Motors */
@@ -159,18 +160,36 @@ public class RobotContainer {
                     new InstantCommand(magazine::enable, magazine))))
             .whenReleased(new InstantCommand(shooter::disable, shooter))
             .whenReleased(new InstantCommand(magazine::disable, magazine));
+
         // Deploy Intake and Run Magazine While Operator B Held
         new JoystickButton(operator, XboxController.Button.kB.value)
-            .whileHeld(new StartEndCommand(() -> intake.intakeDeploy(),
-                () -> intake.intakeRetract(), intake))
-            .whileHeld(new FunctionalCommand(magazine::enable, () -> {
-            }, interrupted -> magazine.disable(), () -> magazine.magSense.get(), magazine));
+            .whenPressed(new FunctionalCommand(magazine::enable, () -> {
+            }, interrupted -> magazine.disable(), () -> magazine.magSense.get(), magazine))
+            .whenReleased(new InstantCommand(magazine::disable, magazine));
+        // Run hopper down with POV down (180))
+        new POVButton(operator, 180).whileHeld(
+            new StartEndCommand(() -> magazine.magazineDown(), () -> magazine.magazineStop()));
         // Right Turret Move While Operator Right Bumper Held
         new JoystickButton(operator, XboxController.Button.kRightBumper.value).whileHeld(
             new StartEndCommand(() -> turret.turretRight(), () -> turret.turretStop(), turret));
+
         // Left Turret Move While Operator Left Bumper Held
         new JoystickButton(operator, XboxController.Button.kLeftBumper.value).whileHeld(
             new StartEndCommand(() -> turret.turretLeft(), () -> turret.turretStop(), turret));
+
+        // Spit ball command
+        new JoystickButton(operator, XboxController.Button.kY.value)
+            .whileHeld(new SequentialCommandGroup(new InstantCommand(() -> shooter.spinShooter()),
+                new WaitCommand(.2), new InstantCommand(() -> magazine.magazineUp())))
+            .whenReleased(new InstantCommand(() -> shooter.stopShooter()))
+            .whenReleased(new InstantCommand(() -> magazine.magazineStop()));
+
+        // // Spit ball command basic
+        // new JoystickButton(operator, XboxController.Button.kY.value)
+        // .whileHeld(new InstantCommand(() -> shooter.spinShooter()))
+        // .whileHeld(new InstantCommand(() -> magazine.magazineUp()))
+        // .whenReleased(new InstantCommand(() -> shooter.stopShooter()))
+        // .whenReleased(new InstantCommand(() -> magazine.magazineStop()));
     }
 
     /**
