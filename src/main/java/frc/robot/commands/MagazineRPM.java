@@ -36,6 +36,7 @@ public class MagazineRPM extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
+        magazine.setSetpoint(0);
         this.magazine.disable();
     }
 

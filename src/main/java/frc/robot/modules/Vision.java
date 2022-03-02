@@ -72,14 +72,6 @@ public class Vision {
     }
 
     /**
-     * @return our new shooter rpm based on distance from target
-     */
-    public double getShooterSpeed() {
-        distance = getDistance() * 12;
-        return 6 * Math.pow(distance, 2) + (90 * distance) + 3500;
-    }
-
-    /**
      * @return whether target is aligned
      */
     public boolean getTargetAligned() {
