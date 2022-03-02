@@ -210,12 +210,12 @@ public final class Constants {
 
     public static final class HoodConstants {
         public static final int hoodCANCoderID = 5;
-        public static final int hoodServoID = 8;
+        public static final int hoodServoID = 9;
         public static final int minAngle = 40;
         public static final int maxAngle = 55;
         public static final double servoSpeed = 0.2;
-        public static final double maxPosition = 350.07;
-        public static final double minPosition = 60.21;
+        public static final double maxPosition = 314.297;
+        public static final double minPosition = 26.279;
         public static final boolean hoodCanCoderInvert = false;
     }
 
