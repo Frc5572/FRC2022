@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Magazine;
 import frc.robot.subsystems.Shooter;
 
@@ -36,7 +37,7 @@ public class MagazineRPM extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        magazine.setSetpoint(0);
+        magazine.setSetpoint(Constants.MagazinePID.kMagazineTargetRPS);
         this.magazine.disable();
     }
 
