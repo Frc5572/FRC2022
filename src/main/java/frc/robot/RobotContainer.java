@@ -164,6 +164,8 @@ public class RobotContainer {
 
         // Deploy Intake and Run Magazine While Operator B Held
         new JoystickButton(operator, XboxController.Button.kB.value)
+            .whileHeld(new StartEndCommand(() -> intake.intakeDeploy(),
+                () -> intake.intakeRetract(), intake))
             .whenPressed(new FunctionalCommand(magazine::enable, () -> {
             }, interrupted -> magazine.disable(), () -> magazine.magSense.get(), magazine))
             .whenReleased(new InstantCommand(magazine::disable, magazine));
@@ -200,6 +202,7 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         return autoChooser.getSelected();
+        // return new P0(swerveDrive);
     }
 
 }

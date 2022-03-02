@@ -52,7 +52,7 @@ public class Shooter extends PIDSubsystem {
         double rotPerSec = (double) selSenVel / Constants.ShooterPID.kUnitsPerRevolution
             * 10; /* scale per100ms to perSecond */
 
-        // System.out.println("RPM (Speed): " + rotPerSec * 60);
+        // System.out.println("SHOOTER RPM (Speed): " + rotPerSec * 60);
         // System.out.println("Voltage: " + shooter.getMotorOutputVoltage());
         return rotPerSec;
     }
