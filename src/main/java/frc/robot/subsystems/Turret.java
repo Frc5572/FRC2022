@@ -18,11 +18,12 @@ public class Turret extends SubsystemBase {
      */
     public Turret() {
         turretMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 5000);
-        turretMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_Brushless_Current, 1000);
+        turretMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_Brushless_Current, 5000);
         turretMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 5000);
         turretMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 5000);
         turretMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_14_Turn_PIDF1, 5000);
-        turretMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1000);
+        turretMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 10000);
+        turretMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 10000);
     }
 
     public void turretLeft() {

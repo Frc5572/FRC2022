@@ -39,11 +39,12 @@ public class InsideClimber extends SubsystemBase {
         this.insideClimberMotor1.setInverted(true);
         for (WPI_TalonFX motor : climberMotors) {
             motor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 5000);
-            motor.setStatusFramePeriod(StatusFrameEnhanced.Status_Brushless_Current, 1000);
+            motor.setStatusFramePeriod(StatusFrameEnhanced.Status_Brushless_Current, 5000);
             motor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 5000);
             motor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 5000);
             motor.setStatusFramePeriod(StatusFrameEnhanced.Status_14_Turn_PIDF1, 5000);
-            motor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1000);
+            motor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 10000);
+            motor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 10000);
             motor.setNeutralMode(NeutralMode.Brake);
         }
 
