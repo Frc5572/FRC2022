@@ -135,7 +135,8 @@ public class RobotContainer {
             .whenPressed(new OutsidePC(outsideClimber));
         new JoystickButton(driver, XboxController.Button.kStart.value)
             .whenPressed(new InstantCommand(() -> insideClimber.enableClimbers())
-                .andThen(new InstantCommand(() -> outsideClimber.enableClimbers())));
+                .andThen(new InstantCommand(() -> outsideClimber.enableClimbers()))
+                .andThen(new InstantCommand(() -> turret.alignEnabled = false)));
 
         // // Operator POV Up - INside Motors Out
         // new POVButton(driver, 0).whileHeld(new StartEndCommand(
@@ -164,6 +165,8 @@ public class RobotContainer {
 
         // Deploy Intake and Run Magazine While Operator B Held
         new JoystickButton(operator, XboxController.Button.kB.value)
+            .whileHeld(new StartEndCommand(() -> intake.intakeDeploy(),
+                () -> intake.intakeRetract(), intake))
             .whenPressed(new FunctionalCommand(magazine::enable, () -> {
             }, interrupted -> magazine.disable(), () -> magazine.magSense.get(), magazine))
             .whenReleased(new InstantCommand(magazine::disable, magazine));
