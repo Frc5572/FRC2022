@@ -21,10 +21,10 @@ public final class Constants {
      */
     public static final class Motors {
         // Climber Motors
-        public static final int outsideClimberMotorRightId = 14;
-        public static final int outsideClimberMotorLeftId = 15;
-        public static final int insideClimberMotorRightId = 13;
-        public static final int insideClimberMotorLeftId = 16;
+        public static final int outsideClimberMotorRightId = 13;
+        public static final int outsideClimberMotorLeftId = 16;
+        public static final int insideClimberMotorRightId = 14;
+        public static final int insideClimberMotorLeftId = 15;
         // Shooter Motors
         public static final int shooterID = 10;
         public static final int shooterServoID = 10;
@@ -119,7 +119,7 @@ public final class Constants {
 
         /* Swerve Profiling Values */
         public static final double maxSpeed = 4; // meters per second
-        public static final double maxAngularVelocity = 2;
+        public static final double maxAngularVelocity = 3;
 
         /* Neutral Modes */
         public static final NeutralMode angleNeutralMode = NeutralMode.Coast;

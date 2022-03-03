@@ -13,7 +13,7 @@ import frc.robot.Constants.Pneumatics;
 public class Intake extends SubsystemBase {
     WPI_TalonSRX intakeMotor = new WPI_TalonSRX(Constants.Motors.intakeMotorNum);
     Solenoid intakeSol;
-    private static final double intakeSpeed = .5;
+    private static final double intakeSpeed = .7;
     private static final int intakeStop = 0;
 
     /**
@@ -22,7 +22,6 @@ public class Intake extends SubsystemBase {
      * @param ph PneumaticHub to create solenoids
      */
     public Intake(PneumaticHub ph) {
-        super();
         this.intakeSol = ph.makeSolenoid(Pneumatics.intakeFowardChannel);
     }
 

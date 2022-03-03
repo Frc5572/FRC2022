@@ -27,12 +27,33 @@ public class Magazine extends PIDSubsystem {
         magazineMotor.setInverted(true);
         magazineMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 1, 1);
         getController().setTolerance(Constants.MagazinePID.kMagazineToleranceRPS); // IN RPS NOT RPM
-        setSetpoint(Constants.MagazinePID.kMagazineTargetRPS); // 3600 rpm - IN RPS NOT RPM
+        setSetpoint(Constants.MagazinePID.kMagazineTargetRPS); // 2000 rpm - IN RPS NOT RPM
     }
 
     @Override
     public void useOutput(double output, double setpoint) {
         magazineMotor.setVoltage(output + magazineFeed.calculate(setpoint));
+    }
+
+    /**
+     * Runs magazine down.
+     */
+    public void magazineDown() {
+        magazineMotor.set(-.2);
+    }
+
+    /**
+     * Runs magazine up.
+     */
+    public void magazineUp() {
+        magazineMotor.set(.2);
+    }
+
+    /**
+     * Stops magazine.
+     */
+    public void magazineStop() {
+        magazineMotor.set(0);
     }
 
     @Override
@@ -51,15 +72,6 @@ public class Magazine extends PIDSubsystem {
     public void periodic() {
         if (m_enabled) {
             useOutput(m_controller.calculate(getMeasurement(), getSetpoint()), getSetpoint());
-
-            // double selSenVel = magazineMotor.getSelectedSensorVelocity(0);
-
-            // double rotPerSec = (double) selSenVel / Constants.MagazinePID.kUnitsPerRevolution
-            // * 10; /* scale per100ms to perSecond */
-
-            // System.out.println("RPM (Speed): " + rotPerSec * 60);
-            // System.out.println("Voltage: " + magazineMotor.getMotorOutputVoltage());
-            // System.out.println(magSense.get());
         }
     }
 

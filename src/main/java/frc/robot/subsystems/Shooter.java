@@ -7,7 +7,6 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.Constants;
 
-
 /**
  * Creates subsystem and functions for the shooter.
  */
@@ -25,7 +24,21 @@ public class Shooter extends PIDSubsystem {
         shooter.setInverted(true);
         shooter.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 1, 1);
         getController().setTolerance(Constants.ShooterPID.kShooterToleranceRPS); // IN RPS NOT RPM
-        setSetpoint(Constants.ShooterPID.kShooterTargetRPS); // IN RPS NOT RPM
+        setSetpoint(0); // IN RPS NOT RPM
+    }
+
+    /**
+     * Spins shooter.
+     */
+    public void spinShooter() {
+        shooter.set(.3);
+    }
+
+    /**
+     * Stops the shooter.
+     */
+    public void stopShooter() {
+        shooter.set(0);
     }
 
     @Override
@@ -39,7 +52,7 @@ public class Shooter extends PIDSubsystem {
         double rotPerSec = (double) selSenVel / Constants.ShooterPID.kUnitsPerRevolution
             * 10; /* scale per100ms to perSecond */
 
-        // System.out.println("RPM (Speed): " + rotPerSec * 60);
+        // System.out.println("SHOOTER RPM (Speed): " + rotPerSec * 60);
         // System.out.println("Voltage: " + shooter.getMotorOutputVoltage());
         return rotPerSec;
     }
