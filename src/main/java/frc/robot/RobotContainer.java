@@ -1,5 +1,6 @@
 package frc.robot;
 
+import org.photonvision.PhotonCamera;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.XboxController;
@@ -19,7 +20,6 @@ import frc.robot.commands.InsidePC;
 import frc.robot.commands.OutsidePC;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
-import frc.robot.modules.Vision;
 import frc.robot.subsystems.Climber;
 // import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Intake;
@@ -53,28 +53,33 @@ public class RobotContainer {
     private final Magazine magazine = new Magazine();
     private final Intake intake;
     private final Turret turret = new Turret();
-    private Vision vision = new Vision();
+    PhotonCamera camera = new PhotonCamera("gloworm");
     private final Shooter shooter = new Shooter();
     // private final Hood hood = new Hood(vision);
     private final Climber climber;
     public PneumaticHub ph = new PneumaticHub();
+
+    final double cameraHeightMeters = Constants.VisionConstants.cameraHeightMeters;
+    final double targetHeightMeters = Constants.VisionConstants.targetHeightMeters;
+    final double cameraPitchRadians = Constants.VisionConstants.cameraPitchRadians;
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
         ph.enableCompressorAnalog(100, 120);
+        camera.setPipelineIndex(0);
         climber = new Climber(ph);
         intake = new Intake(ph);
-        turret.setDefaultCommand(new AlignTurret(turret, vision));
+        turret.setDefaultCommand(new AlignTurret(turret, camera));
         // hood.setDefaultCommand(new PositionHood(hood, vision.getHoodValue()));
         // Adding AutoChooser Options
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
-        autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, turret, vision));
+        autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, turret, camera));
         autoChooser.addOption("P0", new P0(swerveDrive));
         autoChooser.addOption("P_2B",
-            new P_2B(swerveDrive, shooter, magazine, intake, turret, vision));
+            new P_2B(swerveDrive, shooter, magazine, intake, turret, camera));
         // Default Swerve Command
         swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, driver,
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop));

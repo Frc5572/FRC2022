@@ -54,10 +54,9 @@ public final class Constants {
      * Vision constants for limelight calculations.
      */
     public static final class VisionConstants {
-        public static final double deadPocket = 0.05;
-        public static final double limelightHeight = 24;
-        public static final double targetHeight = 98;
-        public static final double limelightAngle = 35;
+        public static final double cameraHeightMeters = Units.inchesToMeters(24);
+        public static final double targetHeightMeters = Units.inchesToMeters(98);
+        public static final double cameraPitchRadians = Units.degreesToRadians(35);
     }
 
     /**

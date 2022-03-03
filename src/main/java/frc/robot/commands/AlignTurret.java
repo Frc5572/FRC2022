@@ -1,7 +1,7 @@
 package frc.robot.commands;
 
+import org.photonvision.PhotonCamera;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.modules.Vision;
 import frc.robot.subsystems.Turret;
 
 /**
@@ -10,23 +10,24 @@ import frc.robot.subsystems.Turret;
 
 public class AlignTurret extends CommandBase {
     Turret turret;
-    Vision vision;
+    PhotonCamera camera;
 
     /**
      *
      * @param turret turret subsystem
      * @param vision vision subsystem
      */
-    public AlignTurret(Turret turret, Vision vision) {
+    public AlignTurret(Turret turret, PhotonCamera camera) {
         this.turret = turret;
-        this.vision = vision;
+        this.camera = camera;
         addRequirements(turret);
     }
 
     @Override
     public void execute() {
-        if (this.turret.alignEnabled && vision.getTargetFound()) {
-            turret.turretSet(vision.getAimValue());
+        var result = camera.getLatestResult();
+        if (this.turret.alignEnabled && result.hasTargets()) {
+            turret.turretSet(result.getBestTarget().getYaw());
         } else {
             turret.turretSet(0);
         }

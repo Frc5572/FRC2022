@@ -1,6 +1,7 @@
 package frc.robot.autos;
 
 import java.util.List;
+import org.photonvision.PhotonCamera;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
@@ -12,7 +13,6 @@ import frc.robot.Constants;
 import frc.robot.commands.AlignTurret;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.modules.AutoBase;
-import frc.robot.modules.Vision;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Turret;
 
@@ -20,16 +20,16 @@ import frc.robot.subsystems.Turret;
  * Autonomous that aligns limelight then excecutes a trajectory.
  */
 public class LimelightAuto extends AutoBase {
-    Vision vision;
+    PhotonCamera camera;
     Turret turret;
 
     /**
      * Autonomous that aligns limelight then excecutes a trajectory.
      *
      * @param swerve swerve subsystem
-     * @param vision vision subsystem
+     * @param camera photovision object
      */
-    public LimelightAuto(Swerve swerve, Turret turret, Vision vision) {
+    public LimelightAuto(Swerve swerve, Turret turret, PhotonCamera camera) {
         super(swerve);
         this.turret = turret;
         System.out.println("Limelight Auto !!");
@@ -47,7 +47,7 @@ public class LimelightAuto extends AutoBase {
         SwerveControllerCommand firstHalfTraject = baseSwerveCommand(firstHalfTrajectory);
         ZeroMotorsWaitCommand firstWait = new ZeroMotorsWaitCommand(swerve, 3);
         ZeroMotorsWaitCommand secondWait = new ZeroMotorsWaitCommand(swerve, .5);
-        AlignTurret align = new AlignTurret(turret, vision);
+        AlignTurret align = new AlignTurret(turret, camera);
 
         addCommands(
             new InstantCommand(() -> swerve.resetOdometry(firstHalfTrajectory.getInitialPose())),
