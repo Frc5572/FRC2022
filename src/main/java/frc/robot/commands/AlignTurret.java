@@ -3,6 +3,7 @@ package frc.robot.commands;
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Turret;
 
 /**
@@ -12,6 +13,9 @@ import frc.robot.subsystems.Turret;
 public class AlignTurret extends CommandBase {
     Turret turret;
     PhotonCamera camera;
+    double yaw = 0;
+    double calculated = 0;
+    double lastSpeed = 0;
 
     /**
      *
@@ -28,7 +32,14 @@ public class AlignTurret extends CommandBase {
     public void execute() {
         PhotonPipelineResult result = camera.getLatestResult();
         if (this.turret.alignEnabled && result.hasTargets()) {
-            turret.turretSet(result.getBestTarget().getYaw());
+            yaw = result.getBestTarget().getYaw();
+            calculated = (yaw / 125) * 3;
+            calculated = (Math.abs(calculated) <= Constants.VisionConstants.deadPocket) ? 0
+                : (calculated >= .2) ? .2
+                    : (Math.abs(calculated) - Math.abs(lastSpeed)) > .5 ? .5 : calculated;
+            lastSpeed = calculated;
+            System.out.println(calculated);
+            turret.turretSet(calculated);
         } else {
             turret.turretSet(0);
         }

@@ -4,14 +4,6 @@
 // import com.pathplanner.lib.PathPlannerTrajectory;
 // import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 // import org.photonvision.PhotonCamera;
-// import edu.wpi.first.wpilibj2.command.InstantCommand;
-// import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-// import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
-// import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-// import edu.wpi.first.wpilibj2.command.WaitCommand;
-// import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-// import frc.robot.commands.AlignTurret;
-// import frc.robot.commands.ZeroMotorsWaitCommand;
 // import frc.robot.modules.AutoBase;
 // import frc.robot.subsystems.Intake;
 // import frc.robot.subsystems.Magazine;
@@ -56,13 +48,13 @@
 // new ZeroMotorsWaitCommand(swerve, 1),
 // new InstantCommand(() -> intake.intakeRetract()),
 // new ZeroMotorsWaitCommand(swerve, 10)),
-// new SequentialCommandGroup(new WaitCommand(2),
+// new SequentialCommandGroup(new WaitCommand(2),1
 // new WaitUntilCommand(() -> shooter.getSetpoint() > 0 && shooter.atSetpoint()),
 // new InstantCommand(() -> magazine.enable())),
 // new SequentialCommandGroup(
 // new ParallelDeadlineGroup(new WaitCommand(.6),
 // new InstantCommand(() -> turret.turretLeft())),
-// new AlignTurret(turret, vision))));
+// new AlignTurret(turret, camera))));
 // }
 
 // @Override
