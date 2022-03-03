@@ -135,7 +135,8 @@ public class RobotContainer {
             .whenPressed(new OutsidePC(outsideClimber));
         new JoystickButton(driver, XboxController.Button.kStart.value)
             .whenPressed(new InstantCommand(() -> insideClimber.enableClimbers())
-                .andThen(new InstantCommand(() -> outsideClimber.enableClimbers())));
+                .andThen(new InstantCommand(() -> outsideClimber.enableClimbers()))
+                .andThen(new InstantCommand(() -> turret.alignEnabled = false)));
 
         // // Operator POV Up - INside Motors Out
         // new POVButton(driver, 0).whileHeld(new StartEndCommand(
