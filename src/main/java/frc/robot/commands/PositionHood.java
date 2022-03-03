@@ -1,7 +1,7 @@
 package frc.robot.commands;
 
+import org.photonvision.PhotonCamera;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.modules.Vision;
 import frc.robot.subsystems.Hood;
 
 /**
@@ -12,16 +12,16 @@ import frc.robot.subsystems.Hood;
 
 public class PositionHood extends CommandBase {
     Hood hood;
-    Vision vision;
+    PhotonCamera camera;
 
     /**
      *
      * @param hood hood subsystem
      * @param vision vision subsystem
      */
-    public PositionHood(Hood hood, Vision vision) {
+    public PositionHood(Hood hood, PhotonCamera camera) {
         this.hood = hood;
-        this.vision = vision;
+        this.camera = camera;
         addRequirements(hood);
     }
 

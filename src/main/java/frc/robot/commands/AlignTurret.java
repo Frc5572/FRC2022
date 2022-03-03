@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonPipelineResult;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Turret;
 
@@ -25,7 +26,7 @@ public class AlignTurret extends CommandBase {
 
     @Override
     public void execute() {
-        var result = camera.getLatestResult();
+        PhotonPipelineResult result = camera.getLatestResult();
         if (this.turret.alignEnabled && result.hasTargets()) {
             turret.turretSet(result.getBestTarget().getYaw());
         } else {

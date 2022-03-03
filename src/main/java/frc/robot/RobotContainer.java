@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.lib.AxisButton;
 import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.P0;
-import frc.robot.autos.P_2B;
+// import frc.robot.autos.P_2B;
 import frc.robot.commands.AlignTurret;
 import frc.robot.commands.InsidePC;
 import frc.robot.commands.MagazineRPM;
@@ -79,7 +79,6 @@ public class RobotContainer {
     public RobotContainer() {
         ph.enableCompressorAnalog(100, 120);
         camera.setPipelineIndex(0);
-        climber = new Climber(ph);
         insideClimber = new InsideClimber(ph);
         outsideClimber = new OutsideClimber(ph);
         intake = new Intake(ph);
@@ -90,8 +89,8 @@ public class RobotContainer {
         autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
         autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, turret, camera));
         autoChooser.addOption("P0", new P0(swerveDrive));
-        autoChooser.addOption("P_2B",
-            new P_2B(swerveDrive, shooter, magazine, intake, turret, camera));
+        // autoChooser.addOption("P_2B",
+        // new P_2B(swerveDrive, shooter, magazine, intake, turret, camera));
         // Default Swerve Command
         swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, driver,
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop));
@@ -161,7 +160,7 @@ public class RobotContainer {
 
         // Enable Shooter Magazine Combo While Operator A Button Held
         new JoystickButton(operator, XboxController.Button.kA.value)
-            .whileHeld(new ParallelCommandGroup(new ShooterRPM(shooter, vision),
+            .whileHeld(new ParallelCommandGroup(new ShooterRPM(shooter, camera),
                 new SequentialCommandGroup(new PrintCommand("Shooter at setpoint"),
                     new WaitCommand(.5),
                     new WaitUntilCommand(() -> shooter.getSetpoint() > 0 && shooter.atSetpoint()),
