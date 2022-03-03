@@ -16,6 +16,7 @@ public class AlignTurret extends CommandBase {
     double yaw = 0;
     double calculated = 0;
     double lastSpeed = 0;
+    double negative = 1;
 
     /**
      *
@@ -34,12 +35,20 @@ public class AlignTurret extends CommandBase {
         if (this.turret.alignEnabled && result.hasTargets()) {
             yaw = result.getBestTarget().getYaw();
             calculated = (yaw / 125) * 3;
-            calculated = (Math.abs(calculated) <= Constants.VisionConstants.deadPocket) ? 0
-                : (calculated >= .2) ? .2
-                    : (Math.abs(calculated) - Math.abs(lastSpeed)) > .5 ? .5 : calculated;
+            if (calculated < 0) {
+                negative = -1;
+            }
+            if (Math.abs(calculated) <= Constants.VisionConstants.deadPocket) {
+                calculated = 0;
+            } else if (Math.abs(calculated) >= .2) {
+                calculated = negative * .2;
+            }
+            // if ((calculated > 0 && lastSpeed < 0) || (calculated < 0 && lastSpeed > 0)) {
+            // calculated = negative * .1;
+            // }
             lastSpeed = calculated;
-            System.out.println(calculated);
-            turret.turretSet(calculated);
+            System.out.println("LASTSPEED: " + lastSpeed);
+            turret.turretSet(lastSpeed);
         } else {
             turret.turretSet(0);
         }
