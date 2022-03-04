@@ -17,9 +17,9 @@ public class InsideClimber extends SubsystemBase {
     private final DoubleSolenoid insideClimberSolenoid;
 
     private final WPI_TalonFX insideClimberMotor1 =
-        new WPI_TalonFX(Constants.Motors.insideClimberMotorRightId);
+        new WPI_TalonFX(Constants.Motors.insideClimberMotorRightId, "canivore");
     private final WPI_TalonFX insideClimberMotor2 =
-        new WPI_TalonFX(Constants.Motors.insideClimberMotorLeftId);
+        new WPI_TalonFX(Constants.Motors.insideClimberMotorLeftId, "canivore");
     private final WPI_TalonFX[] climberMotors =
         new WPI_TalonFX[] {insideClimberMotor1, insideClimberMotor2};
 
