@@ -46,7 +46,7 @@ public class Magazine extends PIDSubsystem {
      * Runs magazine up.
      */
     public void magazineUp() {
-        magazineMotor.set(.2);
+        magazineMotor.set(.5);
     }
 
     /**

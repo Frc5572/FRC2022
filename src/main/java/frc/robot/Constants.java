@@ -57,7 +57,7 @@ public final class Constants {
         public static final double deadPocket = 0.05;
         public static final double limelightHeight = 24;
         public static final double targetHeight = 98;
-        public static final double limelightAngle = 35;
+        public static final double limelightAngle = 25;
     }
 
     /**
@@ -246,7 +246,7 @@ public final class Constants {
         public static final double kD = 0;
 
         public static final double kMagazineFreeRPS = 112.5; // IN RPS NOT RPM
-        public static final double kMagazineTargetRPS = 1000 / 60; // IN RPS NOT RPM old value 3600
+        public static final double kMagazineTargetRPS = 600 / 60; // IN RPS NOT RPM old value 3600
         public static final double kMagazineToleranceRPS = 1; // IN RPS NOT RPM
 
         public static final int kUnitsPerRevolution = 2048;
