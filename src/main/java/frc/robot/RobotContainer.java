@@ -168,6 +168,7 @@ public class RobotContainer {
             .whileHeld(new StartEndCommand(() -> intake.intakeDeploy(),
                 () -> intake.intakeRetract(), intake))
             .whenPressed(new FunctionalCommand(magazine::enable, () -> {
+                SmartDashboard.putBoolean("Magazine Switch", magazine.magSense.get());
             }, interrupted -> magazine.disable(), () -> magazine.magSense.get(), magazine))
             .whenReleased(new InstantCommand(magazine::disable, magazine));
         // Run hopper down with POV down (180))
@@ -202,7 +203,7 @@ public class RobotContainer {
      * @return Returns autonomous command selected.
      */
     public Command getAutonomousCommand() {
-        return autoChooser.getSelected();
+        return new P_2B(swerveDrive, shooter, magazine, intake, turret, vision);
     }
 
 }
