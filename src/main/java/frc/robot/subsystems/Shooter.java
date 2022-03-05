@@ -11,7 +11,7 @@ import frc.robot.Constants;
  * Creates subsystem and functions for the shooter.
  */
 public class Shooter extends PIDSubsystem {
-    private final WPI_TalonFX shooter = new WPI_TalonFX(Constants.Motors.shooterID);
+    private final WPI_TalonFX shooter = new WPI_TalonFX(Constants.Motors.shooterID, "canivore");
     private final SimpleMotorFeedforward shooterFeed = new SimpleMotorFeedforward(
         Constants.ShooterPID.kSVolts, Constants.ShooterPID.kVVoltSecondsPerRotation);
 

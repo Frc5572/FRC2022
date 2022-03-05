@@ -18,7 +18,7 @@ import frc.robot.modules.Vision;
 
 public class Hood extends SubsystemBase {
     CANCoderConfiguration hoodCanCoderConfig = new CANCoderConfiguration();
-    CANCoder hoodCANCoder = new CANCoder(Constants.HoodConstants.hoodCANCoderID);
+    CANCoder hoodCANCoder = new CANCoder(Constants.HoodConstants.hoodCANCoderID, "canivore");
     public Servo hoodServo = new Servo(Constants.HoodConstants.hoodServoID);
     // public PWM test = new PWM(Constants.HoodConstants.hoodServoID);
     Vision vision;
