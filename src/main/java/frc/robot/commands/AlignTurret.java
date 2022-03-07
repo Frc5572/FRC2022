@@ -35,8 +35,9 @@ public class AlignTurret extends CommandBase {
 
             turret.turretSet(calculated);
         } else {
-            turret.turretSet(0);
+            this.turret.turretSet(0);
         }
+        this.limelight.setLEDMode(this.turret.alignEnabled);
     }
 
     @Override

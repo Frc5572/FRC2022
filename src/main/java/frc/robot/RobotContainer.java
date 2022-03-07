@@ -135,7 +135,8 @@ public class RobotContainer {
             .whenPressed(new OutsidePC(outsideClimber));
         new JoystickButton(driver, XboxController.Button.kStart.value)
             .whenPressed(new InstantCommand(() -> insideClimber.enableClimbers())
-                .andThen(new InstantCommand(() -> outsideClimber.enableClimbers())));
+                .andThen(new InstantCommand(() -> outsideClimber.enableClimbers()))
+                .andThen(new InstantCommand(() -> turret.alignEnabled = false)));
 
         // // Operator POV Up - INside Motors Out
         // new POVButton(driver, 0).whileHeld(new StartEndCommand(
@@ -162,9 +163,24 @@ public class RobotContainer {
             .whenReleased(new InstantCommand(shooter::disable, shooter))
             .whenReleased(new InstantCommand(magazine::disable, magazine));
 
+        new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
+            .whileHeld(new SequentialCommandGroup(
+                new InstantCommand(() -> shooter.setSetpoint(4300 / 60), shooter),
+                new InstantCommand(() -> shooter.enable(), shooter),
+                new SequentialCommandGroup(new PrintCommand("Shooter at setpoint"),
+                    new WaitCommand(.5),
+                    new WaitUntilCommand(() -> shooter.getSetpoint() > 0 && shooter.atSetpoint()),
+                    new MagazineRPM(shooter, magazine))))
+            .whenReleased(new InstantCommand(shooter::disable, shooter))
+            .whenReleased(new InstantCommand(magazine::disable, magazine))
+            .whenReleased(new InstantCommand(() -> shooter.setSetpoint(0), shooter));
+
         // Deploy Intake and Run Magazine While Operator B Held
         new JoystickButton(operator, XboxController.Button.kB.value)
+            .whileHeld(new StartEndCommand(() -> intake.intakeDeploy(),
+                () -> intake.intakeRetract(), intake))
             .whenPressed(new FunctionalCommand(magazine::enable, () -> {
+                SmartDashboard.putBoolean("Magazine Switch", magazine.magSense.get());
             }, interrupted -> magazine.disable(), () -> magazine.magSense.get(), magazine))
             .whenReleased(new InstantCommand(magazine::disable, magazine));
         // Run hopper down with POV down (180))
@@ -199,7 +215,7 @@ public class RobotContainer {
      * @return Returns autonomous command selected.
      */
     public Command getAutonomousCommand() {
-        return autoChooser.getSelected();
+        return new P_2B(swerveDrive, shooter, magazine, intake, turret, vision);
     }
 
 }

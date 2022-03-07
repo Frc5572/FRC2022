@@ -13,7 +13,8 @@ import frc.robot.Constants;
  */
 
 public class Magazine extends PIDSubsystem {
-    private WPI_TalonFX magazineMotor = new WPI_TalonFX(Constants.Motors.magazineMotorID);
+    private WPI_TalonFX magazineMotor =
+        new WPI_TalonFX(Constants.Motors.magazineMotorID, "canivore");
     public DigitalInput magSense = new DigitalInput(1);
     private final SimpleMotorFeedforward magazineFeed = new SimpleMotorFeedforward(
         Constants.MagazinePID.kSVolts, Constants.MagazinePID.kVVoltSecondsPerRotation);
@@ -46,7 +47,7 @@ public class Magazine extends PIDSubsystem {
      * Runs magazine up.
      */
     public void magazineUp() {
-        magazineMotor.set(.2);
+        magazineMotor.set(.5);
     }
 
     /**

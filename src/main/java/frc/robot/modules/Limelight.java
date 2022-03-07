@@ -99,6 +99,16 @@ public class Limelight {
     }
 
     /**
+     * Turn the limielght LEDs off and On
+     *
+     * @param enabled
+     */
+    public void setLEDMode(boolean enabled) {
+        int value = enabled ? 3 : 1;
+        this.limelightTable.getEntry("ledMode").setNumber(value);
+    }
+
+    /**
      * State of the Limelight data
      */
     public static class VisionState {
