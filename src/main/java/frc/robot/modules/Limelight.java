@@ -64,7 +64,7 @@ public class Limelight {
     /**
      * Turn the limielght LEDs off and On
      *
-     * @param enabled
+     * @param enabled Whther to enable or disable the LEDs
      */
     public void setLEDMode(boolean enabled) {
         int value = enabled ? 3 : 1;

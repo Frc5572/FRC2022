@@ -215,7 +215,7 @@ public class RobotContainer {
      * @return Returns autonomous command selected.
      */
     public Command getAutonomousCommand() {
-        return new P_2B(swerveDrive, shooter, magazine, intake, turret, vision);
+        return new P_2B(swerveDrive, shooter, magazine, intake, turret, limelight);
     }
 
 }
