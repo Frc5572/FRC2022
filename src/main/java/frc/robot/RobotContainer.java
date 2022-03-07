@@ -163,6 +163,18 @@ public class RobotContainer {
             .whenReleased(new InstantCommand(shooter::disable, shooter))
             .whenReleased(new InstantCommand(magazine::disable, magazine));
 
+        new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
+            .whileHeld(new SequentialCommandGroup(
+                new InstantCommand(() -> shooter.setSetpoint(4300 / 60), shooter),
+                new InstantCommand(() -> shooter.enable(), shooter),
+                new SequentialCommandGroup(new PrintCommand("Shooter at setpoint"),
+                    new WaitCommand(.5),
+                    new WaitUntilCommand(() -> shooter.getSetpoint() > 0 && shooter.atSetpoint()),
+                    new MagazineRPM(shooter, magazine))))
+            .whenReleased(new InstantCommand(shooter::disable, shooter))
+            .whenReleased(new InstantCommand(magazine::disable, magazine))
+            .whenReleased(new InstantCommand(() -> shooter.setSetpoint(0), shooter));
+
         // Deploy Intake and Run Magazine While Operator B Held
         new JoystickButton(operator, XboxController.Button.kB.value)
             .whileHeld(new StartEndCommand(() -> intake.intakeDeploy(),
