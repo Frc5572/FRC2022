@@ -27,15 +27,14 @@ public class AlignTurret extends CommandBase {
 
     @Override
     public void execute() {
-        if (this.turret.alignEnabled && limelight.getTargetFound()) {
-            VisionState state = limelight.getState();
+        if (this.turret.alignEnabled && this.limelight.getTargetFound()) {
+            VisionState state = this.limelight.getState();
             double calculated = (state.xOffset / 125) * 3;
             calculated = (Math.abs(calculated) <= Constants.VisionConstants.deadPocket) ? 0
                 : (calculated >= .3) ? .3 : calculated;
-
             turret.turretSet(calculated);
         } else {
-            this.turret.turretSet(0);
+            this.turret.turretStop();
         }
         this.limelight.setLEDMode(this.turret.alignEnabled);
     }

@@ -10,15 +10,15 @@ import frc.robot.Constants;
 public class Turret extends SubsystemBase {
     private final WPI_TalonFX turretMotor =
         new WPI_TalonFX(Constants.Motors.turretMotorID, "canivore");
-    public static final double spinLeft = -0.2;
+    public static final double spinPower = -0.2;
     public boolean alignEnabled = true;
 
     public void turretLeft() {
-        turretMotor.set(spinLeft);
+        turretSet(spinPower);
     }
 
     public void turretRight() {
-        turretMotor.set(-spinLeft);
+        turretSet(-spinPower);
     }
 
     public void turretSet(double power) {
