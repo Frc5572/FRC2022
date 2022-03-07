@@ -14,7 +14,11 @@ public class ShooterRPM extends CommandBase {
     double curDisRPM = 0;
     double newDisRPM = 0;
 
-
+    /**
+     *
+     * @param shooter shooter subsystem
+     * @param vision vision subsystem
+     */
     public ShooterRPM(Shooter shooter, Vision vision) {
         this.shooter = shooter;
         this.vision = vision;
@@ -23,27 +27,43 @@ public class ShooterRPM extends CommandBase {
 
     @Override
     public void initialize() {
+        // System.out.println("STARTING SHOOTER");
         updateSetpoint();
+        // System.out.println("Initial RPM: " + this.shooter.getSetpoint());
         this.shooter.enable();
     }
 
     @Override
     public void execute() {
         updateSetpoint();
+        // System.out.println("SHOOTER SETPOINT: " + this.shooter.getSetpoint());
     }
 
     @Override
     public void end(boolean interrupted) {
+        curDisRPM = 0;
+        shooter.setSetpoint(curDisRPM);
         this.shooter.disable();
     }
 
     private void updateSetpoint() {
-        double distance = this.vision.getDistance() * 12;
-        newDisRPM = 6 * Math.pow(distance, 2) + (90 * distance) + 3500; // IN RPS NOT RPM
-        if (Math.abs(curDisRPM - newDisRPM) >= 50) {
-            newDisRPM = curDisRPM;
+        double distance = this.vision.getDistance() / 12;
+        newDisRPM =
+            3.452380952381 * Math.pow(distance, 3) - 61.7857142857143 * Math.pow(distance, 2)
+                + 402.6190476190476 * Math.pow(distance, 1) + 3000;
+        // newDisRPM = 3.45238 * Math.pow(distance, 3) - 51.42857 * Math.pow(distance, 2)
+        // + 289.40476 * Math.pow(distance, 1) + 3300;
+        // newDisRPM = 3.45238 * Math.pow(distance, 3) - 56 * Math.pow(distance, 2)
+        // + 345 * Math.pow(distance, 1) + 2975;
+        if (Math.abs(curDisRPM - newDisRPM) >= 100) {
+            if (newDisRPM >= 6000) {
+                curDisRPM = 6000;
+            } else if (newDisRPM <= 3500) {
+                curDisRPM = 3500;
+            } else {
+                curDisRPM = newDisRPM;
+            }
+            this.shooter.setSetpoint(curDisRPM / 60);
         }
-        System.out.println(newDisRPM);
-        this.shooter.setSetpoint(newDisRPM);
     }
 }

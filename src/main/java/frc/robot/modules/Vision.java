@@ -88,4 +88,9 @@ public class Vision {
     public boolean getTargetAligned() {
         return calculated == 0;
     }
+
+    public void setLEDMode(boolean enabled) {
+        int value = enabled ? 3 : 1;
+        this.table.getEntry("ledMode").setNumber(value);
+    }
 }
