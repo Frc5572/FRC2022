@@ -87,7 +87,7 @@ public class RobotContainer {
         autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, turret, vision));
         autoChooser.addOption("P0", new P0(swerveDrive));
         autoChooser.addOption("P_2B",
-            new P_2B(swerveDrive, shooter, magazine, intake, turret, vision));
+            new P_2B(swerveDrive, shooter, shooterRoller, magazine, intake, turret, vision));
         // Default Swerve Command
         swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, driver,
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop));
@@ -222,7 +222,7 @@ public class RobotContainer {
      * @return Returns autonomous command selected.
      */
     public Command getAutonomousCommand() {
-        return new P_2B(swerveDrive, shooter, magazine, intake, turret, vision);
+        return new P_2B(swerveDrive, shooter, shooterRoller, magazine, intake, turret, vision);
     }
 
 }
