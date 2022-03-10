@@ -34,6 +34,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Magazine;
 import frc.robot.subsystems.OutsideClimber;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterRoller;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Turret;
 
@@ -64,6 +65,7 @@ public class RobotContainer {
     private final Turret turret = new Turret();
     private Vision vision = new Vision();
     private final Shooter shooter = new Shooter();
+    private final ShooterRoller shooterRoller = new ShooterRoller();
     // private final Hood hood = new Hood(vision);
     private final InsideClimber insideClimber;
     private final OutsideClimber outsideClimber;
@@ -155,25 +157,30 @@ public class RobotContainer {
 
         // Enable Shooter Magazine Combo While Operator A Button Held
         new JoystickButton(operator, XboxController.Button.kA.value)
-            .whileHeld(new ParallelCommandGroup(new ShooterRPM(shooter, vision),
+            .whileHeld(new ParallelCommandGroup(new ShooterRPM(shooter, shooterRoller, vision),
                 new SequentialCommandGroup(new PrintCommand("Shooter at setpoint"),
                     new WaitCommand(.5),
                     new WaitUntilCommand(() -> shooter.getSetpoint() > 0 && shooter.atSetpoint()),
                     new MagazineRPM(shooter, magazine))))
             .whenReleased(new InstantCommand(shooter::disable, shooter))
+            .whenReleased(new InstantCommand(shooterRoller::disable, shooterRoller))
             .whenReleased(new InstantCommand(magazine::disable, magazine));
 
         new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
             .whileHeld(new SequentialCommandGroup(
                 new InstantCommand(() -> shooter.setSetpoint(4300 / 60), shooter),
                 new InstantCommand(() -> shooter.enable(), shooter),
+                new InstantCommand(() -> shooterRoller.setSetpoint(4300 / 60), shooterRoller),
+                new InstantCommand(() -> shooterRoller.enable(), shooterRoller),
                 new SequentialCommandGroup(new PrintCommand("Shooter at setpoint"),
                     new WaitCommand(.5),
                     new WaitUntilCommand(() -> shooter.getSetpoint() > 0 && shooter.atSetpoint()),
                     new MagazineRPM(shooter, magazine))))
             .whenReleased(new InstantCommand(shooter::disable, shooter))
+            .whenReleased(new InstantCommand(shooterRoller::disable, shooterRoller))
             .whenReleased(new InstantCommand(magazine::disable, magazine))
-            .whenReleased(new InstantCommand(() -> shooter.setSetpoint(0), shooter));
+            .whenReleased(new InstantCommand(() -> shooter.setSetpoint(0), shooter))
+            .whenReleased(new InstantCommand(() -> shooterRoller.setSetpoint(0)));
 
         // Deploy Intake and Run Magazine While Operator B Held
         new JoystickButton(operator, XboxController.Button.kB.value)

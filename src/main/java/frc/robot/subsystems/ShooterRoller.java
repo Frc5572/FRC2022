@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxRelativeEncoder;
@@ -23,10 +24,12 @@ public class ShooterRoller extends PIDSubsystem {
     public ShooterRoller() {
         super(new PIDController(Constants.ShooterRollerPID.kP, Constants.ShooterRollerPID.kI,
             Constants.ShooterRollerPID.kD));
-        shooterRoller.setInverted(true);
+        shooterRoller.setInverted(true); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // shooterRoller.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 1, 1);
-        getController().setTolerance(Constants.ShooterRollerPID.kShooterToleranceRPS); // IN RPS NOT
-                                                                                       // RPM
+        getController().setTolerance(Constants.ShooterRollerPID.kShooterRollerToleranceRPS); // IN
+                                                                                             // RPS
+                                                                                             // NOT
+        // RPM
         setSetpoint(0); // IN RPS NOT RPM
     }
 
@@ -38,7 +41,7 @@ public class ShooterRoller extends PIDSubsystem {
     }
 
     /**
-     * Stops the shooter.
+     * Stops the shooter roller.
      */
     public void stopShooterRoller() {
         shooterRoller.set(0);
@@ -51,7 +54,10 @@ public class ShooterRoller extends PIDSubsystem {
 
     @Override
     public double getMeasurement() {
-        double selSenVel = shooterRoller.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+        CANEncoder encoder = shooterRoller.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+        double selSenVel = encoder.getVelocity();
+        // double selSenVel = shooterRoller.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor,
+        // 42);
         double rotPerSec = (double) selSenVel / Constants.ShooterRollerPID.kUnitsPerRevolution
             * 10; /* scale per100ms to perSecond */
 

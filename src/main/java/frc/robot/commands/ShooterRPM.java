@@ -3,6 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.modules.Vision;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterRoller;
 
 /**
  * Controls Shooter RPM based on
@@ -10,6 +11,7 @@ import frc.robot.subsystems.Shooter;
 public class ShooterRPM extends CommandBase {
 
     private Shooter shooter;
+    private ShooterRoller shooterRoller;
     private Vision vision;
     double curDisRPM = 0;
     double newDisRPM = 0;
@@ -17,12 +19,14 @@ public class ShooterRPM extends CommandBase {
     /**
      *
      * @param shooter shooter subsystem
+     * @param shooterRoller shooter roller subsystem
      * @param vision vision subsystem
      */
-    public ShooterRPM(Shooter shooter, Vision vision) {
+    public ShooterRPM(Shooter shooter, ShooterRoller shooterRoller, Vision vision) {
         this.shooter = shooter;
+        this.shooterRoller = shooterRoller;
         this.vision = vision;
-        addRequirements(shooter);
+        addRequirements(shooter, shooterRoller);
     }
 
     @Override
@@ -64,6 +68,7 @@ public class ShooterRPM extends CommandBase {
                 curDisRPM = newDisRPM;
             }
             this.shooter.setSetpoint(curDisRPM / 60);
+            this.shooterRoller.setSetpoint(curDisRPM / 60);
         }
     }
 }
