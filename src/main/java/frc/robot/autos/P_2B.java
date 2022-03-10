@@ -16,6 +16,7 @@ import frc.robot.modules.Vision;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Magazine;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterRoller;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Turret;
 
@@ -26,6 +27,7 @@ public class P_2B extends AutoBase {
 
     Intake intake;
     Shooter shooter;
+    ShooterRoller shooterRoller;
     Magazine magazine;
 
     /**
@@ -33,13 +35,14 @@ public class P_2B extends AutoBase {
      *
      * @param swerve swerve subsystem
      */
-    public P_2B(Swerve swerve, Shooter shooter, Magazine magazine, Intake intake, Turret turret,
-        Vision vision) {
+    public P_2B(Swerve swerve, Shooter shooter, ShooterRoller shooterRoller, Magazine magazine,
+        Intake intake, Turret turret, Vision vision) {
         super(swerve);
         this.shooter = shooter;
+        this.shooterRoller = shooterRoller;
         this.magazine = magazine;
         this.intake = intake;
-        addRequirements(shooter, magazine, intake, turret);
+        addRequirements(shooter, shooterRoller, magazine, intake, turret);
 
         PathPlannerTrajectory trajectory = PathPlanner.loadPath("P_2B", 1, 1);
         PPSwerveControllerCommand autoDrive = baseSwerveCommand(trajectory);
@@ -48,7 +51,9 @@ public class P_2B extends AutoBase {
         addCommands(new InstantCommand(() -> swerve.resetOdometry(trajectory.getInitialPose())),
             new InstantCommand(() -> turret.alignEnabled = true),
             new InstantCommand(() -> this.shooter.setSetpoint(4500 / 60)),
+            new InstantCommand(() -> this.shooterRoller.setSetpoint((4500 / 60))),
             new InstantCommand(() -> this.shooter.enable()),
+            new InstantCommand(() -> this.shooterRoller.enable()),
             new ParallelDeadlineGroup(
                 new SequentialCommandGroup(
                     new ParallelCommandGroup(new InstantCommand(() -> intake.intakeDeploy()),
@@ -69,6 +74,7 @@ public class P_2B extends AutoBase {
     public void end(boolean interrupted) {
         magazine.disable();
         shooter.disable();
+        shooterRoller.disable();
         intake.intakeRetract();
     }
 }
