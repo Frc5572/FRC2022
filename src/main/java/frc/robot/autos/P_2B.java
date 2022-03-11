@@ -56,13 +56,14 @@ public class P_2B extends AutoBase {
             new InstantCommand(() -> this.shooterRoller.enable()),
             new ParallelDeadlineGroup(
                 new SequentialCommandGroup(
-                    new ParallelCommandGroup(new InstantCommand(() -> intake.intakeDeploy()),
-                        autoDrive),
+                    new ParallelCommandGroup(
+                        new InstantCommand(() -> intake.intakeDeploy()), autoDrive),
                     new ZeroMotorsWaitCommand(swerve, 1),
                     new InstantCommand(() -> intake.intakeRetract()),
                     new ZeroMotorsWaitCommand(swerve, 10)),
                 new SequentialCommandGroup(new WaitCommand(2),
-                    new WaitUntilCommand(() -> shooter.getSetpoint() > 0 && shooter.atSetpoint()),
+                    new WaitUntilCommand(() -> (shooter.getSetpoint() > 0 && shooter.atSetpoint())
+                        && (shooterRoller.getSetpoint() > 0 && shooterRoller.atSetpoint())),
                     new InstantCommand(() -> magazine.enable())),
                 new SequentialCommandGroup(
                     new ParallelDeadlineGroup(new WaitCommand(.6),
