@@ -1,8 +1,8 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxRelativeEncoder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -54,7 +54,8 @@ public class ShooterRoller extends PIDSubsystem {
 
     @Override
     public double getMeasurement() {
-        CANEncoder encoder = shooterRoller.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+        RelativeEncoder encoder =
+            shooterRoller.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
         double selSenVel = encoder.getVelocity();
         // double selSenVel = shooterRoller.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor,
         // 42);
