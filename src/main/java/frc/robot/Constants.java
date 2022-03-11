@@ -243,7 +243,7 @@ public final class Constants {
      */
 
     public static final class ShooterRollerPID {
-        public static final double kP = 0.13744;
+        public static final double kP = 0.11219;
         public static final double kI = 0;
         public static final double kD = 0;
 
@@ -252,8 +252,8 @@ public final class Constants {
         public static final double kShooterRollerToleranceRPS = 2; // IN RPS NOT RPM
 
         public static final int kUnitsPerRevolution = 2048;
-        public static final double kSVolts = 0.63035;
-        public static final double kVVoltSecondsPerRotation = 0.10877;
+        public static final double kSVolts = 0.19057;
+        public static final double kVVoltSecondsPerRotation = 0.12795;
     }
 
     /**
