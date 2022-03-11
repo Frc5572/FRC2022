@@ -160,7 +160,8 @@ public class RobotContainer {
             .whileHeld(new ParallelCommandGroup(new ShooterRPM(shooter, shooterRoller, vision),
                 new SequentialCommandGroup(new PrintCommand("Shooter at setpoint"),
                     new WaitCommand(.5),
-                    new WaitUntilCommand(() -> shooter.getSetpoint() > 0 && shooter.atSetpoint()),
+                    new WaitUntilCommand(() -> shooter.getSetpoint() > 0 && shooter.atSetpoint()
+                        && shooterRoller.atSetpoint()),
                     new MagazineRPM(shooter, magazine))))
             .whenReleased(new InstantCommand(shooter::disable, shooter))
             .whenReleased(new InstantCommand(shooterRoller::disable, shooterRoller))

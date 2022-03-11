@@ -71,7 +71,7 @@ public class ShooterRPM extends CommandBase {
                 curDisRPM = newDisRPM;
             }
             this.shooter.setSetpoint(curDisRPM / 60);
-            this.shooterRoller.setSetpoint(curDisRPM / 60);
+            this.shooterRoller.setSetpoint((curDisRPM / 60) * 2);
         }
     }
 }

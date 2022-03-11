@@ -251,7 +251,7 @@ public final class Constants {
         public static final double kShooterRollerTargetRPS = 4100 / 60; // IN RPS NOT RPM
         public static final double kShooterRollerToleranceRPS = 2; // IN RPS NOT RPM
 
-        public static final int kUnitsPerRevolution = 2048;
+        public static final int kUnitsPerRevolution = 42;
         public static final double kSVolts = 0.19057;
         public static final double kVVoltSecondsPerRotation = 0.12795;
     }

@@ -56,11 +56,11 @@ public class ShooterRoller extends PIDSubsystem {
     public double getMeasurement() {
         RelativeEncoder encoder =
             shooterRoller.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+        encoder.setVelocityConversionFactor(0.5);
         double selSenVel = encoder.getVelocity();
         // double selSenVel = shooterRoller.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor,
         // 42);
-        double rotPerSec = (double) selSenVel / Constants.ShooterRollerPID.kUnitsPerRevolution
-            * 10; /* scale per100ms to perSecond */
+        double rotPerSec = (double) selSenVel / 60;
 
         // System.out.println("SHOOTER ROLLER RPM (Speed): " + rotPerSec * 60);
         // System.out.println("Voltage: " + shooterRoller.getMotorOutputVoltage());
