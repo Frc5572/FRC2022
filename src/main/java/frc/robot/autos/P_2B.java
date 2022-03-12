@@ -51,7 +51,7 @@ public class P_2B extends AutoBase {
         addCommands(new InstantCommand(() -> swerve.resetOdometry(trajectory.getInitialPose())),
             new InstantCommand(() -> turret.alignEnabled = true),
             new InstantCommand(() -> this.shooter.setSetpoint(4500 / 60)),
-            new InstantCommand(() -> this.shooterRoller.setSetpoint((4500 / 60))),
+            new InstantCommand(() -> this.shooterRoller.setSetpoint((4500 / 60) * 2)),
             new InstantCommand(() -> this.shooter.enable()),
             new InstantCommand(() -> this.shooterRoller.enable()),
             new ParallelDeadlineGroup(
