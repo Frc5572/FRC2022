@@ -3,6 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.modules.Vision;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterRoller;
 
 /**
  * Controls Shooter RPM based on
@@ -10,32 +11,56 @@ import frc.robot.subsystems.Shooter;
 public class ShooterRPM extends CommandBase {
 
     private Shooter shooter;
+    private ShooterRoller shooterRoller;
     private Vision vision;
     double curDisRPM = 0;
     double newDisRPM = 0;
+    double setRPS;
 
     /**
      *
      * @param shooter shooter subsystem
+     * @param shooterRoller shooter roller subsystem
      * @param vision vision subsystem
      */
-    public ShooterRPM(Shooter shooter, Vision vision) {
+    public ShooterRPM(Shooter shooter, ShooterRoller shooterRoller, Vision vision) {
         this.shooter = shooter;
+        this.shooterRoller = shooterRoller;
         this.vision = vision;
-        addRequirements(shooter);
+        addRequirements(shooter, shooterRoller);
+    }
+
+    /**
+     *
+     * @param shooter shooter subsystem
+     * @param shooterRoller shooter roller subsystem
+     * @param rps Hardcoded setpoint for Shooter
+     */
+    public ShooterRPM(Shooter shooter, ShooterRoller shooterRoller, double rps) {
+        this.shooter = shooter;
+        this.shooterRoller = shooterRoller;
+        this.setRPS = rps;
+        addRequirements(shooter, shooterRoller);
     }
 
     @Override
     public void initialize() {
         // System.out.println("STARTING SHOOTER");
-        updateSetpoint();
         // System.out.println("Initial RPM: " + this.shooter.getSetpoint());
+        if (this.vision == null && this.setRPS > 0) {
+            this.shooter.setSetpoint(this.setRPS);
+        } else {
+            updateSetpoint();
+        }
         this.shooter.enable();
+        this.shooterRoller.enable();
     }
 
     @Override
     public void execute() {
-        updateSetpoint();
+        if (this.vision != null) {
+            updateSetpoint();
+        }
         // System.out.println("SHOOTER SETPOINT: " + this.shooter.getSetpoint());
     }
 
@@ -44,6 +69,7 @@ public class ShooterRPM extends CommandBase {
         curDisRPM = 0;
         shooter.setSetpoint(curDisRPM);
         this.shooter.disable();
+        this.shooterRoller.disable();
     }
 
     private void updateSetpoint() {
