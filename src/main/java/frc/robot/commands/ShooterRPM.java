@@ -34,7 +34,7 @@ public class ShooterRPM extends CommandBase {
      *
      * @param shooter shooter subsystem
      * @param shooterRoller shooter roller subsystem
-     * @param vision vision subsystem
+     * @param rps Hardcoded setpoint for Shooter
      */
     public ShooterRPM(Shooter shooter, ShooterRoller shooterRoller, double rps) {
         this.shooter = shooter;
