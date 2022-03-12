@@ -34,7 +34,6 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Magazine;
 import frc.robot.subsystems.OutsideClimber;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.ShooterRoller;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Turret;
 
@@ -65,7 +64,6 @@ public class RobotContainer {
     private final Turret turret = new Turret();
     private Vision vision = new Vision();
     private final Shooter shooter = new Shooter();
-    private final ShooterRoller shooterRoller = new ShooterRoller();
     // private final Hood hood = new Hood(vision);
     private final InsideClimber insideClimber;
     private final OutsideClimber outsideClimber;
@@ -87,7 +85,7 @@ public class RobotContainer {
         autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, turret, vision));
         autoChooser.addOption("P0", new P0(swerveDrive));
         autoChooser.addOption("P_2B",
-            new P_2B(swerveDrive, shooter, shooterRoller, magazine, intake, turret, vision));
+            new P_2B(swerveDrive, shooter, magazine, intake, turret, vision));
         // Default Swerve Command
         swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, driver,
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop));
@@ -157,22 +155,20 @@ public class RobotContainer {
 
         // Enable Shooter Magazine Combo While Operator A Button Held
         new JoystickButton(operator, XboxController.Button.kA.value)
-            .whileHeld(new ParallelCommandGroup(
-                new ShooterRPM(this.shooter, this.shooterRoller, this.vision),
+            .whileHeld(new ParallelCommandGroup(new ShooterRPM(this.shooter, this.vision),
                 new SequentialCommandGroup(new PrintCommand("Shooter at setpoint"),
                     new WaitCommand(.5),
-                    new WaitUntilCommand(() -> this.shooter.getSetpoint() > 0
-                        && this.shooter.atSetpoint() && this.shooterRoller.atSetpoint()),
+                    new WaitUntilCommand(
+                        () -> this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
                     new MagazineRPM(this.shooter, this.magazine))))
             .whenReleased(new InstantCommand(this.magazine::disable, this.magazine));
 
         new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
-            .whileHeld(new ParallelCommandGroup(
-                new ShooterRPM(this.shooter, this.shooterRoller, 4300 / 60),
+            .whileHeld(new ParallelCommandGroup(new ShooterRPM(this.shooter, 4300 / 60),
                 new SequentialCommandGroup(new SequentialCommandGroup(
                     new PrintCommand("Shooter at setpoint"), new WaitCommand(.5),
-                    new WaitUntilCommand(() -> this.shooter.getSetpoint() > 0
-                        && this.shooter.atSetpoint() && this.shooterRoller.atSetpoint()),
+                    new WaitUntilCommand(
+                        () -> this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
                     new MagazineRPM(this.shooter, this.magazine)))))
             .whenReleased(new InstantCommand(this.magazine::disable, this.magazine));
 
@@ -216,7 +212,7 @@ public class RobotContainer {
      * @return Returns autonomous command selected.
      */
     public Command getAutonomousCommand() {
-        return new P_2B(swerveDrive, shooter, shooterRoller, magazine, intake, turret, vision);
+        return new P_2B(swerveDrive, shooter, magazine, intake, turret, vision);
     }
 
 }
