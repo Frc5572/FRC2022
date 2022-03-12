@@ -15,6 +15,7 @@ public class ShooterRPM extends CommandBase {
     private Vision vision;
     double curDisRPM = 0;
     double newDisRPM = 0;
+    double setRPS;
 
     /**
      *
@@ -29,18 +30,38 @@ public class ShooterRPM extends CommandBase {
         addRequirements(shooter, shooterRoller);
     }
 
+    /**
+     *
+     * @param shooter shooter subsystem
+     * @param shooterRoller shooter roller subsystem
+     * @param vision vision subsystem
+     */
+    public ShooterRPM(Shooter shooter, ShooterRoller shooterRoller, double rps) {
+        this.shooter = shooter;
+        this.shooterRoller = shooterRoller;
+        this.setRPS = rps;
+        addRequirements(shooter, shooterRoller);
+    }
+
     @Override
     public void initialize() {
         // System.out.println("STARTING SHOOTER");
-        updateSetpoint();
         // System.out.println("Initial RPM: " + this.shooter.getSetpoint());
+        if (this.vision != null && this.setRPS > 0) {
+            this.shooter.setSetpoint(this.setRPS);
+            this.shooterRoller.setSetpoint(this.setRPS * 2);
+        } else {
+            updateSetpoint();
+        }
         this.shooter.enable();
         this.shooterRoller.enable();
     }
 
     @Override
     public void execute() {
-        updateSetpoint();
+        if (this.vision != null) {
+            updateSetpoint();
+        }
         // System.out.println("SHOOTER SETPOINT: " + this.shooter.getSetpoint());
     }
 

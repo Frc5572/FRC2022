@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.AlignTurret;
+import frc.robot.commands.ShooterRPM;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.modules.AutoBase;
 import frc.robot.modules.Vision;
@@ -50,10 +51,6 @@ public class P_2B extends AutoBase {
         // ShooterRPM shooterCommand = new ShooterRPM(shooter, vision);
         addCommands(new InstantCommand(() -> swerve.resetOdometry(trajectory.getInitialPose())),
             new InstantCommand(() -> turret.alignEnabled = true),
-            new InstantCommand(() -> this.shooter.setSetpoint(4500 / 60)),
-            new InstantCommand(() -> this.shooterRoller.setSetpoint((4500 / 60) * 2)),
-            new InstantCommand(() -> this.shooter.enable()),
-            new InstantCommand(() -> this.shooterRoller.enable()),
             new ParallelDeadlineGroup(
                 new SequentialCommandGroup(
                     new ParallelCommandGroup(
@@ -68,7 +65,8 @@ public class P_2B extends AutoBase {
                 new SequentialCommandGroup(
                     new ParallelDeadlineGroup(new WaitCommand(.6),
                         new InstantCommand(() -> turret.turretLeft())),
-                    new AlignTurret(turret, vision))));
+                    new AlignTurret(turret, vision)),
+                new ShooterRPM(shooter, shooterRoller, 4500 / 60)));
     }
 
     @Override
