@@ -26,9 +26,10 @@ public class ShooterRoller extends PIDSubsystem {
             Constants.ShooterRollerPID.kD));
         shooterRoller.setInverted(true); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // shooterRoller.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 1, 1);
-        getController().setTolerance(Constants.ShooterRollerPID.kShooterRollerToleranceRPS); // IN
-                                                                                             // RPS
-                                                                                             // NOT
+        getController().setTolerance(Constants.ShooterRollerPID.kShooterRollerToleranceRPS);
+        // IN
+        // RPS
+        // NOT
         // RPM
         setSetpoint(0); // IN RPS NOT RPM
     }
