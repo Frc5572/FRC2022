@@ -163,8 +163,6 @@ public class RobotContainer {
                     new WaitUntilCommand(() -> shooter.getSetpoint() > 0 && shooter.atSetpoint()
                         && shooterRoller.atSetpoint()),
                     new MagazineRPM(shooter, magazine))))
-            .whenReleased(new InstantCommand(shooter::disable, shooter))
-            .whenReleased(new InstantCommand(shooterRoller::disable, shooterRoller))
             .whenReleased(new InstantCommand(magazine::disable, magazine));
 
         new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
