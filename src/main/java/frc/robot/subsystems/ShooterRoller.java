@@ -24,28 +24,9 @@ public class ShooterRoller extends PIDSubsystem {
     public ShooterRoller() {
         super(new PIDController(Constants.ShooterRollerPID.kP, Constants.ShooterRollerPID.kI,
             Constants.ShooterRollerPID.kD));
-        shooterRoller.setInverted(true); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // shooterRoller.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 1, 1);
+        shooterRoller.setInverted(true);
         getController().setTolerance(Constants.ShooterRollerPID.kShooterRollerToleranceRPS);
-        // IN
-        // RPS
-        // NOT
-        // RPM
         setSetpoint(0); // IN RPS NOT RPM
-    }
-
-    /**
-     * Spins shooter roller.
-     */
-    public void spinShooterRoller() {
-        shooterRoller.set(.3);
-    }
-
-    /**
-     * Stops the shooter roller.
-     */
-    public void stopShooterRoller() {
-        shooterRoller.set(0);
     }
 
     @Override
@@ -59,10 +40,7 @@ public class ShooterRoller extends PIDSubsystem {
             shooterRoller.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
         encoder.setVelocityConversionFactor(0.5);
         double selSenVel = encoder.getVelocity();
-        // double selSenVel = shooterRoller.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor,
-        // 42);
         double rotPerSec = (double) selSenVel / 60;
-
         // System.out.println("SHOOTER ROLLER RPM (Speed): " + rotPerSec * 60);
         // System.out.println("Voltage: " + shooterRoller.getMotorOutputVoltage());
         return rotPerSec;
@@ -72,12 +50,6 @@ public class ShooterRoller extends PIDSubsystem {
     public void periodic() {
         if (m_enabled) {
             useOutput(m_controller.calculate(getMeasurement(), getSetpoint()), getSetpoint());
-
-            // double selSenVel = shooter.getSelectedSensorVelocity(0);
-            // double rotPerSec = (double) selSenVel / Constants.ShooterPID.kUnitsPerRevolution
-            // * 10; /* scale per100ms to perSecond */
-
-            // System.out.println("SHOOTER RPM (Speed): " + rotPerSec * 60);
         }
     }
 

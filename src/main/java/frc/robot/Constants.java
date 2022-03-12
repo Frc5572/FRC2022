@@ -229,7 +229,6 @@ public final class Constants {
         public static final double kI = 0;
         public static final double kD = 0;
 
-        public static final double kShooterFreeRPS = 112.5; // IN RPS NOT RPM
         public static final double kShooterTargetRPS = 4100 / 60; // IN RPS NOT RPM
         public static final double kShooterToleranceRPS = 2; // IN RPS NOT RPM
 
@@ -247,7 +246,6 @@ public final class Constants {
         public static final double kI = 0;
         public static final double kD = 0;
 
-        public static final double kShooterRollerFreeRPS = 183.3; // IN RPS NOT RPM
         public static final double kShooterRollerTargetRPS = 4100 / 60; // IN RPS NOT RPM
         public static final double kShooterRollerToleranceRPS = 2; // IN RPS NOT RPM
 
@@ -264,7 +262,6 @@ public final class Constants {
         public static final double kI = 0;
         public static final double kD = 0;
 
-        public static final double kMagazineFreeRPS = 112.5; // IN RPS NOT RPM
         public static final double kMagazineTargetRPS = 600 / 60; // IN RPS NOT RPM old value 3600
         public static final double kMagazineToleranceRPS = 1; // IN RPS NOT RPM
 
