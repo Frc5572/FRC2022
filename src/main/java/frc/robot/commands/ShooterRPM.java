@@ -47,9 +47,8 @@ public class ShooterRPM extends CommandBase {
     public void initialize() {
         // System.out.println("STARTING SHOOTER");
         // System.out.println("Initial RPM: " + this.shooter.getSetpoint());
-        if (this.vision != null && this.setRPS > 0) {
+        if (this.vision == null && this.setRPS > 0) {
             this.shooter.setSetpoint(this.setRPS);
-            this.shooterRoller.setSetpoint(this.setRPS * 2);
         } else {
             updateSetpoint();
         }
@@ -69,7 +68,6 @@ public class ShooterRPM extends CommandBase {
     public void end(boolean interrupted) {
         curDisRPM = 0;
         shooter.setSetpoint(curDisRPM);
-        shooterRoller.setSetpoint(curDisRPM);
         this.shooter.disable();
         this.shooterRoller.disable();
     }
@@ -92,7 +90,6 @@ public class ShooterRPM extends CommandBase {
                 curDisRPM = newDisRPM;
             }
             this.shooter.setSetpoint(curDisRPM / 60);
-            this.shooterRoller.setSetpoint((curDisRPM / 60) * 2);
         }
     }
 }
