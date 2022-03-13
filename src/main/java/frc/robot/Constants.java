@@ -27,11 +27,14 @@ public final class Constants {
         public static final int insideClimberMotorLeftId = 15;
         // Shooter Motors
         public static final int shooterID = 10;
+        public static final int shooterRollerID = 17;
         public static final int shooterServoID = 10;
         // Intake Motors
         public static final int intakeMotorNum = 9;
-        // Magazine Motors
-        public static final int magazineMotorID = 11;
+        // Inner Magazine Motor
+        public static final int innerMagazineMotorID = 11;
+        // Outer Magazine Motor
+        public static final int outerMagazineMotorID = 18;
         // Turret Motors
         public static final int turretMotorID = 12;
     }
@@ -228,7 +231,6 @@ public final class Constants {
         public static final double kI = 0;
         public static final double kD = 0;
 
-        public static final double kShooterFreeRPS = 112.5; // IN RPS NOT RPM
         public static final double kShooterTargetRPS = 4100 / 60; // IN RPS NOT RPM
         public static final double kShooterToleranceRPS = 2; // IN RPS NOT RPM
 
@@ -238,19 +240,51 @@ public final class Constants {
     }
 
     /**
-     * Constants for Magazine PID
+     * Constants for Shooter Roller PID
      */
-    public static final class MagazinePID {
+
+    public static final class ShooterRollerPID {
+        public static final double kP = 0.11219;
+        public static final double kI = 0;
+        public static final double kD = 0;
+
+        public static final double kShooterRollerTargetRPS = 4100 / 60; // IN RPS NOT RPM
+        public static final double kShooterRollerToleranceRPS = 2; // IN RPS NOT RPM
+
+        public static final int kUnitsPerRevolution = 42;
+        public static final double kSVolts = 0.19057;
+        public static final double kVVoltSecondsPerRotation = 0.12795;
+    }
+
+    /**
+     * Constants for Inner Magazine PID
+     */
+    public static final class InnerMagazinePID {
         public static final double kP = 0.17032;
         public static final double kI = 0;
         public static final double kD = 0;
 
-        public static final double kMagazineFreeRPS = 112.5; // IN RPS NOT RPM
-        public static final double kMagazineTargetRPS = 600 / 60; // IN RPS NOT RPM old value 3600
-        public static final double kMagazineToleranceRPS = 1; // IN RPS NOT RPM
+        public static final double kInnerMagazineTargetRPS = 600 / 60;
+        public static final double kInnerMagazineToleranceRPS = 1; // IN RPS NOT RPM
 
         public static final int kUnitsPerRevolution = 2048;
         public static final double kSVolts = 0.87948;
         public static final double kVVoltSecondsPerRotation = 0.10969;
+    }
+
+    /**
+     * Constants for Outer Magazine PID
+     */
+    public static final class OuterMagazinePID {
+        public static final double kP = 0.012875;
+        public static final double kI = 0;
+        public static final double kD = 0;
+
+        public static final double kOuterMagazineTargetRPS = 600 / 60;
+        public static final double kOuterMagazineToleranceRPS = 1; // IN RPS NOT RPM
+
+        public static final int kUnitsPerRevolution = 42;
+        public static final double kSVolts = 0.12998;
+        public static final double kVVoltSecondsPerRotation = 0.015757;
     }
 }

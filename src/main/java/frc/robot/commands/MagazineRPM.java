@@ -2,7 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.Magazine;
+import frc.robot.subsystems.InnerMagazine;
 import frc.robot.subsystems.Shooter;
 
 /**
@@ -11,23 +11,23 @@ import frc.robot.subsystems.Shooter;
 public class MagazineRPM extends CommandBase {
 
     private Shooter shooter;
-    private Magazine magazine;
+    private InnerMagazine innerMagazine;
 
     /**
      *
      * @param shooter shooter subsystem
-     * @param magazine magazine subsystem
+     * @param innerMagazine inner magazine subsystem
      */
-    public MagazineRPM(Shooter shooter, Magazine magazine) {
+    public MagazineRPM(Shooter shooter, InnerMagazine innerMagazine) {
         this.shooter = shooter;
-        this.magazine = magazine;
-        addRequirements(magazine);
+        this.innerMagazine = innerMagazine;
+        addRequirements(innerMagazine);
     }
 
     @Override
     public void initialize() {
         updateSetpoint();
-        this.magazine.enable();
+        this.innerMagazine.enable();
     }
 
     @Override
@@ -37,16 +37,20 @@ public class MagazineRPM extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        magazine.setSetpoint(Constants.MagazinePID.kMagazineTargetRPS);
-        this.magazine.disable();
+        innerMagazine.setSetpoint(Constants.InnerMagazinePID.kInnerMagazineTargetRPS);
+        this.innerMagazine.disable();
     }
 
     private void updateSetpoint() {
         double shooterRPM = this.shooter.getSetpoint();
         if (shooterRPM >= (5800 / 60)) {
-            this.magazine.setSetpoint(1000 / 60);
+            this.innerMagazine.setSetpoint(1000 / 60);
         } else {
-            this.magazine.setSetpoint(4000 / 60);
+            this.innerMagazine.setSetpoint(4000 / 60);
         }
+    }
+
+    public void intakeMag() {
+
     }
 }
