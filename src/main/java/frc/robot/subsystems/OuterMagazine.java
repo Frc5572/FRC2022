@@ -28,10 +28,10 @@ public class OuterMagazine extends PIDSubsystem {
     public OuterMagazine() {
         super(new PIDController(Constants.OuterMagazinePID.kP, Constants.OuterMagazinePID.kI,
             Constants.OuterMagazinePID.kD));
-        getController().setTolerance(Constants.OuterMagazinePID.kOuterMagazineToleranceRPS); // IN
-                                                                                             // RPS
-                                                                                             // NOT
-                                                                                             // RPM
+        getController().setTolerance(100); // IN
+                                           // RPS
+                                           // NOT
+                                           // RPM
         setSetpoint(500); // 2000 rpm - IN RPS
         // NOT
         // RPM
@@ -56,7 +56,14 @@ public class OuterMagazine extends PIDSubsystem {
      * Runs magazine up.
      */
     public void magazineUp() {
-        outerMagazineMotor.set(.5);
+        outerMagazineMotor.set(.2);
+    }
+
+    /**
+     * Runs magazine up.
+     */
+    public void magazineUp(double power) {
+        outerMagazineMotor.set(power);
     }
 
     /**
