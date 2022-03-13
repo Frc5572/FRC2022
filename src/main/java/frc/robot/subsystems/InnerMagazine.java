@@ -29,12 +29,8 @@ public class InnerMagazine extends PIDSubsystem {
         innerMagazineMotor.setInverted(true);
         innerMagazineMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 1, 1);
         innerMagazineMotor.setNeutralMode(NeutralMode.Brake);
-        getController().setTolerance(Constants.InnerMagazinePID.kInnerMagazineToleranceRPS); // IN
-                                                                                             // RPS
-                                                                                             // NOT
-                                                                                             // RPM
-        setSetpoint(Constants.InnerMagazinePID.kInnerMagazineTargetRPS); // 2000 rpm - IN RPS NOT
-                                                                         // RPM
+        getController().setTolerance(Constants.InnerMagazinePID.kInnerMagazineToleranceRPS);
+        setSetpoint(Constants.InnerMagazinePID.kInnerMagazineTargetRPS);
     }
 
     @Override

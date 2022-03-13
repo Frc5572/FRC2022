@@ -28,13 +28,8 @@ public class OuterMagazine extends PIDSubsystem {
     public OuterMagazine() {
         super(new PIDController(Constants.OuterMagazinePID.kP, Constants.OuterMagazinePID.kI,
             Constants.OuterMagazinePID.kD));
-        getController().setTolerance(100); // IN
-                                           // RPS
-                                           // NOT
-                                           // RPM
-        setSetpoint(500); // 2000 rpm - IN RPS
-        // NOT
-        // RPM
+        // getController().setTolerance(100);
+        // setSetpoint(500);
         // encoder.setVelocityConversionFactor(.25);
         outerMagazineMotor.setInverted(false);
         outerMagazineMotor.setIdleMode(IdleMode.kBrake);
@@ -76,9 +71,7 @@ public class OuterMagazine extends PIDSubsystem {
     @Override
     public double getMeasurement() {
         double rotPerSec = encoder.getVelocity();
-        System.out.println("RPM (Speed): " + rotPerSec);
-        // System.out.println("Voltage: " +
-        // outerMagazineMotor.getVoltageCompensationNominalVoltage());
+        // System.out.println("RPM (Speed): " + rotPerSec);
         return rotPerSec;
     }
 

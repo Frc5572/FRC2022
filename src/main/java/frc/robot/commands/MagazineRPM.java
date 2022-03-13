@@ -16,7 +16,7 @@ public class MagazineRPM extends CommandBase {
     /**
      *
      * @param shooter shooter subsystem
-     * @param magazine magazine subsystem
+     * @param innerMagazine inner magazine subsystem
      */
     public MagazineRPM(Shooter shooter, InnerMagazine innerMagazine) {
         this.shooter = shooter;
