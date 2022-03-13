@@ -1,48 +1,62 @@
-# FRC 2022 Can IDs
-Talon FX 1-8 - Swerve
+# **FRC 2022 Can IDs**
+Talon FX 1-8 - Swerve  
 
-Talon FX 9 - Intake
+Talon FX 9 - Intake  
 
-Talon FX 10 - Shooter
+Talon FX 10 - Shooter  
 
-Talon FX 11 - Magazine
+Talon FX 11 - Inner Magazine  
 
-Talon FX 12 - Turret
+Talon FX 12 - Turret  
 
-Talon FX 13 - Inside Climber Motor Right
+Talon FX 13 - Inside Climber Motor Right  
 
-Talon FX 14 - Outside Climber Motor Right
+Talon FX 14 - Outside Climber Motor Right  
 
-Talon FX 15 - Outside Climber Motor Left
+Talon FX 15 - Outside Climber Motor Left  
 
-Talon FX 16 - Inside Climber Motor Left
+Talon FX 16 - Inside Climber Motor Left  
 
-# Controls
-## Driver
-Left Joystick - Swerve Position
+SPARK MAX 17 - Adjustable Hood NEO 550  
 
-Right Joystick - Swerve Rotation
+SPARK MAX 18 - Outer Magazine NEO 550
 
-Disable Turret AutoAlignment - X
+# **Controls**
+## **Driver**
+Left Joystick - Swerve Position  
 
-Align Gyro - Y
+Right Joystick - Swerve Rotation  
 
-## Operator
-Intake/Magazine Combo - B
+Align Gyro - Y  
 
-Mag/Shooter Combo - A
+Climber Piston (Inside) - X  
 
-Outside Motors In - DPad Up
+Climber Piston (Outside) - Y  
 
-Outside Motors Out - DPad Down
+Inside Climber Pistons - A  
 
-Inside Motors In - Dpad Right
+Outside Climber Pistons - B  
 
-Inside Motors Out - DPad Left
+Enable Climbing Abilities - START
 
-Climber Piston (Inside) - X
+Outside Motors In - Left Trigger  
 
-Climber Piston (Outside) - Y
+Outside Motors Out - Left Bumper  
 
-Turret - Bumpers
+Inside Motors In - Right Trigger  
+
+Inside Motors Out - Left Bumper  
+
+## **Operator**
+Intake/Magazine Combo - B  
+
+Mag/Shooter Combo - A   
+
+Disable Turret AutoAlignment - X  
+  
+Spit Ball - Y  
+
+Magazine Down - DPad Down  
+
+Turret - Bumpers  
 
