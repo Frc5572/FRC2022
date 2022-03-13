@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -9,59 +10,60 @@ import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.Constants;
 
 /**
- * Creates and makes tasks for Magazine subsystem.
+ * Creates tasks for inner Magazine rollers.
  */
 
-public class Magazine extends PIDSubsystem {
-    private WPI_TalonFX magazineMotor =
-        new WPI_TalonFX(Constants.Motors.magazineMotorID, "canivore");
+public class InnerMagazine extends PIDSubsystem {
+    private WPI_TalonFX innerMagazineMotor =
+        new WPI_TalonFX(Constants.Motors.innerMagazineMotorID, "canivore");
     public DigitalInput magSense = new DigitalInput(1);
     private final SimpleMotorFeedforward magazineFeed = new SimpleMotorFeedforward(
-        Constants.MagazinePID.kSVolts, Constants.MagazinePID.kVVoltSecondsPerRotation);
+        Constants.InnerMagazinePID.kSVolts, Constants.InnerMagazinePID.kVVoltSecondsPerRotation);
 
     /**
      * Initalize PID for the Magazine.
      */
-    public Magazine() {
-        super(new PIDController(Constants.MagazinePID.kP, Constants.MagazinePID.kI,
-            Constants.MagazinePID.kD));
-        magazineMotor.setInverted(true);
-        magazineMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 1, 1);
-        getController().setTolerance(Constants.MagazinePID.kMagazineToleranceRPS); // IN RPS NOT RPM
-        setSetpoint(Constants.MagazinePID.kMagazineTargetRPS); // 2000 rpm - IN RPS NOT RPM
+    public InnerMagazine() {
+        super(new PIDController(Constants.InnerMagazinePID.kP, Constants.InnerMagazinePID.kI,
+            Constants.InnerMagazinePID.kD));
+        innerMagazineMotor.setInverted(true);
+        innerMagazineMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 1, 1);
+        innerMagazineMotor.setNeutralMode(NeutralMode.Brake);
+        getController().setTolerance(Constants.InnerMagazinePID.kInnerMagazineToleranceRPS);
+        setSetpoint(Constants.InnerMagazinePID.kInnerMagazineTargetRPS);
     }
 
     @Override
     public void useOutput(double output, double setpoint) {
-        magazineMotor.setVoltage(output + magazineFeed.calculate(setpoint));
+        innerMagazineMotor.setVoltage(output + magazineFeed.calculate(setpoint));
     }
 
     /**
      * Runs magazine down.
      */
     public void magazineDown() {
-        magazineMotor.set(-.2);
+        innerMagazineMotor.set(-.2);
     }
 
     /**
      * Runs magazine up.
      */
     public void magazineUp() {
-        magazineMotor.set(.5);
+        innerMagazineMotor.set(.5);
     }
 
     /**
      * Stops magazine.
      */
     public void magazineStop() {
-        magazineMotor.set(0);
+        innerMagazineMotor.set(0);
     }
 
     @Override
     public double getMeasurement() {
-        double selSenVel = magazineMotor.getSelectedSensorVelocity(0);
+        double selSenVel = innerMagazineMotor.getSelectedSensorVelocity(0);
 
-        double rotPerSec = (double) selSenVel / Constants.MagazinePID.kUnitsPerRevolution
+        double rotPerSec = (double) selSenVel / Constants.InnerMagazinePID.kUnitsPerRevolution
             * 10; /* scale per100ms to perSecond */
         return rotPerSec;
 

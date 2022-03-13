@@ -28,13 +28,13 @@ import frc.robot.commands.ShooterRPM;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.modules.Limelight;
+import frc.robot.subsystems.InnerMagazine;
 import frc.robot.subsystems.InsideClimber;
 // import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Magazine;
+import frc.robot.subsystems.OuterMagazine;
 import frc.robot.subsystems.OutsideClimber;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.ShooterRoller;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Turret;
 
@@ -60,12 +60,12 @@ public class RobotContainer {
     /* Subsystems */
 
     private final Swerve swerveDrive = new Swerve();
-    private final Magazine magazine = new Magazine();
+    private final InnerMagazine innerMagazine = new InnerMagazine();
+    private final OuterMagazine outerMagazine = new OuterMagazine();
     private final Intake intake;
     private final Turret turret = new Turret();
     private Limelight limelight = new Limelight();
     private final Shooter shooter = new Shooter();
-    private final ShooterRoller shooterRoller = new ShooterRoller();
     // private final Hood hood = new Hood(vision);
     private final InsideClimber insideClimber;
     private final OutsideClimber outsideClimber;
@@ -86,8 +86,8 @@ public class RobotContainer {
         autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
         autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, turret, limelight));
         autoChooser.addOption("P0", new P0(swerveDrive));
-        autoChooser.addOption("P_2B",
-            new P_2B(swerveDrive, shooter, shooterRoller, magazine, intake, turret, limelight));
+        autoChooser.addOption("P_2B", new P_2B(swerveDrive, shooter, innerMagazine, outerMagazine,
+            intake, turret, limelight));
         // Default Swerve Command
         swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, driver,
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop));
@@ -140,53 +140,62 @@ public class RobotContainer {
                 .andThen(new InstantCommand(() -> outsideClimber.enableClimbers()))
                 .andThen(new InstantCommand(() -> turret.alignEnabled = false)));
 
-        // // Operator POV Up - INside Motors Out
-        // new POVButton(driver, 0).whileHeld(new StartEndCommand(
-        // () -> insideClimber.engageInsideMotors(), () -> insideClimber.stopInsideMotors()));
-        // // Operator POV Down - Inside Motors In
-        // new POVButton(driver, 90).whileHeld(new StartEndCommand(
-        // () -> insideClimber.retractInsideMotors(), () -> insideClimber.stopInsideMotors()));
-        // // Operator POV Right - Outside Motors In
-        // new POVButton(driver, 180).whileHeld(new StartEndCommand(
-        // () -> insideClimber.retractOutsideMotors(), () -> insideClimber.stopOutsideMotors()));
-        // // Operator POV Left - Outside Motors OUt
-        // new POVButton(driver, 270).whileHeld(new StartEndCommand(
-        // () -> insideClimber.engageOutsideMotors(), () -> insideClimber.stopOutsideMotors()));
-
         /* Operator Buttons */
-
-        // Enable Shooter Magazine Combo While Operator A Button Held
-        new JoystickButton(operator, XboxController.Button.kA.value)
-            .whileHeld(new ParallelCommandGroup(
-                new ShooterRPM(this.shooter, this.shooterRoller, limelight),
-                new SequentialCommandGroup(new PrintCommand("Shooter at setpoint"),
-                    new WaitCommand(.5),
-                    new WaitUntilCommand(() -> this.shooter.getSetpoint() > 0
-                        && this.shooter.atSetpoint() && this.shooterRoller.atSetpoint()),
-                    new MagazineRPM(this.shooter, this.magazine))))
-            .whenReleased(new InstantCommand(this.magazine::disable, this.magazine));
-
         new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
-            .whileHeld(new ParallelCommandGroup(
-                new ShooterRPM(this.shooter, this.shooterRoller, 4300 / 60),
-                new SequentialCommandGroup(new SequentialCommandGroup(
-                    new PrintCommand("Shooter at setpoint"), new WaitCommand(.5),
-                    new WaitUntilCommand(() -> this.shooter.getSetpoint() > 0
-                        && this.shooter.atSetpoint() && this.shooterRoller.atSetpoint()),
-                    new MagazineRPM(this.shooter, this.magazine)))))
-            .whenReleased(new InstantCommand(this.magazine::disable, this.magazine));
+            .whileHeld(new ParallelCommandGroup(new ShooterRPM(this.shooter, 4300 / 60),
+                new SequentialCommandGroup(new PrintCommand("Shooter is being weird"),
+                    new WaitCommand(.5),
+                    new WaitUntilCommand(
+                        () -> this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
+                    new ParallelCommandGroup(new MagazineRPM(this.shooter, this.innerMagazine),
+                        new SequentialCommandGroup(
+                            new WaitUntilCommand(() -> !this.innerMagazine.magSense.get()
+                                && this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
+                            new WaitCommand(1),
+                            new InstantCommand(() -> this.outerMagazine.magazineUp(.4)))))))
+            .whenReleased(new InstantCommand(() -> {
+                this.innerMagazine.disable();
+                this.outerMagazine.magazineStop();
+            }, this.innerMagazine, this.outerMagazine));
+
+        // Enable Shooter Magazine Combo While Operator A Button Held/
+        new JoystickButton(operator, XboxController.Button.kA.value)
+            .whileHeld(new ParallelCommandGroup(new ShooterRPM(this.shooter, this.limelight),
+                new SequentialCommandGroup(new PrintCommand("Shooter is being weird"),
+                    new WaitCommand(.5),
+                    new WaitUntilCommand(
+                        () -> this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
+                    new ParallelCommandGroup(new MagazineRPM(this.shooter, this.innerMagazine),
+                        new SequentialCommandGroup(
+                            new WaitUntilCommand(() -> !this.innerMagazine.magSense.get()
+                                && this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
+                            new WaitCommand(.5),
+                            new InstantCommand(() -> this.outerMagazine.magazineUp(.4)))))))
+            .whenReleased(new InstantCommand(() -> {
+                this.innerMagazine.disable();
+                this.outerMagazine.magazineStop();
+            }, this.innerMagazine, this.outerMagazine));
 
         // Deploy Intake and Run Magazine While Operator B Held
         new JoystickButton(operator, XboxController.Button.kB.value)
-            .whileHeld(new StartEndCommand(() -> intake.intakeDeploy(),
-                () -> intake.intakeRetract(), intake))
-            .whenPressed(new FunctionalCommand(magazine::enable, () -> {
-                SmartDashboard.putBoolean("Magazine Switch", magazine.magSense.get());
-            }, interrupted -> magazine.disable(), () -> magazine.magSense.get(), magazine))
-            .whenReleased(new InstantCommand(magazine::disable, magazine));
+            .whileHeld(new ParallelCommandGroup(new StartEndCommand(() -> {
+                intake.intakeDeploy();
+                outerMagazine.magazineUp();
+            }, () -> {
+                intake.intakeRetract();
+                outerMagazine.magazineStop();
+            }, intake, outerMagazine), new FunctionalCommand(innerMagazine::enable, () -> {
+                SmartDashboard.putBoolean("Magazine Switch", innerMagazine.magSense.get());
+            }, interrupted -> innerMagazine.disable(), () -> innerMagazine.magSense.get(),
+                innerMagazine)));
         // Run hopper down with POV down (180))
-        new POVButton(operator, 180).whileHeld(
-            new StartEndCommand(() -> magazine.magazineDown(), () -> magazine.magazineStop()));
+        new POVButton(operator, 180).whileHeld(new StartEndCommand(() -> {
+            innerMagazine.magazineDown();
+            outerMagazine.magazineDown();
+        }, () -> {
+            innerMagazine.magazineStop();
+            outerMagazine.magazineStop();
+        }));
         // Right Turret Move While Operator Right Bumper Held
         new JoystickButton(operator, XboxController.Button.kRightBumper.value).whileHeld(
             new StartEndCommand(() -> turret.turretRight(), () -> turret.turretStop(), turret));
@@ -198,16 +207,15 @@ public class RobotContainer {
         // Spit ball command
         new JoystickButton(operator, XboxController.Button.kY.value)
             .whileHeld(new SequentialCommandGroup(new InstantCommand(() -> shooter.spinShooter()),
-                new WaitCommand(.2), new InstantCommand(() -> magazine.magazineUp())))
+                new WaitCommand(.2), new InstantCommand(() -> {
+                    innerMagazine.magazineUp();
+                    outerMagazine.magazineUp();
+                })))
             .whenReleased(new InstantCommand(() -> shooter.stopShooter()))
-            .whenReleased(new InstantCommand(() -> magazine.magazineStop()));
-
-        // // Spit ball command basic
-        // new JoystickButton(operator, XboxController.Button.kY.value)
-        // .whileHeld(new InstantCommand(() -> shooter.spinShooter()))
-        // .whileHeld(new InstantCommand(() -> magazine.magazineUp()))
-        // .whenReleased(new InstantCommand(() -> shooter.stopShooter()))
-        // .whenReleased(new InstantCommand(() -> magazine.magazineStop()));
+            .whenReleased(new InstantCommand(() -> {
+                innerMagazine.magazineStop();
+                outerMagazine.magazineStop();
+            }));
     }
 
     /**
@@ -216,7 +224,8 @@ public class RobotContainer {
      * @return Returns autonomous command selected.
      */
     public Command getAutonomousCommand() {
-        return new P_2B(swerveDrive, shooter, shooterRoller, magazine, intake, turret, limelight);
+        return new P_2B(swerveDrive, shooter, innerMagazine, outerMagazine, intake, turret,
+            limelight);
     }
 
 }

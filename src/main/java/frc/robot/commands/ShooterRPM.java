@@ -3,7 +3,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.modules.Limelight;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.ShooterRoller;
 
 /**
  * Controls Shooter RPM based on
@@ -11,7 +10,6 @@ import frc.robot.subsystems.ShooterRoller;
 public class ShooterRPM extends CommandBase {
 
     private Shooter shooter;
-    private ShooterRoller shooterRoller;
     private Limelight limelight;
     double curDisRPM = 0;
     double newDisRPM = 0;
@@ -20,28 +18,24 @@ public class ShooterRPM extends CommandBase {
     /**
      *
      * @param shooter shooter subsystem
-     * @param shooterRoller shooter roller subsystem
-     * @param limelight limelight subsystem
+     * @param vision vision subsystem
      */
 
-    public ShooterRPM(Shooter shooter, ShooterRoller shooterRoller, Limelight limelight) {
+    public ShooterRPM(Shooter shooter, Limelight limelight) {
         this.shooter = shooter;
-        this.shooterRoller = shooterRoller;
         this.limelight = limelight;
-        addRequirements(shooter, shooterRoller);
+        addRequirements(shooter);
     }
 
     /**
      *
      * @param shooter shooter subsystem
-     * @param shooterRoller shooter roller subsystem
      * @param rps Hardcoded setpoint for Shooter
      */
-    public ShooterRPM(Shooter shooter, ShooterRoller shooterRoller, double rps) {
+    public ShooterRPM(Shooter shooter, double rps) {
         this.shooter = shooter;
-        this.shooterRoller = shooterRoller;
         this.setRPS = rps;
-        addRequirements(shooter, shooterRoller);
+        addRequirements(shooter);
     }
 
     @Override
@@ -53,8 +47,7 @@ public class ShooterRPM extends CommandBase {
         } else {
             updateSetpoint();
         }
-        this.shooter.enable();
-        this.shooterRoller.enable();
+        this.shooter.enableShooter();
     }
 
     @Override
@@ -69,8 +62,7 @@ public class ShooterRPM extends CommandBase {
     public void end(boolean interrupted) {
         curDisRPM = 0;
         shooter.setSetpoint(curDisRPM);
-        this.shooter.disable();
-        this.shooterRoller.disable();
+        this.shooter.disableShooter();
     }
 
     private void updateSetpoint() {
