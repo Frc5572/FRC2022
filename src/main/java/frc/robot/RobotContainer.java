@@ -33,7 +33,6 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.OuterMagazine;
 import frc.robot.subsystems.OutsideClimber;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.ShooterRoller;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Turret;
 
@@ -65,7 +64,6 @@ public class RobotContainer {
     private final Turret turret = new Turret();
     private Vision vision = new Vision();
     private final Shooter shooter = new Shooter();
-    private final ShooterRoller shooterRoller = new ShooterRoller();
     // private final Hood hood = new Hood(vision);
     private final InsideClimber insideClimber;
     private final OutsideClimber outsideClimber;
@@ -86,8 +84,8 @@ public class RobotContainer {
         autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
         autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, turret, vision));
         autoChooser.addOption("P0", new P0(swerveDrive));
-        autoChooser.addOption("P_2B", new P_2B(swerveDrive, shooter, shooterRoller, innerMagazine,
-            outerMagazine, intake, turret, vision));
+        autoChooser.addOption("P_2B",
+            new P_2B(swerveDrive, shooter, innerMagazine, outerMagazine, intake, turret, vision));
         // Default Swerve Command
         swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, driver,
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop));
@@ -140,37 +138,37 @@ public class RobotContainer {
                 .andThen(new InstantCommand(() -> outsideClimber.enableClimbers()))
                 .andThen(new InstantCommand(() -> turret.alignEnabled = false)));
 
-        // // Operator POV Up - INside Motors Out
-        // new POVButton(driver, 0).whileHeld(new StartEndCommand(
-        // () -> insideClimber.engageInsideMotors(), () -> insideClimber.stopInsideMotors()));
-        // // Operator POV Down - Inside Motors In
-        // new POVButton(driver, 90).whileHeld(new StartEndCommand(
-        // () -> insideClimber.retractInsideMotors(), () -> insideClimber.stopInsideMotors()));
-        // // Operator POV Right - Outside Motors In
-        // new POVButton(driver, 180).whileHeld(new StartEndCommand(
-        // () -> insideClimber.retractOutsideMotors(), () -> insideClimber.stopOutsideMotors()));
-        // // Operator POV Left - Outside Motors OUt
-        // new POVButton(driver, 270).whileHeld(new StartEndCommand(
-        // () -> insideClimber.engageOutsideMotors(), () -> insideClimber.stopOutsideMotors()));
-
         /* Operator Buttons */
 
         // Enable Shooter Magazine Combo While Operator A Button Held/
 
         new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
             .whileHeld(new ParallelCommandGroup(new SequentialCommandGroup(
-                new ShooterRPM(shooter, shooterRoller, vision),
-                new WaitUntilCommand(() -> this.shooter.getSetpoint() > 0
-                    && this.shooter.atSetpoint() && this.shooterRoller.atSetpoint()),
+                new ShooterRPM(shooter, 4300 / 60),
+                new WaitUntilCommand(
+                    () -> this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
                 new InstantCommand(() -> innerMagazine.enable(), innerMagazine), new WaitCommand(1),
-                new WaitUntilCommand(() -> this.shooter.getSetpoint() > 0
-                    && this.shooter.atSetpoint() && this.shooterRoller.atSetpoint()),
+                new WaitUntilCommand(
+                    () -> this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
                 new InstantCommand(() -> outerMagazine.enable()))))
             .whenReleased(new InstantCommand(() -> {
                 this.innerMagazine.disable();
                 this.outerMagazine.disable();
             }, this.innerMagazine));
 
+        new JoystickButton(operator, XboxController.Button.kA.value)
+            .whileHeld(new ParallelCommandGroup(new SequentialCommandGroup(
+                new ShooterRPM(shooter, vision),
+                new WaitUntilCommand(
+                    () -> this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
+                new InstantCommand(() -> innerMagazine.enable(), innerMagazine), new WaitCommand(1),
+                new WaitUntilCommand(
+                    () -> this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
+                new InstantCommand(() -> outerMagazine.enable()))))
+            .whenReleased(new InstantCommand(() -> {
+                this.innerMagazine.disable();
+                this.outerMagazine.disable();
+            }, this.innerMagazine));
 
         // Deploy Intake and Run Magazine While Operator B Held
         new JoystickButton(operator, XboxController.Button.kB.value)
@@ -220,8 +218,7 @@ public class RobotContainer {
      * @return Returns autonomous command selected.
      */
     public Command getAutonomousCommand() {
-        return new P_2B(swerveDrive, shooter, shooterRoller, innerMagazine, outerMagazine, intake,
-            turret, vision);
+        return new P_2B(swerveDrive, shooter, innerMagazine, outerMagazine, intake, turret, vision);
     }
 
 }

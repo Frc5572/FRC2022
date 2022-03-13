@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.Constants;
 
 /**
- * Creates and makes tasks for Magazine subsystem.
+ * Creates tasks for inner Magazine rollers.
  */
 
 public class InnerMagazine extends PIDSubsystem {

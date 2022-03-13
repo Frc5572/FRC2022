@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
@@ -14,6 +16,8 @@ public class Shooter extends PIDSubsystem {
     private final WPI_TalonFX shooter = new WPI_TalonFX(Constants.Motors.shooterID, "canivore");
     private final SimpleMotorFeedforward shooterFeed = new SimpleMotorFeedforward(
         Constants.ShooterPID.kSVolts, Constants.ShooterPID.kVVoltSecondsPerRotation);
+    private final CANSparkMax shooterRoller =
+        new CANSparkMax(Constants.Motors.shooterRollerID, MotorType.kBrushless);
 
     /**
      * Create shooter class for PID
@@ -24,6 +28,7 @@ public class Shooter extends PIDSubsystem {
         shooter.setInverted(true);
         shooter.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 1, 1);
         getController().setTolerance(Constants.ShooterPID.kShooterToleranceRPS); // IN RPS NOT RPM
+        shooterRoller.setInverted(true);
         setSetpoint(0); // IN RPS NOT RPM
     }
 
@@ -72,5 +77,15 @@ public class Shooter extends PIDSubsystem {
 
     public boolean atSetpoint() {
         return m_controller.atSetpoint();
+    }
+
+    public void enableShooter() {
+        this.enable();
+        this.shooterRoller.set(1);
+    }
+
+    public void disableShooter() {
+        this.disable();
+        this.shooterRoller.set(0);
     }
 }
