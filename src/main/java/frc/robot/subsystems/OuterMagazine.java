@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxRelativeEncoder;
@@ -31,11 +32,12 @@ public class OuterMagazine extends PIDSubsystem {
                                                                                              // RPS
                                                                                              // NOT
                                                                                              // RPM
-        setSetpoint(Constants.OuterMagazinePID.kOuterMagazineTargetRPS); // 2000 rpm - IN RPS
-                                                                         // NOT
+        setSetpoint(500); // 2000 rpm - IN RPS
+        // NOT
         // RPM
         // encoder.setVelocityConversionFactor(.25);
         outerMagazineMotor.setInverted(false);
+        outerMagazineMotor.setIdleMode(IdleMode.kBrake);
     }
 
     @Override
@@ -66,8 +68,10 @@ public class OuterMagazine extends PIDSubsystem {
 
     @Override
     public double getMeasurement() {
-        double rotPerSec = encoder.getVelocity() / 60;
-        System.out.println("RPM (Speed): " + rotPerSec * 60);
+        double rotPerSec = encoder.getVelocity();
+        System.out.println("RPM (Speed): " + rotPerSec);
+        // System.out.println("Voltage: " +
+        // outerMagazineMotor.getVoltageCompensationNominalVoltage());
         return rotPerSec;
     }
 

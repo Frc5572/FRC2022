@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -27,6 +28,7 @@ public class InnerMagazine extends PIDSubsystem {
             Constants.InnerMagazinePID.kD));
         innerMagazineMotor.setInverted(true);
         innerMagazineMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 1, 1);
+        innerMagazineMotor.setNeutralMode(NeutralMode.Brake);
         getController().setTolerance(Constants.InnerMagazinePID.kInnerMagazineToleranceRPS); // IN
                                                                                              // RPS
                                                                                              // NOT

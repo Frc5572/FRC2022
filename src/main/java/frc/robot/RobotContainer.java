@@ -189,8 +189,8 @@ public class RobotContainer {
             innerMagazine.magazineDown();
             outerMagazine.magazineDown();
         }, () -> {
-            innerMagazine.magazineUp();
-            outerMagazine.magazineUp();
+            innerMagazine.magazineStop();
+            outerMagazine.magazineStop();
         }));
         // Right Turret Move While Operator Right Bumper Held
         new JoystickButton(operator, XboxController.Button.kRightBumper.value).whileHeld(
