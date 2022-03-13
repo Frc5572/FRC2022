@@ -171,7 +171,7 @@ public class RobotContainer {
                         new SequentialCommandGroup(
                             new WaitUntilCommand(() -> !this.innerMagazine.magSense.get()
                                 && this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
-                            new WaitCommand(1),
+                            new WaitCommand(.5),
                             new InstantCommand(() -> this.outerMagazine.magazineUp(.4)))))))
             .whenReleased(new InstantCommand(() -> {
                 this.innerMagazine.disable();
