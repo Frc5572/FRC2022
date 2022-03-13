@@ -157,24 +157,15 @@ public class RobotContainer {
 
         // Enable Shooter Magazine Combo While Operator A Button Held/
 
-        // new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
-        // .whileHeld(new ParallelCommandGroup(
-        // new ShooterRPM(this.shooter, this.shooterRoller, 4300 / 60),
-        // new SequentialCommandGroup(new SequentialCommandGroup(
-        // new PrintCommand("Shooter at setpoint"), new WaitCommand(.5),
-        // new WaitUntilCommand(() -> this.shooter.getSetpoint() > 0
-        // && this.shooter.atSetpoint() && this.shooterRoller.atSetpoint()),
-        // new MagazineRPM(this.shooter, this.magazine)))))
-        // .whenReleased(new InstantCommand(this.magazine::disable, this.magazine));
-
         new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
-            .whileHeld(new SequentialCommandGroup(new ShooterRPM(shooter, shooterRoller, vision),
+            .whileHeld(new ParallelCommandGroup(new SequentialCommandGroup(
+                new ShooterRPM(shooter, shooterRoller, vision),
                 new WaitUntilCommand(() -> this.shooter.getSetpoint() > 0
                     && this.shooter.atSetpoint() && this.shooterRoller.atSetpoint()),
                 new InstantCommand(() -> innerMagazine.enable(), innerMagazine), new WaitCommand(1),
                 new WaitUntilCommand(() -> this.shooter.getSetpoint() > 0
                     && this.shooter.atSetpoint() && this.shooterRoller.atSetpoint()),
-                new InstantCommand(() -> outerMagazine.enable())))
+                new InstantCommand(() -> outerMagazine.enable()))))
             .whenReleased(new InstantCommand(() -> {
                 this.innerMagazine.disable();
                 this.outerMagazine.disable();
@@ -182,13 +173,6 @@ public class RobotContainer {
 
 
         // Deploy Intake and Run Magazine While Operator B Held
-        // new JoystickButton(operator, XboxController.Button.kB.value)
-        // .whileHeld(new StartEndCommand(() -> intake.intakeDeploy(),
-        // () -> intake.intakeRetract(), intake))
-        // .whenPressed(new FunctionalCommand(magazine::enable, () -> {
-        // SmartDashboard.putBoolean("Magazine Switch", magazine.magSense.get());
-        // }, interrupted -> magazine.disable(), () -> magazine.magSense.get(), magazine))
-        // .whenReleased(new InstantCommand(magazine::disable, magazine));
         new JoystickButton(operator, XboxController.Button.kB.value)
             .whileHeld(new ParallelCommandGroup(new StartEndCommand(() -> {
                 intake.intakeDeploy();
@@ -228,13 +212,6 @@ public class RobotContainer {
                 innerMagazine.magazineStop();
                 outerMagazine.magazineStop();
             }));
-
-        // // Spit ball command basic
-        // new JoystickButton(operator, XboxController.Button.kY.value)
-        // .whileHeld(new InstantCommand(() -> shooter.spinShooter()))
-        // .whileHeld(new InstantCommand(() -> magazine.magazineUp()))
-        // .whenReleased(new InstantCommand(() -> shooter.stopShooter()))
-        // .whenReleased(new InstantCommand(() -> magazine.magazineStop()));
     }
 
     /**

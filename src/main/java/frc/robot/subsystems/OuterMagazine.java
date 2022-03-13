@@ -1,7 +1,9 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxRelativeEncoder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
@@ -12,8 +14,8 @@ import frc.robot.Constants;
  */
 
 public class OuterMagazine extends PIDSubsystem {
-    private WPI_TalonFX outerMagazineMotor =
-        new WPI_TalonFX(Constants.Motors.outerMagazineMotorID, "canivore");
+    private CANSparkMax outerMagazineMotor =
+        new CANSparkMax(Constants.Motors.outerMagazineMotorID, MotorType.kBrushless);
     private final SimpleMotorFeedforward magazineFeed = new SimpleMotorFeedforward(
         Constants.OuterMagazinePID.kSVolts, Constants.OuterMagazinePID.kVVoltSecondsPerRotation);
 
@@ -24,7 +26,6 @@ public class OuterMagazine extends PIDSubsystem {
         super(new PIDController(Constants.OuterMagazinePID.kP, Constants.OuterMagazinePID.kI,
             Constants.OuterMagazinePID.kD));
         outerMagazineMotor.setInverted(true);
-        outerMagazineMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 1, 1);
         getController().setTolerance(Constants.OuterMagazinePID.kOuterMagazineToleranceRPS); // IN
                                                                                              // RPS
                                                                                              // NOT
@@ -61,7 +62,10 @@ public class OuterMagazine extends PIDSubsystem {
 
     @Override
     public double getMeasurement() {
-        double selSenVel = outerMagazineMotor.getSelectedSensorVelocity(0);
+        RelativeEncoder encoder =
+            outerMagazineMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+        encoder.setVelocityConversionFactor(0.5);
+        double selSenVel = encoder.getVelocity();
 
         double rotPerSec = (double) selSenVel / Constants.OuterMagazinePID.kUnitsPerRevolution
             * 10; /* scale per100ms to perSecond */
