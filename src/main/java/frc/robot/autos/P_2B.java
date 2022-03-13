@@ -73,9 +73,10 @@ public class P_2B extends AutoBase {
                             new WaitUntilCommand(() -> !this.innerMagazine.magSense.get()
                                 && this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
                             new WaitCommand(.5),
-                            new InstantCommand(() -> this.outerMagazine.magazineUp(.4)))),
-                    new SequentialCommandGroup(new ParallelDeadlineGroup(new WaitCommand(.6),
-                        new InstantCommand(() -> turret.turretLeft()))),
+                            new InstantCommand(() -> this.outerMagazine.magazineUp(.4))))),
+                new SequentialCommandGroup(
+                    new ParallelDeadlineGroup(new WaitCommand(.6),
+                        new InstantCommand(() -> turret.turretLeft())),
                     new AlignTurret(turret, vision)),
                 new ShooterRPM(shooter, 4500 / 60)));
     }
