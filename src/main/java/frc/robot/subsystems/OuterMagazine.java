@@ -18,6 +18,8 @@ public class OuterMagazine extends PIDSubsystem {
         new CANSparkMax(Constants.Motors.outerMagazineMotorID, MotorType.kBrushless);
     private final SimpleMotorFeedforward magazineFeed = new SimpleMotorFeedforward(
         Constants.OuterMagazinePID.kSVolts, Constants.OuterMagazinePID.kVVoltSecondsPerRotation);
+    private RelativeEncoder encoder =
+        outerMagazineMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
 
     /**
      * Initalize PID for the Magazine.
@@ -25,13 +27,15 @@ public class OuterMagazine extends PIDSubsystem {
     public OuterMagazine() {
         super(new PIDController(Constants.OuterMagazinePID.kP, Constants.OuterMagazinePID.kI,
             Constants.OuterMagazinePID.kD));
-        outerMagazineMotor.setInverted(true);
         getController().setTolerance(Constants.OuterMagazinePID.kOuterMagazineToleranceRPS); // IN
                                                                                              // RPS
                                                                                              // NOT
                                                                                              // RPM
-        setSetpoint(Constants.OuterMagazinePID.kOuterMagazineTargetRPS); // 2000 rpm - IN RPS NOT
-                                                                         // RPM
+        setSetpoint(Constants.OuterMagazinePID.kOuterMagazineTargetRPS); // 2000 rpm - IN RPS
+                                                                         // NOT
+        // RPM
+        // encoder.setVelocityConversionFactor(.25);
+        outerMagazineMotor.setInverted(false);
     }
 
     @Override
@@ -62,17 +66,9 @@ public class OuterMagazine extends PIDSubsystem {
 
     @Override
     public double getMeasurement() {
-        RelativeEncoder encoder =
-            outerMagazineMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
-        encoder.setVelocityConversionFactor(0.5);
-        double selSenVel = encoder.getVelocity();
-
-        double rotPerSec = (double) selSenVel / Constants.OuterMagazinePID.kUnitsPerRevolution
-            * 10; /* scale per100ms to perSecond */
+        double rotPerSec = encoder.getVelocity() / 60;
+        System.out.println("RPM (Speed): " + rotPerSec * 60);
         return rotPerSec;
-
-        // System.out.println("RPM (Speed): " + rotPerSec * 60);
-        // System.out.println("Voltage: " + magazineMotor.getMotorOutputVoltage());
     }
 
     @Override

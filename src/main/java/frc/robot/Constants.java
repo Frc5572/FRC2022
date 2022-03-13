@@ -276,15 +276,15 @@ public final class Constants {
      * Constants for Outer Magazine PID
      */
     public static final class OuterMagazinePID {
-        public static final double kP = 0.17032;
+        public static final double kP = 0.015223;
         public static final double kI = 0;
         public static final double kD = 0;
 
         public static final double kOuterMagazineTargetRPS = 600 / 60;
         public static final double kOuterMagazineToleranceRPS = 1; // IN RPS NOT RPM
 
-        public static final int kUnitsPerRevolution = 2048;
-        public static final double kSVolts = 0.87948;
-        public static final double kVVoltSecondsPerRotation = 0.10969;
+        public static final int kUnitsPerRevolution = 42;
+        public static final double kSVolts = 0.1293;
+        public static final double kVVoltSecondsPerRotation = 0.015785;
     }
 }
