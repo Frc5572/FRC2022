@@ -4,16 +4,20 @@ import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import frc.robot.commands.AlignTurret;
+import frc.robot.commands.AutoAlignTurret;
+import frc.robot.commands.MagazineRPM;
+import frc.robot.commands.ShooterRPM;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.modules.AutoBase;
 import frc.robot.modules.Vision;
+import frc.robot.subsystems.InnerMagazine;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Magazine;
+import frc.robot.subsystems.OuterMagazine;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Turret;
@@ -25,18 +29,20 @@ public class P1_3B extends AutoBase {
 
     Intake intake;
     Shooter shooter;
-    Magazine magazine;
+    InnerMagazine innerMagazine;
+    OuterMagazine outerMagazine;
 
     /**
      * Autonomous that aligns limelight then excecutes a trajectory.
      *
      * @param swerve swerve subsystem
      */
-    public P1_3B(Swerve swerve, Shooter shooter, Magazine magazine, Intake intake, Turret turret,
-        Vision vision) {
+    public P1_3B(Swerve swerve, Shooter shooter, InnerMagazine innerMagazine,
+        OuterMagazine outerMagazine, Intake intake, Turret turret, Vision vision) {
         super(swerve);
         this.shooter = shooter;
-        this.magazine = magazine;
+        this.innerMagazine = innerMagazine;
+        this.outerMagazine = outerMagazine;
         this.intake = intake;
 
         PathPlannerTrajectory trajectory = PathPlanner.loadPath("P1_3B_part1", 1, 1);
@@ -47,24 +53,26 @@ public class P1_3B extends AutoBase {
         SequentialCommandGroup part1 =
             new SequentialCommandGroup(autoDrive, new ZeroMotorsWaitCommand(swerve),
                 new WaitUntilCommand(() -> shooter.getSetpoint() > 0 && shooter.atSetpoint()),
-                new InstantCommand(() -> magazine.enable()), new ZeroMotorsWaitCommand(swerve, 3),
-                new InstantCommand(() -> magazine.disable()));
+                new ParallelDeadlineGroup(new ZeroMotorsWaitCommand(swerve, 3),
+                    new ParallelCommandGroup(new MagazineRPM(this.shooter, this.innerMagazine),
+                        new SequentialCommandGroup(
+                            new WaitUntilCommand(() -> !this.innerMagazine.magSense.get()
+                                && this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
+                            new WaitCommand(.5),
+                            new InstantCommand(() -> this.outerMagazine.magazineUp(.4))))));
 
         SequentialCommandGroup part2 =
             new SequentialCommandGroup(autoDrive2, new ZeroMotorsWaitCommand(swerve),
                 new WaitUntilCommand(() -> shooter.getSetpoint() > 0 && shooter.atSetpoint()),
-                new InstantCommand(() -> magazine.enable()), new ZeroMotorsWaitCommand(swerve, 4),
-                new InstantCommand(() -> magazine.disable()));
+                new ParallelDeadlineGroup(new ZeroMotorsWaitCommand(swerve, 4),
+                    new MagazineRPM(this.shooter, this.innerMagazine)));
 
         addCommands(new InstantCommand(() -> swerve.resetOdometry(trajectory.getInitialPose())),
             new InstantCommand(() -> turret.alignEnabled = true),
-            new InstantCommand(() -> this.shooter.setSetpoint(4500 / 60)),
-            new InstantCommand(() -> this.shooter.enable()),
             new InstantCommand(() -> intake.intakeDeploy()),
+            new InstantCommand(() -> outerMagazine.magazineUp()),
             new ParallelDeadlineGroup(new SequentialCommandGroup(part1, part2),
-                new SequentialCommandGroup(new ParallelDeadlineGroup(new WaitCommand(.6),
-                    new InstantCommand(() -> turret.turretLeft()),
-                    new AlignTurret(turret, vision)))));
+                new ShooterRPM(shooter, 4500 / 60), new AutoAlignTurret(turret, vision)));
 
 
 
@@ -90,8 +98,9 @@ public class P1_3B extends AutoBase {
 
     @Override
     public void end(boolean interrupted) {
-        magazine.disable();
-        shooter.disable();
+        innerMagazine.disable();
+        outerMagazine.magazineStop();
+        shooter.disableShooter();
         intake.intakeRetract();
     }
 }

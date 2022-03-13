@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import frc.robot.commands.AlignTurret;
+import frc.robot.commands.AutoAlignTurret;
 import frc.robot.commands.MagazineRPM;
 import frc.robot.commands.ShooterRPM;
 import frc.robot.commands.ZeroMotorsWaitCommand;
@@ -74,11 +74,7 @@ public class P_2B extends AutoBase {
                                 && this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
                             new WaitCommand(.5),
                             new InstantCommand(() -> this.outerMagazine.magazineUp(.4))))),
-                new SequentialCommandGroup(
-                    new ParallelDeadlineGroup(new WaitCommand(.6),
-                        new InstantCommand(() -> turret.turretLeft())),
-                    new AlignTurret(turret, vision)),
-                new ShooterRPM(shooter, 4500 / 60)));
+                new AutoAlignTurret(turret, vision), new ShooterRPM(shooter, 4500 / 60)));
     }
 
     @Override
