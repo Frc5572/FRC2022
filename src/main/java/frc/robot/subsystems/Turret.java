@@ -34,6 +34,11 @@ public class Turret extends SubsystemBase {
         turretMotor.set(0);
     }
 
+    /**
+     * Change the Idle mode of the motor
+     *
+     * @param mode True for brake mode, False for Coast
+     */
     public void turretBrakeMode(boolean mode) {
         if (mode) {
             turretMotor.setNeutralMode(NeutralMode.Brake);
