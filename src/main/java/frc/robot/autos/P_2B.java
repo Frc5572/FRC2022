@@ -54,7 +54,7 @@ public class P_2B extends AutoBase {
         this.intake = intake;
         addRequirements(shooter, innerMagazine, outerMagazine, intake, turret);
 
-        PathPlannerTrajectory trajectory = PathPlanner.loadPath("P_2B", 1, 1);
+        PathPlannerTrajectory trajectory = PathPlanner.loadPath("P1_3B_part1", 1, 1);
         PPSwerveControllerCommand autoDrive = baseSwerveCommand(trajectory);
 
         // ShooterRPM shooterCommand = new ShooterRPM(shooter, vision);
@@ -74,7 +74,7 @@ public class P_2B extends AutoBase {
                                 && this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
                             new WaitCommand(.5),
                             new InstantCommand(() -> this.outerMagazine.magazineUp(.4))))),
-                new AutoAlignTurret(turret, vision), new ShooterRPM(shooter, 4500 / 60)),
+                new AutoAlignTurret(turret, vision), new ShooterRPM(shooter, 4700 / 60)),
             new InstantCommand(() -> turret.alignEnabled = false));
     }
 
