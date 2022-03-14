@@ -78,7 +78,8 @@ public class P_2B extends AutoBase {
                     new ParallelDeadlineGroup(new WaitCommand(.6),
                         new InstantCommand(() -> turret.turretLeft())),
                     new AlignTurret(turret, vision)),
-                new ShooterRPM(shooter, 4500 / 60)));
+                new ShooterRPM(shooter, 4500 / 60)),
+            new InstantCommand(() -> turret.alignEnabled = false));
     }
 
     @Override
