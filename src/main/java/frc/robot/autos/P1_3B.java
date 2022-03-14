@@ -53,6 +53,7 @@ public class P1_3B extends AutoBase {
         SequentialCommandGroup part1 =
             new SequentialCommandGroup(autoDrive, new ZeroMotorsWaitCommand(swerve),
                 new WaitUntilCommand(() -> shooter.getSetpoint() > 0 && shooter.atSetpoint()),
+                new WaitCommand(.5),
                 new ParallelDeadlineGroup(new ZeroMotorsWaitCommand(swerve, 3),
                     new ParallelCommandGroup(new MagazineRPM(this.shooter, this.innerMagazine),
                         new SequentialCommandGroup(
@@ -63,8 +64,9 @@ public class P1_3B extends AutoBase {
 
         SequentialCommandGroup part2 =
             new SequentialCommandGroup(autoDrive2, new ZeroMotorsWaitCommand(swerve),
+                new WaitCommand(.5), new InstantCommand(() -> intake.intakeRetract()),
                 new WaitUntilCommand(() -> shooter.getSetpoint() > 0 && shooter.atSetpoint()),
-                new ParallelDeadlineGroup(new ZeroMotorsWaitCommand(swerve, 4),
+                new WaitCommand(2), new ParallelDeadlineGroup(new ZeroMotorsWaitCommand(swerve, 3),
                     new MagazineRPM(this.shooter, this.innerMagazine)));
 
         addCommands(new InstantCommand(() -> swerve.resetOdometry(trajectory.getInitialPose())),
