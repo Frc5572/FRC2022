@@ -15,7 +15,7 @@ public class Turret extends SubsystemBase {
     public boolean alignEnabled = true;
 
     public Turret() {
-        turretMotor.setNeutralMode(NeutralMode.Brake);
+        turretBrakeMode(false);
     }
 
     public void turretLeft() {
@@ -32,6 +32,20 @@ public class Turret extends SubsystemBase {
 
     public void turretStop() {
         turretMotor.set(0);
+    }
+
+    /**
+     * Change the Idle mode of the motor
+     *
+     * @param mode True for brake mode, False for Coast
+     */
+    public void turretBrakeMode(boolean mode) {
+        if (mode) {
+            turretMotor.setNeutralMode(NeutralMode.Brake);
+        } else {
+            turretMotor.setNeutralMode(NeutralMode.Coast);
+        }
+
     }
 }
 

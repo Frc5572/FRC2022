@@ -153,9 +153,9 @@ public class RobotContainer {
         new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
             .whileHeld(new ParallelCommandGroup(new ShooterRPM(this.shooter, 4300 / 60),
                 new SequentialCommandGroup(new PrintCommand("Shooter is being weird"),
-                    new WaitCommand(.5),
                     new WaitUntilCommand(
                         () -> this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
+                    new WaitCommand(.5),
                     new ParallelCommandGroup(new MagazineRPM(this.shooter, this.innerMagazine),
                         new SequentialCommandGroup(
                             new WaitUntilCommand(() -> !this.innerMagazine.magSense.get()
@@ -170,9 +170,9 @@ public class RobotContainer {
         new JoystickButton(operator, XboxController.Button.kA.value)
             .whileHeld(new ParallelCommandGroup(new ShooterRPM(this.shooter, this.vision),
                 new SequentialCommandGroup(new PrintCommand("Shooter is being weird"),
-                    new WaitCommand(.5),
                     new WaitUntilCommand(
                         () -> this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
+                    new WaitCommand(.5),
                     new ParallelCommandGroup(new MagazineRPM(this.shooter, this.innerMagazine),
                         new SequentialCommandGroup(
                             new WaitUntilCommand(() -> !this.innerMagazine.magSense.get()

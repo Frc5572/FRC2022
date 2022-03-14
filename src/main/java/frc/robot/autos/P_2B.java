@@ -74,7 +74,8 @@ public class P_2B extends AutoBase {
                                 && this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
                             new WaitCommand(.5),
                             new InstantCommand(() -> this.outerMagazine.magazineUp(.4))))),
-                new AutoAlignTurret(turret, vision), new ShooterRPM(shooter, 4500 / 60)));
+                new AutoAlignTurret(turret, vision), new ShooterRPM(shooter, 4500 / 60)),
+            new InstantCommand(() -> turret.alignEnabled = false));
     }
 
     @Override

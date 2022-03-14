@@ -72,7 +72,8 @@ public class P1_3B extends AutoBase {
             new InstantCommand(() -> intake.intakeDeploy()),
             new InstantCommand(() -> outerMagazine.magazineUp()),
             new ParallelDeadlineGroup(new SequentialCommandGroup(part1, part2),
-                new ShooterRPM(shooter, 4500 / 60), new AutoAlignTurret(turret, vision)));
+                new ShooterRPM(shooter, 4500 / 60), new AutoAlignTurret(turret, vision)),
+            new InstantCommand(() -> turret.alignEnabled = false));
 
 
 
