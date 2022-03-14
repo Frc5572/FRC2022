@@ -15,7 +15,7 @@ public class Turret extends SubsystemBase {
     public boolean alignEnabled = true;
 
     public Turret() {
-        turretMotor.setNeutralMode(NeutralMode.Brake);
+        turretBrakeMode(false);
     }
 
     public void turretLeft() {
@@ -32,6 +32,15 @@ public class Turret extends SubsystemBase {
 
     public void turretStop() {
         turretMotor.set(0);
+    }
+
+    public void turretBrakeMode(boolean mode) {
+        if (mode) {
+            turretMotor.setNeutralMode(NeutralMode.Brake);
+        } else {
+            turretMotor.setNeutralMode(NeutralMode.Coast);
+        }
+
     }
 }
 
