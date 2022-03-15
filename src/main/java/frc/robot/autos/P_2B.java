@@ -56,7 +56,7 @@ public class P_2B extends AutoBase {
         this.turret = turret;
         addRequirements(shooter, innerMagazine, outerMagazine, intake, turret);
 
-        PathPlannerTrajectory trajectory = PathPlanner.loadPath("P1_3B_part1", 1, 1);
+        PathPlannerTrajectory trajectory = PathPlanner.loadPath("P1_3B_part1", 2, 1);
         PPSwerveControllerCommand autoDrive = baseSwerveCommand(trajectory);
         ParallelDeadlineGroup part1 = new ParallelDeadlineGroup(
             new SequentialCommandGroup(autoDrive, new ZeroMotorsWaitCommand(swerve),
@@ -69,9 +69,9 @@ public class P_2B extends AutoBase {
                         new SequentialCommandGroup(
                             new WaitUntilCommand(() -> !this.innerMagazine.magSense.get()
                                 && this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
-                            new WaitCommand(.5),
-                            new InstantCommand(() -> this.outerMagazine.magazineUp(.4)))))),
-            new ShooterRPM(shooter, 4700 / 60));
+                            new WaitCommand(1),
+                            new InstantCommand(() -> this.outerMagazine.magazineUp()))))),
+            new ShooterRPM(shooter, 4600 / 60));
 
         addCommands(new InstantCommand(() -> swerve.resetOdometry(trajectory.getInitialPose())),
             new InstantCommand(() -> turret.alignEnabled = true),
