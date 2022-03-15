@@ -32,6 +32,7 @@ public class P_2B extends AutoBase {
     Shooter shooter;
     InnerMagazine innerMagazine;
     OuterMagazine outerMagazine;
+    Turret turret;
 
     /**
      * Autonomous that moves turret to align with target, excecutes trajectory to pick up ball
@@ -52,30 +53,45 @@ public class P_2B extends AutoBase {
         this.outerMagazine = outerMagazine;
         this.innerMagazine = innerMagazine;
         this.intake = intake;
+        this.turret = turret;
         addRequirements(shooter, innerMagazine, outerMagazine, intake, turret);
 
         PathPlannerTrajectory trajectory = PathPlanner.loadPath("P1_3B_part1", 1, 1);
         PPSwerveControllerCommand autoDrive = baseSwerveCommand(trajectory);
-
-        // ShooterRPM shooterCommand = new ShooterRPM(shooter, vision);
-        addCommands(new InstantCommand(() -> swerve.resetOdometry(trajectory.getInitialPose())),
-            new InstantCommand(() -> turret.alignEnabled = true), new ParallelDeadlineGroup(
-                new SequentialCommandGroup(new ParallelCommandGroup(new InstantCommand(() -> {
-                    intake.intakeDeploy();
-                    outerMagazine.magazineUp();
-                }), autoDrive), new ZeroMotorsWaitCommand(swerve, 1),
-                    new InstantCommand(() -> intake.intakeRetract()),
-                    new ZeroMotorsWaitCommand(swerve, 10)),
-                new SequentialCommandGroup(new WaitCommand(2),
-                    new WaitUntilCommand(() -> shooter.getSetpoint() > 0 && shooter.atSetpoint()),
+        ParallelDeadlineGroup part1 = new ParallelDeadlineGroup(
+            new SequentialCommandGroup(autoDrive, new ZeroMotorsWaitCommand(swerve),
+                new WaitCommand(.5), new InstantCommand(() -> intake.intakeRetract()),
+                new InstantCommand(() -> outerMagazine.magazineStop()),
+                new WaitUntilCommand(() -> shooter.getSetpoint() > 0 && shooter.atSetpoint()),
+                new WaitCommand(.5),
+                new ParallelDeadlineGroup(new ZeroMotorsWaitCommand(swerve, 3),
                     new ParallelCommandGroup(new MagazineRPM(this.shooter, this.innerMagazine),
                         new SequentialCommandGroup(
                             new WaitUntilCommand(() -> !this.innerMagazine.magSense.get()
                                 && this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
                             new WaitCommand(.5),
-                            new InstantCommand(() -> this.outerMagazine.magazineUp(.4))))),
-                new AutoAlignTurret(turret, vision), new ShooterRPM(shooter, 4700 / 60)),
-            new InstantCommand(() -> turret.alignEnabled = false));
+                            new InstantCommand(() -> this.outerMagazine.magazineUp(.4)))))),
+            new ShooterRPM(shooter, 4700 / 60));
+
+        addCommands(new InstantCommand(() -> swerve.resetOdometry(trajectory.getInitialPose())),
+            new InstantCommand(() -> turret.alignEnabled = true),
+            new InstantCommand(() -> intake.intakeDeploy()),
+            new InstantCommand(() -> outerMagazine.magazineUp()),
+            new ParallelDeadlineGroup(part1, new AutoAlignTurret(turret, vision)));
+        // new ParallelDeadlineGroup(
+        // new SequentialCommandGroup(new ParallelCommandGroup(autoDrive),
+        // new ZeroMotorsWaitCommand(swerve, 1),
+        // new InstantCommand(() -> intake.intakeRetract()),
+        // new ZeroMotorsWaitCommand(swerve, 10)),
+        // new SequentialCommandGroup(new WaitCommand(2),
+        // new WaitUntilCommand(() -> shooter.getSetpoint() > 0 && shooter.atSetpoint()),
+        // new ParallelCommandGroup(new MagazineRPM(this.shooter, this.innerMagazine),
+        // new SequentialCommandGroup(
+        // new WaitUntilCommand(() -> !this.innerMagazine.magSense.get()
+        // && this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
+        // new WaitCommand(.5),
+        // new InstantCommand(() -> this.outerMagazine.magazineUp(.4))))),
+        // new AutoAlignTurret(turret, vision), new ShooterRPM(shooter, 4700 / 60)));
     }
 
     @Override
@@ -84,5 +100,6 @@ public class P_2B extends AutoBase {
         outerMagazine.magazineStop();
         shooter.disableShooter();
         intake.intakeRetract();
+        turret.alignEnabled = false;
     }
 }
