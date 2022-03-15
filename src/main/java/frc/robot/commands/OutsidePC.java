@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.OutsideClimber;
 
@@ -18,7 +19,7 @@ public class OutsidePC extends CommandBase {
 
     @Override
     public void execute() {
-        if (status) {
+        if (status && !DriverStation.isDisabled() && !DriverStation.isEStopped()) {
             this.climber.deployClimbers();
         } else {
             this.climber.retractClimbers();
@@ -28,6 +29,12 @@ public class OutsidePC extends CommandBase {
 
     @Override
     public boolean isFinished() {
+        return true;
+    }
+
+    @Override
+    public boolean runsWhenDisabled() {
+        // TODO Auto-generated method stub
         return true;
     }
 }
