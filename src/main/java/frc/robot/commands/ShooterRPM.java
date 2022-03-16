@@ -66,9 +66,21 @@ public class ShooterRPM extends CommandBase {
 
     private void updateSetpoint() {
         double distance = this.vision.getDistance() / 12;
-        newDisRPM =
-            3.452380952381 * Math.pow(distance, 3) - 61.7857142857143 * Math.pow(distance, 2)
-                + 402.6190476190476 * Math.pow(distance, 1) + 3000;
+        // System.out.println("Vision Distance: " + distance);
+        newDisRPM = 4.10774 * Math.pow(distance, 3) - 126.12794 * Math.pow(distance, 2)
+            + 1368.53535 * Math.pow(distance, 1) - 1095;
+
+        // newDisRPM =
+        // 3.452380952381 * Math.pow(distance, 3) - 61.7857142857143 * Math.pow(distance, 2)
+        // + 402.6190476190476 * Math.pow(distance, 1) + 3100;
+
+        // 5.5ft - 3300rpm
+        // 9ft - 4000rpm
+        // 13.5ft - 4500rpm
+        // 16.5ft - 5600rpm
+
+
+
         // newDisRPM = 3.45238 * Math.pow(distance, 3) - 51.42857 * Math.pow(distance, 2)
         // + 289.40476 * Math.pow(distance, 1) + 3300;
         // newDisRPM = 3.45238 * Math.pow(distance, 3) - 56 * Math.pow(distance, 2)

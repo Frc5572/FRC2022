@@ -75,15 +75,36 @@ public class Shooter extends PIDSubsystem {
         }
     }
 
+    /**
+     * Get RPM of the Shooter motor
+     *
+     * @return RPM of the Shooter Motor
+     */
+    public double getRPM() {
+        return getMeasurement() * 60;
+    }
+
+    /**
+     * Checks if Shooter is within tolerance of the setpoint
+     *
+     * @return True if shooter is at the correct speed
+     */
     public boolean atSetpoint() {
         return m_controller.atSetpoint();
     }
 
+    /**
+     * Enable the Shooter Subsystem
+     */
     public void enableShooter() {
         this.enable();
         this.shooterRoller.set(1);
     }
 
+
+    /**
+     * Disable the Shooter Subsystem
+     */
     public void disableShooter() {
         this.disable();
         this.shooterRoller.set(0);
