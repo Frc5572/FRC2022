@@ -53,4 +53,9 @@ public class TeleopSwerve extends CommandBase {
         rotation = raxis * Constants.Swerve.maxAngularVelocity;
         swerveDrive.drive(translation, rotation, fieldRelative, openLoop);
     }
+
+    @Override
+    public boolean runsWhenDisabled() {
+        return true;
+    }
 }
