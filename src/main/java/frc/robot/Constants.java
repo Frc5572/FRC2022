@@ -59,8 +59,8 @@ public final class Constants {
     public static final class VisionConstants {
         public static final double deadPocket = 0.05;
         public static final double limelightHeight = 24;
-        public static final double targetHeight = 103;
-        public static final double limelightAngle = 35;
+        public static final double targetHeight = 106;
+        public static final double limelightAngle = 29;
     }
 
     /**
@@ -232,7 +232,7 @@ public final class Constants {
         public static final double kD = 0;
 
         public static final double kShooterTargetRPS = 4100 / 60; // IN RPS NOT RPM
-        public static final double kShooterToleranceRPS = 2; // IN RPS NOT RPM
+        public static final double kShooterToleranceRPS = 1; // IN RPS NOT RPM
 
         public static final int kUnitsPerRevolution = 2048;
         public static final double kSVolts = 0.63035;
