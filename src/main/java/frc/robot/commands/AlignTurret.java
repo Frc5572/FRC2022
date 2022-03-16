@@ -27,10 +27,10 @@ public class AlignTurret extends CommandBase {
     public void execute() {
         if (this.turret.alignEnabled && vision.getTargetFound()) {
             this.turret.turretSet(vision.getAimValue());
-            this.turret.turretBrakeMode(false);
+            // this.turret.turretBrakeMode(false);
         } else {
             this.turret.turretSet(0);
-            this.turret.turretBrakeMode(true);
+            // this.turret.turretBrakeMode(true);
         }
         this.vision.setLEDMode(this.turret.alignEnabled);
     }

@@ -151,7 +151,7 @@ public class RobotContainer {
         // Enable Shooter Magazine Combo While Operator A Button Held/
 
         new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
-            .whileHeld(new ParallelCommandGroup(new ShooterRPM(this.shooter, 4300 / 60),
+            .whileHeld(new ParallelCommandGroup(new ShooterRPM(this.shooter, 4000 / 60),
                 new SequentialCommandGroup(new PrintCommand("Shooter is being weird"),
                     new WaitUntilCommand(
                         () -> this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
@@ -177,7 +177,7 @@ public class RobotContainer {
                         new SequentialCommandGroup(
                             new WaitUntilCommand(() -> !this.innerMagazine.magSense.get()
                                 && this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
-                            new WaitCommand(.5),
+                            new WaitCommand(1),
                             new InstantCommand(() -> this.outerMagazine.magazineUp(.4)))))))
             .whenReleased(new InstantCommand(() -> {
                 this.innerMagazine.disable();
