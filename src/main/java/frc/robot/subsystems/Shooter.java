@@ -36,7 +36,7 @@ public class Shooter extends PIDSubsystem {
      * Spins shooter.
      */
     public void spinShooter() {
-        shooter.set(.6);
+        shooter.set(.4);
     }
 
     /**
