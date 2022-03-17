@@ -4,6 +4,8 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxRelativeEncoder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
@@ -18,6 +20,8 @@ public class Shooter extends PIDSubsystem {
         Constants.ShooterPID.kSVolts, Constants.ShooterPID.kVVoltSecondsPerRotation);
     private final CANSparkMax shooterRoller =
         new CANSparkMax(Constants.Motors.shooterRollerID, MotorType.kBrushless);
+    private RelativeEncoder encoder =
+        shooterRoller.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
 
     /**
      * Create shooter class for PID
@@ -30,13 +34,14 @@ public class Shooter extends PIDSubsystem {
         getController().setTolerance(Constants.ShooterPID.kShooterToleranceRPS); // IN RPS NOT RPM
         shooterRoller.setInverted(true);
         setSetpoint(0); // IN RPS NOT RPM
+        encoder.setVelocityConversionFactor(.25);
     }
 
     /**
      * Spins shooter.
      */
     public void spinShooter() {
-        shooter.set(.3);
+        shooter.set(.4);
     }
 
     /**
@@ -108,5 +113,9 @@ public class Shooter extends PIDSubsystem {
     public void disableShooter() {
         this.disable();
         this.shooterRoller.set(0);
+    }
+
+    public double getRollerRPM() {
+        return encoder.getVelocity();
     }
 }
