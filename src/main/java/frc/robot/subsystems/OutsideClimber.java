@@ -24,7 +24,7 @@ public class OutsideClimber extends SubsystemBase {
 
     private final MotorControllerGroup outsideMotors = new MotorControllerGroup(climberMotors);
 
-    private static final double motorSpeed = .5;
+    private static final double motorSpeed = .8;
     private static final int motorStop = 0;
     private boolean enabled = false;
 

@@ -79,7 +79,7 @@ public class P1_3B extends AutoBase {
                 new WaitCommand(1),
                 new ParallelDeadlineGroup(new ZeroMotorsWaitCommand(swerve, 3),
                     new MagazineRPM(this.shooter, this.innerMagazine))),
-            new ShooterRPM(shooter, 3850 / 60));
+            new ShooterRPM(shooter, 4000 / 60));
 
         addCommands(new InstantCommand(() -> swerve.resetOdometry(trajectory.getInitialPose())),
             new InstantCommand(() -> turret.alignEnabled = true),

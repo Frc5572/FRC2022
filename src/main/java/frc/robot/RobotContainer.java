@@ -76,7 +76,7 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-        ph.enableCompressorAnalog(80, 120);
+        ph.enableCompressorAnalog(90, 120);
         insideClimber = new InsideClimber(ph);
         outsideClimber = new OutsideClimber(ph);
         intake = new Intake(ph);

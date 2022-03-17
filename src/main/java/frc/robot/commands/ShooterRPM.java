@@ -70,7 +70,7 @@ public class ShooterRPM extends CommandBase {
         double distance = this.vision.getDistance() / 12;
         // System.out.println("Vision Distance: " + distance);
         newDisRPM = 4.10774 * Math.pow(distance, 3) - 126.12794 * Math.pow(distance, 2)
-            + 1368.53535 * Math.pow(distance, 1) - 1095 - 300;
+            + 1368.53535 * Math.pow(distance, 1) - 1095 - 100;
 
         // newDisRPM =
         // 3.452380952381 * Math.pow(distance, 3) - 61.7857142857143 * Math.pow(distance, 2)
