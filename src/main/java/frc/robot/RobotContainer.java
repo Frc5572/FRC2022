@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.lib.AxisButton;
 import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.P0;
+import frc.robot.autos.P1_3B;
 import frc.robot.autos.P_2B;
 import frc.robot.commands.AlignTurret;
 import frc.robot.commands.InsidePC;
@@ -75,10 +76,14 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-        ph.enableCompressorAnalog(80, 120);
+        ph.enableCompressorAnalog(90, 120);
         insideClimber = new InsideClimber(ph);
         outsideClimber = new OutsideClimber(ph);
         intake = new Intake(ph);
+        // Default Swerve Command
+        swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, driver,
+            Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop));
+        // Default Turret Command
         turret.setDefaultCommand(new AlignTurret(turret, vision));
         // hood.setDefaultCommand(new PositionHood(hood, vision.getHoodValue()));
         // Adding AutoChooser Options
@@ -88,9 +93,8 @@ public class RobotContainer {
         autoChooser.addOption("P0", new P0(swerveDrive));
         autoChooser.addOption("P_2B",
             new P_2B(swerveDrive, shooter, innerMagazine, outerMagazine, intake, turret, vision));
-        // Default Swerve Command
-        swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, driver,
-            Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop));
+        autoChooser.addOption("P1_3B",
+            new P1_3B(swerveDrive, shooter, innerMagazine, outerMagazine, intake, turret, vision));
         // Configure the button bindings
         configureButtonBindings();
     }
@@ -145,7 +149,7 @@ public class RobotContainer {
         // Enable Shooter Magazine Combo While Operator A Button Held/
 
         new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
-            .whileHeld(new ParallelCommandGroup(new ShooterRPM(this.shooter, 4000 / 60),
+            .whileHeld(new ParallelCommandGroup(new ShooterRPM(this.shooter, 3700 / 60),
                 new SequentialCommandGroup(new PrintCommand("Shooter is being weird"),
                     new WaitUntilCommand(
                         () -> this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
@@ -213,8 +217,8 @@ public class RobotContainer {
                     innerMagazine.magazineUp();
                     outerMagazine.magazineUp();
                 })))
-            .whenReleased(new InstantCommand(() -> shooter.stopShooter()))
             .whenReleased(new InstantCommand(() -> {
+                shooter.stopShooter();
                 innerMagazine.magazineStop();
                 outerMagazine.magazineStop();
             }));
@@ -226,7 +230,8 @@ public class RobotContainer {
      * @return Returns autonomous command selected.
      */
     public Command getAutonomousCommand() {
-        return new P_2B(swerveDrive, shooter, innerMagazine, outerMagazine, intake, turret, vision);
+        // return new P1_3B(swerveDrive, shooter, innerMagazine, outerMagazine, intake, turret,
+        // vision);
+        return autoChooser.getSelected();
     }
-
 }
