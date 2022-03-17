@@ -14,9 +14,10 @@ public class AutoAlignTurret extends SequentialCommandGroup {
 
 
     /**
-     * Autonomous that aligns limelight then excecutes a trajectory.
+     * Align the turret from Auto starting position
      *
-     * @param swerve swerve subsystem
+     * @param turret Turret subsystem
+     * @param vision Vision subsystem
      */
     public AutoAlignTurret(Turret turret, Vision vision) {
         addRequirements(turret);

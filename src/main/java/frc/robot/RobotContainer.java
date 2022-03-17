@@ -80,6 +80,10 @@ public class RobotContainer {
         insideClimber = new InsideClimber(ph);
         outsideClimber = new OutsideClimber(ph);
         intake = new Intake(ph);
+        // Default Swerve Command
+        swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, driver,
+            Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop));
+        // Default Turret Command
         turret.setDefaultCommand(new AlignTurret(turret, vision));
         // hood.setDefaultCommand(new PositionHood(hood, vision.getHoodValue()));
         // Adding AutoChooser Options
@@ -91,12 +95,6 @@ public class RobotContainer {
             new P_2B(swerveDrive, shooter, innerMagazine, outerMagazine, intake, turret, vision));
         autoChooser.addOption("P1_3B",
             new P1_3B(swerveDrive, shooter, innerMagazine, outerMagazine, intake, turret, vision));
-        // Default Swerve Command
-        swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, driver,
-            Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop));
-        turret.setDefaultCommand(new FunctionalCommand(() -> {
-        }, () -> turret.turretSet(vision.getTargetFound() ? vision.getAimValue() : 0), interupt -> {
-        }, () -> false, turret));
         // Configure the button bindings
         configureButtonBindings();
     }
@@ -219,8 +217,8 @@ public class RobotContainer {
                     innerMagazine.magazineUp();
                     outerMagazine.magazineUp();
                 })))
-            .whenReleased(new InstantCommand(() -> shooter.stopShooter()))
             .whenReleased(new InstantCommand(() -> {
+                shooter.stopShooter();
                 innerMagazine.magazineStop();
                 outerMagazine.magazineStop();
             }));
