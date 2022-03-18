@@ -59,15 +59,16 @@ public class P1_3B extends AutoBase {
                 new InstantCommand(() -> intake.intakeRetract()),
                 new PrintCommand("Shooter is being weird"),
                 new WaitUntilCommand(() -> shooter.getSetpoint() > 0 && shooter.atSetpoint()),
-                new WaitCommand(.5),
+                new WaitCommand(1),
                 new ParallelDeadlineGroup(new ZeroMotorsWaitCommand(swerve, 3),
                     new ParallelCommandGroup(new MagazineRPM(this.shooter, this.innerMagazine),
                         new SequentialCommandGroup(
                             new WaitUntilCommand(() -> !this.innerMagazine.magSense.get()
                                 && this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
-                            new WaitCommand(2),
+                            new WaitCommand(3),
                             new InstantCommand(() -> this.outerMagazine.magazineUp(.6)))))),
-            new ShooterRPM(shooter, 3900 / 60));
+            new ShooterRPM(shooter, 3800 / 60));
+
 
         ParallelDeadlineGroup part2 = new ParallelDeadlineGroup(
             new SequentialCommandGroup(new InstantCommand(() -> intake.intakeDeploy()),

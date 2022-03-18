@@ -159,7 +159,7 @@ public class RobotContainer {
                             new WaitUntilCommand(() -> !this.innerMagazine.magSense.get()
                                 && this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
                             new WaitCommand(1),
-                            new InstantCommand(() -> this.outerMagazine.magazineUp(.4)))))))
+                            new InstantCommand(() -> this.outerMagazine.magazineUp(.6)))))))
             .whenReleased(new InstantCommand(() -> {
                 this.innerMagazine.disable();
                 this.outerMagazine.magazineStop();
@@ -176,7 +176,7 @@ public class RobotContainer {
                             new WaitUntilCommand(() -> !this.innerMagazine.magSense.get()
                                 && this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
                             new WaitCommand(1),
-                            new InstantCommand(() -> this.outerMagazine.magazineUp(.4)))))))
+                            new InstantCommand(() -> this.outerMagazine.magazineUp(.6)))))))
             .whenReleased(new InstantCommand(() -> {
                 this.innerMagazine.disable();
                 this.outerMagazine.magazineStop();
