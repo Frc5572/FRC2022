@@ -44,7 +44,8 @@ public final class Constants {
      */
     public static final class Pneumatics {
         // Climber pneumatics constants.
-        public static final int climberOutsideChannel = 2;
+        public static final int climberOutsideForwardChannel = 2;
+        public static final int climberOutsideReverseChannel = 4;
         public static final int climberInsideChannel = 0;
         public static final int climberInsideChannel2 = 1;
         // Intake constants
@@ -59,8 +60,8 @@ public final class Constants {
     public static final class VisionConstants {
         public static final double deadPocket = 0.05;
         public static final double limelightHeight = 24;
-        public static final double targetHeight = 106;
-        public static final double limelightAngle = 29;
+        public static final double targetHeight = 103;
+        public static final double limelightAngle = 30.5;
     }
 
     /**

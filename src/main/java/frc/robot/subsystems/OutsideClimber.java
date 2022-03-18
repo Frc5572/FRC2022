@@ -2,8 +2,9 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PneumaticHub;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -13,7 +14,7 @@ import frc.robot.Constants;
  */
 public class OutsideClimber extends SubsystemBase {
 
-    private final Solenoid outsideClimberSolenoid;
+    private final DoubleSolenoid outsideClimberSolenoid;
 
     private final WPI_TalonFX outsideClimberMotor1 =
         new WPI_TalonFX(Constants.Motors.outsideClimberMotorRightId, "canivore");
@@ -38,8 +39,10 @@ public class OutsideClimber extends SubsystemBase {
         for (WPI_TalonFX motor : climberMotors) {
             motor.setNeutralMode(NeutralMode.Brake);
         }
-        this.outsideClimberSolenoid = ph.makeSolenoid(Constants.Pneumatics.climberOutsideChannel);
-        this.outsideClimberSolenoid.set(true);
+        this.outsideClimberSolenoid =
+            ph.makeDoubleSolenoid(Constants.Pneumatics.climberOutsideForwardChannel,
+                Constants.Pneumatics.climberOutsideReverseChannel);
+        this.outsideClimberSolenoid.set(Value.kForward);
     }
 
     /**
@@ -47,7 +50,7 @@ public class OutsideClimber extends SubsystemBase {
      */
     public void deployClimbers() {
         if (enabled) {
-            this.outsideClimberSolenoid.set(true);
+            this.outsideClimberSolenoid.set(Value.kForward);
         }
     }
 
@@ -74,7 +77,7 @@ public class OutsideClimber extends SubsystemBase {
      */
     public void retractClimbers() {
         if (enabled) {
-            this.outsideClimberSolenoid.set(false);
+            this.outsideClimberSolenoid.set(Value.kReverse);
         }
     }
 
