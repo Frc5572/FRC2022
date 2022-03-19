@@ -118,26 +118,26 @@ public class RobotContainer {
         /* Button Mappings for Climber Motors */
         // Extend the Outside climber arms
         new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
-            .whileHeld(new StartEndCommand(() -> outsideClimber.engageMotors(),
-                () -> outsideClimber.stopMotors(), outsideClimber));
-        // Retract the Outside climber arms
-        new AxisButton(driver, XboxController.Axis.kLeftTrigger.value)
-            .whileHeld(new StartEndCommand(() -> outsideClimber.retractMotors(),
-                () -> outsideClimber.stopMotors(), outsideClimber));
-        // Extend the Inside climber arms
-        new JoystickButton(driver, XboxController.Button.kRightBumper.value)
             .whileHeld(new StartEndCommand(() -> insideClimber.engageMotors(),
                 () -> insideClimber.stopMotors(), insideClimber));
-        // Retract the Inside climber arms
-        new AxisButton(driver, XboxController.Axis.kRightTrigger.value)
+        // Retract the Outside climber arms
+        new AxisButton(driver, XboxController.Axis.kLeftTrigger.value)
             .whileHeld(new StartEndCommand(() -> insideClimber.retractMotors(),
                 () -> insideClimber.stopMotors(), insideClimber));
+        // Extend the Inside climber arms
+        new JoystickButton(driver, XboxController.Button.kRightBumper.value)
+            .whileHeld(new StartEndCommand(() -> outsideClimber.engageMotors(),
+                () -> outsideClimber.stopMotors(), outsideClimber));
+        // Retract the Inside climber arms
+        new AxisButton(driver, XboxController.Axis.kRightTrigger.value)
+            .whileHeld(new StartEndCommand(() -> outsideClimber.retractMotors(),
+                () -> outsideClimber.stopMotors(), outsideClimber));
 
         // Inside Pneumatics Activate on drive
-        new JoystickButton(driver, XboxController.Button.kA.value)
+        new JoystickButton(driver, XboxController.Button.kB.value)
             .whenPressed(new InsidePC(insideClimber));
         // Outside Pneumatics Activate on driver
-        new JoystickButton(driver, XboxController.Button.kB.value)
+        new JoystickButton(driver, XboxController.Button.kA.value)
             .whenPressed(new OutsidePC(outsideClimber));
         new JoystickButton(driver, XboxController.Button.kStart.value)
             .whenPressed(new InstantCommand(() -> insideClimber.enableClimbers())
@@ -159,7 +159,7 @@ public class RobotContainer {
                             new WaitUntilCommand(() -> !this.innerMagazine.magSense.get()
                                 && this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
                             new WaitCommand(1),
-                            new InstantCommand(() -> this.outerMagazine.magazineUp(.4)))))))
+                            new InstantCommand(() -> this.outerMagazine.magazineUp(.6)))))))
             .whenReleased(new InstantCommand(() -> {
                 this.innerMagazine.disable();
                 this.outerMagazine.magazineStop();
@@ -176,7 +176,7 @@ public class RobotContainer {
                             new WaitUntilCommand(() -> !this.innerMagazine.magSense.get()
                                 && this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
                             new WaitCommand(1),
-                            new InstantCommand(() -> this.outerMagazine.magazineUp(.4)))))))
+                            new InstantCommand(() -> this.outerMagazine.magazineUp(.6)))))))
             .whenReleased(new InstantCommand(() -> {
                 this.innerMagazine.disable();
                 this.outerMagazine.magazineStop();
