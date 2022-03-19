@@ -76,8 +76,7 @@ public class P_2B extends AutoBase {
                                 && this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
                             new WaitCommand(3),
                             new InstantCommand(() -> this.outerMagazine.magazineUp(.6)))))),
-            new ShooterRPM(shooter, 3800 / 60));
-
+            new ShooterRPM(shooter, 3700 / 60));
 
         addCommands(new InstantCommand(() -> swerve.resetOdometry(trajectory.getInitialPose())),
             new InstantCommand(() -> turret.alignEnabled = true),

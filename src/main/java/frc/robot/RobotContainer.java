@@ -166,6 +166,7 @@ public class RobotContainer {
             }, this.innerMagazine, this.outerMagazine));
 
         new JoystickButton(operator, XboxController.Button.kA.value)
+            .whileHeld(new InstantCommand(() -> turret.alignEnabled = true))
             .whileHeld(new ParallelCommandGroup(new ShooterRPM(this.shooter, this.vision),
                 new SequentialCommandGroup(new PrintCommand("Shooter is being weird"),
                     new WaitUntilCommand(
@@ -180,6 +181,7 @@ public class RobotContainer {
             .whenReleased(new InstantCommand(() -> {
                 this.innerMagazine.disable();
                 this.outerMagazine.magazineStop();
+                turret.alignEnabled = false;
             }, this.innerMagazine, this.outerMagazine));
 
         // Deploy Intake and Run Magazine While Operator B Held
