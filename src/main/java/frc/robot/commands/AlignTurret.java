@@ -33,6 +33,7 @@ public class AlignTurret extends CommandBase {
             // this.turret.turretBrakeMode(true);
         }
         this.vision.setLEDMode(this.turret.alignEnabled);
+        this.vision.setCameraMode(!this.turret.alignEnabled);
     }
 
     @Override

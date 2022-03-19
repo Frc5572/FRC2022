@@ -78,8 +78,23 @@ public class Vision {
         return calculated == 0;
     }
 
+    /**
+     * Turn the Limelight LEDs on or off.
+     * 
+     * @param enabled True to turn on the LEDs, False to turn off.
+     */
     public void setLEDMode(boolean enabled) {
         int value = enabled ? 3 : 1;
         this.table.getEntry("ledMode").setNumber(value);
+    }
+
+    /**
+     * Sets the Limelight camera mode, Driver or Vision mode.
+     * 
+     * @param driver True to enable Drive mode, False to enable Vision mode.
+     */
+    public void setCameraMode(boolean driver) {
+        int value = driver ? 1 : 0;
+        this.table.getEntry("camMode").setNumber(value);
     }
 }
