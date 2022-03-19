@@ -25,7 +25,8 @@ public class OutsideClimber extends SubsystemBase {
 
     private final MotorControllerGroup outsideMotors = new MotorControllerGroup(climberMotors);
 
-    private static final double motorSpeed = .8;
+    private static final double extendSpeed = .8;
+    private static final double retractSpeed = -.5;
     private static final int motorStop = 0;
     private boolean enabled = false;
 
@@ -59,7 +60,7 @@ public class OutsideClimber extends SubsystemBase {
      */
     public void engageMotors() {
         if (enabled) {
-            this.outsideMotors.set(motorSpeed);
+            this.outsideMotors.set(extendSpeed);
         }
     }
 
@@ -68,7 +69,7 @@ public class OutsideClimber extends SubsystemBase {
      */
     public void retractMotors() {
         if (enabled) {
-            this.outsideMotors.set(-motorSpeed);
+            this.outsideMotors.set(retractSpeed);
         }
     }
 

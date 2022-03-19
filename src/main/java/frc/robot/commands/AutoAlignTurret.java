@@ -1,9 +1,7 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.modules.Vision;
 import frc.robot.subsystems.Turret;
 
@@ -21,7 +19,8 @@ public class AutoAlignTurret extends SequentialCommandGroup {
      */
     public AutoAlignTurret(Turret turret, Vision vision) {
         addRequirements(turret);
-        addCommands(new ParallelDeadlineGroup(new WaitCommand(.6),
-            new InstantCommand(() -> turret.turretLeft())), new AlignTurret(turret, vision));
+        addCommands(new FunctionalCommand(() -> turret.turretLeft(), () -> {
+        }, interupt -> turret.turretStop(), () -> vision.getTargetFound(), turret).withTimeout(.6),
+            new AlignTurret(turret, vision));
     }
 }

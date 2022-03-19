@@ -55,8 +55,10 @@ public class P1_3B extends AutoBase {
 
         ParallelDeadlineGroup part1 = new ParallelDeadlineGroup(
             new SequentialCommandGroup(autoDrive, new ZeroMotorsWaitCommand(swerve),
-                new WaitCommand(.5), new InstantCommand(() -> outerMagazine.magazineStop()),
-                new InstantCommand(() -> intake.intakeRetract()),
+                new WaitCommand(.5), new InstantCommand(() -> intake.intakeRetract()),
+                new WaitCommand(.3), new InstantCommand(() -> intake.intakeDeploy()),
+                new WaitCommand(.3), new InstantCommand(() -> intake.intakeRetract()),
+                new InstantCommand(() -> outerMagazine.magazineStop()),
                 new PrintCommand("Shooter is being weird"),
                 new WaitUntilCommand(() -> shooter.getSetpoint() > 0 && shooter.atSetpoint()),
                 new WaitCommand(1),
