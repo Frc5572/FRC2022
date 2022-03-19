@@ -64,7 +64,6 @@ public class Vision {
     /**
      * @return whether target is found
      */
-
     public boolean getTargetFound() {
         // Whether the limelight has any valid targets (0 or 1)
         tv = table.getEntry("tv").getDouble(0.0);
@@ -79,7 +78,8 @@ public class Vision {
     }
 
     /**
-     * Turn the Limelight LEDs on or off
+     * Turn the Limelight LEDs on or off.
+     * 
      * 
      * @param enabled True to turn on the LEDs, False to turn off.
      */
@@ -89,7 +89,8 @@ public class Vision {
     }
 
     /**
-     * Sets the Limelight camera mode, Driver or Vision mode
+     * Sets the Limelight camera mode, Driver or Vision mode.
+     * 
      * 
      * @param driver True to enable Drive mode, False to enable Vision mode.
      */
