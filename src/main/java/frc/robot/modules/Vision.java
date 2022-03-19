@@ -79,7 +79,7 @@ public class Vision {
     }
 
     /**
-     * Turn the Limelight LEDs on or off.
+     * Turn the Limelight LEDs on or off
      * 
      * @param enabled True to turn on the LEDs, False to turn off.
      */
@@ -89,7 +89,7 @@ public class Vision {
     }
 
     /**
-     * Sets the Limelight camera mode, Driver or Vision mode.
+     * Sets the Limelight camera mode, Driver or Vision mode
      * 
      * @param driver True to enable Drive mode, False to enable Vision mode.
      */
