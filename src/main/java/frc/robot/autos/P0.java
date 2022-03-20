@@ -2,7 +2,9 @@ package frc.robot.autos;
 
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.modules.AutoBase;
 import frc.robot.subsystems.Swerve;
@@ -22,8 +24,11 @@ public class P0 extends AutoBase {
         super(swerve);
         PathPlannerTrajectory p0 = PathPlanner.loadPath("P0", 1, 1);
         PPSwerveControllerCommand firstCommand = baseSwerveCommand(p0);
+        PathPlannerState initialState = p0.getInitialState();
 
-        addCommands(new InstantCommand(() -> swerve.resetOdometry(p0.getInitialPose())),
+
+        addCommands(new InstantCommand(() -> swerve.resetOdometry(
+            new Pose2d(initialState.poseMeters.getTranslation(), initialState.holonomicRotation))),
             firstCommand);
 
     }

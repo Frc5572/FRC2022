@@ -2,7 +2,9 @@ package frc.robot.autos;
 
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
@@ -59,6 +61,7 @@ public class P_2B extends AutoBase {
 
         PathPlannerTrajectory trajectory = PathPlanner.loadPath("P1_3B_part1", 4, 2);
         PPSwerveControllerCommand autoDrive = baseSwerveCommand(trajectory);
+        PathPlannerState initialState = trajectory.getInitialState();
 
         ParallelDeadlineGroup part1 = new ParallelDeadlineGroup(
             new SequentialCommandGroup(autoDrive, new ZeroMotorsWaitCommand(swerve),
@@ -78,7 +81,10 @@ public class P_2B extends AutoBase {
                             new InstantCommand(() -> this.outerMagazine.magazineUp(.6)))))),
             new ShooterRPM(shooter, 3700 / 60));
 
-        addCommands(new InstantCommand(() -> swerve.resetOdometry(trajectory.getInitialPose())),
+        addCommands(
+            new InstantCommand(
+                () -> swerve.resetOdometry(new Pose2d(initialState.poseMeters.getTranslation(),
+                    initialState.holonomicRotation))),
             new InstantCommand(() -> turret.alignEnabled = true),
             new InstantCommand(() -> intake.intakeDeploy()),
             new InstantCommand(() -> outerMagazine.magazineUp(.4)),
