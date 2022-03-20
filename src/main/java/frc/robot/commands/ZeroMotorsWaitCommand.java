@@ -7,7 +7,7 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
 
 /**
- * Zeros motors then excecutes normal wait command.
+ * Zeros motors then executes normal wait command.
  */
 public class ZeroMotorsWaitCommand extends CommandBase {
     protected Timer timer = new Timer();
@@ -15,7 +15,7 @@ public class ZeroMotorsWaitCommand extends CommandBase {
     private Swerve swerve;
 
     /**
-     * Zeros motors then excecutes normal wait command.
+     * Zeros motors then executes normal wait command.
      *
      * @param seconds how long the wait command should run
      */
@@ -27,7 +27,7 @@ public class ZeroMotorsWaitCommand extends CommandBase {
     }
 
     /**
-     * Zeros motors then excecutes normal wait command. No seconds parameter defaults to 0 seconds
+     * Zeros motors then executes normal wait command. No seconds parameter defaults to 0 seconds
      * (no wait)
      */
     public ZeroMotorsWaitCommand(Swerve swerve) {

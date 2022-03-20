@@ -24,7 +24,7 @@ import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Turret;
 
 /**
- * Autonomous that aligns limelight then excecutes a trajectory.
+ * Autonomous that aligns limelight then executes a trajectory.
  */
 public class P1_3B extends AutoBase {
 
@@ -35,7 +35,7 @@ public class P1_3B extends AutoBase {
     Turret turret;
 
     /**
-     * Autonomous that aligns limelight then excecutes a trajectory.
+     * Autonomous that aligns limelight then executes a trajectory.
      *
      * @param swerve swerve subsystem
      */
