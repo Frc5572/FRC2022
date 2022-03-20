@@ -146,7 +146,7 @@ public class RobotContainer {
 
         /* Operator Buttons */
 
-        // Enable Shooter Magazine Combo While Operator A Button Held/
+        // Enable Shooter Magazine Combo from set RPM using operator right trigger
 
         new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
             .whileHeld(new ParallelCommandGroup(new ShooterRPM(this.shooter, 3700 / 60),
@@ -173,11 +173,6 @@ public class RobotContainer {
                 turret.alignEnabled = false;
             }));
 
-        // new WaitUntilCommand(
-        // () -> this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
-        // new WaitCommand(.5),
-
-
         // Enable Inner and Outside Magazine when ready to shooter on Operator X Held
         new JoystickButton(operator, XboxController.Button.kX.value)
             .whileHeld(new SequentialCommandGroup(
@@ -193,7 +188,6 @@ public class RobotContainer {
             .whenReleased(new InstantCommand(() -> {
                 this.innerMagazine.disable();
                 this.outerMagazine.magazineStop();
-                turret.alignEnabled = false;
             }, this.innerMagazine, this.outerMagazine));
 
 
