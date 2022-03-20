@@ -28,6 +28,10 @@ jobs:
           level: error
           checkstyle_config: checks.xml
           checkstyle_version: '9.2.1'
+  Spell Check:
+    uses: codespell-project/actions-codespell@master
+    with:
+      check_filenames: true
   build:
     name: Build
     runs-on: windows-2019
