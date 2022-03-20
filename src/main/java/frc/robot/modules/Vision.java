@@ -32,9 +32,7 @@ public class Vision {
     /**
      *
      * @return distance from target in inches
-     *
      */
-
     public double getDistance() {
         // Vertical Offset From Crosshair To Target (LL1: -20.5 degrees to 20.5 degrees | LL2:
         // -24.85 to 24.85 degrees)
@@ -79,8 +77,7 @@ public class Vision {
 
     /**
      * Turn the Limelight LEDs on or off.
-     * 
-     * 
+     *
      * @param enabled True to turn on the LEDs, False to turn off.
      */
     public void setLEDMode(boolean enabled) {
@@ -90,8 +87,7 @@ public class Vision {
 
     /**
      * Sets the Limelight camera mode, Driver or Vision mode.
-     * 
-     * 
+     *
      * @param driver True to enable Drive mode, False to enable Vision mode.
      */
     public void setCameraMode(boolean driver) {
