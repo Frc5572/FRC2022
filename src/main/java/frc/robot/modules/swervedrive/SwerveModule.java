@@ -25,7 +25,7 @@ public class SwerveModule {
         Constants.Swerve.driveKV, Constants.Swerve.driveKA);
 
     /**
-     * Creates an instance of a Servce Module
+     * Creates an instance of a Swerve Module
      *
      * @param moduleNumber Swerve Module ID. Must be unique
      * @param moduleConstants Constants specific to the swerve module

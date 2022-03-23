@@ -23,7 +23,7 @@ import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Turret;
 
 /**
- * Autonomous that moves turret to align with target, excecutes trajectory to pick up ball directly
+ * Autonomous that moves turret to align with target, executes trajectory to pick up ball directly
  * in front, then shoots both balls.
  */
 public class P_2B extends AutoBase {
@@ -35,7 +35,7 @@ public class P_2B extends AutoBase {
     Turret turret;
 
     /**
-     * Autonomous that moves turret to align with target, excecutes trajectory to pick up ball
+     * Autonomous that moves turret to align with target, executes trajectory to pick up ball
      * directly in front, then shoots both balls.
      *
      * @param swerve swerve subsystem

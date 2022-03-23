@@ -23,7 +23,7 @@ public class OuterMagazine extends PIDSubsystem {
         outerMagazineMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
 
     /**
-     * Initalize PID for the Magazine.
+     * Initialize PID for the Magazine.
      */
     public OuterMagazine() {
         super(new PIDController(Constants.OuterMagazinePID.kP, Constants.OuterMagazinePID.kI,

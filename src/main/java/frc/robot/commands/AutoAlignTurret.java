@@ -6,7 +6,7 @@ import frc.robot.modules.Vision;
 import frc.robot.subsystems.Turret;
 
 /**
- * Autonomous that aligns limelight then excecutes a trajectory.
+ * Autonomous that aligns limelight then executes a trajectory.
  */
 public class AutoAlignTurret extends SequentialCommandGroup {
 
@@ -20,7 +20,7 @@ public class AutoAlignTurret extends SequentialCommandGroup {
     public AutoAlignTurret(Turret turret, Vision vision) {
         addRequirements(turret);
         addCommands(new FunctionalCommand(() -> turret.turretLeft(), () -> {
-        }, interupt -> turret.turretStop(), () -> vision.getTargetFound(), turret).withTimeout(.6),
+        }, interrupt -> turret.turretStop(), () -> vision.getTargetFound(), turret).withTimeout(.6),
             new AlignTurret(turret, vision));
     }
 }
