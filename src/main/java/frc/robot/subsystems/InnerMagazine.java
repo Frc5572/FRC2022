@@ -21,7 +21,7 @@ public class InnerMagazine extends PIDSubsystem {
         Constants.InnerMagazinePID.kSVolts, Constants.InnerMagazinePID.kVVoltSecondsPerRotation);
 
     /**
-     * Initalize PID for the Magazine.
+     * Initialize PID for the Magazine.
      */
     public InnerMagazine() {
         super(new PIDController(Constants.InnerMagazinePID.kP, Constants.InnerMagazinePID.kI,

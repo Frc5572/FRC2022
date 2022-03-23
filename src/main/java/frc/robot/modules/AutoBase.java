@@ -20,7 +20,7 @@ public class AutoBase extends SequentialCommandGroup {
             Constants.AutoConstants.kThetaControllerConstraints);
 
     /**
-     * Autonomous that aligns limelight then excecutes a trajectory.
+     * Autonomous that aligns limelight then executes a trajectory.
      *
      * @param swerve swerve subsystem
      */

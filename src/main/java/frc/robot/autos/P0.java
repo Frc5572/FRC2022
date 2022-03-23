@@ -8,13 +8,13 @@ import frc.robot.modules.AutoBase;
 import frc.robot.subsystems.Swerve;
 
 /**
- * Autonomous that aligns limelight then excecutes a trajectory.
+ * Autonomous that aligns limelight then executes a trajectory.
  */
 public class P0 extends AutoBase {
     Swerve swerve;
 
     /**
-     * Autonomous that aligns limelight then excecutes a trajectory.
+     * Autonomous that aligns limelight then executes a trajectory.
      *
      * @param swerve swerve subsystem
      */
