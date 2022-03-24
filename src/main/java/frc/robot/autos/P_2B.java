@@ -6,7 +6,6 @@ import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -26,7 +25,7 @@ import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Turret;
 
 /**
- * Autonomous that moves turret to align with target, excecutes trajectory to pick up ball directly
+ * Autonomous that moves turret to align with target, executes trajectory to pick up ball directly
  * in front, then shoots both balls.
  */
 public class P_2B extends AutoBase {
@@ -38,7 +37,7 @@ public class P_2B extends AutoBase {
     Turret turret;
 
     /**
-     * Autonomous that moves turret to align with target, excecutes trajectory to pick up ball
+     * Autonomous that moves turret to align with target, executes trajectory to pick up ball
      * directly in front, then shoots both balls.
      *
      * @param swerve swerve subsystem
@@ -63,23 +62,20 @@ public class P_2B extends AutoBase {
         PPSwerveControllerCommand autoDrive = baseSwerveCommand(trajectory);
         PathPlannerState initialState = trajectory.getInitialState();
 
-        ParallelDeadlineGroup part1 = new ParallelDeadlineGroup(
-            new SequentialCommandGroup(autoDrive, new ZeroMotorsWaitCommand(swerve),
-                new WaitCommand(.5), new InstantCommand(() -> intake.intakeRetract()),
-                new WaitCommand(.3), new InstantCommand(() -> intake.intakeDeploy()),
-                new WaitCommand(.3), new InstantCommand(() -> intake.intakeRetract()),
-                new InstantCommand(() -> outerMagazine.magazineStop()),
-                new PrintCommand("Shooter is being weird"),
-                new WaitUntilCommand(() -> shooter.getSetpoint() > 0 && shooter.atSetpoint()),
-                new WaitCommand(1),
-                new ParallelDeadlineGroup(new ZeroMotorsWaitCommand(swerve, 3),
-                    new ParallelCommandGroup(new MagazineRPM(this.shooter, this.innerMagazine),
-                        new SequentialCommandGroup(
-                            new WaitUntilCommand(() -> !this.innerMagazine.magSense.get()
-                                && this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
-                            new WaitCommand(3),
-                            new InstantCommand(() -> this.outerMagazine.magazineUp(.6)))))),
-            new ShooterRPM(shooter, 3700 / 60));
+        SequentialCommandGroup part1 = new SequentialCommandGroup(autoDrive,
+            new ZeroMotorsWaitCommand(swerve), new WaitCommand(.5),
+            new InstantCommand(() -> intake.intakeRetract()), new WaitCommand(.3),
+            new InstantCommand(() -> intake.intakeDeploy()), new WaitCommand(.3),
+            new InstantCommand(() -> intake.intakeRetract()),
+            new InstantCommand(() -> outerMagazine.magazineStop()),
+            new PrintCommand("Shooter is being weird"),
+            new WaitUntilCommand(() -> shooter.getSetpoint() > 0 && shooter.atSetpoint()),
+            new WaitCommand(1),
+            new SequentialCommandGroup(
+                new WaitUntilCommand(() -> !this.innerMagazine.magSense.get()
+                    && this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
+                new WaitCommand(3), new InstantCommand(() -> this.outerMagazine.magazineUp(.6)))
+                    .alongWith(new MagazineRPM(this.shooter, this.innerMagazine)).withTimeout(3));
 
         addCommands(
             new InstantCommand(
@@ -88,7 +84,8 @@ public class P_2B extends AutoBase {
             new InstantCommand(() -> turret.alignEnabled = true),
             new InstantCommand(() -> intake.intakeDeploy()),
             new InstantCommand(() -> outerMagazine.magazineUp(.4)),
-            new ParallelDeadlineGroup(part1, new AutoAlignTurret(turret, vision)));
+            new ParallelDeadlineGroup(part1.deadlineWith(new ShooterRPM(shooter, 3700 / 60)),
+                new AutoAlignTurret(turret, vision)));
         // new ParallelDeadlineGroup(
         // new SequentialCommandGroup(new ParallelCommandGroup(autoDrive),
         // new ZeroMotorsWaitCommand(swerve, 1),

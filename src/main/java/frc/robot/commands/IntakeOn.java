@@ -4,13 +4,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 
 /**
- * Initalizes the intake object for method use
+ * Initializes the intake object for method use
  */
 public class IntakeOn extends CommandBase {
     private final Intake intake;
 
-    public IntakeOn(Intake subsytem) {
-        this.intake = subsytem;
+    public IntakeOn(Intake subsystem) {
+        this.intake = subsystem;
         addRequirements(intake);
     }
 

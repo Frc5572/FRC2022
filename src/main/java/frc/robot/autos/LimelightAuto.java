@@ -17,14 +17,14 @@ import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Turret;
 
 /**
- * Autonomous that aligns limelight then excecutes a trajectory.
+ * Autonomous that aligns limelight then executes a trajectory.
  */
 public class LimelightAuto extends AutoBase {
     Vision vision;
     Turret turret;
 
     /**
-     * Autonomous that aligns limelight then excecutes a trajectory.
+     * Autonomous that aligns limelight then executes a trajectory.
      *
      * @param swerve swerve subsystem
      * @param vision vision subsystem
