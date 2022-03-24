@@ -165,16 +165,36 @@ public class RobotContainer {
                 this.outerMagazine.magazineStop();
             }, this.innerMagazine, this.outerMagazine));
 
-        // Enable Shooter to start getting it to speed before enabling magazine - Operator A Held
+        // Enable Shooter then enable magazine - Operator A Held
         new JoystickButton(operator, XboxController.Button.kA.value)
+            .whileHeld(new InstantCommand(() -> turret.alignEnabled = true))
+            .whileHeld(new ParallelCommandGroup(new ShooterRPM(this.shooter, this.vision),
+                new SequentialCommandGroup(new PrintCommand("Shooter is being weird"),
+                    new WaitUntilCommand(
+                        () -> this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
+                    new WaitCommand(.5),
+                    new ParallelCommandGroup(new MagazineRPM(this.shooter, this.innerMagazine),
+                        new SequentialCommandGroup(
+                            new WaitUntilCommand(() -> !this.innerMagazine.magSense.get()
+                                && this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
+                            new WaitCommand(1),
+                            new InstantCommand(() -> this.outerMagazine.magazineUp(.6)))))))
+            .whenReleased(new InstantCommand(() -> {
+                this.innerMagazine.disable();
+                this.outerMagazine.magazineStop();
+                turret.alignEnabled = false;
+            }, this.innerMagazine, this.outerMagazine));
+
+        // Enable Shooter only - Operator Left Trigger Held
+        new AxisButton(operator, XboxController.Axis.kLeftTrigger.value)
             .whileHeld(new InstantCommand(() -> turret.alignEnabled = true))
             .whileHeld(new ShooterRPM(this.shooter, this.vision))
             .whenReleased(new InstantCommand(() -> {
                 turret.alignEnabled = false;
             }));
 
-        // Enable Inner and Outside Magazine when ready to shooter on Operator X Held
-        new JoystickButton(operator, XboxController.Button.kX.value)
+        // Enable Inner and Outside Magazine when ready to shooter on Operator Left Bumper Held
+        new JoystickButton(operator, XboxController.Button.kLeftBumper.value)
             .whileHeld(new SequentialCommandGroup(
                 new WaitUntilCommand(
                     () -> this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
