@@ -21,17 +21,20 @@ public final class Constants {
      */
     public static final class Motors {
         // Climber Motors
-        public static final int outsideClimberMotorRightId = 14;
-        public static final int outsideClimberMotorLeftId = 15;
-        public static final int insideClimberMotorRightId = 13;
-        public static final int insideClimberMotorLeftId = 16;
+        public static final int outsideClimberMotorRightId = 13;
+        public static final int outsideClimberMotorLeftId = 16;
+        public static final int insideClimberMotorRightId = 14;
+        public static final int insideClimberMotorLeftId = 15;
         // Shooter Motors
         public static final int shooterID = 10;
+        public static final int shooterRollerID = 17;
         public static final int shooterServoID = 10;
         // Intake Motors
         public static final int intakeMotorNum = 9;
-        // Magazine Motors
-        public static final int magazineMotorID = 11;
+        // Inner Magazine Motor
+        public static final int innerMagazineMotorID = 11;
+        // Outer Magazine Motor
+        public static final int outerMagazineMotorID = 18;
         // Turret Motors
         public static final int turretMotorID = 12;
     }
@@ -41,7 +44,8 @@ public final class Constants {
      */
     public static final class Pneumatics {
         // Climber pneumatics constants.
-        public static final int climberOutsideChannel = 2;
+        public static final int climberOutsideForwardChannel = 2;
+        public static final int climberOutsideReverseChannel = 4;
         public static final int climberInsideChannel = 0;
         public static final int climberInsideChannel2 = 1;
         // Intake constants
@@ -55,10 +59,10 @@ public final class Constants {
      * Vision constants for limelight calculations.
      */
     public static final class VisionConstants {
-        public static final double deadPocket = 0.02;
+        public static final double deadPocket = 0.05;
         public static final double limelightHeight = 24;
-        public static final double targetHeight = 98;
-        public static final double limelightAngle = 35;
+        public static final double targetHeight = 103;
+        public static final double limelightAngle = 30.5;
     }
 
     /**
@@ -79,7 +83,7 @@ public final class Constants {
         public static final boolean isOpenLoop = false;
 
         public static final double openLoopRamp = 0.25;
-        public static final double closedLoopRamp = 0.0;
+        public static final double closedLoopRamp = 0.25;
 
         public static final double driveGearRatio = (8.14 / 1.0); // 6.86:1
         public static final double angleGearRatio = (12.8 / 1.0); // 12.8:1
@@ -114,13 +118,14 @@ public final class Constants {
         public static final double driveKF = 0.0;
 
         /* Drive Motor Characterization Values */
-        public static final double driveKS = (0.667 / 12); // divide by 12 to convert from volts to
+        // divide by 12 to convert from volts to percent output for CTRE
+        public static final double driveKS = (0.667 / 12);
         public static final double driveKV = (2.44 / 12);
         public static final double driveKA = (0.27 / 12);
 
         /* Swerve Profiling Values */
         public static final double maxSpeed = 4; // meters per second
-        public static final double maxAngularVelocity = 2;
+        public static final double maxAngularVelocity = 4;
 
         /* Neutral Modes */
         public static final NeutralMode angleNeutralMode = NeutralMode.Coast;
@@ -142,7 +147,7 @@ public final class Constants {
             public static final int driveMotorID = 1;
             public static final int angleMotorID = 4;
             public static final int canCoderID = 1;
-            public static final double angleOffset = 190.72;
+            public static final double angleOffset = 191.25;
             public static final SwerveModuleConstants constants =
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -154,7 +159,7 @@ public final class Constants {
             public static final int driveMotorID = 3;
             public static final int angleMotorID = 2;
             public static final int canCoderID = 2;
-            public static final double angleOffset = 291.18;
+            public static final double angleOffset = 290.127;
             public static final SwerveModuleConstants constants =
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -166,7 +171,7 @@ public final class Constants {
             public static final int driveMotorID = 6;
             public static final int angleMotorID = 8;
             public static final int canCoderID = 4;
-            public static final double angleOffset = 123.66;
+            public static final double angleOffset = 122.344;
             public static final SwerveModuleConstants constants =
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -178,7 +183,7 @@ public final class Constants {
             public static final int driveMotorID = 7;
             public static final int angleMotorID = 5;
             public static final int canCoderID = 3;
-            public static final double angleOffset = 249.52;
+            public static final double angleOffset = 248.994;
             public static final SwerveModuleConstants constants =
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -189,10 +194,10 @@ public final class Constants {
      * Autonomous constants for swerve bot.
      */
     public static final class AutoConstants {
-        public static final double kMaxSpeedMetersPerSecond = 1;
+        public static final double kMaxSpeedMetersPerSecond = 2;
         public static final double kMaxAccelerationMetersPerSecondSquared = 1;
-        public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
-        public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
+        public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI * 16;
+        public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI * 16;
 
         public static final double kPXController = 1;
         public static final double kPYController = 1;
@@ -214,8 +219,8 @@ public final class Constants {
         public static final int minAngle = 40;
         public static final int maxAngle = 55;
         public static final double servoSpeed = 0.2;
-        public static final double maxPosition = 239.8;
-        public static final double minPosition = 22.5;
+        public static final double maxPosition = 225.527;
+        public static final double minPosition = 51.68;
         public static final boolean hoodCanCoderInvert = false;
     }
 
@@ -228,9 +233,8 @@ public final class Constants {
         public static final double kI = 0;
         public static final double kD = 0;
 
-        public static final double kShooterFreeRPS = 112.5; // IN RPS NOT RPM
         public static final double kShooterTargetRPS = 4100 / 60; // IN RPS NOT RPM
-        public static final double kShooterToleranceRPS = 2; // IN RPS NOT RPM
+        public static final double kShooterToleranceRPS = 1; // IN RPS NOT RPM
 
         public static final int kUnitsPerRevolution = 2048;
         public static final double kSVolts = 0.63035;
@@ -238,19 +242,51 @@ public final class Constants {
     }
 
     /**
-     * Constants for Magazine PID
+     * Constants for Shooter Roller PID
      */
-    public static final class MagazinePID {
+
+    public static final class ShooterRollerPID {
+        public static final double kP = 0.11219;
+        public static final double kI = 0;
+        public static final double kD = 0;
+
+        public static final double kShooterRollerTargetRPS = 4100 / 60; // IN RPS NOT RPM
+        public static final double kShooterRollerToleranceRPS = 2; // IN RPS NOT RPM
+
+        public static final int kUnitsPerRevolution = 42;
+        public static final double kSVolts = 0.19057;
+        public static final double kVVoltSecondsPerRotation = 0.12795;
+    }
+
+    /**
+     * Constants for Inner Magazine PID
+     */
+    public static final class InnerMagazinePID {
         public static final double kP = 0.17032;
         public static final double kI = 0;
         public static final double kD = 0;
 
-        public static final double kMagazineFreeRPS = 112.5; // IN RPS NOT RPM
-        public static final double kMagazineTargetRPS = 1000 / 60; // IN RPS NOT RPM old value 3600
-        public static final double kMagazineToleranceRPS = 1; // IN RPS NOT RPM
+        public static final double kInnerMagazineTargetRPS = 600 / 60;
+        public static final double kInnerMagazineToleranceRPS = 1; // IN RPS NOT RPM
 
         public static final int kUnitsPerRevolution = 2048;
         public static final double kSVolts = 0.87948;
         public static final double kVVoltSecondsPerRotation = 0.10969;
+    }
+
+    /**
+     * Constants for Outer Magazine PID
+     */
+    public static final class OuterMagazinePID {
+        public static final double kP = 0.012875;
+        public static final double kI = 0;
+        public static final double kD = 0;
+
+        public static final double kOuterMagazineTargetRPS = 600 / 60;
+        public static final double kOuterMagazineToleranceRPS = 1; // IN RPS NOT RPM
+
+        public static final int kUnitsPerRevolution = 42;
+        public static final double kSVolts = 0.12998;
+        public static final double kVVoltSecondsPerRotation = 0.015757;
     }
 }

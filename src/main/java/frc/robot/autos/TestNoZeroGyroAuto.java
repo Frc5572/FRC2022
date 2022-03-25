@@ -14,13 +14,13 @@ import frc.robot.modules.Vision;
 import frc.robot.subsystems.Swerve;
 
 /**
- * Autonomous that aligns limelight then excecutes a trajectory.
+ * Autonomous that aligns limelight then executes a trajectory.
  */
 public class TestNoZeroGyroAuto extends AutoBase {
     Vision vision;
 
     /**
-     * Autonomous that aligns limelight then excecutes a trajectory.
+     * Autonomous that aligns limelight then executes a trajectory.
      *
      * @param swerve swerve subsystem
      * @param vision vision subsystem

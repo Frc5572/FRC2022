@@ -22,7 +22,7 @@ public class Swerve extends SubsystemBase {
     public AHRS gyro;
 
     /**
-     * Initalizes swerve modules.
+     * Initializes swerve modules.
      */
     public Swerve() {
         gyro = new AHRS(Constants.Swerve.navXID);

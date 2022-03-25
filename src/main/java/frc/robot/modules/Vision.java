@@ -26,37 +26,19 @@ public class Vision {
     double tx = 0;
     double ty = 0;
     double tv = 0;
-    public double calculated;
+    double calculated;
     boolean targetFound = false;
 
     /**
      *
      * @return distance from target in inches
-     *
      */
-
     public double getDistance() {
         // Vertical Offset From Crosshair To Target (LL1: -20.5 degrees to 20.5 degrees | LL2:
         // -24.85 to 24.85 degrees)
         a2 = table.getEntry("ty").getDouble(0.0);
         distance = (h2 - h1) / java.lang.Math.tan(java.lang.Math.toRadians(a1 + a2));
         return distance;
-    }
-
-
-    /**
-     *
-     * @return value to set hood
-     */
-
-    public double getHoodValue() {
-        // Vertical Offset From Crosshair To Target (LL1: -20.5 degrees to 20.5 degrees | LL2:
-        // -24.85 to 24.85 degrees)
-        // a2 = table.getEntry("ty").getDouble(0.0);
-        // calculatedValue =
-        // ((1 / (maxAngle - minAngle) * (a2 - maxAngle))) * (maxPosition * (1 / minPosition));
-        calculatedValue = Constants.HoodConstants.maxPosition;
-        return calculatedValue;
     }
 
     /**
@@ -71,15 +53,15 @@ public class Vision {
         // targetFound = false;
         // disX = 0;
         disX = tx;
-        double calculated = (disX / 100) * 3;
-        calculated = (Math.abs(calculated) <= deadPocket) ? 0 : calculated;
+        double calculated = (disX / 125) * 3;
+        calculated =
+            (Math.abs(calculated) <= deadPocket) ? 0 : (calculated >= .3) ? .3 : calculated;
         return calculated;
     }
 
     /**
      * @return whether target is found
      */
-
     public boolean getTargetFound() {
         // Whether the limelight has any valid targets (0 or 1)
         tv = table.getEntry("tv").getDouble(0.0);
@@ -91,5 +73,25 @@ public class Vision {
      */
     public boolean getTargetAligned() {
         return calculated == 0;
+    }
+
+    /**
+     * Turn the Limelight LEDs on or off.
+     *
+     * @param enabled True to turn on the LEDs, False to turn off.
+     */
+    public void setLEDMode(boolean enabled) {
+        int value = enabled ? 3 : 1;
+        this.table.getEntry("ledMode").setNumber(value);
+    }
+
+    /**
+     * Sets the Limelight camera mode, Driver or Vision mode.
+     *
+     * @param driver True to enable Drive mode, False to enable Vision mode.
+     */
+    public void setCameraMode(boolean driver) {
+        int value = driver ? 1 : 0;
+        this.table.getEntry("camMode").setNumber(value);
     }
 }

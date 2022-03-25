@@ -8,23 +8,32 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import frc.lib.AxisButton;
 import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.P0;
+import frc.robot.autos.P1_3B;
 import frc.robot.autos.P_2B;
+import frc.robot.commands.AlignTurret;
+import frc.robot.commands.InsidePC;
+import frc.robot.commands.MagazineRPM;
 import frc.robot.commands.OutsidePC;
-import frc.robot.commands.PositionHood;
-import frc.robot.commands.RightTurretMove;
+import frc.robot.commands.ShooterRPM;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
-import frc.robot.modules.LEDs;
 import frc.robot.modules.Vision;
-import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.Hood;
+import frc.robot.subsystems.InnerMagazine;
+import frc.robot.subsystems.InsideClimber;
+// import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Magazine;
+import frc.robot.subsystems.OuterMagazine;
+import frc.robot.subsystems.OutsideClimber;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Turret;
@@ -47,54 +56,44 @@ public class RobotContainer {
     boolean fieldRelative;
     boolean openLoop;
 
-    // Climber LEDs Integer
-    int ledClimber = 0;
 
     /* Subsystems */
+
     private final Swerve swerveDrive = new Swerve();
-    private final Magazine magazine = new Magazine();
-    private final Shooter shooter = new Shooter();
+    private final InnerMagazine innerMagazine = new InnerMagazine();
+    private final OuterMagazine outerMagazine = new OuterMagazine();
     private final Intake intake;
-    private final LEDs leds;
     private final Turret turret = new Turret();
     private Vision vision = new Vision();
-    private final Hood hood = new Hood(vision);
-    private final Climber climber;
+    private final Shooter shooter = new Shooter();
+    // private final Hood hood = new Hood(vision);
+    private final InsideClimber insideClimber;
+    private final OutsideClimber outsideClimber;
     public PneumaticHub ph = new PneumaticHub();
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-        ph.enableCompressorAnalog(100, 120);
-        climber = new Climber(ph);
+        ph.enableCompressorAnalog(90, 120);
+        insideClimber = new InsideClimber(ph);
+        outsideClimber = new OutsideClimber(ph);
         intake = new Intake(ph);
-        leds = new LEDs(Constants.LEDPort);
-        // leds.setRed();
-        swerveDrive.zeroGyro();
-        hood.setDefaultCommand(new PositionHood(hood, vision.getHoodValue()));
+        // Default Swerve Command
+        swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, driver,
+            Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop));
+        // Default Turret Command
+        turret.setDefaultCommand(new AlignTurret(turret, vision));
+        // hood.setDefaultCommand(new PositionHood(hood, vision.getHoodValue()));
         // Adding AutoChooser Options
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
-        autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, vision));
+        autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, turret, vision));
         autoChooser.addOption("P0", new P0(swerveDrive));
         autoChooser.addOption("P_2B",
-            new P_2B(swerveDrive, shooter, magazine, intake, turret, vision));
-        // Default Swerve Command
-        swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, vision, driver,
-            Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, false));
-        // Turret Default Command
-        // turret.setDefaultCommand(new ParallelCommandGroup(new FunctionalCommand(() -> {
-        // }, () -> {
-        // if (vision.getTargetAligned())
-        // leds.setBlue();
-        // else
-        // leds.setRed();
-        // }, interupt -> {
-        // }, () -> false), new FunctionalCommand(() -> {
-        // }, () -> turret.turretSet(vision.getTargetFound() ? vision.getAimValue() : 0), interupt
-        // -> {
-        // }, () -> false, turret)));
+            new P_2B(swerveDrive, shooter, innerMagazine, outerMagazine, intake, turret, vision));
+        autoChooser.addOption("P1_3B",
+            new P1_3B(swerveDrive, shooter, innerMagazine, outerMagazine, intake, turret, vision));
         // Configure the button bindings
         configureButtonBindings();
     }
@@ -108,64 +107,122 @@ public class RobotContainer {
     private void configureButtonBindings() {
 
         /* Driver Buttons */
-        // new JoystickButton(operator, XboxController.Button.kB.value)
-        // .whenPressed(new ParallelRaceGroup(new InstantCommand(shooter::enable, shooter),
-        // new InstantCommand(() -> leds.setRed())).andThen(
-        // new WaitUntilCommand(() -> shooter.atSetpoint()),
-        // new ParallelRaceGroup(new InstantCommand(magazine::enable, magazine),
-        // new InstantCommand(() -> leds.setGreen()))))
-        // .whenReleased(new InstantCommand(shooter::disable, shooter))
-        // .whenReleased(new InstantCommand(magazine::disable, magazine));
-        // new JoystickButton(driver, XboxController.Button.kY.value)
-        // .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
+        // Reset Gyro on Driver Y pressed
+        new JoystickButton(driver, XboxController.Button.kY.value)
+            .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
+        // Turn Off Turret For Rest of Match on Driver X Pressed
+        new JoystickButton(operator, XboxController.Button.kX.value)
+            .whenPressed(new InstantCommand(() -> turret.alignEnabled = !turret.alignEnabled));
+
+        /* Button Mappings for Climber Motors */
+        // Extend the Outside climber arms
+        new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
+            .whileHeld(new StartEndCommand(() -> insideClimber.engageMotors(),
+                () -> insideClimber.stopMotors(), insideClimber));
+        // Retract the Outside climber arms
+        new AxisButton(driver, XboxController.Axis.kLeftTrigger.value)
+            .whileHeld(new StartEndCommand(() -> insideClimber.retractMotors(),
+                () -> insideClimber.stopMotors(), insideClimber));
+        // Extend the Inside climber arms
+        new JoystickButton(driver, XboxController.Button.kRightBumper.value)
+            .whileHeld(new StartEndCommand(() -> outsideClimber.engageMotors(),
+                () -> outsideClimber.stopMotors(), outsideClimber));
+        // Retract the Inside climber arms
+        new AxisButton(driver, XboxController.Axis.kRightTrigger.value)
+            .whileHeld(new StartEndCommand(() -> outsideClimber.retractMotors(),
+                () -> outsideClimber.stopMotors(), outsideClimber));
+
+        // Inside Pneumatics Activate on drive
+        new JoystickButton(driver, XboxController.Button.kB.value)
+            .whenPressed(new InsidePC(insideClimber));
+        // Outside Pneumatics Activate on driver
+        new JoystickButton(driver, XboxController.Button.kA.value)
+            .whenPressed(new OutsidePC(outsideClimber));
+        new JoystickButton(driver, XboxController.Button.kStart.value)
+            .whenPressed(new InstantCommand(() -> insideClimber.enableClimbers())
+                .andThen(new InstantCommand(() -> outsideClimber.enableClimbers()))
+                .andThen(new InstantCommand(() -> turret.alignEnabled = false)));
 
         /* Operator Buttons */
 
-        // Enable Shooter Magazine Combo While Operator A Button Held
+        // Enable Shooter Magazine Combo While Operator A Button Held/
+
+        new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
+            .whileHeld(new ShooterRPM(this.shooter, 3700 / 60)
+                .alongWith(new SequentialCommandGroup(new PrintCommand("Shooter is being weird"),
+                    new WaitUntilCommand(
+                        () -> this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
+                    new WaitCommand(.5),
+                    new MagazineRPM(this.shooter, this.innerMagazine)
+                        .alongWith(new SequentialCommandGroup(
+                            new WaitUntilCommand(() -> !this.innerMagazine.magSense.get()
+                                && this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
+                            new WaitCommand(1),
+                            new InstantCommand(() -> this.outerMagazine.magazineUp(.6)))))))
+            .whenReleased(new InstantCommand(() -> {
+                this.innerMagazine.disable();
+                this.outerMagazine.magazineStop();
+            }, this.innerMagazine, this.outerMagazine));
+
         new JoystickButton(operator, XboxController.Button.kA.value)
-            .whenPressed(new FunctionalCommand(magazine::enable, () -> {
-            }, interrupted -> magazine.disable(), () -> magazine.magSense.get(), magazine))
-            .whenReleased(new InstantCommand(magazine::disable, magazine));
-        // Deploy Intake While Operator B Held
-        new JoystickButton(operator, XboxController.Button.kB.value).whileHeld(
-            new StartEndCommand(() -> intake.intakeDeploy(), () -> intake.intakeRetract(), intake));
+            .whileHeld(new InstantCommand(() -> turret.alignEnabled = true))
+            .whileHeld(new ShooterRPM(this.shooter, this.vision)
+                .alongWith(new SequentialCommandGroup(new PrintCommand("Shooter is being weird"),
+                    new WaitUntilCommand(
+                        () -> this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
+                    new WaitCommand(.5),
+                    new MagazineRPM(this.shooter, this.innerMagazine)
+                        .alongWith(new SequentialCommandGroup(
+                            new WaitUntilCommand(() -> !this.innerMagazine.magSense.get()
+                                && this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
+                            new WaitCommand(1),
+                            new InstantCommand(() -> this.outerMagazine.magazineUp(.6)))))))
+            .whenReleased(new InstantCommand(() -> {
+                this.innerMagazine.disable();
+                this.outerMagazine.magazineStop();
+                turret.alignEnabled = false;
+            }, this.innerMagazine, this.outerMagazine));
+
+        // Deploy Intake and Run Magazine While Operator B Held
+        new JoystickButton(operator, XboxController.Button.kB.value)
+            .whileHeld(new StartEndCommand(() -> {
+                intake.intakeDeploy();
+                outerMagazine.magazineUp();
+            }, () -> {
+                intake.intakeRetract();
+                outerMagazine.magazineStop();
+            }, intake, outerMagazine).alongWith(new FunctionalCommand(innerMagazine::enable, () -> {
+                SmartDashboard.putBoolean("Magazine Switch", innerMagazine.magSense.get());
+            }, interrupted -> innerMagazine.disable(), () -> innerMagazine.magSense.get(),
+                innerMagazine)));
+        // Run hopper down with POV down (180))
+        new POVButton(operator, 180).whileHeld(new StartEndCommand(() -> {
+            innerMagazine.magazineDown();
+            outerMagazine.magazineDown();
+        }, () -> {
+            innerMagazine.magazineStop();
+            outerMagazine.magazineStop();
+        }));
         // Right Turret Move While Operator Right Bumper Held
-        new JoystickButton(operator, XboxController.Button.kRightBumper.value)
-            .whileHeld(new RightTurretMove(turret));
+        new JoystickButton(operator, XboxController.Button.kRightBumper.value).whileHeld(
+            new StartEndCommand(() -> turret.turretRight(), () -> turret.turretStop(), turret));
+
         // Left Turret Move While Operator Left Bumper Held
-        // new JoystickButton(operator, XboxController.Button.kLeftBumper.value)
-        // .whenPressed(new SequentialCommandGroup(new InstantCommand(() -> leds.setRainbow()),
-        // new WaitCommand(5), new InstantCommand(() -> leds.setGlitterRainbow()),
-        // new WaitCommand(5), new InstantCommand(() -> leds.setTwinkleRainbow()),
-        // new WaitCommand(5), new InstantCommand(() -> leds.setColorWaveRainbow())));
-        // Inside Pneumatics Activate On Operator
-        // new JoystickButton(driver, XboxController.Button.kX.value)
-        // .whenPressed(new ParallelCommandGroup(new FunctionalCommand(() -> {}, () -> {
-        // if(ledClimber == 0){
-        // led.setYellow();
-        // ledClimber += 1;
-        // } else {
-        // led.setRed();
-        // }
-        // }), new InsidePC(climber));
-        // Outside Pneumatics Activate On Operator
-        new JoystickButton(driver, XboxController.Button.kY.value)
-            .whenPressed(new OutsidePC(climber));
+        new JoystickButton(operator, XboxController.Button.kLeftBumper.value).whileHeld(
+            new StartEndCommand(() -> turret.turretLeft(), () -> turret.turretStop(), turret));
 
-        /* POV Button Mappings for Climber Motors */
-
-        // Operator POV Up - Outside Motors Out
-        new POVButton(driver, 0).whileHeld(new StartEndCommand(() -> climber.engageOutsideMotors(),
-            () -> climber.stopOutsideMotors()));
-        // Operator POV Down - Outside Motors In
-        new POVButton(driver, 180).whileHeld(new StartEndCommand(
-            () -> climber.retractOutsideMotors(), () -> climber.stopOutsideMotors()));
-        // Operator POV Right - Inside Motors Out
-        new POVButton(driver, 90).whileHeld(new StartEndCommand(() -> climber.engageInsideMotors(),
-            () -> climber.stopInsideMotors()));
-        // Operator POV Left - Inside Motors In
-        new POVButton(driver, 270).whileHeld(new StartEndCommand(
-            () -> climber.retractInsideMotors(), () -> climber.stopInsideMotors()));
+        // Spit ball command
+        new JoystickButton(operator, XboxController.Button.kY.value)
+            .whileHeld(new SequentialCommandGroup(new InstantCommand(() -> shooter.spinShooter()),
+                new WaitCommand(.2), new InstantCommand(() -> {
+                    innerMagazine.magazineUp();
+                    outerMagazine.magazineUp();
+                })))
+            .whenReleased(new InstantCommand(() -> {
+                shooter.stopShooter();
+                innerMagazine.magazineStop();
+                outerMagazine.magazineStop();
+            }));
     }
 
     /**
@@ -174,7 +231,8 @@ public class RobotContainer {
      * @return Returns autonomous command selected.
      */
     public Command getAutonomousCommand() {
+        // return new P1_3B(swerveDrive, shooter, innerMagazine, outerMagazine, intake, turret,
+        // vision);
         return autoChooser.getSelected();
     }
-
 }

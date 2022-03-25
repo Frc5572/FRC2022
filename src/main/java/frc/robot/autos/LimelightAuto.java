@@ -9,26 +9,29 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
-import frc.robot.commands.LimelightAlign;
+import frc.robot.commands.AlignTurret;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.modules.AutoBase;
 import frc.robot.modules.Vision;
 import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.Turret;
 
 /**
- * Autonomous that aligns limelight then excecutes a trajectory.
+ * Autonomous that aligns limelight then executes a trajectory.
  */
 public class LimelightAuto extends AutoBase {
     Vision vision;
+    Turret turret;
 
     /**
-     * Autonomous that aligns limelight then excecutes a trajectory.
+     * Autonomous that aligns limelight then executes a trajectory.
      *
      * @param swerve swerve subsystem
      * @param vision vision subsystem
      */
-    public LimelightAuto(Swerve swerve, Vision vision) {
+    public LimelightAuto(Swerve swerve, Turret turret, Vision vision) {
         super(swerve);
+        this.turret = turret;
         System.out.println("Limelight Auto !!");
         TrajectoryConfig config =
             new TrajectoryConfig(Constants.AutoConstants.kMaxSpeedMetersPerSecond,
@@ -44,7 +47,7 @@ public class LimelightAuto extends AutoBase {
         SwerveControllerCommand firstHalfTraject = baseSwerveCommand(firstHalfTrajectory);
         ZeroMotorsWaitCommand firstWait = new ZeroMotorsWaitCommand(swerve, 3);
         ZeroMotorsWaitCommand secondWait = new ZeroMotorsWaitCommand(swerve, .5);
-        LimelightAlign align = new LimelightAlign(swerve, vision);
+        AlignTurret align = new AlignTurret(turret, vision);
 
         addCommands(
             new InstantCommand(() -> swerve.resetOdometry(firstHalfTrajectory.getInitialPose())),

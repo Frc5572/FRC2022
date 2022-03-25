@@ -25,7 +25,7 @@ public class SwerveModule {
         Constants.Swerve.driveKV, Constants.Swerve.driveKA);
 
     /**
-     * Creates an instance of a Servce Module
+     * Creates an instance of a Swerve Module
      *
      * @param moduleNumber Swerve Module ID. Must be unique
      * @param moduleConstants Constants specific to the swerve module
@@ -35,15 +35,15 @@ public class SwerveModule {
         angleOffset = moduleConstants.angleOffset;
 
         /* Angle Encoder Config */
-        angleEncoder = new CANCoder(moduleConstants.cancoderID);
+        angleEncoder = new CANCoder(moduleConstants.cancoderID, "canivore");
         configAngleEncoder();
 
         /* Angle Motor Config */
-        angleMotor = new TalonFX(moduleConstants.angleMotorID);
+        angleMotor = new TalonFX(moduleConstants.angleMotorID, "canivore");
         configAngleMotor();
 
         /* Drive Motor Config */
-        driveMotor = new TalonFX(moduleConstants.driveMotorID);
+        driveMotor = new TalonFX(moduleConstants.driveMotorID, "canivore");
         configDriveMotor();
 
         lastAngle = getState().angle.getDegrees();
