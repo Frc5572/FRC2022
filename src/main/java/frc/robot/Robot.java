@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.modules.LEDs;
 import frc.robot.modules.swervedrive.CTREConfigs;
 
 /**
@@ -16,6 +17,7 @@ public class Robot extends TimedRobot {
     public static CTREConfigs ctreConfigs;
     private RobotContainer robotContainer;
     private Command autoChooser;
+    private LEDs leds;
 
 
     // private Ultrasonic ultrasonic = new Ultrasonic();
@@ -30,6 +32,8 @@ public class Robot extends TimedRobot {
         // and put our
         // autonomous chooser on the dashboard.
         robotContainer = new RobotContainer();
+        leds.setColor(255, 0, 0);
+
     }
 
     /**

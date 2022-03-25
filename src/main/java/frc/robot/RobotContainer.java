@@ -8,12 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.autos.LimelightAuto;
@@ -75,7 +70,7 @@ public class RobotContainer {
         climber = new Climber(ph);
         intake = new Intake(ph);
         leds = new LEDs(Constants.LEDPort);
-        leds.setRed();
+        // leds.setRed();
         swerveDrive.zeroGyro();
         hood.setDefaultCommand(new PositionHood(hood, vision.getHoodValue()));
         // Adding AutoChooser Options
@@ -89,16 +84,17 @@ public class RobotContainer {
         swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, vision, driver,
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop, false));
         // Turret Default Command
-        turret.setDefaultCommand(new ParallelCommandGroup(new FunctionalCommand(() -> {
-        }, () -> {
-            if (vision.getTargetAligned())
-                leds.setBlue();
-            else
-                leds.setRed();
-        }, interupt -> {
-        }, () -> false), new FunctionalCommand(() -> {
-        }, () -> turret.turretSet(vision.getTargetFound() ? vision.getAimValue() : 0), interupt -> {
-        }, () -> false, turret)));
+        // turret.setDefaultCommand(new ParallelCommandGroup(new FunctionalCommand(() -> {
+        // }, () -> {
+        // if (vision.getTargetAligned())
+        // leds.setBlue();
+        // else
+        // leds.setRed();
+        // }, interupt -> {
+        // }, () -> false), new FunctionalCommand(() -> {
+        // }, () -> turret.turretSet(vision.getTargetFound() ? vision.getAimValue() : 0), interupt
+        // -> {
+        // }, () -> false, turret)));
         // Configure the button bindings
         configureButtonBindings();
     }
@@ -112,16 +108,16 @@ public class RobotContainer {
     private void configureButtonBindings() {
 
         /* Driver Buttons */
-        new JoystickButton(operator, XboxController.Button.kB.value)
-            .whenPressed(new ParallelRaceGroup(new InstantCommand(shooter::enable, shooter),
-                new InstantCommand(() -> leds.setRed())).andThen(
-                    new WaitUntilCommand(() -> shooter.atSetpoint()),
-                    new ParallelRaceGroup(new InstantCommand(magazine::enable, magazine),
-                        new InstantCommand(() -> leds.setGreen()))))
-            .whenReleased(new InstantCommand(shooter::disable, shooter))
-            .whenReleased(new InstantCommand(magazine::disable, magazine));
-        new JoystickButton(driver, XboxController.Button.kY.value)
-            .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
+        // new JoystickButton(operator, XboxController.Button.kB.value)
+        // .whenPressed(new ParallelRaceGroup(new InstantCommand(shooter::enable, shooter),
+        // new InstantCommand(() -> leds.setRed())).andThen(
+        // new WaitUntilCommand(() -> shooter.atSetpoint()),
+        // new ParallelRaceGroup(new InstantCommand(magazine::enable, magazine),
+        // new InstantCommand(() -> leds.setGreen()))))
+        // .whenReleased(new InstantCommand(shooter::disable, shooter))
+        // .whenReleased(new InstantCommand(magazine::disable, magazine));
+        // new JoystickButton(driver, XboxController.Button.kY.value)
+        // .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
 
         /* Operator Buttons */
 
@@ -137,11 +133,11 @@ public class RobotContainer {
         new JoystickButton(operator, XboxController.Button.kRightBumper.value)
             .whileHeld(new RightTurretMove(turret));
         // Left Turret Move While Operator Left Bumper Held
-        new JoystickButton(operator, XboxController.Button.kLeftBumper.value)
-            .whenPressed(new SequentialCommandGroup(new InstantCommand(() -> leds.setRainbow()),
-                new WaitCommand(5), new InstantCommand(() -> leds.setGlitterRainbow()),
-                new WaitCommand(5), new InstantCommand(() -> leds.setTwinkleRainbow()),
-                new WaitCommand(5), new InstantCommand(() -> leds.setColorWaveRainbow())));
+        // new JoystickButton(operator, XboxController.Button.kLeftBumper.value)
+        // .whenPressed(new SequentialCommandGroup(new InstantCommand(() -> leds.setRainbow()),
+        // new WaitCommand(5), new InstantCommand(() -> leds.setGlitterRainbow()),
+        // new WaitCommand(5), new InstantCommand(() -> leds.setTwinkleRainbow()),
+        // new WaitCommand(5), new InstantCommand(() -> leds.setColorWaveRainbow())));
         // Inside Pneumatics Activate On Operator
         // new JoystickButton(driver, XboxController.Button.kX.value)
         // .whenPressed(new ParallelCommandGroup(new FunctionalCommand(() -> {}, () -> {
