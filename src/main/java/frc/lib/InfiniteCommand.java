@@ -14,8 +14,8 @@ public class InfiniteCommand extends CommandBase {
     /**
      * Adds execute requirements.
      *
-     * @param onExecute
-     * @param requirements
+     * @param onExecute Execute loop.
+     * @param requirements Requirements.
      */
     public InfiniteCommand(Runnable onExecute, Subsystem... requirements) {
         m_onExecute = requireNonNullParam(onExecute, "onExecute", "InfiniteCommand");
