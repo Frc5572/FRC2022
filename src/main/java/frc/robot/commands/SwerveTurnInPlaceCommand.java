@@ -29,7 +29,7 @@ public class SwerveTurnInPlaceCommand extends CommandBase {
     @Override
     public void execute() {
         // idk something like that
-        if (swerve.getYaw().getDegrees() > desiredPos.getDegrees()) {
+        if (Math.abs(swerve.getYaw().getDegrees()) - desiredPos.getDegrees() >= 2) {
             swerve.drive(new Translation2d(0, 0),
                 Math.abs(swerve.getYaw().getDegrees()) - desiredPos.getDegrees(),
                 Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop);
