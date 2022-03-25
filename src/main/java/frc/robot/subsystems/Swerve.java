@@ -37,6 +37,18 @@ public class Swerve extends SubsystemBase {
     }
 
     /**
+     * New command to set wheels inward.
+     */
+    public void wheelsIn() {
+        swerveMods[0].setDesiredState(new SwerveModuleState(2, Rotation2d.fromDegrees(45)), false);
+        swerveMods[1].setDesiredState(new SwerveModuleState(2, Rotation2d.fromDegrees(135)), false);
+        swerveMods[2].setDesiredState(new SwerveModuleState(2, Rotation2d.fromDegrees(-45)), false);
+        swerveMods[3].setDesiredState(new SwerveModuleState(2, Rotation2d.fromDegrees(-135)),
+            false);
+        this.setMotorsZero(Constants.Swerve.isOpenLoop, Constants.Swerve.isFieldRelative);
+    }
+
+    /**
      * Moves the swerve drive train
      *
      * @param translation The 2d translation in the X-Y plane

@@ -145,8 +145,7 @@ public class RobotContainer {
 
         /* Operator Buttons */
 
-        // Enable Shooter Magazine Combo While Operator A Button Held/
-
+        // Enable Shooter hardcoded setpoint right trigger
         new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
             .whileHeld(new ShooterRPM(this.shooter, 3700 / 60)
                 .alongWith(new SequentialCommandGroup(new PrintCommand("Shooter is being weird"),
@@ -158,12 +157,15 @@ public class RobotContainer {
                             new WaitUntilCommand(() -> !this.innerMagazine.magSense.get()
                                 && this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
                             new WaitCommand(1),
-                            new InstantCommand(() -> this.outerMagazine.magazineUp(.6)))))))
+                            new InstantCommand(() -> this.outerMagazine.magazineUp(.6))))))
+                .alongWith(new StartEndCommand(() -> swerveDrive.wheelsIn(), () -> {
+                }, swerveDrive)))
             .whenReleased(new InstantCommand(() -> {
                 this.innerMagazine.disable();
                 this.outerMagazine.magazineStop();
             }, this.innerMagazine, this.outerMagazine));
 
+        // Enable Shooter Magazine Combo While Operator A Button Held
         new JoystickButton(operator, XboxController.Button.kA.value)
             .whileHeld(new InstantCommand(() -> turret.alignEnabled = true))
             .whileHeld(new ShooterRPM(this.shooter, this.vision)
@@ -176,7 +178,9 @@ public class RobotContainer {
                             new WaitUntilCommand(() -> !this.innerMagazine.magSense.get()
                                 && this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
                             new WaitCommand(1),
-                            new InstantCommand(() -> this.outerMagazine.magazineUp(.6)))))))
+                            new InstantCommand(() -> this.outerMagazine.magazineUp(.6))))))
+                .alongWith(new StartEndCommand(() -> swerveDrive.wheelsIn(), () -> {
+                }, swerveDrive)))
             .whenReleased(new InstantCommand(() -> {
                 this.innerMagazine.disable();
                 this.outerMagazine.magazineStop();
