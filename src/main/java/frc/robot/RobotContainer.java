@@ -61,7 +61,7 @@ public class RobotContainer {
 
     /* Subsystems */
 
-    public static final Swerve swerveDrive = new Swerve();
+    private final Swerve swerveDrive = new Swerve();
     private final InnerMagazine innerMagazine = new InnerMagazine();
     private final OuterMagazine outerMagazine = new OuterMagazine();
     private final Intake intake;
