@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
@@ -146,38 +145,42 @@ public class RobotContainer {
 
         /* Operator Buttons */
 
-        // Enable Shooter Magazine Combo While Operator A Button Held/
-
+        // Enable Shooter hardcoded setpoint right trigger
         new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
-            .whileHeld(new ParallelCommandGroup(new ShooterRPM(this.shooter, 3700 / 60),
-                new SequentialCommandGroup(new PrintCommand("Shooter is being weird"),
+            .whileHeld(new ShooterRPM(this.shooter, 3700 / 60)
+                .alongWith(new SequentialCommandGroup(new PrintCommand("Shooter is being weird"),
                     new WaitUntilCommand(
                         () -> this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
                     new WaitCommand(.5),
-                    new ParallelCommandGroup(new MagazineRPM(this.shooter, this.innerMagazine),
-                        new SequentialCommandGroup(
+                    new MagazineRPM(this.shooter, this.innerMagazine)
+                        .alongWith(new SequentialCommandGroup(
                             new WaitUntilCommand(() -> !this.innerMagazine.magSense.get()
                                 && this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
                             new WaitCommand(1),
-                            new InstantCommand(() -> this.outerMagazine.magazineUp(.6)))))))
+                            new InstantCommand(() -> this.outerMagazine.magazineUp(.6))))))
+                .alongWith(new StartEndCommand(() -> swerveDrive.wheelsIn(), () -> {
+                }, swerveDrive)))
             .whenReleased(new InstantCommand(() -> {
                 this.innerMagazine.disable();
                 this.outerMagazine.magazineStop();
             }, this.innerMagazine, this.outerMagazine));
 
+        // Enable Shooter Magazine Combo While Operator A Button Held
         new JoystickButton(operator, XboxController.Button.kA.value)
             .whileHeld(new InstantCommand(() -> turret.alignEnabled = true))
-            .whileHeld(new ParallelCommandGroup(new ShooterRPM(this.shooter, this.vision),
-                new SequentialCommandGroup(new PrintCommand("Shooter is being weird"),
+            .whileHeld(new ShooterRPM(this.shooter, this.vision)
+                .alongWith(new SequentialCommandGroup(new PrintCommand("Shooter is being weird"),
                     new WaitUntilCommand(
                         () -> this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
                     new WaitCommand(.5),
-                    new ParallelCommandGroup(new MagazineRPM(this.shooter, this.innerMagazine),
-                        new SequentialCommandGroup(
+                    new MagazineRPM(this.shooter, this.innerMagazine)
+                        .alongWith(new SequentialCommandGroup(
                             new WaitUntilCommand(() -> !this.innerMagazine.magSense.get()
                                 && this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
                             new WaitCommand(1),
-                            new InstantCommand(() -> this.outerMagazine.magazineUp(.6)))))))
+                            new InstantCommand(() -> this.outerMagazine.magazineUp(.6))))))
+                .alongWith(new StartEndCommand(() -> swerveDrive.wheelsIn(), () -> {
+                }, swerveDrive)))
             .whenReleased(new InstantCommand(() -> {
                 this.innerMagazine.disable();
                 this.outerMagazine.magazineStop();
@@ -186,13 +189,13 @@ public class RobotContainer {
 
         // Deploy Intake and Run Magazine While Operator B Held
         new JoystickButton(operator, XboxController.Button.kB.value)
-            .whileHeld(new ParallelCommandGroup(new StartEndCommand(() -> {
+            .whileHeld(new StartEndCommand(() -> {
                 intake.intakeDeploy();
                 outerMagazine.magazineUp();
             }, () -> {
                 intake.intakeRetract();
                 outerMagazine.magazineStop();
-            }, intake, outerMagazine), new FunctionalCommand(innerMagazine::enable, () -> {
+            }, intake, outerMagazine).alongWith(new FunctionalCommand(innerMagazine::enable, () -> {
                 SmartDashboard.putBoolean("Magazine Switch", innerMagazine.magSense.get());
             }, interrupted -> innerMagazine.disable(), () -> innerMagazine.magSense.get(),
                 innerMagazine)));
