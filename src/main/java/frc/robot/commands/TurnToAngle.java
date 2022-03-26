@@ -1,8 +1,6 @@
 package frc.robot.commands;
 
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
@@ -15,19 +13,17 @@ public class TurnToAngle extends ProfiledPIDCommand {
     private Swerve swerve;
 
     /**
-     * Turns robot to specified angle.
+     * Turns robot to specified angle. Uses absolute rotation on field.
      *
      * @param swerve Swerve subsystem
      * @param angle Requested angle to turn to
      */
 
     public TurnToAngle(Swerve swerve, double angle) {
-        super(
-            new ProfiledPIDController(Constants.Swerve.driveKP, Constants.Swerve.driveKI,
-                Constants.Swerve.driveKD, new TrapezoidProfile.Constraints(360, 1080)),
-            swerve::getRotation, angle, (output, setpoint) -> swerve.useOutput(output), swerve);
+        super(Constants.AutoConstants.thetaController, swerve::getRotation, angle,
+            (output, setpoint) -> swerve.useOutput(output), swerve);
         getController().setTolerance(1);
-        getController().enableContinuousInput(0, 360);
+        getController().enableContinuousInput(-Math.PI, Math.PI);
         addRequirements(swerve);
     }
 

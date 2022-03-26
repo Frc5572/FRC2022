@@ -15,9 +15,7 @@ import frc.robot.subsystems.Swerve;
  */
 public class AutoBase extends SequentialCommandGroup {
     public Swerve swerve;
-    public ProfiledPIDController thetaController =
-        new ProfiledPIDController(Constants.AutoConstants.kPThetaController, 0, 0,
-            Constants.AutoConstants.kThetaControllerConstraints);
+    public ProfiledPIDController thetaController = Constants.AutoConstants.thetaController;
 
     /**
      * Autonomous that aligns limelight then executes a trajectory.

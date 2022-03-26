@@ -1,6 +1,7 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -201,6 +202,10 @@ public final class Constants {
         public static final double kPXController = 1;
         public static final double kPYController = 1;
         public static final double kPThetaController = 1;
+
+        public static final ProfiledPIDController thetaController =
+            new ProfiledPIDController(Constants.AutoConstants.kPThetaController, 0, 0,
+                Constants.AutoConstants.kThetaControllerConstraints);
 
         // Motion profilied robot angle controller
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
