@@ -16,7 +16,7 @@ public class TurnToAngle extends ProfiledPIDCommand {
 
     /**
      * Turns robot to specified angle.
-     * 
+     *
      * @param swerve Swerve subsystem
      * @param angle Requested angle to turn to
      */
