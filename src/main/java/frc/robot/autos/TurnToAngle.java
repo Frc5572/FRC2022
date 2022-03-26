@@ -22,8 +22,8 @@ public class TurnToAngle extends ProfiledPIDCommand {
      */
     public TurnToAngle(Swerve swerve, double angle) {
         super(
-            new ProfiledPIDController(Constants.Swerve.angleKP, Constants.Swerve.angleKI,
-                Constants.Swerve.angleKD, new TrapezoidProfile.Constraints(360, 1080)),
+            new ProfiledPIDController(Constants.Swerve.driveKP, Constants.Swerve.driveKI,
+                Constants.Swerve.driveKD, new TrapezoidProfile.Constraints(360, 1080)),
             swerve::getRotation, angle, (output, setpoint) -> swerve.useOutput(output), swerve);
         getController().setTolerance(1);
         getController().enableContinuousInput(0, 360);
