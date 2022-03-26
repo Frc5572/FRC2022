@@ -20,6 +20,7 @@ public class Swerve extends SubsystemBase {
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] swerveMods;
     public AHRS gyro;
+    private double pidTurn;
 
     /**
      * Initializes swerve modules.
@@ -153,5 +154,13 @@ public class Swerve extends SubsystemBase {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity",
                 mod.getState().speedMetersPerSecond);
         }
+    }
+
+    public double getRotation() {
+        return getYaw().getDegrees();
+    }
+
+    public void useOutput(double output) {
+        pidTurn = output * Constants.Swerve.maxAngularVelocity;
     }
 }
