@@ -38,14 +38,15 @@ public class TurnToAngle extends ProfiledPIDCommand {
     @Override
     public void execute() {
         super.execute();
-        swerve.drive(new Translation2d(0, 0), 0, true, true);
+        swerve.drive(new Translation2d(0, 0), 0, Constants.Swerve.isOpenLoop,
+            Constants.Swerve.isFieldRelative);
     }
 
     @Override
     public void end(boolean interrupt) {
         super.end(interrupt);
         swerve.useOutput(0);
-        swerve.setMotorsZero(true, true);
+        swerve.setMotorsZero(Constants.Swerve.isOpenLoop, Constants.Swerve.isFieldRelative);
     }
 
     @Override
