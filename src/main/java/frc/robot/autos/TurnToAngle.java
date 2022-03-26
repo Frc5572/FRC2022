@@ -7,10 +7,19 @@ import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
 
+/**
+ * This command will turn the robot to a specified angle.
+ */
 public class TurnToAngle extends ProfiledPIDCommand {
 
     private Swerve swerve;
 
+    /**
+     * Turns robot to specified angle.
+     * 
+     * @param swerve Swerve subsystem
+     * @param angle Requested angle to turn to
+     */
     public TurnToAngle(Swerve swerve, double angle) {
         super(
             new ProfiledPIDController(Constants.Swerve.angleKP, Constants.Swerve.angleKI,
