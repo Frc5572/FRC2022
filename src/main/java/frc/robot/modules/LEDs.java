@@ -11,14 +11,17 @@ public class LEDs {
         ledController = new AddressableLED(id);
         ledBuffer = new AddressableLEDBuffer(21);
 
+        ledController.setLength(ledBuffer.getLength());
         ledController.setData(ledBuffer);
         ledController.start();
     }
 
     public void setColor(int r, int g, int b) {
         for (var i = 0; i < ledBuffer.getLength(); i++) {
+            System.out.println("LED " + i + ": Set Color");
             ledBuffer.setRGB(i, r, g, b);
         }
+        ledController.setData(ledBuffer);
     }
 }
 

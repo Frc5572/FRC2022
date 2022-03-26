@@ -27,6 +27,7 @@ import frc.robot.commands.OutsidePC;
 import frc.robot.commands.ShooterRPM;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
+import frc.robot.modules.LEDs;
 import frc.robot.modules.Vision;
 import frc.robot.subsystems.InnerMagazine;
 import frc.robot.subsystems.InsideClimber;
@@ -70,6 +71,7 @@ public class RobotContainer {
     private final InsideClimber insideClimber;
     private final OutsideClimber outsideClimber;
     public PneumaticHub ph = new PneumaticHub();
+    private LEDs leds = new LEDs(8);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -106,6 +108,8 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
 
+        new JoystickButton(driver, XboxController.Button.kBack.value).whileHeld(
+            new StartEndCommand(() -> leds.setColor(255, 0, 0), () -> leds.setColor(0, 0, 255)));
         /* Driver Buttons */
         // Reset Gyro on Driver Y pressed
         new JoystickButton(driver, XboxController.Button.kY.value)
