@@ -1,6 +1,8 @@
 package frc.robot.commands;
 
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
@@ -20,11 +22,25 @@ public class TurnToAngle extends ProfiledPIDCommand {
      */
 
     public TurnToAngle(Swerve swerve, double angle) {
-        super(Constants.AutoConstants.thetaController, swerve::getRotation, angle,
-            (output, setpoint) -> swerve.useOutput(output), swerve);
+        super(
+            // The ProfiledPIDController used by the command
+            new ProfiledPIDController(
+                // The PID gainss
+                .01, 0, 0,
+                // The motion profile constraints
+                new TrapezoidProfile.Constraints(360, 1080)),
+            // This should return the measurement
+            swerve::getRotation,
+            // This should return the goal (can also be a constant)
+            angle,
+            // This uses the output
+            (output, setpoint) -> swerve.useOutput(output));
+        // Use addRequirements() here to declare subsystem dependencies.
+        // Configure additional PID options by calling `getController` here.
         getController().setTolerance(1);
-        getController().enableContinuousInput(-Math.PI, Math.PI);
+        getController().enableContinuousInput(0, 360);
         addRequirements(swerve);
+        this.swerve = swerve;
     }
 
     @Override
@@ -35,8 +51,8 @@ public class TurnToAngle extends ProfiledPIDCommand {
     @Override
     public void execute() {
         super.execute();
-        swerve.drive(new Translation2d(0, 0), 0, Constants.Swerve.isOpenLoop,
-            Constants.Swerve.isFieldRelative);
+        swerve.drive(new Translation2d(0, 0), 0, Constants.Swerve.isFieldRelative,
+            Constants.Swerve.isOpenLoop);
     }
 
     @Override

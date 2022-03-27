@@ -203,14 +203,15 @@ public final class Constants {
         public static final double kPYController = 1;
         public static final double kPThetaController = 1;
 
-        public static final ProfiledPIDController thetaController =
-            new ProfiledPIDController(Constants.AutoConstants.kPThetaController, 0, 0,
-                Constants.AutoConstants.kThetaControllerConstraints);
-
         // Motion profilied robot angle controller
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
             new TrapezoidProfile.Constraints(kMaxAngularSpeedRadiansPerSecond,
                 kMaxAngularSpeedRadiansPerSecondSquared);
+
+        public static final ProfiledPIDController thetaController =
+            new ProfiledPIDController(Constants.AutoConstants.kPThetaController, 0, 0,
+                Constants.AutoConstants.kThetaControllerConstraints);
+
     }
 
     /**

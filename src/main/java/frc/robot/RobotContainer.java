@@ -90,7 +90,7 @@ public class RobotContainer {
         // Adding AutoChooser Options
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
-        autoChooser.addOption("Turn2Angle", new TurnToAngle(swerveDrive, 90));
+        autoChooser.addOption("Turn2Angle", new TurnToAngle(swerveDrive, 180));
         autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, turret, vision));
         autoChooser.addOption("P0", new P0(swerveDrive));
         autoChooser.addOption("P_2B",
