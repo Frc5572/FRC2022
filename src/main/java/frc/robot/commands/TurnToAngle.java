@@ -19,6 +19,8 @@ public class TurnToAngle extends ProfiledPIDCommand {
      *
      * @param swerve Swerve subsystem
      * @param angle Requested angle to turn to
+     * @param isRelative Whether the angle is relative to the current angle: true = relative, false
+     *        = absolute
      */
 
     public TurnToAngle(Swerve swerve, double angle, boolean isRelative) {
