@@ -26,7 +26,6 @@ import frc.robot.commands.MagazineRPM;
 import frc.robot.commands.OutsidePC;
 import frc.robot.commands.ShooterRPM;
 import frc.robot.commands.TeleopSwerve;
-import frc.robot.commands.TurnToAngle;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.modules.Vision;
 import frc.robot.subsystems.InnerMagazine;
@@ -90,7 +89,6 @@ public class RobotContainer {
         // Adding AutoChooser Options
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
-        autoChooser.addOption("Turn2Angle", new TurnToAngle(swerveDrive, 180));
         autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, turret, vision));
         autoChooser.addOption("P0", new P0(swerveDrive));
         autoChooser.addOption("P_2B",
