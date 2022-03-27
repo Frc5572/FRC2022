@@ -21,7 +21,7 @@ public class TurnToAngle extends ProfiledPIDCommand {
      * @param angle Requested angle to turn to
      */
 
-    public TurnToAngle(Swerve swerve, double angle) {
+    public TurnToAngle(Swerve swerve, double angle, boolean isRelative) {
         super(
             // The ProfiledPIDController used by the command
             new ProfiledPIDController(
@@ -32,7 +32,7 @@ public class TurnToAngle extends ProfiledPIDCommand {
             // This should return the measurement
             swerve::getRotation,
             // This should return the goal (can also be a constant)
-            angle,
+            isRelative ? swerve.getRotation() + angle : angle,
             // This uses the output
             (output, setpoint) -> swerve.useOutput(output));
         // Use addRequirements() here to declare subsystem dependencies.
