@@ -27,12 +27,12 @@ public class Intake extends SubsystemBase {
 
     public void intakeRetract() {
         this.intakeMotor.set(intakeStop);
-        this.intakeSol.set(false);
+        // this.intakeSol.set(false);
     }
 
     public void intakeDeploy() {
         this.intakeMotor.set(intakeSpeed);
-        this.intakeSol.set(true);
+        // this.intakeSol.set(true);
     }
 
     public void stop() {
