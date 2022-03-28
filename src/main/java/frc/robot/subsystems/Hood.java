@@ -5,7 +5,8 @@ import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import com.ctre.phoenix.sensors.SensorTimeBase;
-import edu.wpi.first.wpilibj.Servo;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.modules.Vision;
@@ -17,10 +18,11 @@ import frc.robot.modules.Vision;
  */
 
 public class Hood extends SubsystemBase {
-    CANCoderConfiguration hoodCanCoderConfig = new CANCoderConfiguration();
-    CANCoder hoodCANCoder = new CANCoder(Constants.HoodConstants.hoodCANCoderID, "canivore");
-    public Servo hoodServo = new Servo(Constants.HoodConstants.hoodServoID);
-    // public PWM test = new PWM(Constants.HoodConstants.hoodServoID);
+    private final CANCoderConfiguration hoodCanCoderConfig = new CANCoderConfiguration();
+    private final CANCoder hoodCANCoder =
+        new CANCoder(Constants.HoodConstants.hoodCANCoderID, "canivore");
+    private final CANSparkMax hoodMotor =
+        new CANSparkMax(Constants.Motors.hoodMotorID, MotorType.kBrushless);
     Vision vision;
     double position;
     double calculatedPosition;
@@ -37,7 +39,6 @@ public class Hood extends SubsystemBase {
         hoodCanCoderConfig.initializationStrategy =
             SensorInitializationStrategy.BootToAbsolutePosition;
         hoodCanCoderConfig.sensorTimeBase = SensorTimeBase.PerSecond;
-        hoodServo.setBounds(2.5, 1.52, 1.5, 1.48, 0.5);
     }
 
     /**
@@ -55,7 +56,6 @@ public class Hood extends SubsystemBase {
         System.out.println(error);
         double speed = Math.abs(error) < 5 ? 0.0 : error < 0 ? .5 : -.5;
         System.out.println(speed);
-        hoodServo.setSpeed(speed);
     }
 
     public double getCANCoderPos() {
