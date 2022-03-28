@@ -27,7 +27,7 @@ public final class Constants {
         public static final int insideClimberMotorLeftId = 15;
         // Shooter Motors
         public static final int shooterID = 10;
-        public static final int shooterRollerID = 17;
+        public static final int hoodMotorID = 17;
         public static final int shooterServoID = 10;
         // Intake Motors
         public static final int intakeMotorNum = 9;
@@ -228,7 +228,7 @@ public final class Constants {
      */
 
     public static final class ShooterPID {
-        public static final double kP = 0.19338;
+        public static final double kP = 0.13744;
         public static final double kI = 0;
         public static final double kD = 0;
 
@@ -236,8 +236,8 @@ public final class Constants {
         public static final double kShooterToleranceRPS = 1; // IN RPS NOT RPM
 
         public static final int kUnitsPerRevolution = 2048;
-        public static final double kSVolts = 0.54039;
-        public static final double kVVoltSecondsPerRotation = 0.12848;
+        public static final double kSVolts = 0.63035;
+        public static final double kVVoltSecondsPerRotation = 0.10877;
     }
 
     /**
@@ -261,7 +261,7 @@ public final class Constants {
      * Constants for Inner Magazine PID
      */
     public static final class InnerMagazinePID {
-        public static final double kP = 0.15722;
+        public static final double kP = 0.17032;
         public static final double kI = 0;
         public static final double kD = 0;
 
@@ -269,8 +269,8 @@ public final class Constants {
         public static final double kInnerMagazineToleranceRPS = 1; // IN RPS NOT RPM
 
         public static final int kUnitsPerRevolution = 2048;
-        public static final double kSVolts = 0.67723;
-        public static final double kVVoltSecondsPerRotation = 0.10766;
+        public static final double kSVolts = 0.87948;
+        public static final double kVVoltSecondsPerRotation = 0.10969;
     }
 
     /**
