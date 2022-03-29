@@ -24,10 +24,12 @@ import frc.robot.commands.AlignTurret;
 import frc.robot.commands.InsidePC;
 import frc.robot.commands.MagazineRPM;
 import frc.robot.commands.OutsidePC;
+import frc.robot.commands.PositionHood;
 import frc.robot.commands.ShooterRPM;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.modules.Vision;
+import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.InnerMagazine;
 import frc.robot.subsystems.InsideClimber;
 // import frc.robot.subsystems.Hood;
@@ -65,8 +67,8 @@ public class RobotContainer {
     private final Intake intake;
     private final Turret turret = new Turret();
     private Vision vision = new Vision();
+    private final Hood hood = new Hood();
     private final Shooter shooter = new Shooter();
-    // private final Hood hood = new Hood(vision);
     private final InsideClimber insideClimber;
     private final OutsideClimber outsideClimber;
     public PneumaticHub ph = new PneumaticHub();
@@ -84,7 +86,7 @@ public class RobotContainer {
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop));
         // Default Turret Command
         turret.setDefaultCommand(new AlignTurret(turret, vision));
-        // hood.setDefaultCommand(new PositionHood(hood, vision.getHoodValue()));
+        hood.setDefaultCommand(new PositionHood(hood, vision));
         // Adding AutoChooser Options
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));

@@ -9,7 +9,6 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.modules.Vision;
 
 /**
  * <p>
@@ -23,16 +22,15 @@ public class Hood extends SubsystemBase {
         new CANCoder(Constants.HoodConstants.hoodCANCoderID, "canivore");
     private final CANSparkMax hoodMotor =
         new CANSparkMax(Constants.Motors.hoodMotorID, MotorType.kBrushless);
-    Vision vision;
     double position;
     double calculatedPosition;
+    double mOutput;
 
     /**
      * Hood subsystem.
      */
 
-    public Hood(Vision vision) {
-        this.vision = vision;
+    public Hood() {
         /* hood CANCoder Configuration */
         hoodCanCoderConfig.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
         hoodCanCoderConfig.sensorDirection = Constants.HoodConstants.hoodCanCoderInvert;
@@ -42,25 +40,34 @@ public class Hood extends SubsystemBase {
     }
 
     /**
-     * <p>
-     * Set hood position.
-     * </p>
+     * Calculate Hood Position using requested angle
+     * 
+     * @param requestedAngle The requested angle at which the hood needs to be set to
+     * @return The position of the CANCoder
      */
-
-    public void setHoodPosition() {
-        // replace this line with hood position calculation using
-        // distance!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        position = vision.getDistance();
-        calculatedPosition = Math.pow(position, 2) * position + 3000000;
-        double error = position - hoodCANCoder.getAbsolutePosition();
-        System.out.println(error);
-        double speed = Math.abs(error) < 5 ? 0.0 : error < 0 ? .5 : -.5;
-        System.out.println(speed);
+    public double calculateHoodPosition(double requestedAngle) {
+        double rateOfChange =
+            (Constants.HoodConstants.maxPosition - Constants.HoodConstants.minPosition)
+                / (Constants.HoodConstants.maxAngle - Constants.HoodConstants.minAngle);
+        double initOffset = Constants.HoodConstants.minPosition / rateOfChange * requestedAngle;
+        return rateOfChange * requestedAngle + initOffset;
     }
 
+    /**
+     * Get CANCoder Position
+     * 
+     * @return CANCoder position
+     */
     public double getCANCoderPos() {
-        // System.out.println(hoodCANCoder.getAbsolutePosition());
         return hoodCANCoder.getAbsolutePosition();
     }
 
+    public void useOutput(double output) {
+        hoodMotor.set(output);
+    }
+
+    public double calculateAngleFromDistance(double distance) {
+        double angle = 0;
+        return angle;
+    }
 }
