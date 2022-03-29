@@ -11,9 +11,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 /**
- * <p>
  * Hood subsystem.
- * </p>
  */
 
 public class Hood extends SubsystemBase {
@@ -41,7 +39,7 @@ public class Hood extends SubsystemBase {
 
     /**
      * Calculate Hood Position using requested angle
-     * 
+     *
      * @param requestedAngle The requested angle at which the hood needs to be set to
      * @return The position of the CANCoder
      */
@@ -55,7 +53,7 @@ public class Hood extends SubsystemBase {
 
     /**
      * Get CANCoder Position
-     * 
+     *
      * @return CANCoder position
      */
     public double getCANCoderPos() {
