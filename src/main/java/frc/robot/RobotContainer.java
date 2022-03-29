@@ -108,8 +108,8 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
 
-        new JoystickButton(driver, XboxController.Button.kBack.value).whileHeld(
-            new StartEndCommand(() -> leds.setColor(255, 0, 0), () -> leds.setColor(0, 0, 255)));
+        new JoystickButton(driver, XboxController.Button.kBack.value)
+            .whileHeld(new StartEndCommand(() -> leds.setColor(255, 0, 0), () -> leds.rainbow()));
         /* Driver Buttons */
         // Reset Gyro on Driver Y pressed
         new JoystickButton(driver, XboxController.Button.kY.value)
