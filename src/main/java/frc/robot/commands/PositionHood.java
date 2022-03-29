@@ -18,7 +18,7 @@ public class PositionHood extends ProfiledPIDCommand {
 
     /**
      * PositionHood using requestedAngle. Only adjusts once, meaning the command will need to be
-     * recalled if wanted again.
+     * recalled if wanted again. A perfect use case for this could be during autonomous.
      *
      * @param hood Hood subsystem
      * @param requestedAngle The user's requested angle of the hood
