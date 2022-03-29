@@ -35,7 +35,7 @@ public class PositionHood extends ProfiledPIDCommand {
     /**
      * PositionHood using Vision module. Meant for a default command that is always running in order
      * to have to proper angle for shooting.
-     * 
+     *
      * @param hood Hood subsystem
      * @param vision Vision subsystem
      */
