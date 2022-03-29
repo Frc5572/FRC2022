@@ -244,7 +244,7 @@ public final class Constants {
      * Constants for Inner Magazine PID
      */
     public static final class InnerMagazinePID {
-        public static final double kP = 0.17032;
+        public static final double kP = 0.15722;
         public static final double kI = 0;
         public static final double kD = 0;
 
@@ -252,8 +252,8 @@ public final class Constants {
         public static final double kInnerMagazineToleranceRPS = 1; // IN RPS NOT RPM
 
         public static final int kUnitsPerRevolution = 2048;
-        public static final double kSVolts = 0.87948;
-        public static final double kVVoltSecondsPerRotation = 0.10969;
+        public static final double kSVolts = 0.67723;
+        public static final double kVVoltSecondsPerRotation = 0.10766;
     }
 
     /**
