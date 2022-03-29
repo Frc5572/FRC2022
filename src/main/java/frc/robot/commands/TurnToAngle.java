@@ -39,7 +39,7 @@ public class TurnToAngle extends ProfiledPIDCommand {
             (output, setpoint) -> swerve.useOutput(output));
         // Use addRequirements() here to declare subsystem dependencies.
         // Configure additional PID options by calling `getController` here.
-        getController().setTolerance(1);
+        getController().setTolerance(.1);
         getController().enableContinuousInput(0, 360);
         addRequirements(swerve);
         this.swerve = swerve;
