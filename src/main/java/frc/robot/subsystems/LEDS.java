@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class LEDS extends SubsystemBase {
     private AddressableLED ledController;
     private AddressableLEDBuffer ledBuffer;
-    public boolean pattern = false;
+    public int pattern = 0;
 
     public LEDS(int id) {
         ledController = new AddressableLED(id);
@@ -50,6 +50,10 @@ public class LEDS extends SubsystemBase {
         // Check bounds
         m_rainbowFirstPixelHue %= 180;
         ledController.setData(ledBuffer);
+    }
+
+    public void policeSirens() {
+        // Work in progress.
     }
 
     public void movingColor(Color color, int led) {
