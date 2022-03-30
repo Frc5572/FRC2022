@@ -6,12 +6,17 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
-public class LEDS extends SubsystemBase {
+public class LEDs extends SubsystemBase {
     private AddressableLED ledController;
     private AddressableLEDBuffer ledBuffer;
     public int pattern = 0;
+    private int m_rainbowFirstPixelHue = 0;
+    private int movingLED = 0;
+    private boolean movingDirection = true;
+    private int cylonEyeDelay = 0;
+    private int policeDelay = 0;
 
-    public LEDS(int id) {
+    public LEDs(int id) {
         ledController = new AddressableLED(id);
         ledBuffer = new AddressableLEDBuffer(21);
 
@@ -36,7 +41,6 @@ public class LEDS extends SubsystemBase {
     }
 
     public void rainbow() {
-        int m_rainbowFirstPixelHue = 0;
         // For every pixel
         for (var i = 0; i < ledBuffer.getLength(); i++) {
             // Calculate the hue - hue is easier for rainbows because the color
@@ -53,17 +57,39 @@ public class LEDS extends SubsystemBase {
     }
 
     public void policeSirens() {
-        // Work in progress.
+        if (policeDelay < 5) {
+            this.setColor(Color.kRed);
+        } else {
+            this.setColor(Color.kBlue);
+        }
+        policeDelay += 1;
+        policeDelay %= 9;
     }
 
-    public void movingColor(Color color, int led) {
+    public void movingColor(Color color) {
         for (var i = 0; i < ledBuffer.getLength(); i++) {
-            if (i == led) {
+            if (i == movingLED) {
                 ledBuffer.setLED(i, color);
             } else {
                 ledBuffer.setLED(i, Color.kBlack);
             }
         }
+        if (movingDirection) {
+            movingLED += 1;
+        } else {
+            movingLED -= 1;
+        }
+        if (movingLED >= ledBuffer.getLength() - 1 || movingLED <= 0) {
+            movingDirection = !movingDirection;
+        }
         ledController.setData(ledBuffer);
+    }
+
+    public void cylonEye() {
+        if (cylonEyeDelay == 0) {
+            this.movingColor(Color.kRed);
+        }
+        cylonEyeDelay += 1;
+        cylonEyeDelay %= 3;
     }
 }

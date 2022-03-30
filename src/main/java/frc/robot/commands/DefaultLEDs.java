@@ -1,13 +1,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.LEDS;
+import frc.robot.subsystems.LEDs;
 
 /**
  * Creates LEDRainbow class.
  */
-public class DefaultLEDS extends CommandBase {
-    private final LEDS leds;
+public class DefaultLEDs extends CommandBase {
+    private final LEDs leds;
     private int redPulseBrightness = 0;
     private boolean direction = true;
 
@@ -16,7 +16,7 @@ public class DefaultLEDS extends CommandBase {
      *
      * @param subsystem Adds to subsystem.
      */
-    public DefaultLEDS(LEDS subsystem) {
+    public DefaultLEDs(LEDs subsystem) {
         this.leds = subsystem;
         addRequirements(leds);
     }
@@ -32,19 +32,15 @@ public class DefaultLEDS extends CommandBase {
             } else {
                 redPulseBrightness -= 5;
             }
-            if (redPulseBrightness >= 255 || redPulseBrightness <= 10) {
+            if (redPulseBrightness >= 255 || redPulseBrightness <= 0) {
                 direction = !direction;
             }
+            // leds.cylonEye();
         } else if (leds.pattern == 1) {
             leds.rainbow();
-        } else {
-            if (leds.pattern == 2) {
-                leds.policeSirens();
-            }
+        } else if (leds.pattern == 2) {
+            leds.policeSirens();
         }
-
-
-
     }
 
 }
