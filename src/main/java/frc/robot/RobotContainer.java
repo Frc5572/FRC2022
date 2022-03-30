@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -73,7 +74,7 @@ public class RobotContainer {
     private final InsideClimber insideClimber;
     private final OutsideClimber outsideClimber;
     public PneumaticHub ph = new PneumaticHub();
-    private LEDs leds = new LEDs(8);
+    private LEDs leds = new LEDs(9, 42);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -111,24 +112,25 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         Trigger magSensor = new Trigger(() -> this.innerMagazine.magSense.get());
-        Trigger turretAligned = new Trigger(() -> this.vision.getTargetAligned());
+        Trigger turretAligned =
+            new Trigger(() -> this.vision.getTargetAligned() && turret.alignEnabled);
         // Turn default lights back to 0 with start button.
         new JoystickButton(operator, XboxController.Button.kStart.value)
             .whenPressed(new InstantCommand(() -> leds.pattern = 0));
         // Turn default lights to 2 with POV up (0)
         new POVButton(operator, 0).whenPressed(new InstantCommand(() -> leds.pattern = 2));
         // LEDs are blue when ball is loaded
-        // magSensor.and(turretAligned.negate())
-        // .whileActiveContinuous(new StartEndCommand(() -> leds.setColor(Color.kBlue), () -> {
-        // }, leds));
-        // // LEDs are green when ball is loaded and locked on
-        // magSensor.and(turretAligned)
-        // .whileActiveContinuous(new StartEndCommand(() -> leds.setColor(Color.kGreen), () -> {
-        // }, leds));
-        // // LEDs are red when limelight alligned but ball not loaded
-        // magSensor.negate().and(turretAligned)
-        // .whileActiveContinuous(new StartEndCommand(() -> leds.setColor(Color.kRed), () -> {
-        // }, leds));
+        magSensor.and(turretAligned.negate())
+            .whileActiveContinuous(new StartEndCommand(() -> leds.setColor(Color.kBlue), () -> {
+            }, leds));
+        // LEDs are green when ball is loaded and locked on
+        magSensor.and(turretAligned)
+            .whileActiveContinuous(new StartEndCommand(() -> leds.setColor(Color.kGreen), () -> {
+            }, leds));
+        // LEDs are red when limelight alligned but ball not loaded
+        magSensor.negate().and(turretAligned)
+            .whileActiveContinuous(new StartEndCommand(() -> leds.setColor(Color.kYellow), () -> {
+            }, leds));
         /* Driver Buttons */
         // Reset Gyro on Driver Y pressed
         new JoystickButton(driver, XboxController.Button.kY.value)

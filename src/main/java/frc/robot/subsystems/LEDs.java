@@ -16,9 +16,9 @@ public class LEDs extends SubsystemBase {
     private int cylonEyeDelay = 0;
     private int policeDelay = 0;
 
-    public LEDs(int id) {
+    public LEDs(int id, int length) {
         ledController = new AddressableLED(id);
-        ledBuffer = new AddressableLEDBuffer(21);
+        ledBuffer = new AddressableLEDBuffer(length);
 
         ledController.setLength(ledBuffer.getLength());
         ledController.setData(ledBuffer);
@@ -57,13 +57,13 @@ public class LEDs extends SubsystemBase {
     }
 
     public void policeSirens() {
-        if (policeDelay < 5) {
+        if (policeDelay < 10) {
             this.setColor(Color.kRed);
         } else {
             this.setColor(Color.kBlue);
         }
         policeDelay += 1;
-        policeDelay %= 9;
+        policeDelay %= 21;
     }
 
     public void movingColor(Color color) {
