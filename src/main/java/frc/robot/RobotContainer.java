@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -15,24 +16,26 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.lib.AxisButton;
 import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.P0;
 import frc.robot.autos.P1_3B;
 import frc.robot.autos.P_2B;
 import frc.robot.commands.AlignTurret;
+import frc.robot.commands.DefaultLEDS;
 import frc.robot.commands.InsidePC;
 import frc.robot.commands.MagazineRPM;
 import frc.robot.commands.OutsidePC;
 import frc.robot.commands.ShooterRPM;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
-import frc.robot.modules.LEDs;
 import frc.robot.modules.Vision;
 import frc.robot.subsystems.InnerMagazine;
 import frc.robot.subsystems.InsideClimber;
 // import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.OuterMagazine;
 import frc.robot.subsystems.OutsideClimber;
 import frc.robot.subsystems.Shooter;
@@ -71,7 +74,7 @@ public class RobotContainer {
     private final InsideClimber insideClimber;
     private final OutsideClimber outsideClimber;
     public PneumaticHub ph = new PneumaticHub();
-    private LEDs leds = new LEDs(8);
+    private LEDS leds = new LEDS(8);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -86,7 +89,8 @@ public class RobotContainer {
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop));
         // Default Turret Command
         turret.setDefaultCommand(new AlignTurret(turret, vision));
-        // hood.setDefaultCommand(new PositionHood(hood, vision.getHoodValue()));
+        // Sets leds to off as default.
+        leds.setDefaultCommand(new DefaultLEDS(leds));
         // Adding AutoChooser Options
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
@@ -108,8 +112,19 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
 
-        new JoystickButton(driver, XboxController.Button.kBack.value)
-            .whileHeld(new StartEndCommand(() -> leds.setColor(255, 0, 0), () -> leds.rainbow()));
+        // new JoystickButton(operator, XboxController.Button.kLeftBumper.value)
+        // .whileHeld(new RedPulse(leds));
+
+
+        // LEDs are blue when ball is loaded
+        new Trigger(() -> this.innerMagazine.magSense.get() && !this.vision.getTargetAligned())
+            .whileActiveContinuous(new InstantCommand(() -> leds.setColor(Color.kBlue)));
+        // LEDs are green when ball is loaded and locked on
+        new Trigger(() -> this.innerMagazine.magSense.get() && this.vision.getTargetAligned())
+            .whileActiveContinuous(new InstantCommand(() -> leds.setColor(Color.kGreen)));
+        // LEDs are red when limelight alligned but ball not loaded
+        new Trigger(() -> !this.innerMagazine.magSense.get() && this.vision.getTargetAligned())
+            .whileActiveContinuous(new InstantCommand(() -> leds.setColor(Color.kRed)));
         /* Driver Buttons */
         // Reset Gyro on Driver Y pressed
         new JoystickButton(driver, XboxController.Button.kY.value)
@@ -145,13 +160,15 @@ public class RobotContainer {
         new JoystickButton(driver, XboxController.Button.kStart.value)
             .whenPressed(new InstantCommand(() -> insideClimber.enableClimbers())
                 .andThen(new InstantCommand(() -> outsideClimber.enableClimbers()))
-                .andThen(new InstantCommand(() -> turret.alignEnabled = false)));
+                .andThen(new InstantCommand(() -> turret.alignEnabled = false))
+                .andThen(new InstantCommand(() -> leds.pattern = true)));
 
         /* Operator Buttons */
 
         // Enable Shooter Magazine Combo While Operator A Button Held/
 
         new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
+            .whileHeld(new InstantCommand(() -> turret.alignEnabled = true))
             .whileHeld(new ShooterRPM(this.shooter, 3700 / 60)
                 .alongWith(new SequentialCommandGroup(new PrintCommand("Shooter is being weird"),
                     new WaitUntilCommand(
@@ -166,6 +183,7 @@ public class RobotContainer {
             .whenReleased(new InstantCommand(() -> {
                 this.innerMagazine.disable();
                 this.outerMagazine.magazineStop();
+                turret.alignEnabled = false;
             }, this.innerMagazine, this.outerMagazine));
 
         new JoystickButton(operator, XboxController.Button.kA.value)

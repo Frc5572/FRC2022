@@ -7,6 +7,11 @@
       "window": {
         "visible": true
       }
+    },
+    "DIO": {
+      "window": {
+        "visible": true
+      }
     }
   },
   "NTProvider": {
@@ -16,6 +21,8 @@
       "/LiveWindow/InnerMagazine/PID Controller": "PIDController",
       "/LiveWindow/InsideClimber": "Subsystem",
       "/LiveWindow/Intake": "Subsystem",
+      "/LiveWindow/LEDS": "Subsystem",
+      "/LiveWindow/OuterMagazine": "Subsystem",
       "/LiveWindow/OuterMagazine/PID Controller": "PIDController",
       "/LiveWindow/OutsideClimber": "Subsystem",
       "/LiveWindow/Shooter": "Subsystem",
@@ -46,6 +53,13 @@
       "/LiveWindow/Ungrouped/Talon FX [9]": "Motor Controller",
       "/LiveWindow/Ungrouped/navX-Sensor[4]": "Gyro",
       "/SmartDashboard/Choose Auto: ": "String Chooser"
+    }
+  },
+  "NetworkTables": {
+    "LiveWindow": {
+      "LEDS": {
+        "open": true
+      }
     }
   }
 }
