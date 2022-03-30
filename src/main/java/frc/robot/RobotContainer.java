@@ -115,10 +115,12 @@ public class RobotContainer {
         // new JoystickButton(operator, XboxController.Button.kLeftBumper.value)
         // .whileHeld(new RedPulse(leds));
 
+        // leds.setColor(Color.kBlue)
 
         // LEDs are blue when ball is loaded
         new Trigger(() -> this.innerMagazine.magSense.get() && !this.vision.getTargetAligned())
-            .whileActiveContinuous(new InstantCommand(() -> leds.setColor(Color.kBlue)));
+            .whileActiveContinuous(new StartEndCommand(() -> leds.setColor(Color.kBlue), () -> {
+            }, leds));
         // LEDs are green when ball is loaded and locked on
         new Trigger(() -> this.innerMagazine.magSense.get() && this.vision.getTargetAligned())
             .whileActiveContinuous(new InstantCommand(() -> leds.setColor(Color.kGreen)));
