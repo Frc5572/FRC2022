@@ -32,7 +32,6 @@ import frc.robot.modules.Vision;
 import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.InnerMagazine;
 import frc.robot.subsystems.InsideClimber;
-// import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.OuterMagazine;
 import frc.robot.subsystems.OutsideClimber;
