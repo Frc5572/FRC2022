@@ -111,12 +111,8 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-
-        // new JoystickButton(operator, XboxController.Button.kLeftBumper.value)
-        // .whileHeld(new RedPulse(leds));
-
-        // leds.setColor(Color.kBlue)
-
+        // Turn on police lights with POV up (0)
+        new POVButton(operator, 0).whenPressed(new InstantCommand(() -> leds.pattern = 2));
         // LEDs are blue when ball is loaded
         new Trigger(() -> this.innerMagazine.magSense.get() && !this.vision.getTargetAligned())
             .whileActiveContinuous(new StartEndCommand(() -> leds.setColor(Color.kBlue), () -> {
@@ -163,7 +159,7 @@ public class RobotContainer {
             .whenPressed(new InstantCommand(() -> insideClimber.enableClimbers())
                 .andThen(new InstantCommand(() -> outsideClimber.enableClimbers()))
                 .andThen(new InstantCommand(() -> turret.alignEnabled = false))
-                .andThen(new InstantCommand(() -> leds.pattern = true)));
+                .andThen(new InstantCommand(() -> leds.pattern = 1)));
 
         /* Operator Buttons */
 
