@@ -114,7 +114,7 @@ public class RobotContainer {
         // Turn default lights back to 0 with start button.
         new JoystickButton(operator, XboxController.Button.kStart.value)
             .whenPressed(new InstantCommand(() -> leds.pattern = 0));
-        // Turn on police lights with POV up (0)
+        // Turn default lights to 2 with POV up (0)
         new POVButton(operator, 0).whenPressed(new InstantCommand(() -> leds.pattern = 2));
         // LEDs are blue when ball is loaded
         new Trigger(() -> this.innerMagazine.magSense.get() && !this.vision.getTargetAligned())
@@ -162,6 +162,7 @@ public class RobotContainer {
             .whenPressed(new InstantCommand(() -> insideClimber.enableClimbers())
                 .andThen(new InstantCommand(() -> outsideClimber.enableClimbers()))
                 .andThen(new InstantCommand(() -> turret.alignEnabled = false))
+                // Turns default LEDS to 1
                 .andThen(new InstantCommand(() -> leds.pattern = 1)));
 
         /* Operator Buttons */
