@@ -149,7 +149,7 @@ public class RobotContainer {
 
         // Enable Shooter hardcoded setpoint right trigger
         new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
-            .whileHeld(new ShooterRPM(this.shooter, 3700 / 60)
+            .whileHeld(new ShooterRPM(this.shooter, 2350 / 60)
                 .alongWith(new SequentialCommandGroup(new PrintCommand("Shooter is being weird"),
                     new WaitUntilCommand(
                         () -> this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
@@ -158,7 +158,7 @@ public class RobotContainer {
                         .alongWith(new SequentialCommandGroup(
                             new WaitUntilCommand(() -> !this.innerMagazine.magSense.get()
                                 && this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
-                            new WaitCommand(1),
+                            new WaitCommand(1.5),
                             new InstantCommand(() -> this.outerMagazine.magazineUp(.6))))))
                 .alongWith(new StartEndCommand(() -> swerveDrive.wheelsIn(), () -> {
                 }, swerveDrive)))
