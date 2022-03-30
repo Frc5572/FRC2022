@@ -111,6 +111,9 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
+        // Turn default lights back to 0 with start button.
+        new JoystickButton(operator, XboxController.Button.kStart.value)
+            .whenPressed(new InstantCommand(() -> leds.pattern = 0));
         // Turn on police lights with POV up (0)
         new POVButton(operator, 0).whenPressed(new InstantCommand(() -> leds.pattern = 2));
         // LEDs are blue when ball is loaded
