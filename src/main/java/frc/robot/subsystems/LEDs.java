@@ -5,7 +5,9 @@ import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-
+/**
+ * LED Susbsystem
+ */
 public class LEDs extends SubsystemBase {
     private AddressableLED ledController;
     private AddressableLEDBuffer ledBuffer;
@@ -16,6 +18,12 @@ public class LEDs extends SubsystemBase {
     private int cylonEyeDelay = 0;
     private int policeDelay = 0;
 
+    /**
+     * Constructs an LED Subsystem object
+     *
+     * @param id PWM Port ID
+     * @param length Number of addressable LEDs
+     */
     public LEDs(int id, int length) {
         ledController = new AddressableLED(id);
         ledBuffer = new AddressableLEDBuffer(length);
@@ -25,6 +33,13 @@ public class LEDs extends SubsystemBase {
         ledController.start();
     }
 
+    /**
+     * Set the entire LED strip to a RGB color
+     *
+     * @param r Amount of red 0-255
+     * @param g Amount of green 0-255
+     * @param b Amount of blue 0-255
+     */
     public void setColor(int r, int g, int b) {
         for (var i = 0; i < ledBuffer.getLength(); i++) {
             ledBuffer.setRGB(i, r, g, b);
@@ -32,7 +47,11 @@ public class LEDs extends SubsystemBase {
         ledController.setData(ledBuffer);
     }
 
-
+    /**
+     * Set the entire LED strip to a color
+     *
+     * @param color {@link Color} to set the strip
+     */
     public void setColor(Color color) {
         for (var i = 0; i < ledBuffer.getLength(); i++) {
             ledBuffer.setLED(i, color);
@@ -40,6 +59,9 @@ public class LEDs extends SubsystemBase {
         ledController.setData(ledBuffer);
     }
 
+    /**
+     * Set the LED strip to a moving ranbow pattern
+     */
     public void rainbow() {
         // For every pixel
         for (var i = 0; i < ledBuffer.getLength(); i++) {
@@ -56,6 +78,9 @@ public class LEDs extends SubsystemBase {
         ledController.setData(ledBuffer);
     }
 
+    /**
+     * Alternate the LED strip between Red and Blue like a police car
+     */
     public void policeSirens() {
         if (policeDelay < 10) {
             this.setColor(Color.kRed);
@@ -66,6 +91,11 @@ public class LEDs extends SubsystemBase {
         policeDelay %= 21;
     }
 
+    /**
+     * Set the LED strip to a moving pixel back and forth of a single color
+     *
+     * @param color {@link Color} to set the pixel
+     */
     public void movingColor(Color color) {
         for (var i = 0; i < ledBuffer.getLength(); i++) {
             if (i == movingLED) {
@@ -85,6 +115,9 @@ public class LEDs extends SubsystemBase {
         ledController.setData(ledBuffer);
     }
 
+    /**
+     * Red moving pixel like a Cylon Eye
+     */
     public void cylonEye() {
         if (cylonEyeDelay == 0) {
             this.movingColor(Color.kRed);

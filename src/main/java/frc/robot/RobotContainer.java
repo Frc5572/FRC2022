@@ -127,7 +127,7 @@ public class RobotContainer {
         magSensor.and(turretAligned)
             .whileActiveContinuous(new StartEndCommand(() -> leds.setColor(Color.kGreen), () -> {
             }, leds));
-        // LEDs are red when limelight alligned but ball not loaded
+        // LEDs are red when limelight aligned but ball not loaded
         magSensor.negate().and(turretAligned)
             .whileActiveContinuous(new StartEndCommand(() -> leds.setColor(Color.kYellow), () -> {
             }, leds));
