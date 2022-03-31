@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /**
- * LED Susbsystem
+ * LED Subsystem
  */
 public class LEDs extends SubsystemBase {
     private AddressableLED ledController;
