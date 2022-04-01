@@ -14,22 +14,39 @@ public class Turret extends SubsystemBase {
     public static final double spinLeft = -0.2;
     public boolean alignEnabled = true;
 
+    /**
+     * Constructs the Turret Subsystem
+     */
     public Turret() {
         turretMotor.setNeutralMode(NeutralMode.Brake);
     }
 
+    /**
+     * Moves turret to the left.
+     */
     public void turretLeft() {
         turretMotor.set(spinLeft);
     }
 
+    /**
+     * Moves turret to the right.
+     */
     public void turretRight() {
         turretMotor.set(-spinLeft);
     }
 
+    /**
+     * Set the turret to a certain power
+     * 
+     * @param power Power to set the turret to
+     */
     public void turretSet(double power) {
         turretMotor.set(power);
     }
 
+    /**
+     * Stops the turret from moving.
+     */
     public void turretStop() {
         turretMotor.set(0);
     }

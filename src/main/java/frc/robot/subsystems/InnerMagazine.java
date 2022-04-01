@@ -33,6 +33,9 @@ public class InnerMagazine extends PIDSubsystem {
         setSetpoint(Constants.InnerMagazinePID.kInnerMagazineTargetRPS);
     }
 
+    /**
+     * Use feedforward voltage values to calculate the output.
+     */
     @Override
     public void useOutput(double output, double setpoint) {
         innerMagazineMotor.setVoltage(output + magazineFeed.calculate(setpoint));
@@ -59,6 +62,9 @@ public class InnerMagazine extends PIDSubsystem {
         innerMagazineMotor.set(0);
     }
 
+    /**
+     * Gets the rotations per second of the magazine.
+     */
     @Override
     public double getMeasurement() {
         double selSenVel = innerMagazineMotor.getSelectedSensorVelocity(0);
@@ -71,6 +77,9 @@ public class InnerMagazine extends PIDSubsystem {
         // System.out.println("Voltage: " + magazineMotor.getMotorOutputVoltage());
     }
 
+    /**
+     * Sets the setpoint for the inner magazine using RPS and voltage calculations.
+     */
     @Override
     public void periodic() {
         if (m_enabled) {

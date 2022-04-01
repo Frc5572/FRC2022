@@ -25,16 +25,25 @@ public class Intake extends SubsystemBase {
         this.intakeSol = ph.makeSolenoid(Pneumatics.intakeFowardChannel);
     }
 
+    /**
+     * Stops the intake from running and retracts the intake solenoid.
+     */
     public void intakeRetract() {
         this.intakeMotor.set(intakeStop);
         // this.intakeSol.set(false);
     }
 
+    /**
+     * Runs the intake at a certain speed and extends the intake solenoid.
+     */
     public void intakeDeploy() {
         this.intakeMotor.set(intakeSpeed);
         // this.intakeSol.set(true);
     }
 
+    /**
+     * Stops the intake from running.
+     */
     public void stop() {
         this.intakeMotor.set(0);
     }

@@ -55,6 +55,9 @@ public class Hood extends SubsystemBase {
         return rateOfChange * requestedAngle + initOffset;
     }
 
+    /**
+     * Set the Hood position
+     */
     public void setHoodPosition() {
         speed = (Constants.HoodConstants.minPosition - getCANCoderPos()) / 300;
         if (speed > 0) {
@@ -85,6 +88,12 @@ public class Hood extends SubsystemBase {
         hoodMotor.set(output);
     }
 
+    /**
+     * Calculate required angle of the hood using Vision distance
+     * 
+     * @param distance The distance from the target reported by vision
+     * @return The angle at which the hood needs to be set to
+     */
     public double calculateAngleFromDistance(double distance) {
         double angle = 0;
         return angle;

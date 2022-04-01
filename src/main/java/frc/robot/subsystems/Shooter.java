@@ -41,11 +41,17 @@ public class Shooter extends PIDSubsystem {
         shooter.set(0);
     }
 
+    /**
+     * Use feedforward voltage values to calculate the output.
+     */
     @Override
     public void useOutput(double output, double setpoint) {
         shooter.setVoltage(output + shooterFeed.calculate(setpoint));
     }
 
+    /**
+     * Get the current RPS of the shooter.
+     */
     @Override
     public double getMeasurement() {
         double selSenVel = shooter.getSelectedSensorVelocity(0);
@@ -57,6 +63,9 @@ public class Shooter extends PIDSubsystem {
         return rotPerSec;
     }
 
+    /**
+     * Sets the setpoint for the magazine using RPS and voltage calculations.
+     */
     @Override
     public void periodic() {
         if (m_enabled) {
