@@ -6,6 +6,7 @@ import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import com.ctre.phoenix.sensors.SensorTimeBase;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -23,6 +24,8 @@ public class Hood extends SubsystemBase {
     double position;
     double calculatedPosition;
     double mOutput;
+    double speed;
+    double maxSpeed = 0.2;
 
     /**
      * Hood subsystem.
@@ -35,6 +38,7 @@ public class Hood extends SubsystemBase {
         hoodCanCoderConfig.initializationStrategy =
             SensorInitializationStrategy.BootToAbsolutePosition;
         hoodCanCoderConfig.sensorTimeBase = SensorTimeBase.PerSecond;
+        hoodMotor.setIdleMode(IdleMode.kBrake);
     }
 
     /**
@@ -49,6 +53,23 @@ public class Hood extends SubsystemBase {
                 / (Constants.HoodConstants.maxAngle - Constants.HoodConstants.minAngle);
         double initOffset = Constants.HoodConstants.minPosition / rateOfChange * requestedAngle;
         return rateOfChange * requestedAngle + initOffset;
+    }
+
+    public void setHoodPosition() {
+        speed = (Constants.HoodConstants.minPosition - getCANCoderPos()) / 300;
+        if (speed > 0) {
+            if (speed > maxSpeed) {
+                hoodMotor.set(maxSpeed);
+            } else {
+                hoodMotor.set(speed);
+            }
+        } else {
+            if (Math.abs(speed) > maxSpeed) {
+                hoodMotor.set(-maxSpeed);
+            } else {
+                hoodMotor.set(speed);
+            }
+        }
     }
 
     /**
@@ -67,5 +88,17 @@ public class Hood extends SubsystemBase {
     public double calculateAngleFromDistance(double distance) {
         double angle = 0;
         return angle;
+    }
+
+    public void setZero() {
+        hoodMotor.set(0);
+    }
+
+    public void setOne() {
+        hoodMotor.set(1);
+    }
+
+    public void setOneNeg() {
+        hoodMotor.set(-1);
     }
 }

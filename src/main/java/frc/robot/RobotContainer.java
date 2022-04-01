@@ -28,6 +28,8 @@ import frc.robot.commands.PositionHood;
 import frc.robot.commands.ShooterRPM;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
+import frc.robot.commands.setHoodPos;
+import frc.robot.commands.setHoodPos2;
 import frc.robot.modules.Vision;
 import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.InnerMagazine;
@@ -215,6 +217,8 @@ public class RobotContainer {
         // Left Turret Move While Operator Left Bumper Held
         new JoystickButton(operator, XboxController.Button.kLeftBumper.value).whileHeld(
             new StartEndCommand(() -> turret.turretLeft(), () -> turret.turretStop(), turret));
+        new POVButton(operator, 90).whileHeld(new setHoodPos(hood));
+        new POVButton(operator, 270).whileHeld(new setHoodPos2(hood));
 
         // Spit ball command
         new JoystickButton(operator, XboxController.Button.kY.value)
