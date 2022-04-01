@@ -59,9 +59,9 @@ public final class Constants {
      */
     public static final class VisionConstants {
         public static final double deadPocket = 0.05;
-        public static final double limelightHeight = 24;
+        public static final double limelightHeight = 33.5;
         public static final double targetHeight = 103;
-        public static final double limelightAngle = 30.5;
+        public static final double limelightAngle = 37.5;
     }
 
     /**

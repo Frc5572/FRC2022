@@ -227,6 +227,12 @@ public class RobotContainer {
                 innerMagazine.magazineStop();
                 outerMagazine.magazineStop();
             }));
+
+        // Print out distance
+        // new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
+        // .whileHeld(new FunctionalCommand(() -> {
+        // }, () -> System.out.println(String.valueOf(vision.getDistance())), inter -> {
+        // }, () -> false));
     }
 
     /**
