@@ -20,6 +20,7 @@ public class Swerve extends SubsystemBase {
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] swerveMods;
     public AHRS gyro;
+    private double pidTurn = 0;
 
     /**
      * Initializes swerve modules.
@@ -58,6 +59,12 @@ public class Swerve extends SubsystemBase {
      */
     public void drive(Translation2d translation, double rotation, boolean fieldRelative,
         boolean isOpenLoop) {
+
+        // If pidTurn has value, it will override driver steering!!
+        if (pidTurn != 0) {
+            rotation = pidTurn;
+        }
+
         SwerveModuleState[] swerveModuleStates =
             Constants.Swerve.swerveKinematics.toSwerveModuleStates(fieldRelative
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(), translation.getY(),
@@ -165,5 +172,13 @@ public class Swerve extends SubsystemBase {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity",
                 mod.getState().speedMetersPerSecond);
         }
+    }
+
+    public double getRotation() {
+        return getYaw().getDegrees();
+    }
+
+    public void useOutput(double output) {
+        pidTurn = output * Constants.Swerve.maxAngularVelocity;
     }
 }
