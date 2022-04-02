@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PneumaticHub;
@@ -15,6 +16,7 @@ import frc.robot.Constants;
 public class InsideClimber extends SubsystemBase {
 
     private final DoubleSolenoid insideClimberSolenoid;
+    public DigitalInput climbeSense = new DigitalInput(0);
 
     private final WPI_TalonFX insideClimberMotor1 =
         new WPI_TalonFX(Constants.Motors.insideClimberMotorRightId, "canivore");
