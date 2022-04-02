@@ -51,7 +51,8 @@ public class Hood extends SubsystemBase {
         double rateOfChange =
             (Constants.HoodConstants.maxPosition - Constants.HoodConstants.minPosition)
                 / (Constants.HoodConstants.maxAngle - Constants.HoodConstants.minAngle);
-        double initOffset = Constants.HoodConstants.minPosition / rateOfChange * requestedAngle;
+        double initOffset =
+            Constants.HoodConstants.minPosition - (rateOfChange * Constants.HoodConstants.minAngle);
         return rateOfChange * requestedAngle + initOffset;
     }
 
@@ -104,10 +105,14 @@ public class Hood extends SubsystemBase {
     }
 
     public void setOne() {
-        hoodMotor.set(1);
+        hoodMotor.set(.1);
     }
 
     public void setOneNeg() {
-        hoodMotor.set(-1);
+        hoodMotor.set(-.1);
+    }
+
+    public void hoodSet(double power) {
+        hoodMotor.set(power);
     }
 }

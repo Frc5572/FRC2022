@@ -215,11 +215,13 @@ public final class Constants {
     public static final class HoodConstants {
         public static final int hoodCANCoderID = 5;
         public static final int hoodServoID = 9;
-        public static final int minAngle = 40;
-        public static final int maxAngle = 55;
+        public static final int minAngle = 68; // hood is down
+        public static final int maxAngle = 45; // hood is up
         public static final double servoSpeed = 0.2;
-        public static final double maxPosition = 26.104; // Hood is up
-        public static final double minPosition = 285.645; // Hood is down
+        public static final double maxPosition = 67.061; // Hood is up
+        public static final double minPosition = 329.678; // Hood is down
+        // If hood skips or is removed from the gear, remove the it entirely and
+        // rotate the gear so that the tape line is at the bottom ~29 degrees on the CANCoder
         public static final boolean hoodCanCoderInvert = false;
     }
 

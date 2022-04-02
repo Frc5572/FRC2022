@@ -20,6 +20,7 @@ import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.P0;
 import frc.robot.autos.P1_3B;
 import frc.robot.autos.P_2B;
+import frc.robot.commands.AlignHood;
 import frc.robot.commands.AlignTurret;
 import frc.robot.commands.InsidePC;
 import frc.robot.commands.MagazineRPM;
@@ -28,8 +29,6 @@ import frc.robot.commands.PositionHood;
 import frc.robot.commands.ShooterRPM;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
-import frc.robot.commands.setHoodPos;
-import frc.robot.commands.setHoodPos2;
 import frc.robot.modules.Vision;
 import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.InnerMagazine;
@@ -87,7 +86,7 @@ public class RobotContainer {
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop));
         // Default Turret Command
         turret.setDefaultCommand(new AlignTurret(turret, vision));
-        hood.setDefaultCommand(new PositionHood(hood, vision));
+        // hood.setDefaultCommand(new PositionHood(hood, vision));
         // Adding AutoChooser Options
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
@@ -217,8 +216,8 @@ public class RobotContainer {
         // Left Turret Move While Operator Left Bumper Held
         new JoystickButton(operator, XboxController.Button.kLeftBumper.value).whileHeld(
             new StartEndCommand(() -> turret.turretLeft(), () -> turret.turretStop(), turret));
-        new POVButton(operator, 90).whileHeld(new setHoodPos(hood));
-        new POVButton(operator, 270).whileHeld(new setHoodPos2(hood));
+        new POVButton(operator, 90).whileHeld(new PositionHood(hood));
+        new POVButton(operator, 270).whileHeld(new AlignHood(hood));
 
         // Spit ball command
         new JoystickButton(operator, XboxController.Button.kY.value)

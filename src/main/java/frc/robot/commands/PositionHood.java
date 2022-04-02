@@ -23,11 +23,19 @@ public class PositionHood extends ProfiledPIDCommand {
      * @param hood Hood subsystem
      * @param requestedAngle The user's requested angle of the hood
      */
-    public PositionHood(Hood hood, double requestedAngle) {
-        super(new ProfiledPIDController(0, 0, 0, new TrapezoidProfile.Constraints(0, 0)),
-            hood::getCANCoderPos, hood.calculateHoodPosition(requestedAngle),
-            (output, setpoint) -> hood.useOutput(output));
-        getController().setTolerance(1);
+    // public PositionHood(Hood hood, double requestedAngle) {
+    // super(new ProfiledPIDController(0.01, 0, 0, new TrapezoidProfile.Constraints(0, 0)),
+    // hood::getCANCoderPos, hood.calculateHoodPosition(requestedAngle),
+    // (output, setpoint) -> hood.useOutput(output));
+    // getController().setTolerance(1);
+    // addRequirements(hood);
+    // this.hood = hood;
+    // }
+
+    public PositionHood(Hood hood) {
+        super(new ProfiledPIDController(0.008, 0, 0, new TrapezoidProfile.Constraints(1, 2)),
+            hood::getCANCoderPos, 150, (output, setpoint) -> hood.useOutput(output));
+        getController().setTolerance(5);
         addRequirements(hood);
         this.hood = hood;
     }
@@ -40,7 +48,7 @@ public class PositionHood extends ProfiledPIDCommand {
      * @param vision Vision subsystem
      */
     public PositionHood(Hood hood, Vision vision) {
-        super(new ProfiledPIDController(0, 0, 0, new TrapezoidProfile.Constraints(0, 0)),
+        super(new ProfiledPIDController(0.01, 0, 0, new TrapezoidProfile.Constraints(360, 1080)),
             hood::getCANCoderPos,
             hood.calculateHoodPosition(hood.calculateAngleFromDistance(vision.getDistance())),
             (output, setpoint) -> hood.useOutput(output));
@@ -52,21 +60,21 @@ public class PositionHood extends ProfiledPIDCommand {
 
     @Override
     public void initialize() {
-        if (this.vision == null) {
-            getController().setGoal(this.requestedAngle);
-        } else {
-            getController().setGoal(
-                hood.calculateHoodPosition(hood.calculateAngleFromDistance(vision.getDistance())));
-        }
+        // if (this.vision == null) {
+        // getController().setGoal(this.requestedAngle);
+        // } else {
+        // getController().setGoal(
+        // hood.calculateHoodPosition(hood.calculateAngleFromDistance(vision.getDistance())));
+        // }
         super.initialize();
     }
 
     @Override
     public void execute() {
-        if (this.vision != null) {
-            getController().setGoal(
-                hood.calculateHoodPosition(hood.calculateAngleFromDistance(vision.getDistance())));
-        }
+        // if (this.vision != null) {
+        // getController().setGoal(
+        // hood.calculateHoodPosition(hood.calculateAngleFromDistance(vision.getDistance())));
+        // }
         super.execute();
     }
 

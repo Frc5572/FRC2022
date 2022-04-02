@@ -25,6 +25,6 @@ public class setHoodPos2 extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return Math.abs(HoodConstants.maxPosition - this.hood.getCANCoderPos()) <= 2;
+        return Math.abs(HoodConstants.minPosition - this.hood.getCANCoderPos()) <= 5;
     }
 }
