@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.lib.AxisButton;
 import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.P0;
@@ -106,14 +107,16 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
 
+
         /* Driver Buttons */
+        new Trigger(() -> insideClimber.climbeSense.get())
+            .whileActiveContinuous(new PrintCommand("Sensor work!"));
         // Reset Gyro on Driver Y pressed
         new JoystickButton(driver, XboxController.Button.kY.value)
             .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
         // Turn Off Turret For Rest of Match on Driver X Pressed
         new JoystickButton(operator, XboxController.Button.kX.value)
             .whenPressed(new InstantCommand(() -> turret.alignEnabled = !turret.alignEnabled));
-
         /* Button Mappings for Climber Motors */
         // Extend the Outside climber arms
         new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
@@ -158,12 +161,13 @@ public class RobotContainer {
                                 && this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
                             new WaitCommand(1),
                             new InstantCommand(() -> this.outerMagazine.magazineUp(.6))))))
-                .alongWith(new StartEndCommand(() -> swerveDrive.wheelsIn(), () -> {
-                }, swerveDrive)))
-            .whenReleased(new InstantCommand(() -> {
-                this.innerMagazine.disable();
-                this.outerMagazine.magazineStop();
-            }, this.innerMagazine, this.outerMagazine));
+                .alongWith(new StartEndCommand(() -> swerveDrive.wheelsIn(), () ->
+
+                {
+                }, swerveDrive))).whenReleased(new InstantCommand(() -> {
+                    this.innerMagazine.disable();
+                    this.outerMagazine.magazineStop();
+                }, this.innerMagazine, this.outerMagazine));
 
         // Enable Shooter Magazine Combo While Operator A Button Held
         new JoystickButton(operator, XboxController.Button.kA.value)
