@@ -20,12 +20,11 @@ import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.P0;
 import frc.robot.autos.P1_3B;
 import frc.robot.autos.P_2B;
-import frc.robot.commands.AlignHood;
+// import frc.robot.commands.AlignHood;
 import frc.robot.commands.AlignTurret;
 import frc.robot.commands.InsidePC;
 import frc.robot.commands.MagazineRPM;
 import frc.robot.commands.OutsidePC;
-import frc.robot.commands.PositionHood;
 import frc.robot.commands.ShooterRPM;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ZeroMotorsWaitCommand;
@@ -149,17 +148,45 @@ public class RobotContainer {
 
         // Enable Shooter hardcoded setpoint right trigger
         new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
-            .whileHeld(new ShooterRPM(this.shooter, 4000 / 60)
+            .whileHeld(new ShooterRPM(this.shooter, 2250 / 60)
                 .alongWith(new SequentialCommandGroup(new PrintCommand("Shooter is being weird"),
                     new WaitUntilCommand(
                         () -> this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
                     new WaitCommand(.5),
-                    new MagazineRPM(this.shooter, this.innerMagazine)
-                        .alongWith(new SequentialCommandGroup(
-                            new WaitUntilCommand(() -> !this.innerMagazine.magSense.get()
-                                && this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
-                            new WaitCommand(1.5),
-                            new InstantCommand(() -> this.outerMagazine.magazineUp(.6))))))
+                    new MagazineRPM(this.shooter, this.innerMagazine).withTimeout(.5),
+                    new FunctionalCommand(innerMagazine::enable, () -> {
+                        SmartDashboard.putBoolean("Magazine Switch", innerMagazine.magSense.get());
+                    }, interrupted -> innerMagazine.disable(), () -> innerMagazine.magSense.get(),
+                        innerMagazine).deadlineWith(
+                            new StartEndCommand(() -> this.outerMagazine.magazineUp(.6),
+                                () -> this.outerMagazine.magazineStop(), this.outerMagazine)))
+                                    .andThen(
+                                        new WaitUntilCommand(() -> this.shooter.getSetpoint() > 0
+                                            && this.shooter.atSetpoint()),
+                                        new WaitCommand(.5),
+                                        new MagazineRPM(this.shooter, this.innerMagazine)
+                                            .withTimeout(2)))
+
+                // new MagazineRPM(this.shooter, this.innerMagazine).alongWith(new
+                // InstantCommand(() -> this.outerMagazine.magazineUp(.6)))
+                // ((new WaitCommand(.5)
+                // .andThen(
+                // new InstantCommand(() -> this.outerMagazine.magazineUp(.6)))
+                // .andThen(
+                // new WaitUntilCommand(() -> this.innerMagazine.magSense.get()))
+                // .andThen(
+                // new InstantCommand(() -> this.outerMagazine.magazineStop())))
+                // .deadlineWith(
+                // new MagazineRPM(this.shooter, this.innerMagazine)))
+                // .andThen(new SequentialCommandGroup(
+                // new WaitUntilCommand(
+                // () -> this.shooter.getSetpoint() > 0
+                // && this.shooter.atSetpoint()),
+                // new WaitCommand(1.5),
+                // new InstantCommand(
+                // () -> this.outerMagazine.magazineUp(.6))
+                // .alongWith(new MagazineRPM(this.shooter,
+                // this.innerMagazine))))))
                 .alongWith(new StartEndCommand(() -> swerveDrive.wheelsIn(), () -> {
                 }, swerveDrive)))
             .whenReleased(new InstantCommand(() -> {
@@ -216,8 +243,6 @@ public class RobotContainer {
         // Left Turret Move While Operator Left Bumper Held
         new JoystickButton(operator, XboxController.Button.kLeftBumper.value).whileHeld(
             new StartEndCommand(() -> turret.turretLeft(), () -> turret.turretStop(), turret));
-        new POVButton(operator, 90).whileHeld(new PositionHood(hood));
-        new POVButton(operator, 270).whileHeld(new AlignHood(hood));
 
         // Spit ball command
         new JoystickButton(operator, XboxController.Button.kY.value)
@@ -233,10 +258,10 @@ public class RobotContainer {
             }));
 
         // Print out distance
-        // new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
-        // .whileHeld(new FunctionalCommand(() -> {
-        // }, () -> System.out.println(String.valueOf(vision.getDistance())), inter -> {
-        // }, () -> false));
+        new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
+            .whileHeld(new FunctionalCommand(() -> {
+            }, () -> System.out.println(String.valueOf(vision.getDistance())), inter -> {
+            }, () -> false));
     }
 
     /**

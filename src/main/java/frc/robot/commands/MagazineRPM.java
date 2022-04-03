@@ -46,7 +46,7 @@ public class MagazineRPM extends CommandBase {
         if (shooterRPM >= (5000 / 60)) {
             this.innerMagazine.setSetpoint(1000 / 60);
         } else {
-            this.innerMagazine.setSetpoint(4000 / 60);
+            this.innerMagazine.setSetpoint(2000 / 60);
         }
     }
 
