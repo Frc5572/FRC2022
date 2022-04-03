@@ -13,7 +13,7 @@ import frc.robot.Constants.Pneumatics;
 public class Intake extends SubsystemBase {
     WPI_TalonFX intakeMotor = new WPI_TalonFX(Constants.Motors.intakeMotorNum, "canivore");
     Solenoid intakeSol;
-    private static final double intakeSpeed = .7;
+    private static final double intakeSpeed = .4;
     private static final int intakeStop = 0;
 
     /**

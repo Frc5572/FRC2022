@@ -148,7 +148,7 @@ public class RobotContainer {
 
         // Enable Shooter hardcoded setpoint right trigger
         new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
-            .whileHeld(new ShooterRPM(this.shooter, 2250 / 60)
+            .whileHeld(new ShooterRPM(this.shooter, 2100 / 60)
                 .alongWith(new SequentialCommandGroup(new PrintCommand("Shooter is being weird"),
                     new WaitUntilCommand(
                         () -> this.shooter.getSetpoint() > 0 && this.shooter.atSetpoint()),
