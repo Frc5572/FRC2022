@@ -148,6 +148,7 @@ public class RobotContainer {
 
         // Enable Shooter hardcoded setpoint right trigger
         new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
+            .whileHeld(new InstantCommand(() -> turret.alignEnabled = true))
             .whileHeld(new ShooterRPM(this.shooter, 2100 / 60)
                 .alongWith(new SequentialCommandGroup(new PrintCommand("Shooter is being weird"),
                     new WaitUntilCommand(
@@ -166,32 +167,12 @@ public class RobotContainer {
                                         new WaitCommand(.5),
                                         new MagazineRPM(this.shooter, this.innerMagazine)
                                             .withTimeout(2)))
-
-                // new MagazineRPM(this.shooter, this.innerMagazine).alongWith(new
-                // InstantCommand(() -> this.outerMagazine.magazineUp(.6)))
-                // ((new WaitCommand(.5)
-                // .andThen(
-                // new InstantCommand(() -> this.outerMagazine.magazineUp(.6)))
-                // .andThen(
-                // new WaitUntilCommand(() -> this.innerMagazine.magSense.get()))
-                // .andThen(
-                // new InstantCommand(() -> this.outerMagazine.magazineStop())))
-                // .deadlineWith(
-                // new MagazineRPM(this.shooter, this.innerMagazine)))
-                // .andThen(new SequentialCommandGroup(
-                // new WaitUntilCommand(
-                // () -> this.shooter.getSetpoint() > 0
-                // && this.shooter.atSetpoint()),
-                // new WaitCommand(1.5),
-                // new InstantCommand(
-                // () -> this.outerMagazine.magazineUp(.6))
-                // .alongWith(new MagazineRPM(this.shooter,
-                // this.innerMagazine))))))
                 .alongWith(new StartEndCommand(() -> swerveDrive.wheelsIn(), () -> {
                 }, swerveDrive)))
             .whenReleased(new InstantCommand(() -> {
                 this.innerMagazine.disable();
                 this.outerMagazine.magazineStop();
+                turret.alignEnabled = false;
             }, this.innerMagazine, this.outerMagazine));
 
         // Enable Shooter Magazine Combo While Operator A Button Held
