@@ -93,7 +93,7 @@ public class OuterMagazine extends PIDSubsystem {
 
     /**
      * Checks if the setpoint is reached.
-     * 
+     *
      * @return true if the setpoint is reached.
      */
     public boolean atSetpoint() {

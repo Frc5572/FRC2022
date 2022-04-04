@@ -14,7 +14,6 @@ import frc.robot.Constants;
 /**
  * Hood subsystem.
  */
-
 public class Hood extends SubsystemBase {
     private final CANCoderConfiguration hoodCanCoderConfig = new CANCoderConfiguration();
     private final CANCoder hoodCANCoder =
@@ -30,7 +29,6 @@ public class Hood extends SubsystemBase {
     /**
      * Hood subsystem.
      */
-
     public Hood() {
         /* hood CANCoder Configuration */
         hoodCanCoderConfig.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
@@ -91,7 +89,7 @@ public class Hood extends SubsystemBase {
 
     /**
      * Calculate required angle of the hood using Vision distance
-     * 
+     *
      * @param distance The distance from the target reported by vision
      * @return The angle at which the hood needs to be set to
      */
@@ -100,18 +98,32 @@ public class Hood extends SubsystemBase {
         return angle;
     }
 
+    /**
+     * Set Hood motor power to 0
+     */
     public void setZero() {
         hoodMotor.set(0);
     }
 
+    /**
+     * Set Hood power to .1
+     */
     public void setOne() {
         hoodMotor.set(.1);
     }
 
+    /**
+     * Set Hood power to -.1
+     */
     public void setOneNeg() {
         hoodMotor.set(-.1);
     }
 
+    /**
+     * Set hood to variable power
+     *
+     * @param power Power -1 to 1
+     */
     public void hoodSet(double power) {
         hoodMotor.set(power);
     }

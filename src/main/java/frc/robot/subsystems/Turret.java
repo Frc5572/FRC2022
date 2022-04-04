@@ -37,7 +37,7 @@ public class Turret extends SubsystemBase {
 
     /**
      * Set the turret to a certain power
-     * 
+     *
      * @param power Power to set the turret to
      */
     public void turretSet(double power) {

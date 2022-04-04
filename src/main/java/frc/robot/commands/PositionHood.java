@@ -16,22 +16,6 @@ public class PositionHood extends ProfiledPIDCommand {
     private double oldAngle;
     private double requestedAngle;
 
-    /**
-     * PositionHood using requestedAngle. Only adjusts once, meaning the command will need to be
-     * recalled if wanted again. A perfect use case for this could be during autonomous.
-     *
-     * @param hood Hood subsystem
-     * @param requestedAngle The user's requested angle of the hood
-     */
-    // public PositionHood(Hood hood, double requestedAngle) {
-    // super(new ProfiledPIDController(0.01, 0, 0, new TrapezoidProfile.Constraints(0, 0)),
-    // hood::getCANCoderPos, hood.calculateHoodPosition(requestedAngle),
-    // (output, setpoint) -> hood.useOutput(output));
-    // getController().setTolerance(1);
-    // addRequirements(hood);
-    // this.hood = hood;
-    // }
-
     public PositionHood(Hood hood) {
         super(new ProfiledPIDController(0.008, 0, 0, new TrapezoidProfile.Constraints(1, 2)),
             hood::getCANCoderPos, 150, (output, setpoint) -> hood.useOutput(output));
