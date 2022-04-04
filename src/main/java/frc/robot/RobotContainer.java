@@ -26,6 +26,7 @@ import frc.robot.commands.MagazineRPM;
 import frc.robot.commands.OutsidePC;
 import frc.robot.commands.ShooterRPM;
 import frc.robot.commands.TeleopSwerve;
+import frc.robot.commands.TurretForward;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.modules.Vision;
 import frc.robot.subsystems.InnerMagazine;
@@ -139,7 +140,8 @@ public class RobotContainer {
         new JoystickButton(driver, XboxController.Button.kA.value)
             .whenPressed(new OutsidePC(outsideClimber));
         new JoystickButton(driver, XboxController.Button.kStart.value)
-            .whenPressed(new InstantCommand(() -> insideClimber.enableClimbers())
+            .whenPressed(new TurretForward(turret)
+                .andThen(new InstantCommand(() -> insideClimber.enableClimbers()))
                 .andThen(new InstantCommand(() -> outsideClimber.enableClimbers()))
                 .andThen(new InstantCommand(() -> turret.alignEnabled = false)));
 
