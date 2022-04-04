@@ -26,6 +26,7 @@ import frc.robot.commands.InsidePC;
 import frc.robot.commands.OutsidePC;
 import frc.robot.commands.ShooterRPM;
 import frc.robot.commands.TeleopSwerve;
+import frc.robot.commands.WheelsIn;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.modules.Vision;
 import frc.robot.subsystems.Hood;
@@ -150,8 +151,7 @@ public class RobotContainer {
                 () -> turret.alignEnabled = false))
             .whileHeld(new ShooterRPM(this.shooter, 2100 / 60))
             .whileHeld(new FeedShooter(innerMagazine, outerMagazine, shooter))
-            .whileHeld(new StartEndCommand(() -> swerveDrive.wheelsIn(), () -> {
-            }, this.swerveDrive));
+            .whileHeld(new WheelsIn(swerveDrive));
 
         // Enable Shooter Magazine Combo While Operator A Button Held
         new JoystickButton(operator, XboxController.Button.kA.value)
@@ -159,8 +159,7 @@ public class RobotContainer {
                 () -> turret.alignEnabled = false))
             .whileHeld(new ShooterRPM(this.shooter, this.vision))
             .whileHeld(new FeedShooter(innerMagazine, outerMagazine, shooter))
-            .whileHeld(new StartEndCommand(() -> swerveDrive.wheelsIn(), () -> {
-            }, this.swerveDrive));
+            .whileHeld(new WheelsIn(swerveDrive));
 
         // Deploy Intake and Run Magazine While Operator B Held
         new JoystickButton(operator, XboxController.Button.kB.value)
