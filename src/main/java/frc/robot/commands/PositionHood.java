@@ -9,13 +9,17 @@ import frc.robot.subsystems.Hood;
 /**
  * PositionHood command will adjust hood based on preset angle or using Vision
  */
-
 public class PositionHood extends ProfiledPIDCommand {
     private Hood hood;
     private Vision vision;
     private double oldAngle;
     private double requestedAngle;
 
+    /**
+     * Position hood to specific Angle
+     *
+     * @param hood Hood subsystem
+     */
     public PositionHood(Hood hood) {
         super(new ProfiledPIDController(0.008, 0, 0, new TrapezoidProfile.Constraints(1, 2)),
             hood::getCANCoderPos, 150, (output, setpoint) -> hood.useOutput(output));
