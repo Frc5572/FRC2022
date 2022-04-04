@@ -10,7 +10,7 @@ import frc.robot.subsystems.OuterMagazine;
 import frc.robot.subsystems.Shooter;
 
 /**
- * Shoot Balls
+ * Feed Shooter with mag motors
  */
 public class FeedShooter extends SequentialCommandGroup {
     OuterMagazine outerMagazine;
