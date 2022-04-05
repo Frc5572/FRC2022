@@ -19,7 +19,6 @@ import frc.lib.AxisButton;
 import frc.robot.autos.P0;
 import frc.robot.autos.P1_3B;
 import frc.robot.autos.P_2B;
-// import frc.robot.commands.AlignHood;
 import frc.robot.commands.AlignTurret;
 import frc.robot.commands.DefaultLEDs;
 import frc.robot.commands.FeedShooter;
@@ -68,7 +67,6 @@ public class RobotContainer {
     private final Intake intake = new Intake();
     private final Turret turret = new Turret();
     private Vision vision = new Vision();
-    // private final Hood hood = new Hood();
     private final Shooter shooter = new Shooter();
     private final InsideClimber insideClimber;
     private final OutsideClimber outsideClimber;
