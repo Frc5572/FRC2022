@@ -11,9 +11,9 @@ import frc.robot.subsystems.Hood;
  */
 public class PositionHood extends ProfiledPIDCommand {
     private Hood hood;
-    private Vision vision;
-    private double oldAngle;
-    private double requestedAngle;
+    // private Vision vision;
+    // private double oldAngle;
+    // private double requestedAngle;
 
     /**
      * Position hood to specific Angle
@@ -43,7 +43,7 @@ public class PositionHood extends ProfiledPIDCommand {
         getController().setTolerance(1);
         addRequirements(hood);
         this.hood = hood;
-        this.vision = vision;
+        // this.vision = vision;
     }
 
     @Override

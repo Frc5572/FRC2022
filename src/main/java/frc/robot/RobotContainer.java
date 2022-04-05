@@ -29,7 +29,6 @@ import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.WheelsIn;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.modules.Vision;
-import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.InnerMagazine;
 import frc.robot.subsystems.InsideClimber;
 import frc.robot.subsystems.Intake;
@@ -66,7 +65,7 @@ public class RobotContainer {
     private final Intake intake = new Intake();
     private final Turret turret = new Turret();
     private Vision vision = new Vision();
-    private final Hood hood = new Hood();
+    // private final Hood hood = new Hood();
     private final Shooter shooter = new Shooter();
     private final InsideClimber insideClimber;
     private final OutsideClimber outsideClimber;
