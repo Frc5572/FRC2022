@@ -26,7 +26,7 @@ public class AlignHood extends CommandBase {
             calculated = -maxCalc;
         }
         this.hood.hoodSet(calculated);
-        System.out.println("HOOD POWER: " + calculated);
+        // System.out.println("HOOD POWER: " + calculated);
 
         // System.out.println(this.hood.calculateHoodPosition(45));
     }
