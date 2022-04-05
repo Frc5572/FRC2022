@@ -145,11 +145,19 @@ public class RobotContainer {
 
         /* Operator Buttons */
 
-        // Enable Shooter hardcoded setpoint right trigger
+        // Enable Shooter Tape Line setpoint right trigger
         new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
             .whileHeld(new StartEndCommand(() -> turret.alignEnabled = true,
                 () -> turret.alignEnabled = false))
-            .whileHeld(new ShooterRPM(this.shooter, 3700 / 60))
+            .whileHeld(new ShooterRPM(this.shooter, 2100 / 60))
+            .whileHeld(new FeedShooter(innerMagazine, outerMagazine, shooter))
+            .whileHeld(new WheelsIn(swerveDrive));
+
+        // Enable Shooter Safety Location setpoint right trigger
+        new AxisButton(operator, XboxController.Axis.kLeftTrigger.value)
+            .whileHeld(new StartEndCommand(() -> turret.alignEnabled = true,
+                () -> turret.alignEnabled = false))
+            .whileHeld(new ShooterRPM(this.shooter, 3100 / 60))
             .whileHeld(new FeedShooter(innerMagazine, outerMagazine, shooter))
             .whileHeld(new WheelsIn(swerveDrive));
 
