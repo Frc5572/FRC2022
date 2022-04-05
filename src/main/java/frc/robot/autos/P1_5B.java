@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.AutoAlignTurret;
 import frc.robot.commands.FeedShooter;
 import frc.robot.commands.ShooterRPM;
+import frc.robot.commands.TurnToAngle;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.modules.AutoBase;
 import frc.robot.modules.Vision;
@@ -60,8 +61,8 @@ public class P1_5B extends AutoBase {
             new InstantCommand(() -> outerMagazine.magazineStop()),
             new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter).withTimeout(3));
 
-        SequentialCommandGroup part2 = new SequentialCommandGroup(
-            new InstantCommand(() -> intake.intakeDeploy()),
+        SequentialCommandGroup part2 = new SequentialCommandGroup(new TurnToAngle(swerve, 90, true),
+            new TurnToAngle(swerve, 90, true), new InstantCommand(() -> intake.intakeDeploy()),
             new InstantCommand(() -> outerMagazine.magazineUp()), autoDrive2,
             new ZeroMotorsWaitCommand(swerve),
             new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter).withTimeout(3));
@@ -69,7 +70,8 @@ public class P1_5B extends AutoBase {
         SequentialCommandGroup part3 = new SequentialCommandGroup(
             new InstantCommand(() -> intake.intakeDeploy()),
             new InstantCommand(() -> outerMagazine.magazineUp()), autoDrive3,
-            new ZeroMotorsWaitCommand(swerve, 3), autoDrive4, new ZeroMotorsWaitCommand(swerve),
+            new ZeroMotorsWaitCommand(swerve, 3), new TurnToAngle(swerve, -90, true),
+            new TurnToAngle(swerve, -90, true), autoDrive4, new ZeroMotorsWaitCommand(swerve),
             new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter).withTimeout(3));
 
         addCommands(
