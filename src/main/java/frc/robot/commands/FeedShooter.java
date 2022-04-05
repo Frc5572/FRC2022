@@ -24,7 +24,7 @@ public class FeedShooter extends SequentialCommandGroup {
      * @param shooter Shooter Subsystem
      */
     public FeedShooter(InnerMagazine innerMagazine, OuterMagazine outerMagazine, Shooter shooter) {
-        addRequirements(shooter, innerMagazine, outerMagazine);
+        addRequirements(innerMagazine, outerMagazine);
         this.innerMagazine = innerMagazine;
         this.outerMagazine = outerMagazine;
 

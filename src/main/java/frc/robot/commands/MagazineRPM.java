@@ -43,8 +43,14 @@ public class MagazineRPM extends CommandBase {
 
     private void updateSetpoint() {
         double shooterRPM = this.shooter.getSetpoint();
-        if (shooterRPM >= (5000 / 60)) {
+        if (shooterRPM >= (3300 / 60)) {
+            this.innerMagazine.setSetpoint(750 / 60);
+        } else if (shooterRPM >= (3100 / 60)) {
+            this.innerMagazine.setSetpoint(850 / 60);
+        } else if (shooterRPM >= (2900 / 60)) {
             this.innerMagazine.setSetpoint(1000 / 60);
+        } else if (shooterRPM >= (2300 / 60)) {
+            this.innerMagazine.setSetpoint(1100 / 60);
         } else {
             this.innerMagazine.setSetpoint(2000 / 60);
         }

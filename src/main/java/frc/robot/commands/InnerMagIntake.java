@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.InnerMagazine;
 
 /**
@@ -16,6 +17,7 @@ public class InnerMagIntake extends CommandBase {
 
     @Override
     public void initialize() {
+        this.innerMagazine.setSetpoint(Constants.InnerMagazinePID.kInnerMagazineTargetRPS);
         this.innerMagazine.enable();
     }
 
