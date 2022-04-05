@@ -55,7 +55,7 @@ public class P1_3B extends AutoBase {
         PPSwerveControllerCommand autoDrive2 = baseSwerveCommand(trajectory2);
         PathPlannerState initialState = trajectory.getInitialState();
 
-        SequentialCommandGroup part1 = new SequentialCommandGroup(
+        SequentialCommandGroup part1 =
             (new WaitCommand(.2).andThen(autoDrive).andThen(new ZeroMotorsWaitCommand(swerve, 1)))
                 .deadlineWith(new StartEndCommand(() -> {
                     intake.intakeDeploy();
@@ -63,22 +63,23 @@ public class P1_3B extends AutoBase {
                 }, () -> {
                     intake.intakeRetract();
                     outerMagazine.magazineStop();
-                })),
-            new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter).withTimeout(3));
+                })).andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter)
+                    .withTimeout(3));
 
-        SequentialCommandGroup part2 = new SequentialCommandGroup(new TurnToAngle(swerve, 90, true),
-            new TurnToAngle(swerve, 90, true),
-            (new WaitCommand(.2).andThen(autoDrive2)
-                .andThen(new ZeroMotorsWaitCommand(swerve, 1)
-                    .withInterrupt(() -> innerMagazine.magSense.get())))
-                        .deadlineWith(new StartEndCommand(() -> {
-                            intake.intakeDeploy();
-                            outerMagazine.magazineUp();
-                        }, () -> {
-                            intake.intakeRetract();
-                            outerMagazine.magazineStop();
-                        }), new InnerMagIntake(this.innerMagazine)),
-            new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter).withTimeout(2));
+        SequentialCommandGroup part2 =
+            new TurnToAngle(swerve, 90, true).andThen(new TurnToAngle(swerve, 90, true))
+                .andThen((new WaitCommand(.2).andThen(autoDrive2)
+                    .andThen(new ZeroMotorsWaitCommand(swerve, 1)
+                        .withInterrupt(() -> innerMagazine.magSense.get())))
+                            .deadlineWith(new StartEndCommand(() -> {
+                                intake.intakeDeploy();
+                                outerMagazine.magazineUp();
+                            }, () -> {
+                                intake.intakeRetract();
+                                outerMagazine.magazineStop();
+                            }), new InnerMagIntake(this.innerMagazine)))
+                .andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter)
+                    .withTimeout(2));
 
         addCommands(
             new InstantCommand(

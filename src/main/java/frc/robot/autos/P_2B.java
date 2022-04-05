@@ -61,7 +61,7 @@ public class P_2B extends AutoBase {
         PPSwerveControllerCommand autoDrive = baseSwerveCommand(trajectory);
         PathPlannerState initialState = trajectory.getInitialState();
 
-        SequentialCommandGroup part1 = new SequentialCommandGroup(
+        SequentialCommandGroup part1 =
             (new WaitCommand(.2).andThen(autoDrive).andThen(new ZeroMotorsWaitCommand(swerve, 1)))
                 .deadlineWith(new StartEndCommand(() -> {
                     intake.intakeDeploy();
@@ -69,8 +69,8 @@ public class P_2B extends AutoBase {
                 }, () -> {
                     intake.intakeRetract();
                     outerMagazine.magazineStop();
-                })),
-            new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter).withTimeout(3));
+                })).andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter)
+                    .withTimeout(3));
 
         addCommands(
             new InstantCommand(
