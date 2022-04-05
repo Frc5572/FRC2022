@@ -19,6 +19,7 @@ public class Robot extends TimedRobot {
     private Command autoChooser;
 
 
+
     // private Ultrasonic ultrasonic = new Ultrasonic();
     /**
      * This function is run when the robot is first started up and should be used for any
@@ -32,6 +33,7 @@ public class Robot extends TimedRobot {
         // and put our
         // autonomous chooser on the dashboard.
         robotContainer = new RobotContainer();
+
     }
 
     /**

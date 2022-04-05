@@ -52,7 +52,14 @@ public final class Constants {
         public static final int intakeFowardChannel = 3;
     }
 
-    public static final int magazineSensor = 9;
+    /**
+     * LED constants
+     */
+    public static final class LEDConstants {
+        public static final int PWMPort = 9;
+        public static final int LEDCount = 42;
+    }
+
 
     /**
      * Vision constants for limelight calculations.
@@ -256,6 +263,8 @@ public final class Constants {
         public static final int kUnitsPerRevolution = 2048;
         public static final double kSVolts = 0.67723;
         public static final double kVVoltSecondsPerRotation = 0.10766;
+
+        public static final int sensorPWNPort = 1;
     }
 
     /**
