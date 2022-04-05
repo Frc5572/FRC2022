@@ -17,7 +17,7 @@ import frc.robot.Constants;
 public class InnerMagazine extends PIDSubsystem {
     private WPI_TalonFX innerMagazineMotor =
         new WPI_TalonFX(Constants.Motors.innerMagazineMotorID, "canivore");
-    public DigitalInput magSense = new DigitalInput(1);
+    public DigitalInput magSense = new DigitalInput(Constants.InnerMagazinePID.sensorPWNPort);
     private final SimpleMotorFeedforward magazineFeed = new SimpleMotorFeedforward(
         Constants.InnerMagazinePID.kSVolts, Constants.InnerMagazinePID.kVVoltSecondsPerRotation);
 

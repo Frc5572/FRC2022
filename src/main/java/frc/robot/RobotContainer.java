@@ -73,7 +73,7 @@ public class RobotContainer {
     private final InsideClimber insideClimber;
     private final OutsideClimber outsideClimber;
     public PneumaticHub ph = new PneumaticHub();
-    private LEDs leds = new LEDs(9, 42);
+    private LEDs leds = new LEDs(Constants.LEDConstants.PWMPort, Constants.LEDConstants.LEDCount);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
