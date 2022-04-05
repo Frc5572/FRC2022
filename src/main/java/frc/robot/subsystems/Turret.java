@@ -23,7 +23,7 @@ public class Turret extends SubsystemBase {
     public boolean currentDirection = true; // True for CW, False for CCW
     public int rotations = 0;
     public int cancoderOffset = 20;
-    public double previousCanCoderValue = 500;
+    public double previousCanCoderValue = getCANCoderPos();
 
     public Turret() {
         turretMotor.setNeutralMode(NeutralMode.Brake);
@@ -42,6 +42,12 @@ public class Turret extends SubsystemBase {
         } else if (newCanCoderValue > 300 && previousCanCoderValue < 60) {
             rotations--;
         }
+        if (newCanCoderValue - previousCanCoderValue > 0) {
+            currentDirection = true;
+        } else if (newCanCoderValue - previousCanCoderValue < 0) {
+            currentDirection = false;
+        }
+        previousCanCoderValue = newCanCoderValue;
     }
 
     public void turretLeft() {
@@ -58,20 +64,6 @@ public class Turret extends SubsystemBase {
 
     public void turretStop() {
         turretMotor.set(0);
-    }
-
-    /**
-     * Change the Idle mode of the motor
-     *
-     * @param mode True for brake mode, False for Coast
-     */
-    public void turretBrakeMode(boolean mode) {
-        // if (mode) {
-        // turretMotor.setNeutralMode(NeutralMode.Brake);
-        // } else {
-        // turretMotor.setNeutralMode(NeutralMode.Coast);
-        // }
-
     }
 
     public double getCANCoderPos() {
