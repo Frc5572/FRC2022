@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.lib.AxisButton;
-import frc.robot.autos.LimelightAuto;
 import frc.robot.autos.P0;
 import frc.robot.autos.P1_3B;
 import frc.robot.autos.P_2B;
@@ -30,6 +29,7 @@ import frc.robot.commands.OutsidePC;
 import frc.robot.commands.ShooterRPM;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.WheelsIn;
+import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.modules.Vision;
 import frc.robot.subsystems.InnerMagazine;
 import frc.robot.subsystems.InsideClimber;
@@ -90,7 +90,7 @@ public class RobotContainer {
         leds.setDefaultCommand(new DefaultLEDs(leds));
         // hood.setDefaultCommand(new PositionHood(hood, vision));
         SmartDashboard.putData("Choose Auto: ", autoChooser);
-        autoChooser.addOption("Limelight Auto", new LimelightAuto(swerveDrive, turret, vision));
+        autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
         autoChooser.addOption("P0", new P0(swerveDrive));
         autoChooser.addOption("P_2B",
             new P_2B(swerveDrive, shooter, innerMagazine, outerMagazine, intake, turret, vision));
