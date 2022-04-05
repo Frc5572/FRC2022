@@ -35,6 +35,9 @@ public class OuterMagazine extends PIDSubsystem {
         outerMagazineMotor.setIdleMode(IdleMode.kBrake);
     }
 
+    /**
+     * Use feedforward voltage values to calculate the output.
+     */
     @Override
     public void useOutput(double output, double setpoint) {
         outerMagazineMotor.setVoltage(output + magazineFeed.calculate(setpoint));
@@ -68,6 +71,9 @@ public class OuterMagazine extends PIDSubsystem {
         outerMagazineMotor.set(0);
     }
 
+    /**
+     * Gets the rotations per second of the magazine.
+     */
     @Override
     public double getMeasurement() {
         double rotPerSec = encoder.getVelocity();
@@ -75,6 +81,9 @@ public class OuterMagazine extends PIDSubsystem {
         return rotPerSec;
     }
 
+    /**
+     * Sets the setpoint for the outer magazine using RPS and voltage calculations.
+     */
     @Override
     public void periodic() {
         if (m_enabled) {
@@ -82,6 +91,11 @@ public class OuterMagazine extends PIDSubsystem {
         }
     }
 
+    /**
+     * Checks if the setpoint is reached.
+     *
+     * @return true if the setpoint is reached.
+     */
     public boolean atSetpoint() {
         return m_controller.atSetpoint();
     }
