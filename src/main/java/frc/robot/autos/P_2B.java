@@ -8,6 +8,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.AutoAlignTurret;
 import frc.robot.commands.FeedShooter;
 import frc.robot.commands.ShooterRPM;
@@ -59,17 +61,21 @@ public class P_2B extends AutoBase {
         PPSwerveControllerCommand autoDrive = baseSwerveCommand(trajectory);
         PathPlannerState initialState = trajectory.getInitialState();
 
-        SequentialCommandGroup part1 = new SequentialCommandGroup(autoDrive,
-            new ZeroMotorsWaitCommand(swerve),
-            new InstantCommand(() -> outerMagazine.magazineStop()),
+        SequentialCommandGroup part1 = new SequentialCommandGroup(
+            (new WaitCommand(.2).andThen(autoDrive).andThen(new ZeroMotorsWaitCommand(swerve, 1)))
+                .deadlineWith(new StartEndCommand(() -> {
+                    intake.intakeDeploy();
+                    outerMagazine.magazineUp();
+                }, () -> {
+                    intake.intakeRetract();
+                    outerMagazine.magazineStop();
+                })),
             new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter).withTimeout(3));
 
         addCommands(
             new InstantCommand(
                 () -> swerve.resetOdometry(new Pose2d(initialState.poseMeters.getTranslation(),
                     initialState.holonomicRotation))),
-            new InstantCommand(() -> intake.intakeDeploy()),
-            new InstantCommand(() -> outerMagazine.magazineUp()),
             new ParallelDeadlineGroup(part1.deadlineWith(new ShooterRPM(shooter, 2100 / 60)),
                 new AutoAlignTurret(turret, vision)));
     }
