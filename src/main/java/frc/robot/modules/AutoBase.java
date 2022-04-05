@@ -15,7 +15,7 @@ import frc.robot.subsystems.Swerve;
  */
 public class AutoBase extends SequentialCommandGroup {
     public Swerve swerve;
-    public ProfiledPIDController thetaController =
+    public static final ProfiledPIDController thetaController =
         new ProfiledPIDController(Constants.AutoConstants.kPThetaController, 0, 0,
             Constants.AutoConstants.kThetaControllerConstraints);
 

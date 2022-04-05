@@ -5,62 +5,126 @@ import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import com.ctre.phoenix.sensors.SensorTimeBase;
-import edu.wpi.first.wpilibj.Servo;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.modules.Vision;
 
 /**
- * <p>
  * Hood subsystem.
- * </p>
  */
-
 public class Hood extends SubsystemBase {
-    CANCoderConfiguration hoodCanCoderConfig = new CANCoderConfiguration();
-    CANCoder hoodCANCoder = new CANCoder(Constants.HoodConstants.hoodCANCoderID, "canivore");
-    public Servo hoodServo = new Servo(Constants.HoodConstants.hoodServoID);
-    // public PWM test = new PWM(Constants.HoodConstants.hoodServoID);
-    Vision vision;
+    private final CANCoderConfiguration hoodCanCoderConfig = new CANCoderConfiguration();
+    private final CANCoder hoodCANCoder =
+        new CANCoder(Constants.HoodConstants.hoodCANCoderID, "canivore");
+    private final CANSparkMax hoodMotor =
+        new CANSparkMax(Constants.Motors.hoodMotorID, MotorType.kBrushless);
     double position;
     double calculatedPosition;
+    double mOutput;
+    double speed;
+    double maxSpeed = 0.2;
 
     /**
      * Hood subsystem.
      */
-
-    public Hood(Vision vision) {
-        this.vision = vision;
+    public Hood() {
         /* hood CANCoder Configuration */
         hoodCanCoderConfig.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
         hoodCanCoderConfig.sensorDirection = Constants.HoodConstants.hoodCanCoderInvert;
         hoodCanCoderConfig.initializationStrategy =
             SensorInitializationStrategy.BootToAbsolutePosition;
         hoodCanCoderConfig.sensorTimeBase = SensorTimeBase.PerSecond;
-        hoodServo.setBounds(2.5, 1.52, 1.5, 1.48, 0.5);
+        hoodMotor.setIdleMode(IdleMode.kBrake);
     }
 
     /**
-     * <p>
-     * Set hood position.
-     * </p>
+     * Calculate Hood Position using requested angle
+     *
+     * @param requestedAngle The requested angle at which the hood needs to be set to
+     * @return The position of the CANCoder
      */
-
-    public void setHoodPosition() {
-        // replace this line with hood position calculation using
-        // distance!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        position = vision.getDistance();
-        calculatedPosition = Math.pow(position, 2) * position + 3000000;
-        double error = position - hoodCANCoder.getAbsolutePosition();
-        System.out.println(error);
-        double speed = Math.abs(error) < 5 ? 0.0 : error < 0 ? .5 : -.5;
-        System.out.println(speed);
-        hoodServo.setSpeed(speed);
+    public double calculateHoodPosition(double requestedAngle) {
+        double rateOfChange =
+            (Constants.HoodConstants.maxPosition - Constants.HoodConstants.minPosition)
+                / (Constants.HoodConstants.maxAngle - Constants.HoodConstants.minAngle);
+        double initOffset =
+            Constants.HoodConstants.minPosition - (rateOfChange * Constants.HoodConstants.minAngle);
+        return rateOfChange * requestedAngle + initOffset;
     }
 
+    /**
+     * Set the Hood position
+     */
+    public void setHoodPosition() {
+        speed = (Constants.HoodConstants.minPosition - getCANCoderPos()) / 300;
+        if (speed > 0) {
+            if (speed > maxSpeed) {
+                hoodMotor.set(maxSpeed);
+            } else {
+                hoodMotor.set(speed);
+            }
+        } else {
+            if (Math.abs(speed) > maxSpeed) {
+                hoodMotor.set(-maxSpeed);
+            } else {
+                hoodMotor.set(speed);
+            }
+        }
+    }
+
+    /**
+     * Get CANCoder Position
+     *
+     * @return CANCoder position
+     */
     public double getCANCoderPos() {
-        // System.out.println(hoodCANCoder.getAbsolutePosition());
         return hoodCANCoder.getAbsolutePosition();
     }
 
+    public void useOutput(double output) {
+        hoodMotor.set(output);
+    }
+
+    /**
+     * Calculate required angle of the hood using Vision distance
+     *
+     * @param distance The distance from the target reported by vision
+     * @return The angle at which the hood needs to be set to
+     */
+    public double calculateAngleFromDistance(double distance) {
+        double angle = 0;
+        return angle;
+    }
+
+    /**
+     * Set Hood motor power to 0
+     */
+    public void setZero() {
+        hoodMotor.set(0);
+    }
+
+    /**
+     * Set Hood power to .1
+     */
+    public void setOne() {
+        hoodMotor.set(.1);
+    }
+
+    /**
+     * Set Hood power to -.1
+     */
+    public void setOneNeg() {
+        hoodMotor.set(-.1);
+    }
+
+    /**
+     * Set hood to variable power
+     *
+     * @param power Power -1 to 1
+     */
+    public void hoodSet(double power) {
+        hoodMotor.set(power);
+    }
 }

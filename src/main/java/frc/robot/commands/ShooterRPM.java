@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.modules.Vision;
 import frc.robot.subsystems.Shooter;
@@ -39,6 +40,7 @@ public class ShooterRPM extends CommandBase {
 
     @Override
     public void initialize() {
+        SmartDashboard.putNumber("SetPoint (RPM)", this.shooter.getSetpoint() * 60);
         // System.out.println("STARTING SHOOTER");
         // System.out.println("Initial RPM: " + this.shooter.getSetpoint());
         if (this.vision == null && this.setRPS > 0) {
@@ -54,9 +56,10 @@ public class ShooterRPM extends CommandBase {
         if (this.vision != null) {
             updateSetpoint();
         }
+        System.out.println("SHOOTER RPM: " + this.shooter.getRPM());
         // System.out.println("Roller RPM: " + this.shooter.getRollerRPM());
 
-        // System.out.println("SHOOTER SETPOINT: " + this.shooter.getSetpoint());
+        System.out.println("SHOOTER SETPOINT: " + this.shooter.getSetpoint());
     }
 
     @Override
@@ -67,10 +70,10 @@ public class ShooterRPM extends CommandBase {
     }
 
     private void updateSetpoint() {
-        double distance = this.vision.getDistance() / 12;
+        double distance = this.vision.getDistance();
         // System.out.println("Vision Distance: " + distance);
-        newDisRPM = 4.10774 * Math.pow(distance, 3) - 126.12794 * Math.pow(distance, 2)
-            + 1368.53535 * Math.pow(distance, 1) - 1095 - 200;
+        newDisRPM = -0.0237283391598 * Math.pow(distance, 2)
+            + 20.7706947149615 * Math.pow(distance, 1) - 31.1626020844781;
 
         // newDisRPM =
         // 3.452380952381 * Math.pow(distance, 3) - 61.7857142857143 * Math.pow(distance, 2)
@@ -88,10 +91,10 @@ public class ShooterRPM extends CommandBase {
         // newDisRPM = 3.45238 * Math.pow(distance, 3) - 56 * Math.pow(distance, 2)
         // + 345 * Math.pow(distance, 1) + 2975;
         if (Math.abs(curDisRPM - newDisRPM) >= 100) {
-            if (newDisRPM >= 6000) {
-                curDisRPM = 6000;
-            } else if (newDisRPM <= 3500) {
-                curDisRPM = 3500;
+            if (newDisRPM >= 4000) {
+                curDisRPM = 4000;
+            } else if (newDisRPM <= 2000) {
+                curDisRPM = 2000;
             } else {
                 curDisRPM = newDisRPM;
             }
