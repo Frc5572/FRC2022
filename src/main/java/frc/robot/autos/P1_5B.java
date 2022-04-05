@@ -7,8 +7,11 @@ import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.AutoAlignTurret;
 import frc.robot.commands.FeedShooter;
+import frc.robot.commands.InnerMagIntake;
 import frc.robot.commands.ShooterRPM;
 import frc.robot.commands.TurnToAngle;
 import frc.robot.commands.ZeroMotorsWaitCommand;
@@ -62,16 +65,30 @@ public class P1_5B extends AutoBase {
             new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter).withTimeout(3));
 
         SequentialCommandGroup part2 = new SequentialCommandGroup(new TurnToAngle(swerve, 90, true),
-            new TurnToAngle(swerve, 90, true), new InstantCommand(() -> intake.intakeDeploy()),
-            new InstantCommand(() -> outerMagazine.magazineUp()), autoDrive2,
-            new ZeroMotorsWaitCommand(swerve),
-            new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter).withTimeout(3));
+            new TurnToAngle(swerve, 90, true),
+            (new WaitCommand(.5).andThen(autoDrive2).andThen(new ZeroMotorsWaitCommand(swerve, 1)))
+                .deadlineWith(new StartEndCommand(() -> {
+                    intake.intakeDeploy();
+                    outerMagazine.magazineUp();
+                }, () -> {
+                    intake.intakeRetract();
+                    outerMagazine.magazineStop();
+                }), new InnerMagIntake(this.innerMagazine)),
+            new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter).withTimeout(2));
 
         SequentialCommandGroup part3 = new SequentialCommandGroup(
-            new InstantCommand(() -> intake.intakeDeploy()),
-            new InstantCommand(() -> outerMagazine.magazineUp()), autoDrive3,
-            new ZeroMotorsWaitCommand(swerve, 3), new TurnToAngle(swerve, -90, true),
-            new TurnToAngle(swerve, -90, true), autoDrive4, new ZeroMotorsWaitCommand(swerve),
+            (new WaitCommand(.5).andThen(autoDrive3).andThen(new ZeroMotorsWaitCommand(swerve, 3)))
+                .deadlineWith(new StartEndCommand(() -> {
+                    intake.intakeDeploy();
+                    outerMagazine.magazineUp();
+                }, () -> {
+                    intake.intakeRetract();
+                    outerMagazine.magazineStop();
+                }), new InnerMagIntake(this.innerMagazine)));
+
+        SequentialCommandGroup part4 = new SequentialCommandGroup(
+            new TurnToAngle(swerve, -90, true), new TurnToAngle(swerve, -90, true), autoDrive4,
+            new ZeroMotorsWaitCommand(swerve),
             new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter).withTimeout(3));
 
         addCommands(
@@ -81,8 +98,8 @@ public class P1_5B extends AutoBase {
             new InstantCommand(() -> intake.intakeDeploy()),
             new InstantCommand(() -> outerMagazine.magazineUp()),
             new SequentialCommandGroup(part1.deadlineWith(new ShooterRPM(shooter, 2100 / 60)),
-                part2.deadlineWith(new ShooterRPM(shooter, 3000 / 60)),
-                part3.deadlineWith(new ShooterRPM(shooter, 3000 / 60)))
+                part2.deadlineWith(new ShooterRPM(shooter, 3000 / 60)), part3,
+                part4.deadlineWith(new ShooterRPM(shooter, 3000 / 60)))
                     .deadlineWith(new AutoAlignTurret(turret, vision)));
     }
 
