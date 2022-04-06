@@ -38,7 +38,8 @@ public class TurnToAngle extends ProfiledPIDCommand {
             // This should return the measurement
             swerve::getRotation,
             // This should return the goal (can also be a constant)
-            isRelative ? Conversions.reduceTo0_360(swerve.getRotation() + angle) : angle,
+            isRelative ? Conversions.reduceTo0_360(swerve.getRotation() + angle)
+                : Conversions.reduceTo0_360(angle),
             // This uses the output
             (output, setpoint) -> swerve.useOutput(output));
         // Use addRequirements() here to declare subsystem dependencies.
@@ -55,9 +56,9 @@ public class TurnToAngle extends ProfiledPIDCommand {
 
     @Override
     public void initialize() {
-        getController()
-            .setGoal(this.isRelative ? Conversions.reduceTo0_360(swerve.getRotation() + this.goal)
-                : this.goal);
+        getController().setGoal(this.isRelative
+            ? Conversions.reduceTo0_360(swerve.getRotation() + Conversions.reduceTo0_360(this.goal))
+            : this.goal);
         super.initialize();
     }
 
