@@ -9,7 +9,7 @@ import frc.robot.Constants;
  */
 public class Intake extends SubsystemBase {
     WPI_TalonFX intakeMotor = new WPI_TalonFX(Constants.Motors.intakeMotorNum, "canivore");
-    private static final double intakeSpeed = .5;
+    private static final double intakeSpeed = .6;
     private static final int intakeStop = 0;
 
     /**
