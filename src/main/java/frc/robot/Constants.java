@@ -65,6 +65,16 @@ public final class Constants {
     }
 
     /**
+     * Turret constants for turret movement.
+     */
+    public static final class TurretConstants {
+        public static final double maxPower = 0.2;
+        public static final double cancoderMaxPower = 0.05;
+        public static final int rotationsAtFront = 33;
+        public static final double cancoderTolerance = 10;
+    }
+
+    /**
      * Creates class and constants for Swerve drive.
      */
     public static final class Swerve {

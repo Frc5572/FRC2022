@@ -18,7 +18,7 @@ public class Turret extends SubsystemBase {
         new WPI_TalonFX(Constants.Motors.turretMotorID, "canivore");
     CANCoder turretCANCoder = new CANCoder(Constants.HoodConstants.hoodCANCoderID, "canivore");
     CANCoderConfiguration turretCANCoderConfig = new CANCoderConfiguration();
-    public static final double spinLeft = -0.2;
+    public static final double turretPower = Constants.TurretConstants.cancoderMaxPower;
     public boolean alignEnabled = true;
     public boolean currentDirection = true; // True for CW, False for CCW
     public int rotations = 0;
@@ -42,20 +42,15 @@ public class Turret extends SubsystemBase {
         } else if (newCanCoderValue > 300 && previousCanCoderValue < 60) {
             rotations--;
         }
-        if (newCanCoderValue - previousCanCoderValue > 0) {
-            currentDirection = true;
-        } else if (newCanCoderValue - previousCanCoderValue < 0) {
-            currentDirection = false;
-        }
         previousCanCoderValue = newCanCoderValue;
     }
 
     public void turretLeft() {
-        turretMotor.set(spinLeft);
+        turretMotor.set(-turretPower);
     }
 
     public void turretRight() {
-        turretMotor.set(-spinLeft);
+        turretMotor.set(turretPower);
     }
 
     public void turretSet(double power) {

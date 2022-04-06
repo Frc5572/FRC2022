@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Turret;
 
 /**
@@ -9,9 +10,9 @@ import frc.robot.subsystems.Turret;
 
 public class TurretForward extends CommandBase {
     Turret turret;
-    int rotationsAtFront = 0;
-    double maxPower = .2;
-    double turretTolerance = 10.0;
+    int rotationsAtFront = Constants.TurretConstants.rotationsAtFront;
+    double maxPower = Constants.TurretConstants.maxPower;
+    double cancoderTolerance = Constants.TurretConstants.cancoderTolerance;
 
     /**
      *
@@ -32,11 +33,13 @@ public class TurretForward extends CommandBase {
     public void execute() {
         double power = 0;
         double cancoderError = this.turret.turretError();
-        if (this.turret.rotations != rotationsAtFront
-            && Math.abs(cancoderError) > turretTolerance) {
-            power = this.turret.currentDirection ? maxPower : -maxPower;
-        } else if (this.turret.rotations == rotationsAtFront) {
-            power = (cancoderError / 500);
+        if (this.turret.rotations > rotationsAtFront) {
+            power = -maxPower;
+        } else if (this.turret.rotations < rotationsAtFront) {
+            power = maxPower;
+        } else if (this.turret.rotations == rotationsAtFront
+            && Math.abs(cancoderError) > cancoderTolerance) {
+            power = (cancoderError / 750);
         } else {
             power = 0;
         }
@@ -46,6 +49,6 @@ public class TurretForward extends CommandBase {
     @Override
     public boolean isFinished() {
         double cancoderError = this.turret.turretError();
-        return Math.abs(cancoderError) < turretTolerance;
+        return Math.abs(cancoderError) < cancoderTolerance;
     }
 }
