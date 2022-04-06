@@ -70,19 +70,19 @@ public class P1_5B extends AutoBase {
                 })).andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter)
                     .withTimeout(3));
 
-        SequentialCommandGroup part2 =
-            new TurnToAngle(swerve, 170, false).andThen(new TurnToAngle(swerve, 250, false))
-                .andThen((autoDrive2.andThen(new ZeroMotorsWaitCommand(swerve, 3)
-                    .withInterrupt(() -> innerMagazine.magSense.get())))
-                        .deadlineWith(new StartEndCommand(() -> {
-                            intake.intakeDeploy();
-                            outerMagazine.magazineUp();
-                        }, () -> {
-                            intake.intakeRetract();
-                            outerMagazine.magazineStop();
-                        }), new InnerMagIntake(this.innerMagazine)))
-                .andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter)
-                    .withTimeout(2));
+        SequentialCommandGroup part2 = new TurnToAngle(swerve, 170, false, true)
+            .andThen(new TurnToAngle(swerve, 250, false, true))
+            .andThen((autoDrive2.andThen(new ZeroMotorsWaitCommand(swerve, 3)
+                .withInterrupt(() -> innerMagazine.magSense.get())))
+                    .deadlineWith(new StartEndCommand(() -> {
+                        intake.intakeDeploy();
+                        outerMagazine.magazineUp();
+                    }, () -> {
+                        intake.intakeRetract();
+                        outerMagazine.magazineStop();
+                    }), new InnerMagIntake(this.innerMagazine)))
+            .andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter)
+                .withTimeout(2));
 
         ParallelDeadlineGroup part3 = (autoDrive3.andThen(new ZeroMotorsWaitCommand(swerve, 3)))
             .deadlineWith(new StartEndCommand(() -> {
@@ -93,7 +93,7 @@ public class P1_5B extends AutoBase {
                 outerMagazine.magazineStop();
             }), new InnerMagIntake(this.innerMagazine));
 
-        SequentialCommandGroup part4 = new TurnToAngle(swerve, 315, false).andThen(autoDrive4)
+        SequentialCommandGroup part4 = new TurnToAngle(swerve, 315, false, true).andThen(autoDrive4)
             .andThen(new ZeroMotorsWaitCommand(swerve))
             .andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter)
                 .withTimeout(3));
