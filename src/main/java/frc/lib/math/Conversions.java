@@ -78,7 +78,7 @@ public class Conversions {
      * @return normalized angle
      */
     public static double reduceTo0_360(double goal) {
-        return Math.floorMod(Math.round(goal), 360);
+        return goal % 360;
     }
 
 }

@@ -24,17 +24,16 @@ public class TurnToAngle extends ProfiledPIDCommand {
      * @param angle Requested angle to turn to
      * @param isRelative Whether the angle is relative to the current angle: true = relative, false
      *        = absolute
-     * @param shortestPath Whether to enable continuous input to calculate the shortest path to turn
      */
 
-    public TurnToAngle(Swerve swerve, double angle, boolean isRelative, boolean shortestPath) {
+    public TurnToAngle(Swerve swerve, double angle, boolean isRelative) {
         super(
             // The ProfiledPIDController used by the command
             new ProfiledPIDController(
                 // The PID gainss
                 .01, 0, 0,
                 // The motion profile constraints
-                new TrapezoidProfile.Constraints(720, 1080)),
+                new TrapezoidProfile.Constraints(360, 1080)),
             // This should return the measurement
             swerve::getRotation,
             // This should return the goal (can also be a constant)
@@ -45,9 +44,7 @@ public class TurnToAngle extends ProfiledPIDCommand {
         // Use addRequirements() here to declare subsystem dependencies.
         // Configure additional PID options by calling `getController` here.
         getController().setTolerance(1);
-        if (shortestPath) {
-            getController().enableContinuousInput(0, 360);
-        }
+        getController().enableContinuousInput(0, 360);
         addRequirements(swerve);
         this.swerve = swerve;
         this.isRelative = isRelative;
@@ -56,10 +53,10 @@ public class TurnToAngle extends ProfiledPIDCommand {
 
     @Override
     public void initialize() {
-        getController().setGoal(this.isRelative
-            ? Conversions.reduceTo0_360(swerve.getRotation() + Conversions.reduceTo0_360(this.goal))
-            : this.goal);
         super.initialize();
+        getController()
+            .setGoal(this.isRelative ? Conversions.reduceTo0_360(swerve.getRotation() + this.goal)
+                : Conversions.reduceTo0_360(this.goal));
     }
 
     @Override

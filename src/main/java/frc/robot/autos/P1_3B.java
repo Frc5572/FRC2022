@@ -48,8 +48,8 @@ public class P1_3B extends AutoBase {
         this.intake = intake;
         this.turret = turret;
 
-        PathPlannerTrajectory trajectory = PathPlanner.loadPath("P1_3B_part1", 6, 4);
-        PathPlannerTrajectory trajectory2 = PathPlanner.loadPath("P1_3B_part2", 6, 4);
+        PathPlannerTrajectory trajectory = PathPlanner.loadPath("P1_3B_part1", 6, 3);
+        PathPlannerTrajectory trajectory2 = PathPlanner.loadPath("P1_3B_part2", 6, 3);
         PPSwerveControllerCommand autoDrive = baseSwerveCommand(trajectory);
         PPSwerveControllerCommand autoDrive2 = baseSwerveCommand(trajectory2);
         PathPlannerState initialState = trajectory.getInitialState();
@@ -60,20 +60,19 @@ public class P1_3B extends AutoBase {
                     intake.intakeDeploy();
                     outerMagazine.magazineUp();
                 }, () -> {
-                    intake.intakeRetract();
+                    intake.intakeDeploy(.3);
                     outerMagazine.magazineStop();
                 })).andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter)
                     .withTimeout(3));
 
-        // new TurnToAngle(swerve, 250, true, false)
-        SequentialCommandGroup part2 = new TurnToAngle(swerve, 250, true, false)
+        SequentialCommandGroup part2 = new TurnToAngle(swerve, 250, false)
             .andThen((autoDrive2.andThen(new ZeroMotorsWaitCommand(swerve, 3)
                 .withInterrupt(() -> innerMagazine.magSense.get())))
                     .deadlineWith(new StartEndCommand(() -> {
                         intake.intakeDeploy();
                         outerMagazine.magazineUp();
                     }, () -> {
-                        intake.intakeRetract();
+                        intake.intakeDeploy(.3);
                         outerMagazine.magazineStop();
                     }), new InnerMagIntake(this.innerMagazine)))
             .andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter)

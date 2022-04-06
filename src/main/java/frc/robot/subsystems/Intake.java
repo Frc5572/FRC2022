@@ -32,6 +32,13 @@ public class Intake extends SubsystemBase {
     }
 
     /**
+     * Runs the intake at a certain speed and extends the intake solenoid.
+     */
+    public void intakeDeploy(double speed) {
+        this.intakeMotor.set(speed);
+    }
+
+    /**
      * Stops the intake from running.
      */
     public void stop() {
