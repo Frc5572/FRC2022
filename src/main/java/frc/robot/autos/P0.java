@@ -22,7 +22,7 @@ public class P0 extends AutoBase {
      */
     public P0(Swerve swerve) {
         super(swerve);
-        PathPlannerTrajectory p0 = PathPlanner.loadPath("P0", 1, 1);
+        PathPlannerTrajectory p0 = PathPlanner.loadPath("P0", 6, 3);
         PPSwerveControllerCommand firstCommand = baseSwerveCommand(p0);
         PathPlannerState initialState = p0.getInitialState();
 

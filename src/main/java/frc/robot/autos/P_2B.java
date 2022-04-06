@@ -55,7 +55,7 @@ public class P_2B extends AutoBase {
         this.turret = turret;
         addRequirements(shooter, innerMagazine, outerMagazine, intake, turret);
 
-        PathPlannerTrajectory trajectory = PathPlanner.loadPath("P1_3B_part1", 6, 4);
+        PathPlannerTrajectory trajectory = PathPlanner.loadPath("P1_3B_part1", 6, 3);
         PPSwerveControllerCommand autoDrive = baseSwerveCommand(trajectory);
         PathPlannerState initialState = trajectory.getInitialState();
 
@@ -65,7 +65,7 @@ public class P_2B extends AutoBase {
                     intake.intakeDeploy();
                     outerMagazine.magazineUp();
                 }, () -> {
-                    intake.intakeRetract();
+                    intake.intakeDeploy(.3);
                     outerMagazine.magazineStop();
                 })).andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter)
                     .withTimeout(3));

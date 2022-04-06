@@ -78,11 +78,7 @@ public class Conversions {
      * @return normalized angle
      */
     public static double reduceTo0_360(double goal) {
-        double orientation = goal % 360;
-        if (orientation < 0) {
-            orientation += 360;
-        }
-        return orientation;
+        return goal % 360;
     }
 
 }
