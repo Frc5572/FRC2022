@@ -33,7 +33,7 @@ public class TurnToAngle extends ProfiledPIDCommand {
                 // The PID gainss
                 .01, 0, 0,
                 // The motion profile constraints
-                new TrapezoidProfile.Constraints(360, 1080)),
+                new TrapezoidProfile.Constraints(720, 1080)),
             // This should return the measurement
             swerve::getRotation,
             // This should return the goal (can also be a constant)
@@ -42,7 +42,7 @@ public class TurnToAngle extends ProfiledPIDCommand {
             (output, setpoint) -> swerve.useOutput(output));
         // Use addRequirements() here to declare subsystem dependencies.
         // Configure additional PID options by calling `getController` here.
-        getController().setTolerance(.1);
+        getController().setTolerance(1);
         getController().enableContinuousInput(0, 360);
         addRequirements(swerve);
         this.swerve = swerve;
