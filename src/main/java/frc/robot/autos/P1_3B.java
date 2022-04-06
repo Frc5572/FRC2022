@@ -65,19 +65,19 @@ public class P1_3B extends AutoBase {
                 })).andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter)
                     .withTimeout(3));
 
-        SequentialCommandGroup part2 =
-            new TurnToAngle(swerve, 170, false).andThen(new TurnToAngle(swerve, 250, false))
-                .andThen((autoDrive2.andThen(new ZeroMotorsWaitCommand(swerve, 3)
-                    .withInterrupt(() -> innerMagazine.magSense.get())))
-                        .deadlineWith(new StartEndCommand(() -> {
-                            intake.intakeDeploy();
-                            outerMagazine.magazineUp();
-                        }, () -> {
-                            intake.intakeRetract();
-                            outerMagazine.magazineStop();
-                        }), new InnerMagIntake(this.innerMagazine)))
-                .andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter)
-                    .withTimeout(2));
+        // new TurnToAngle(swerve, 250, true, false)
+        SequentialCommandGroup part2 = new TurnToAngle(swerve, 250, true, false)
+            .andThen((autoDrive2.andThen(new ZeroMotorsWaitCommand(swerve, 3)
+                .withInterrupt(() -> innerMagazine.magSense.get())))
+                    .deadlineWith(new StartEndCommand(() -> {
+                        intake.intakeDeploy();
+                        outerMagazine.magazineUp();
+                    }, () -> {
+                        intake.intakeRetract();
+                        outerMagazine.magazineStop();
+                    }), new InnerMagIntake(this.innerMagazine)))
+            .andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter)
+                .withTimeout(2));
 
         addCommands(new InstantCommand(() -> swerve.zeroGyro()),
             new InstantCommand(

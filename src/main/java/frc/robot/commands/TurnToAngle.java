@@ -24,9 +24,10 @@ public class TurnToAngle extends ProfiledPIDCommand {
      * @param angle Requested angle to turn to
      * @param isRelative Whether the angle is relative to the current angle: true = relative, false
      *        = absolute
+     * @param shortestPath Whether to enable continuous input to calculate the shortest path to turn
      */
 
-    public TurnToAngle(Swerve swerve, double angle, boolean isRelative) {
+    public TurnToAngle(Swerve swerve, double angle, boolean isRelative, boolean shortestPath) {
         super(
             // The ProfiledPIDController used by the command
             new ProfiledPIDController(
@@ -43,7 +44,9 @@ public class TurnToAngle extends ProfiledPIDCommand {
         // Use addRequirements() here to declare subsystem dependencies.
         // Configure additional PID options by calling `getController` here.
         getController().setTolerance(1);
-        getController().enableContinuousInput(0, 360);
+        if (shortestPath) {
+            getController().enableContinuousInput(0, 360);
+        }
         addRequirements(swerve);
         this.swerve = swerve;
         this.isRelative = isRelative;
@@ -52,10 +55,10 @@ public class TurnToAngle extends ProfiledPIDCommand {
 
     @Override
     public void initialize() {
-        super.initialize();
         getController()
             .setGoal(this.isRelative ? Conversions.reduceTo0_360(swerve.getRotation() + this.goal)
                 : this.goal);
+        super.initialize();
     }
 
     @Override
