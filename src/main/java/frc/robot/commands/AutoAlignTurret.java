@@ -24,14 +24,4 @@ public class AutoAlignTurret extends SequentialCommandGroup {
         }, interrupt -> turret.turretStop(), () -> vision.getTargetFound(), turret).withTimeout(.6),
             new AlignTurret(turret, vision));
     }
-
-    @Override
-    public void initialize() {
-        this.turret.alignEnabled = true;
-    }
-
-    @Override
-    public void end(boolean interrupted) {
-        this.turret.alignEnabled = false;
-    }
 }

@@ -8,7 +8,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.AutoAlignTurret;
 import frc.robot.commands.FeedShooter;
 import frc.robot.commands.InnerMagIntake;
@@ -49,14 +48,14 @@ public class P1_3B extends AutoBase {
         this.intake = intake;
         this.turret = turret;
 
-        PathPlannerTrajectory trajectory = PathPlanner.loadPath("P1_3B_part1", 4, 2);
-        PathPlannerTrajectory trajectory2 = PathPlanner.loadPath("P1_3B_part2", 2, 1);
+        PathPlannerTrajectory trajectory = PathPlanner.loadPath("P1_3B_part1", 6, 4);
+        PathPlannerTrajectory trajectory2 = PathPlanner.loadPath("P1_3B_part2", 6, 4);
         PPSwerveControllerCommand autoDrive = baseSwerveCommand(trajectory);
         PPSwerveControllerCommand autoDrive2 = baseSwerveCommand(trajectory2);
         PathPlannerState initialState = trajectory.getInitialState();
 
         SequentialCommandGroup part1 =
-            (new WaitCommand(.2).andThen(autoDrive).andThen(new ZeroMotorsWaitCommand(swerve, 1)))
+            new SequentialCommandGroup(autoDrive, new ZeroMotorsWaitCommand(swerve, 1))
                 .deadlineWith(new StartEndCommand(() -> {
                     intake.intakeDeploy();
                     outerMagazine.magazineUp();
@@ -67,17 +66,16 @@ public class P1_3B extends AutoBase {
                     .withTimeout(3));
 
         SequentialCommandGroup part2 =
-            new TurnToAngle(swerve, 90, true).andThen(new TurnToAngle(swerve, 90, true))
-                .andThen((new WaitCommand(.2).andThen(autoDrive2)
-                    .andThen(new ZeroMotorsWaitCommand(swerve, 1)
-                        .withInterrupt(() -> innerMagazine.magSense.get())))
-                            .deadlineWith(new StartEndCommand(() -> {
-                                intake.intakeDeploy();
-                                outerMagazine.magazineUp();
-                            }, () -> {
-                                intake.intakeRetract();
-                                outerMagazine.magazineStop();
-                            }), new InnerMagIntake(this.innerMagazine)))
+            new TurnToAngle(swerve, 170, false).andThen(new TurnToAngle(swerve, 250, false))
+                .andThen((autoDrive2.andThen(new ZeroMotorsWaitCommand(swerve, 3)
+                    .withInterrupt(() -> innerMagazine.magSense.get())))
+                        .deadlineWith(new StartEndCommand(() -> {
+                            intake.intakeDeploy();
+                            outerMagazine.magazineUp();
+                        }, () -> {
+                            intake.intakeRetract();
+                            outerMagazine.magazineStop();
+                        }), new InnerMagIntake(this.innerMagazine)))
                 .andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter)
                     .withTimeout(2));
 
@@ -85,9 +83,11 @@ public class P1_3B extends AutoBase {
             new InstantCommand(
                 () -> swerve.resetOdometry(new Pose2d(initialState.poseMeters.getTranslation(),
                     initialState.holonomicRotation))),
-            new SequentialCommandGroup(part1.deadlineWith(new ShooterRPM(shooter, 2100 / 60)),
-                part2.deadlineWith(new ShooterRPM(shooter, 3000 / 60)))
-                    .deadlineWith(new AutoAlignTurret(turret, vision)));
+            new InstantCommand(() -> this.turret.alignEnabled = true),
+            new SequentialCommandGroup(part1.deadlineWith(new ShooterRPM(shooter, 2450 / 60)),
+                part2.deadlineWith(new ShooterRPM(shooter, 2500 / 60)))
+                    .deadlineWith(new AutoAlignTurret(turret, vision)),
+            new InstantCommand(() -> this.turret.alignEnabled = false));
     }
 
     @Override

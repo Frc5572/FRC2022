@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.AutoAlignTurret;
 import frc.robot.commands.FeedShooter;
 import frc.robot.commands.InnerMagIntake;
@@ -61,7 +60,7 @@ public class P1_5B extends AutoBase {
         PathPlannerState initialState = trajectory.getInitialState();
 
         SequentialCommandGroup part1 =
-            (new WaitCommand(.2).andThen(autoDrive).andThen(new ZeroMotorsWaitCommand(swerve, 1)))
+            new SequentialCommandGroup(autoDrive, new ZeroMotorsWaitCommand(swerve, 1))
                 .deadlineWith(new StartEndCommand(() -> {
                     intake.intakeDeploy();
                     outerMagazine.magazineUp();
@@ -72,22 +71,21 @@ public class P1_5B extends AutoBase {
                     .withTimeout(3));
 
         SequentialCommandGroup part2 =
-            new TurnToAngle(swerve, 90, true).andThen(new TurnToAngle(swerve, 90, true))
-                .andThen((new WaitCommand(.2).andThen(autoDrive2)
-                    .andThen(new ZeroMotorsWaitCommand(swerve, 1)
-                        .withInterrupt(() -> innerMagazine.magSense.get())))
-                            .deadlineWith(new StartEndCommand(() -> {
-                                intake.intakeDeploy();
-                                outerMagazine.magazineUp();
-                            }, () -> {
-                                intake.intakeRetract();
-                                outerMagazine.magazineStop();
-                            }), new InnerMagIntake(this.innerMagazine)))
+            new TurnToAngle(swerve, 170, false).andThen(new TurnToAngle(swerve, 250, false))
+                .andThen((autoDrive2.andThen(new ZeroMotorsWaitCommand(swerve, 3)
+                    .withInterrupt(() -> innerMagazine.magSense.get())))
+                        .deadlineWith(new StartEndCommand(() -> {
+                            intake.intakeDeploy();
+                            outerMagazine.magazineUp();
+                        }, () -> {
+                            intake.intakeRetract();
+                            outerMagazine.magazineStop();
+                        }), new InnerMagIntake(this.innerMagazine)))
                 .andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter)
                     .withTimeout(2));
 
         ParallelDeadlineGroup part3 =
-            (new WaitCommand(.2).andThen(autoDrive3).andThen(new ZeroMotorsWaitCommand(swerve, 3)))
+            (andThen(autoDrive3).andThen(new ZeroMotorsWaitCommand(swerve, 3)))
                 .deadlineWith(new StartEndCommand(() -> {
                     intake.intakeDeploy();
                     outerMagazine.magazineUp();
@@ -96,20 +94,21 @@ public class P1_5B extends AutoBase {
                     outerMagazine.magazineStop();
                 }), new InnerMagIntake(this.innerMagazine));
 
-        SequentialCommandGroup part4 =
-            new TurnToAngle(swerve, -90, true).andThen(new TurnToAngle(swerve, -90, true))
-                .andThen(autoDrive4).andThen(new ZeroMotorsWaitCommand(swerve))
-                .andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter)
-                    .withTimeout(3));
+        SequentialCommandGroup part4 = new TurnToAngle(swerve, 315, false).andThen(autoDrive4)
+            .andThen(new ZeroMotorsWaitCommand(swerve))
+            .andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter)
+                .withTimeout(3));
 
         addCommands(
             new InstantCommand(
                 () -> swerve.resetOdometry(new Pose2d(initialState.poseMeters.getTranslation(),
                     initialState.holonomicRotation))),
-            new SequentialCommandGroup(part1.deadlineWith(new ShooterRPM(shooter, 2100 / 60)),
-                part2.deadlineWith(new ShooterRPM(shooter, 3000 / 60)), part3,
-                part4.deadlineWith(new ShooterRPM(shooter, 3000 / 60)))
-                    .deadlineWith(new AutoAlignTurret(turret, vision)));
+            new InstantCommand(() -> this.turret.alignEnabled = true),
+            new SequentialCommandGroup(part1.deadlineWith(new ShooterRPM(shooter, 2450 / 60)),
+                part2.deadlineWith(new ShooterRPM(shooter, 2500 / 60)), part3,
+                part4.deadlineWith(new ShooterRPM(shooter, 2500 / 60)))
+                    .deadlineWith(new AutoAlignTurret(turret, vision)),
+            new InstantCommand(() -> this.turret.alignEnabled = false));
     }
 
     @Override
