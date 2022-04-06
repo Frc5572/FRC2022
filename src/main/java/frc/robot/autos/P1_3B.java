@@ -79,7 +79,7 @@ public class P1_3B extends AutoBase {
                 .andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter)
                     .withTimeout(2));
 
-        addCommands(
+        addCommands(new InstantCommand(() -> swerve.zeroGyro()),
             new InstantCommand(
                 () -> swerve.resetOdometry(new Pose2d(initialState.poseMeters.getTranslation(),
                     initialState.holonomicRotation))),

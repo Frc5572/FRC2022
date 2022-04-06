@@ -55,7 +55,7 @@ public class P_2B extends AutoBase {
         this.turret = turret;
         addRequirements(shooter, innerMagazine, outerMagazine, intake, turret);
 
-        PathPlannerTrajectory trajectory = PathPlanner.loadPath("P1_3B_part1", 4, 2);
+        PathPlannerTrajectory trajectory = PathPlanner.loadPath("P1_3B_part1", 6, 4);
         PPSwerveControllerCommand autoDrive = baseSwerveCommand(trajectory);
         PathPlannerState initialState = trajectory.getInitialState();
 
@@ -70,7 +70,7 @@ public class P_2B extends AutoBase {
                 })).andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter)
                     .withTimeout(3));
 
-        addCommands(
+        addCommands(new InstantCommand(() -> swerve.zeroGyro()),
             new InstantCommand(
                 () -> swerve.resetOdometry(new Pose2d(initialState.poseMeters.getTranslation(),
                     initialState.holonomicRotation))),

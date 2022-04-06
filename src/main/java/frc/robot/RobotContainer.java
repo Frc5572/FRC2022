@@ -98,6 +98,7 @@ public class RobotContainer {
             new P1_5B(swerveDrive, shooter, innerMagazine, outerMagazine, intake, turret, vision));
         // Configure the button bindings
         configureButtonBindings();
+        swerveDrive.zeroGyro();
     }
 
     /**

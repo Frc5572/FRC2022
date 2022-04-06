@@ -27,8 +27,10 @@ public class P0 extends AutoBase {
         PathPlannerState initialState = p0.getInitialState();
 
 
-        addCommands(new InstantCommand(() -> swerve.resetOdometry(
-            new Pose2d(initialState.poseMeters.getTranslation(), initialState.holonomicRotation))),
+        addCommands(new InstantCommand(() -> swerve.zeroGyro()),
+            new InstantCommand(
+                () -> swerve.resetOdometry(new Pose2d(initialState.poseMeters.getTranslation(),
+                    initialState.holonomicRotation))),
             firstCommand);
 
     }
