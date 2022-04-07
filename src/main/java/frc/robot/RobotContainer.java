@@ -174,7 +174,7 @@ public class RobotContainer {
         new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
             .whileHeld(new StartEndCommand(() -> turret.alignEnabled = true,
                 () -> turret.alignEnabled = false))
-            .whileHeld(new ShooterRPM(this.shooter, 2250 / 60))
+            .whileHeld(new ShooterRPM(this.shooter, 2400 / 60))
             .whileHeld(new FeedShooter(innerMagazine, outerMagazine, shooter))
             .whileHeld(new WheelsIn(swerveDrive));
 
