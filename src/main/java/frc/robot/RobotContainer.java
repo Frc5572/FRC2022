@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
@@ -173,7 +174,7 @@ public class RobotContainer {
         new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
             .whileHeld(new StartEndCommand(() -> turret.alignEnabled = true,
                 () -> turret.alignEnabled = false))
-            .whileHeld(new ShooterRPM(this.shooter, 2100 / 60))
+            .whileHeld(new ShooterRPM(this.shooter, 2250 / 60))
             .whileHeld(new FeedShooter(innerMagazine, outerMagazine, shooter))
             .whileHeld(new WheelsIn(swerveDrive));
 
@@ -181,7 +182,7 @@ public class RobotContainer {
         new AxisButton(operator, XboxController.Axis.kLeftTrigger.value)
             .whileHeld(new StartEndCommand(() -> turret.alignEnabled = true,
                 () -> turret.alignEnabled = false))
-            .whileHeld(new ShooterRPM(this.shooter, 3100 / 60)) // 15 ft
+            .whileHeld(new ShooterRPM(this.shooter, 3250 / 60)) // 15 ft
             .whileHeld(new FeedShooter(innerMagazine, outerMagazine, shooter))
             .whileHeld(new WheelsIn(swerveDrive));
 
@@ -232,10 +233,10 @@ public class RobotContainer {
             }));
 
         // Print out distance
-        // new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
-        // .whileHeld(new FunctionalCommand(() -> {
-        // }, () -> System.out.println(String.valueOf(vision.getDistance())), inter -> {
-        // }, () -> false));
+        new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
+            .whileHeld(new FunctionalCommand(() -> {
+            }, () -> System.out.println(String.valueOf(vision.getDistance())), inter -> {
+            }, () -> false));
     }
 
     /**
