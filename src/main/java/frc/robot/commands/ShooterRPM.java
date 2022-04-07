@@ -56,10 +56,10 @@ public class ShooterRPM extends CommandBase {
         if (this.vision != null) {
             updateSetpoint();
         }
-        // System.out.println("SHOOTER RPM: " + this.shooter.getRPM());
+        System.out.println("SHOOTER RPM: " + this.shooter.getRPM());
         // System.out.println("Roller RPM: " + this.shooter.getRollerRPM());
 
-        // System.out.println("SHOOTER SETPOINT: " + this.shooter.getSetpoint());
+        System.out.println("SHOOTER SETPOINT: " + this.shooter.getSetpoint());
     }
 
     @Override
