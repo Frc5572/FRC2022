@@ -126,7 +126,7 @@ public class RobotContainer {
             }, leds));
         // LEDs are red when limelight aligned but ball not loaded
         magSensor.negate().and(turretAligned)
-            .whileActiveContinuous(new StartEndCommand(() -> leds.setColor(Color.kYellow), () -> {
+            .whileActiveContinuous(new StartEndCommand(() -> leds.setColor(Color.kRed), () -> {
             }, leds));
         /* Driver Buttons */
         // Reset Gyro on Driver Y pressed
@@ -173,7 +173,7 @@ public class RobotContainer {
         new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
             .whileHeld(new StartEndCommand(() -> turret.alignEnabled = true,
                 () -> turret.alignEnabled = false))
-            .whileHeld(new ShooterRPM(this.shooter, 2100 / 60))
+            .whileHeld(new ShooterRPM(this.shooter, 2400 / 60))
             .whileHeld(new FeedShooter(innerMagazine, outerMagazine, shooter))
             .whileHeld(new WheelsIn(swerveDrive));
 
@@ -181,7 +181,7 @@ public class RobotContainer {
         new AxisButton(operator, XboxController.Axis.kLeftTrigger.value)
             .whileHeld(new StartEndCommand(() -> turret.alignEnabled = true,
                 () -> turret.alignEnabled = false))
-            .whileHeld(new ShooterRPM(this.shooter, 3100 / 60)) // 15 ft
+            .whileHeld(new ShooterRPM(this.shooter, 3250 / 60)) // 15 ft
             .whileHeld(new FeedShooter(innerMagazine, outerMagazine, shooter))
             .whileHeld(new WheelsIn(swerveDrive));
 
