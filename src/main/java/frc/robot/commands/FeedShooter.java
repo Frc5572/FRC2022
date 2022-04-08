@@ -31,15 +31,15 @@ public class FeedShooter extends SequentialCommandGroup {
         SequentialCommandGroup part1 =
             new SequentialCommandGroup(new PrintCommand("Shooter is being weird"),
                 new WaitUntilCommand(() -> shooter.getSetpoint() > 0 && shooter.atSetpoint()),
-                new WaitCommand(.5),
+                new WaitCommand(.2),
                 (new WaitUntilCommand(() -> !innerMagazine.magSense.get()).withTimeout(.5)
-                    .andThen(new WaitCommand(.3)))
+                    .andThen(new WaitCommand(.2)))
                         .deadlineWith(new MagazineRPM(shooter, innerMagazine)),
                 new InnerMagIntake(innerMagazine)
                     .alongWith(new InstantCommand(() -> outerMagazine.magazineUp(.6))));
         SequentialCommandGroup part2 = new SequentialCommandGroup(
             new WaitUntilCommand(() -> shooter.getSetpoint() > 0 && shooter.atSetpoint()),
-            new WaitCommand(.5), new MagazineRPM(shooter, innerMagazine));
+            new WaitCommand(.2), new MagazineRPM(shooter, innerMagazine));
 
         addCommands(part1, part2);
     }
