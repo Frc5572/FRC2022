@@ -51,7 +51,7 @@ public class P1_5B extends AutoBase {
 
         PathPlannerTrajectory trajectory = PathPlanner.loadPath("P1_3B_part1", 6, 3);
         PathPlannerTrajectory trajectory2 = PathPlanner.loadPath("P1_3B_part2", 6, 3);
-        PathPlannerTrajectory trajectory3 = PathPlanner.loadPath("P1_3B_part3", 8, 3);
+        PathPlannerTrajectory trajectory3 = PathPlanner.loadPath("P1_3B_part3", 6, 3);
         // PathPlannerTrajectory trajectory4 = PathPlanner.loadPath("P1_3B_part4", 6, 4);
         PPSwerveControllerCommand autoDrive = baseSwerveCommand(trajectory);
         PPSwerveControllerCommand autoDrive2 = baseSwerveCommand(trajectory2);

@@ -126,7 +126,7 @@ public class RobotContainer {
             }, leds));
         // LEDs are red when limelight aligned but ball not loaded
         magSensor.negate().and(turretAligned)
-            .whileActiveContinuous(new StartEndCommand(() -> leds.setColor(Color.kYellow), () -> {
+            .whileActiveContinuous(new StartEndCommand(() -> leds.setColor(Color.kRed), () -> {
             }, leds));
         /* Driver Buttons */
         // Reset Gyro on Driver Y pressed

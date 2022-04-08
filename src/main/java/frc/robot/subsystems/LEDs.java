@@ -83,10 +83,21 @@ public class LEDs extends SubsystemBase {
      */
     public void policeSirens() {
         if (policeDelay < 10) {
-            this.setColor(Color.kRed);
+            for (var i = 0; i < 21; i++) {
+                ledBuffer.setLED(i, Color.kRed);
+            }
+            for (var i = 21; i < ledBuffer.getLength(); i++) {
+                ledBuffer.setLED(i, Color.kBlack);
+            }
         } else {
-            this.setColor(Color.kBlue);
+            for (var i = 0; i < 21; i++) {
+                ledBuffer.setLED(i, Color.kBlack);
+            }
+            for (var i = 21; i < ledBuffer.getLength(); i++) {
+                ledBuffer.setLED(i, Color.kBlue);
+            }
         }
+        ledController.setData(ledBuffer);
         policeDelay += 1;
         policeDelay %= 21;
     }
@@ -124,5 +135,36 @@ public class LEDs extends SubsystemBase {
         }
         cylonEyeDelay += 1;
         cylonEyeDelay %= 3;
+    }
+
+
+    /**
+     * Set the LED strip to a moving pixel back and forth of a single color
+     *
+     * @param color {@link Color} to set the pixel
+     */
+    public void movingColor(Color color, int count, boolean inverted) {
+        Color theColor = inverted ? Color.kBlack : color;
+        Color background = inverted ? color : Color.kBlack;
+        if (cylonEyeDelay == 0) {
+            for (var i = 0; i < ledBuffer.getLength(); i++) {
+                if (Math.abs(i - movingLED) < count) {
+                    ledBuffer.setLED(i, theColor);
+                } else {
+                    ledBuffer.setLED(i, background);
+                }
+            }
+            if (movingDirection) {
+                movingLED += 1;
+            } else {
+                movingLED -= 1;
+            }
+            if (movingLED >= ledBuffer.getLength() - 1 || movingLED <= 0) {
+                movingDirection = !movingDirection;
+            }
+            ledController.setData(ledBuffer);
+        }
+        cylonEyeDelay += 1;
+        cylonEyeDelay %= 2;
     }
 }
