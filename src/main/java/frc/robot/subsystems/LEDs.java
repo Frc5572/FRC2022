@@ -130,6 +130,8 @@ public class LEDs extends SubsystemBase {
      * Set the LED strip to a moving pixel back and forth of a single color
      *
      * @param color {@link Color} to set the pixel
+     * @param count number of LEDs to move
+     * @param inverted Whether to invert the color choices
      */
     public void movingColor(Color color, int count, boolean inverted) {
         Color theColor = inverted ? Color.kBlack : color;
