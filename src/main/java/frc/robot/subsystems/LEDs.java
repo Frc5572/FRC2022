@@ -127,18 +127,6 @@ public class LEDs extends SubsystemBase {
     }
 
     /**
-     * Red moving pixel like a Cylon Eye
-     */
-    public void cylonEye() {
-        if (cylonEyeDelay == 0) {
-            this.movingColor(Color.kRed);
-        }
-        cylonEyeDelay += 1;
-        cylonEyeDelay %= 3;
-    }
-
-
-    /**
      * Set the LED strip to a moving pixel back and forth of a single color
      *
      * @param color {@link Color} to set the pixel
@@ -166,5 +154,16 @@ public class LEDs extends SubsystemBase {
         }
         cylonEyeDelay += 1;
         cylonEyeDelay %= 2;
+    }
+
+    /**
+     * Red moving pixel like a Cylon Eye
+     */
+    public void cylonEye() {
+        if (cylonEyeDelay == 0) {
+            this.movingColor(Color.kRed);
+        }
+        cylonEyeDelay += 1;
+        cylonEyeDelay %= 3;
     }
 }
