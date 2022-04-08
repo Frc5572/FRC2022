@@ -62,7 +62,7 @@ public class P1_3B extends AutoBase {
                 }, () -> {
                     outerMagazine.magazineStop();
                 })).andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter,
-                    this.intake).withTimeout(3));
+                    this.intake).withTimeout(2));
 
         SequentialCommandGroup part2 = new TurnToAngle(swerve, 250, false)
             .andThen((autoDrive2.andThen(new ZeroMotorsWaitCommand(swerve, 3)
@@ -75,7 +75,7 @@ public class P1_3B extends AutoBase {
                     }), new InnerMagIntake(this.innerMagazine)))
             .andThen(
                 new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter, this.intake)
-                    .withTimeout(2));
+                    .withTimeout(1.5));
 
         addCommands(new InstantCommand(() -> swerve.zeroGyro()),
             new InstantCommand(
