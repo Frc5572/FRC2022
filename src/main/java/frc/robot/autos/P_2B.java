@@ -65,10 +65,9 @@ public class P_2B extends AutoBase {
                     intake.intakeDeploy();
                     outerMagazine.magazineUp();
                 }, () -> {
-                    intake.intakeDeploy(.3);
                     outerMagazine.magazineStop();
-                })).andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter)
-                    .withTimeout(3));
+                })).andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter,
+                    this.intake).withTimeout(3));
 
         addCommands(new InstantCommand(() -> swerve.zeroGyro()),
             new InstantCommand(
