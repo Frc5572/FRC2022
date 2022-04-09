@@ -58,7 +58,6 @@ public class P1_5B extends AutoBase {
         PPSwerveControllerCommand autoDrive3 = baseSwerveCommand(trajectory3);
         PPSwerveControllerCommand autoDrive4 = baseSwerveCommand(trajectory4);
         PathPlannerState initialState = trajectory.getInitialState();
-        PathPlannerState part2InitalState = trajectory2.getInitialState();
 
         SequentialCommandGroup part1 =
             new SequentialCommandGroup(autoDrive, new ZeroMotorsWaitCommand(swerve, .5))

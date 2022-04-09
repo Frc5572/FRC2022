@@ -60,14 +60,14 @@ public class P_2B extends AutoBase {
         PathPlannerState initialState = trajectory.getInitialState();
 
         SequentialCommandGroup part1 =
-            new SequentialCommandGroup(autoDrive, new ZeroMotorsWaitCommand(swerve, 1))
+            new SequentialCommandGroup(autoDrive, new ZeroMotorsWaitCommand(swerve, .5))
                 .deadlineWith(new StartEndCommand(() -> {
                     intake.intakeDeploy();
                     outerMagazine.magazineUp();
                 }, () -> {
                     outerMagazine.magazineStop();
                 })).andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter,
-                    this.intake).withTimeout(2));
+                    this.intake).withTimeout(1.5));
 
         addCommands(new InstantCommand(() -> swerve.zeroGyro()),
             new InstantCommand(
