@@ -179,6 +179,6 @@ public class Swerve extends SubsystemBase {
     }
 
     public void useOutput(double output) {
-        pidTurn = output * Constants.Swerve.maxAngularVelocity;
+        pidTurn = output * 4;
     }
 }
