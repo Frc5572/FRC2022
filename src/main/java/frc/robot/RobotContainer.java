@@ -174,7 +174,7 @@ public class RobotContainer {
             .whileHeld(new StartEndCommand(() -> turret.alignEnabled = true,
                 () -> turret.alignEnabled = false))
             .whileHeld(new ShooterRPM(this.shooter, 2400 / 60))
-            .whileHeld(new FeedShooter(innerMagazine, outerMagazine, shooter))
+            .whileHeld(new FeedShooter(innerMagazine, outerMagazine, shooter, intake))
             .whileHeld(new WheelsIn(swerveDrive));
 
         // Enable Shooter Safety Location setpoint right trigger
@@ -182,7 +182,7 @@ public class RobotContainer {
             .whileHeld(new StartEndCommand(() -> turret.alignEnabled = true,
                 () -> turret.alignEnabled = false))
             .whileHeld(new ShooterRPM(this.shooter, 3250 / 60)) // 15 ft
-            .whileHeld(new FeedShooter(innerMagazine, outerMagazine, shooter))
+            .whileHeld(new FeedShooter(innerMagazine, outerMagazine, shooter, intake))
             .whileHeld(new WheelsIn(swerveDrive));
 
         // Enable Shooter Magazine Combo While Operator A Button Held
@@ -190,7 +190,7 @@ public class RobotContainer {
             .whileHeld(new StartEndCommand(() -> turret.alignEnabled = true,
                 () -> turret.alignEnabled = false))
             .whileHeld(new ShooterRPM(this.shooter, this.vision))
-            .whileHeld(new FeedShooter(innerMagazine, outerMagazine, shooter))
+            .whileHeld(new FeedShooter(innerMagazine, outerMagazine, shooter, intake))
             .whileHeld(new WheelsIn(swerveDrive));
 
         // Deploy Intake and Run Magazine While Operator B Held

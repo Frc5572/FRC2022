@@ -31,9 +31,9 @@ public class TurnToAngle extends ProfiledPIDCommand {
             // The ProfiledPIDController used by the command
             new ProfiledPIDController(
                 // The PID gainss
-                .01, 0, 0,
+                .02, 0, 0,
                 // The motion profile constraints
-                new TrapezoidProfile.Constraints(360, 1080)),
+                new TrapezoidProfile.Constraints(720, 1080)),
             // This should return the measurement
             swerve::getRotation,
             // This should return the goal (can also be a constant)

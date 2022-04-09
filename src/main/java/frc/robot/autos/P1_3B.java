@@ -55,15 +55,14 @@ public class P1_3B extends AutoBase {
         PathPlannerState initialState = trajectory.getInitialState();
 
         SequentialCommandGroup part1 =
-            new SequentialCommandGroup(autoDrive, new ZeroMotorsWaitCommand(swerve, 1))
+            new SequentialCommandGroup(autoDrive, new ZeroMotorsWaitCommand(swerve, .5))
                 .deadlineWith(new StartEndCommand(() -> {
                     intake.intakeDeploy();
                     outerMagazine.magazineUp();
                 }, () -> {
-                    intake.intakeDeploy(.3);
                     outerMagazine.magazineStop();
-                })).andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter)
-                    .withTimeout(3));
+                })).andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter,
+                    this.intake).withTimeout(1.5));
 
         SequentialCommandGroup part2 = new TurnToAngle(swerve, 250, false)
             .andThen((autoDrive2.andThen(new ZeroMotorsWaitCommand(swerve, 3)
@@ -72,11 +71,11 @@ public class P1_3B extends AutoBase {
                         intake.intakeDeploy();
                         outerMagazine.magazineUp();
                     }, () -> {
-                        intake.intakeDeploy(.3);
                         outerMagazine.magazineStop();
                     }), new InnerMagIntake(this.innerMagazine)))
-            .andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter)
-                .withTimeout(2));
+            .andThen(
+                new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter, this.intake)
+                    .withTimeout(.7));
 
         addCommands(new InstantCommand(() -> swerve.zeroGyro()),
             new InstantCommand(
