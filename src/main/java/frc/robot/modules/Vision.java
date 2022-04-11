@@ -72,7 +72,7 @@ public class Vision {
      * @return whether target is aligned
      */
     public boolean getTargetAligned() {
-        return calculated == 0;
+        return getTargetFound() && calculated == 0;
     }
 
     /**
