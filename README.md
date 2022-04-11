@@ -29,23 +29,19 @@ Right Joystick - Swerve Rotation
 
 Align Gyro - Y  
 
-Climber Piston (Inside) - X  
-
-Climber Piston (Outside) - Y  
-
 Inside Climber Pistons - A  
 
 Outside Climber Pistons - B  
 
 Enable Climbing Abilities - START
 
-Outside Motors In - Left Trigger  
+Outside Climber Motors In - Left Trigger  
 
-Outside Motors Out - Left Bumper  
+Outside Climber Motors Out - Left Bumper  
 
-Inside Motors In - Right Trigger  
+Inside Climber Motors In - Right Trigger  
 
-Inside Motors Out - Left Bumper  
+Inside Climber Motors Out - Right Bumper  
 
 ## **Operator**
 Intake/Magazine Combo - B  
