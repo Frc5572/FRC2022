@@ -56,3 +56,6 @@ Magazine Down - DPad Down
 
 Turret - Bumpers  
 
+Default LED Pattern - START  
+
+Police Siren LEDs - DPad Up
