@@ -17,7 +17,6 @@ public class TurretForward extends CommandBase {
     /**
      *
      * @param turret turret subsystem
-     * @param vision vision subsystem
      */
     public TurretForward(Turret turret) {
         this.turret = turret;
