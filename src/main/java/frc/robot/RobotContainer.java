@@ -110,7 +110,7 @@ public class RobotContainer {
     private void configureButtonBindings() {
         Trigger magSensor = new Trigger(() -> this.innerMagazine.magSense.get());
         Trigger turretAligned =
-            new Trigger(() -> this.vision.getTargetAligned() && turret.alignEnabled);
+            new Trigger(() -> this.vision.getTargetAligned() && this.turret.alignEnabled);
         // Turn default lights back to 0 with start button.
         new JoystickButton(operator, XboxController.Button.kStart.value)
             .whenPressed(new InstantCommand(() -> leds.pattern = 0));
@@ -231,6 +231,10 @@ public class RobotContainer {
                 outerMagazine.magazineStop();
             }));
 
+        // magSensor.debounce(1.5, DebounceType.kFalling).whenActive(new InstantCommand(() -> {
+        // shooter.setSetpoint(1000 / 60);
+        // shooter.enable();
+        // }));
         // Print out distance
         // new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
         // .whileHeld(new FunctionalCommand(() -> {
