@@ -6,6 +6,7 @@ import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.commands.AutoAlignTurret;
@@ -26,7 +27,7 @@ import frc.robot.subsystems.Turret;
 /**
  * Autonomous that aligns limelight then executes a trajectory.
  */
-public class P1_3B extends AutoBase {
+public class P1_5B extends AutoBase {
 
     Intake intake;
     Shooter shooter;
@@ -39,7 +40,7 @@ public class P1_3B extends AutoBase {
      *
      * @param swerve swerve subsystem
      */
-    public P1_3B(Swerve swerve, Shooter shooter, InnerMagazine innerMagazine,
+    public P1_5B(Swerve swerve, Shooter shooter, InnerMagazine innerMagazine,
         OuterMagazine outerMagazine, Intake intake, Turret turret, Vision vision) {
         super(swerve);
         this.shooter = shooter;
@@ -50,8 +51,12 @@ public class P1_3B extends AutoBase {
 
         PathPlannerTrajectory trajectory = PathPlanner.loadPath("P1_3B_part1", 6, 3);
         PathPlannerTrajectory trajectory2 = PathPlanner.loadPath("P1_3B_part2", 6, 3);
+        PathPlannerTrajectory trajectory3 = PathPlanner.loadPath("P1_3B_part3", 8, 3);
+        PathPlannerTrajectory trajectory4 = PathPlanner.loadPath("P1_3B_part4", 6, 3);
         PPSwerveControllerCommand autoDrive = baseSwerveCommand(trajectory);
         PPSwerveControllerCommand autoDrive2 = baseSwerveCommand(trajectory2);
+        PPSwerveControllerCommand autoDrive3 = baseSwerveCommand(trajectory3);
+        PPSwerveControllerCommand autoDrive4 = baseSwerveCommand(trajectory4);
         PathPlannerState initialState = trajectory.getInitialState();
 
         SequentialCommandGroup part1 =
@@ -77,13 +82,27 @@ public class P1_3B extends AutoBase {
                 new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter, this.intake)
                     .withTimeout(.7));
 
+        ParallelDeadlineGroup part3 = (autoDrive3.andThen(new ZeroMotorsWaitCommand(swerve, 1.5)))
+            .deadlineWith(new StartEndCommand(() -> {
+                intake.intakeDeploy();
+                outerMagazine.magazineUp();
+            }, () -> {
+                outerMagazine.magazineStop();
+            }), new InnerMagIntake(this.innerMagazine));
+
+        SequentialCommandGroup part4 =
+            autoDrive4.andThen(new ZeroMotorsWaitCommand(swerve)).andThen(
+                new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter, this.intake)
+                    .withTimeout(5));
+
         addCommands(new InstantCommand(() -> swerve.zeroGyro()),
             new InstantCommand(
                 () -> swerve.resetOdometry(new Pose2d(initialState.poseMeters.getTranslation(),
                     initialState.holonomicRotation))),
             new InstantCommand(() -> this.turret.alignEnabled = true),
             new SequentialCommandGroup(part1.deadlineWith(new ShooterRPM(shooter, 2450 / 60)),
-                part2.deadlineWith(new ShooterRPM(shooter, 2500 / 60)))
+                part2.deadlineWith(new ShooterRPM(shooter, 2500 / 60)), part3,
+                part4.deadlineWith(new ShooterRPM(shooter, 3200 / 60)))
                     .deadlineWith(new AutoAlignTurret(turret, vision)),
             new InstantCommand(() -> this.turret.alignEnabled = false));
     }

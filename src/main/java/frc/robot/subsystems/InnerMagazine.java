@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.Constants;
 
@@ -14,9 +15,9 @@ import frc.robot.Constants;
  */
 
 public class InnerMagazine extends PIDSubsystem {
-    private WPI_TalonFX innerMagazineMotor =
+    public WPI_TalonFX innerMagazineMotor =
         new WPI_TalonFX(Constants.Motors.innerMagazineMotorID, "canivore");
-    public DigitalInput magSense = new DigitalInput(1);
+    public DigitalInput magSense = new DigitalInput(Constants.InnerMagazinePID.sensorPWNPort);
     private final SimpleMotorFeedforward magazineFeed = new SimpleMotorFeedforward(
         Constants.InnerMagazinePID.kSVolts, Constants.InnerMagazinePID.kVVoltSecondsPerRotation);
 
@@ -33,6 +34,9 @@ public class InnerMagazine extends PIDSubsystem {
         setSetpoint(Constants.InnerMagazinePID.kInnerMagazineTargetRPS);
     }
 
+    /**
+     * Use feedforward voltage values to calculate the output.
+     */
     @Override
     public void useOutput(double output, double setpoint) {
         innerMagazineMotor.setVoltage(output + magazineFeed.calculate(setpoint));
@@ -59,6 +63,9 @@ public class InnerMagazine extends PIDSubsystem {
         innerMagazineMotor.set(0);
     }
 
+    /**
+     * Gets the rotations per second of the magazine.
+     */
     @Override
     public double getMeasurement() {
         double selSenVel = innerMagazineMotor.getSelectedSensorVelocity(0);
@@ -71,8 +78,12 @@ public class InnerMagazine extends PIDSubsystem {
         // System.out.println("Voltage: " + magazineMotor.getMotorOutputVoltage());
     }
 
+    /**
+     * Sets the setpoint for the inner magazine using RPS and voltage calculations.
+     */
     @Override
     public void periodic() {
+        SmartDashboard.putBoolean("Magazine Switch", magSense.get());
         if (m_enabled) {
             useOutput(m_controller.calculate(getMeasurement(), getSetpoint()), getSetpoint());
         }

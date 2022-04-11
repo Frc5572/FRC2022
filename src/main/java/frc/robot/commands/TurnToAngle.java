@@ -4,6 +4,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
+import frc.lib.math.Conversions;
 import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
 
@@ -13,6 +14,8 @@ import frc.robot.subsystems.Swerve;
 public class TurnToAngle extends ProfiledPIDCommand {
 
     private Swerve swerve;
+    private boolean isRelative;
+    private double goal;
 
     /**
      * Turns robot to specified angle. Uses absolute rotation on field.
@@ -28,26 +31,32 @@ public class TurnToAngle extends ProfiledPIDCommand {
             // The ProfiledPIDController used by the command
             new ProfiledPIDController(
                 // The PID gainss
-                .01, 0, 0,
+                .02, 0, 0,
                 // The motion profile constraints
-                new TrapezoidProfile.Constraints(360, 1080)),
+                new TrapezoidProfile.Constraints(720, 1080)),
             // This should return the measurement
             swerve::getRotation,
             // This should return the goal (can also be a constant)
-            isRelative ? swerve.getRotation() + angle : angle,
+            isRelative ? Conversions.reduceTo0_360(swerve.getRotation() + angle)
+                : Conversions.reduceTo0_360(angle),
             // This uses the output
             (output, setpoint) -> swerve.useOutput(output));
         // Use addRequirements() here to declare subsystem dependencies.
         // Configure additional PID options by calling `getController` here.
-        getController().setTolerance(.1);
+        getController().setTolerance(1);
         getController().enableContinuousInput(0, 360);
         addRequirements(swerve);
         this.swerve = swerve;
+        this.isRelative = isRelative;
+        this.goal = angle;
     }
 
     @Override
     public void initialize() {
         super.initialize();
+        getController()
+            .setGoal(this.isRelative ? Conversions.reduceTo0_360(swerve.getRotation() + this.goal)
+                : Conversions.reduceTo0_360(this.goal));
     }
 
     @Override

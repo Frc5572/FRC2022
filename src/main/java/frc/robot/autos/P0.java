@@ -22,13 +22,15 @@ public class P0 extends AutoBase {
      */
     public P0(Swerve swerve) {
         super(swerve);
-        PathPlannerTrajectory p0 = PathPlanner.loadPath("P0", 1, 1);
+        PathPlannerTrajectory p0 = PathPlanner.loadPath("P0", 6, 3);
         PPSwerveControllerCommand firstCommand = baseSwerveCommand(p0);
         PathPlannerState initialState = p0.getInitialState();
+        // TurnToAngle firstCommand = new TurnToAngle(swerve, 250, false);
 
-
-        addCommands(new InstantCommand(() -> swerve.resetOdometry(
-            new Pose2d(initialState.poseMeters.getTranslation(), initialState.holonomicRotation))),
+        addCommands(new InstantCommand(() -> swerve.zeroGyro()),
+            new InstantCommand(
+                () -> swerve.resetOdometry(new Pose2d(initialState.poseMeters.getTranslation(),
+                    initialState.holonomicRotation))),
             firstCommand);
 
     }
