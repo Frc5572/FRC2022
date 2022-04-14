@@ -75,6 +75,7 @@ public final class Constants {
      * Turret constants for turret movement.
      */
     public static final class TurretConstants {
+        public static final int turretCANCoderID = 5;
         public static final double maxPower = 0.3;
         public static final double cancoderMaxPower = 0.05;
         public static final int rotationsAtFront = 33;

@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
+import com.ctre.phoenix.sensors.CANCoderStatusFrame;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import com.ctre.phoenix.sensors.SensorTimeBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -16,7 +17,7 @@ import frc.robot.Constants;
 public class Turret extends SubsystemBase {
     private final WPI_TalonFX turretMotor =
         new WPI_TalonFX(Constants.Motors.turretMotorID, "canivore");
-    CANCoder turretCANCoder = new CANCoder(Constants.HoodConstants.hoodCANCoderID, "canivore");
+    CANCoder turretCANCoder = new CANCoder(Constants.TurretConstants.turretCANCoderID, "canivore");
     CANCoderConfiguration turretCANCoderConfig = new CANCoderConfiguration();
     public static final double turretPower = Constants.TurretConstants.maxPower;
     public boolean alignEnabled = true;
@@ -30,6 +31,7 @@ public class Turret extends SubsystemBase {
      */
     public Turret() {
         turretMotor.setNeutralMode(NeutralMode.Brake);
+        turretCANCoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, 5);
         turretCANCoderConfig.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
         turretCANCoderConfig.sensorDirection = Constants.HoodConstants.hoodCanCoderInvert;
         turretCANCoderConfig.initializationStrategy =
@@ -46,6 +48,7 @@ public class Turret extends SubsystemBase {
             rotations--;
         }
         previousCanCoderValue = newCanCoderValue;
+        System.out.println(rotations);
     }
 
     /**
