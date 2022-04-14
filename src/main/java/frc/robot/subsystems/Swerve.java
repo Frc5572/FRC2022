@@ -8,6 +8,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -21,6 +22,7 @@ public class Swerve extends SubsystemBase {
     public SwerveModule[] swerveMods;
     public AHRS gyro;
     private double pidTurn = 0;
+    private Field2d m_field = new Field2d();
 
     /**
      * Initializes swerve modules.
@@ -35,6 +37,7 @@ public class Swerve extends SubsystemBase {
             new SwerveModule(1, Constants.Swerve.Mod1.constants),
             new SwerveModule(2, Constants.Swerve.Mod2.constants),
             new SwerveModule(3, Constants.Swerve.Mod3.constants)};
+        SmartDashboard.putData("Field", m_field);
     }
 
     /**
@@ -172,6 +175,11 @@ public class Swerve extends SubsystemBase {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity",
                 mod.getState().speedMetersPerSecond);
         }
+        // This will get the simulated sensor readings that we set
+        // in the previous article while in simulation, but will use
+        // real values on the robot itself.
+        m_field.setRobotPose(swerveOdometry.getPoseMeters());
+        // SmartDashboard.putData("Field", m_field);
     }
 
     public double getRotation() {
