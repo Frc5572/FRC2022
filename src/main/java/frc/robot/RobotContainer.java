@@ -18,6 +18,7 @@ import frc.lib.AxisButton;
 import frc.robot.autos.P0;
 import frc.robot.autos.P1_3B;
 import frc.robot.autos.P1_5B;
+import frc.robot.autos.P2_4B;
 import frc.robot.autos.P_2B;
 import frc.robot.commands.AlignTurret;
 import frc.robot.commands.DefaultLEDs;
@@ -96,6 +97,8 @@ public class RobotContainer {
             new P1_3B(swerveDrive, shooter, innerMagazine, outerMagazine, intake, turret, vision));
         autoChooser.addOption("P1_5B",
             new P1_5B(swerveDrive, shooter, innerMagazine, outerMagazine, intake, turret, vision));
+        autoChooser.addOption("P2_4B",
+            new P2_4B(swerveDrive, shooter, innerMagazine, outerMagazine, intake, turret, vision));
         // Configure the button bindings
         configureButtonBindings();
         swerveDrive.zeroGyro();
