@@ -237,11 +237,11 @@ public final class Constants {
      */
 
     public static final class ShooterPID {
-        public static final double kP = 0.19338;
+        public static final double kP = 0.19338 / 600;
         public static final double kI = 0;
         public static final double kD = 0;
 
-        public static final double kShooterTargetRPS = 4100 / 60; // IN RPS NOT RPM
+        public static final double kShooterTargetRPS = 4100; // IN RPS NOT RPM
         public static final double kShooterToleranceRPS = 1; // IN RPS NOT RPM
 
         public static final int kUnitsPerRevolution = 2048;
@@ -253,11 +253,11 @@ public final class Constants {
      * Constants for Inner Magazine PID
      */
     public static final class InnerMagazinePID {
-        public static final double kP = 0.15722;
+        public static final double kP = 0.15722 / 60;
         public static final double kI = 0;
         public static final double kD = 0;
 
-        public static final double kInnerMagazineTargetRPS = 600 / 60;
+        public static final double kInnerMagazineTargetRPS = 600;
         public static final double kInnerMagazineToleranceRPS = 1; // IN RPS NOT RPM
 
         public static final int kUnitsPerRevolution = 2048;
@@ -271,11 +271,11 @@ public final class Constants {
      * Constants for Outer Magazine PID
      */
     public static final class OuterMagazinePID {
-        public static final double kP = 0.012875;
+        public static final double kP = 0.012875 / 60;
         public static final double kI = 0;
         public static final double kD = 0;
 
-        public static final double kOuterMagazineTargetRPS = 600 / 60;
+        public static final double kOuterMagazineTargetRPS = 600;
         public static final double kOuterMagazineToleranceRPS = 1; // IN RPS NOT RPM
 
         public static final int kUnitsPerRevolution = 42;

@@ -14,7 +14,7 @@ public class ShooterRPM extends CommandBase {
     private Vision vision;
     double curDisRPM = 0;
     double newDisRPM = 0;
-    double setRPS;
+    double setRPM;
 
     /**
      *
@@ -32,9 +32,9 @@ public class ShooterRPM extends CommandBase {
      * @param shooter shooter subsystem
      * @param rps Hardcoded setpoint for Shooter
      */
-    public ShooterRPM(Shooter shooter, double rps) {
+    public ShooterRPM(Shooter shooter, double rpm) {
         this.shooter = shooter;
-        this.setRPS = rps;
+        this.setRPM = rpm;
         addRequirements(shooter);
     }
 
@@ -43,8 +43,8 @@ public class ShooterRPM extends CommandBase {
         SmartDashboard.putNumber("SetPoint (RPM)", this.shooter.getSetpoint() * 60);
         // System.out.println("STARTING SHOOTER");
         // System.out.println("Initial RPM: " + this.shooter.getSetpoint());
-        if (this.vision == null && this.setRPS > 0) {
-            this.shooter.setSetpoint(this.setRPS);
+        if (this.vision == null && this.setRPM > 0) {
+            this.shooter.setSetpoint(this.setRPM);
         } else {
             updateSetpoint();
         }
@@ -56,7 +56,7 @@ public class ShooterRPM extends CommandBase {
         if (this.vision != null) {
             updateSetpoint();
         }
-        // System.out.println("SHOOTER RPM: " + this.shooter.getRPM());
+        System.out.println("SHOOTER RPM: " + this.shooter.getRPM());
         // System.out.println("Roller RPM: " + this.shooter.getRollerRPM());
 
         // System.out.println("SHOOTER SETPOINT: " + this.shooter.getSetpoint());
@@ -98,7 +98,7 @@ public class ShooterRPM extends CommandBase {
             } else {
                 curDisRPM = newDisRPM;
             }
-            this.shooter.setSetpoint(curDisRPM / 60);
+            this.shooter.setSetpoint(curDisRPM);
         }
     }
 }

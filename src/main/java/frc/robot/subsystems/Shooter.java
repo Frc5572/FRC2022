@@ -55,10 +55,10 @@ public class Shooter extends PIDSubsystem {
     @Override
     public double getMeasurement() {
         double selSenVel = shooter.getSelectedSensorVelocity(0);
-        double rotPerSec = (double) selSenVel / Constants.ShooterPID.kUnitsPerRevolution
-            * 10; /* scale per100ms to perSecond */
+        double rotPerSec = (double) selSenVel / Constants.ShooterPID.kUnitsPerRevolution * 10
+            * 60; /* scale per100ms to perSecond */
 
-        // System.out.println("SHOOTER RPM (Speed): " + rotPerSec * 60);
+        // System.out.println("SHOOTER RPM (Speed): " + rotPerSec);
         // System.out.println("Voltage: " + shooter.getMotorOutputVoltage());
         return rotPerSec;
     }
@@ -79,7 +79,7 @@ public class Shooter extends PIDSubsystem {
      * @return RPM of the Shooter Motor
      */
     public double getRPM() {
-        return getMeasurement() * 60;
+        return getMeasurement();
     }
 
     /**
