@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.lib.AxisButton;
+import frc.robot.autos.Heart;
 import frc.robot.autos.P0;
 import frc.robot.autos.P1_3B;
 import frc.robot.autos.P1_5B;
@@ -99,6 +100,8 @@ public class RobotContainer {
             new P1_5B(swerveDrive, shooter, innerMagazine, outerMagazine, intake, turret, vision));
         autoChooser.addOption("P2_4B",
             new P2_4B(swerveDrive, shooter, innerMagazine, outerMagazine, intake, turret, vision));
+        autoChooser.addOption("Heart",
+            new Heart(swerveDrive, shooter, innerMagazine, outerMagazine, intake, turret, vision));
         // Configure the button bindings
         configureButtonBindings();
         swerveDrive.zeroGyro();
