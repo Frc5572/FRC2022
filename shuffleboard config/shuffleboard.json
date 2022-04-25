@@ -639,6 +639,16 @@
                   "_type": "PID Controller",
                   "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[27]",
                   "_title": "PIDController[27]"
+                },
+                {
+                  "_type": "PID Controller",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[29]",
+                  "_title": "/LiveWindow/Ungrouped/PIDController[29]"
+                },
+                {
+                  "_type": "PID Controller",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[30]",
+                  "_title": "/LiveWindow/Ungrouped/PIDController[30]"
                 }
               ]
             }
