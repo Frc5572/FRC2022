@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.XboxController;
@@ -30,6 +31,7 @@ import frc.robot.commands.ShooterRPM;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.WheelsIn;
 import frc.robot.commands.ZeroMotorsWaitCommand;
+import frc.robot.modules.ColorSensor;
 import frc.robot.modules.Vision;
 import frc.robot.subsystems.InnerMagazine;
 import frc.robot.subsystems.InsideClimber;
@@ -73,6 +75,7 @@ public class RobotContainer {
     private final OutsideClimber outsideClimber;
     public PneumaticHub ph = new PneumaticHub();
     private LEDs leds = new LEDs(Constants.LEDConstants.PWMPort, Constants.LEDConstants.LEDCount);
+    private ColorSensor colorSensor = new ColorSensor();
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -111,9 +114,13 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
+
         Trigger magSensor = new Trigger(() -> this.innerMagazine.magSense.get());
         Trigger turretAligned =
             new Trigger(() -> this.vision.getTargetAligned() && this.turret.alignEnabled);
+        // Spits ball when wrong color
+        new Trigger(() -> this.colorSensor.getBallColor() != DriverStation.Alliance.Invalid
+            && this.colorSensor.getBallColor() != DriverStation.getAlliance()).whenActive();
         // Turn default lights back to 0 with start button.
         new JoystickButton(operator, XboxController.Button.kStart.value)
             .whenPressed(new InstantCommand(() -> leds.pattern = 0));

@@ -60,6 +60,13 @@ public final class Constants {
         public static final int LEDCount = 42;
     }
 
+    /**
+     * Color sensor constants
+     */
+    public static final class ColorSensorConstants {
+        public static final int PWMPort = 8;
+    }
+
 
     /**
      * Vision constants for limelight calculations.
