@@ -49,7 +49,7 @@ public class TeleopSwerve extends CommandBase {
         raxis = (Math.abs(raxis) < Constants.stickDeadband) ? 0 : raxis;
         // System.out.println(swerveDrive.getStringYaw());
 
-        translation = new Translation2d(yaxis, xaxis).times(Constants.Swerve.maxSpeed);
+        translation = new Translation2d(xaxis, yaxis).times(Constants.Swerve.maxSpeed);
         rotation = raxis * Constants.Swerve.maxAngularVelocity;
         swerveDrive.drive(translation, rotation, fieldRelative, openLoop);
     }
