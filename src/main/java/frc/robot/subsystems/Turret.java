@@ -30,8 +30,8 @@ public class Turret extends SubsystemBase {
      * Constructs the Turret Subsystem
      */
     public Turret() {
-        turretMotor.setNeutralMode(NeutralMode.Brake);
-        turretCANCoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, 5);
+        turretMotor.setNeutralMode(NeutralMode.Coast);
+        turretCANCoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, 1);
         turretCANCoderConfig.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
         turretCANCoderConfig.sensorDirection = Constants.HoodConstants.hoodCanCoderInvert;
         turretCANCoderConfig.initializationStrategy =
