@@ -28,6 +28,7 @@ import frc.robot.commands.InsidePC;
 import frc.robot.commands.OutsidePC;
 import frc.robot.commands.ShooterRPM;
 import frc.robot.commands.TeleopSwerve;
+import frc.robot.commands.TurretForward;
 import frc.robot.commands.WheelsIn;
 import frc.robot.commands.ZeroMotorsWaitCommand;
 import frc.robot.modules.Vision;
@@ -164,7 +165,8 @@ public class RobotContainer {
         new JoystickButton(driver, XboxController.Button.kA.value)
             .whenPressed(new InsidePC(insideClimber));
         new JoystickButton(driver, XboxController.Button.kStart.value)
-            .whenPressed(new InstantCommand(() -> insideClimber.enableClimbers())
+            .whenPressed(new TurretForward(turret)
+                .andThen(new InstantCommand(() -> insideClimber.enableClimbers()))
                 .andThen(new InstantCommand(() -> outsideClimber.enableClimbers()))
                 .andThen(new InstantCommand(() -> turret.alignEnabled = false))
                 // Turns default LEDS to 1
