@@ -52,6 +52,8 @@ public class ColorSensor extends SubsystemBase {
             colorString = "Green";
         } else if (color == Color.kYellow) {
             colorString = "Yellow";
+        } else if (color == Color.kBlue) {
+            colorString = "Blue";
         } else {
             colorString = "Unknown";
         }
@@ -77,5 +79,9 @@ public class ColorSensor extends SubsystemBase {
         Color detectedColor = colorSensor.getColor();
         ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
         return match;
+    }
+
+    public ColorSensorV3.RawColor getRawColor() {
+        return colorSensor.getRawColor();
     }
 }
