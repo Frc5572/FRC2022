@@ -6,12 +6,13 @@ import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 /**
  * This is the public class ColorSensor.
  */
-public class ColorSensor {
+public class ColorSensor extends SubsystemBase {
 
     private final I2C.Port i2cPort = I2C.Port.kOnboard;
     private ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);

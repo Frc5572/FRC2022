@@ -1,6 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.XboxController;
@@ -27,6 +26,7 @@ import frc.robot.commands.FeedShooter;
 import frc.robot.commands.InnerMagIntake;
 import frc.robot.commands.InsidePC;
 import frc.robot.commands.OutsidePC;
+import frc.robot.commands.PrintColor;
 import frc.robot.commands.ShooterRPM;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.WheelsIn;
@@ -90,6 +90,7 @@ public class RobotContainer {
         // Default Turret Command
         turret.setDefaultCommand(new AlignTurret(turret, vision));
         leds.setDefaultCommand(new DefaultLEDs(leds));
+        colorSensor.setDefaultCommand(new PrintColor(colorSensor));
         // hood.setDefaultCommand(new PositionHood(hood, vision));
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
@@ -119,8 +120,8 @@ public class RobotContainer {
         Trigger turretAligned =
             new Trigger(() -> this.vision.getTargetAligned() && this.turret.alignEnabled);
         // Spits ball when wrong color
-        new Trigger(() -> this.colorSensor.getBallColor() != DriverStation.Alliance.Invalid
-            && this.colorSensor.getBallColor() != DriverStation.getAlliance()).whenActive();
+        // new Trigger(() -> this.colorSensor.getBallColor() != DriverStation.Alliance.Invalid
+        // && this.colorSensor.getBallColor() != DriverStation.getAlliance()).whenActive();
         // Turn default lights back to 0 with start button.
         new JoystickButton(operator, XboxController.Button.kStart.value)
             .whenPressed(new InstantCommand(() -> leds.pattern = 0));
