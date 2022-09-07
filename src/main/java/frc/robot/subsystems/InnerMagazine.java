@@ -63,6 +63,10 @@ public class InnerMagazine extends PIDSubsystem {
         innerMagazineMotor.set(0);
     }
 
+    public DigitalInput getMagSense() {
+        return magSense;
+    }
+
     /**
      * Gets the rotations per second of the magazine.
      */

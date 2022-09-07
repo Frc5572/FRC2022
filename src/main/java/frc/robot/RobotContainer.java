@@ -9,9 +9,11 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -29,7 +31,6 @@ import frc.robot.commands.InsidePC;
 import frc.robot.commands.OutsidePC;
 import frc.robot.commands.PrintBallColor;
 import frc.robot.commands.ShooterRPM;
-import frc.robot.commands.SpitBallWrongColor;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.WheelsIn;
 import frc.robot.commands.ZeroMotorsWaitCommand;
@@ -216,8 +217,12 @@ public class RobotContainer {
                 intake.intakeRetract();
                 outerMagazine.magazineStop();
             }, intake, outerMagazine).alongWith(new InnerMagIntake(innerMagazine))
-                .andThen(new ConditionalCommand(new SpitBallWrongColor(), new InstantCommand(),
-                    colorSensor::shouldSpit)));
+                .andThen(new ConditionalCommand(
+                    new SequentialCommandGroup(
+                        new ParallelCommandGroup(new InstantCommand(shooter::enable),
+                            new ParallelCommandGroup(new WaitUntilCommand(.3),
+                                new InstantCommand(turret::turretRight)))),
+                    new InstantCommand(), colorSensor::shouldSpit)));
         // Run hopper down with POV down (180))
         new POVButton(operator, 180).whileHeld(new StartEndCommand(() -> {
             innerMagazine.magazineDown();
