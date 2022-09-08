@@ -8,12 +8,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -63,6 +64,10 @@ public class RobotContainer {
     // Field Relative and openLoop Variables
     boolean fieldRelative;
     boolean openLoop;
+
+    WaitCommand turretSpitWait;
+    WaitCommand innerMagSpitWait;
+
 
 
     /* Subsystems */
@@ -208,6 +213,26 @@ public class RobotContainer {
             .whileHeld(new FeedShooter(innerMagazine, outerMagazine, shooter, intake))
             .whileHeld(new WheelsIn(swerveDrive));
 
+        FunctionalCommand turnTurretRight = new FunctionalCommand(() -> {
+            turretSpitWait = new WaitCommand(.25);
+        }, () -> {
+            turret.turretRight();
+        }, interrupt -> turret.turretStop(), turretSpitWait::isFinished, turret);
+
+        FunctionalCommand turnTurretLeft = new FunctionalCommand(() -> {
+            turretSpitWait = new WaitCommand(.25);
+        }, () -> {
+            turret.turretLeft();
+        }, interrupt -> turret.turretStop(), turretSpitWait::isFinished, turret);
+
+        FunctionalCommand innerMagRun = new FunctionalCommand(() -> {
+            innerMagSpitWait = new WaitCommand(1);
+        }, () -> {
+            innerMagazine.enable();
+        }, interrupt -> {
+            innerMagazine.disable();
+        }, innerMagSpitWait::isFinished, innerMagazine);
+
         // Deploy Intake and Run Magazine While Operator B Held
         new JoystickButton(operator, XboxController.Button.kB.value)
             .whileHeld(new StartEndCommand(() -> {
@@ -220,9 +245,9 @@ public class RobotContainer {
                 .andThen(new ConditionalCommand(
                     new SequentialCommandGroup(
                         new ParallelCommandGroup(new InstantCommand(shooter::enable),
-                            new ParallelCommandGroup(new WaitUntilCommand(.3),
-                                new InstantCommand(turret::turretRight)))),
-                    new InstantCommand(), colorSensor::shouldSpit)));
+                            turnTurretRight, innerMagRun),
+                        turnTurretLeft),
+                    new PrintCommand("" + colorSensor.shouldSpit()), colorSensor::shouldSpit)));
         // Run hopper down with POV down (180))
         new POVButton(operator, 180).whileHeld(new StartEndCommand(() -> {
             innerMagazine.magazineDown();
