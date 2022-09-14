@@ -32,13 +32,12 @@ public class ColorSensor extends SubsystemBase {
      * This is ColorSensor.
      */
     public ColorSensor() {
-        // Red
-        colorMatcher.addColorMatch(kRed);
-        // Yellow
-        // Color yellow = new Color(18000, 31000, 4400);
-        // colorMatcher.addColorMatch(yellow);
-        // Blue
-        colorMatcher.addColorMatch(kBlue);
+        // Red Ball
+        colorMatcher.addColorMatch(new Color(8200, 4700, 1600));
+        // Yellow Shiny Ball
+        colorMatcher.addColorMatch(new Color(18000, 31000, 4400));
+        // Blue Ball
+        colorMatcher.addColorMatch(new Color(1500, 4400, 5600));
 
         // colorMatcher.addColorMatch(Color.kGreen);
         // colorMatcher.addColorMatch(Color.kBlue);
