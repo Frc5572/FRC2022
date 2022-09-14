@@ -5,10 +5,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.modules.ColorSensor;
 
-public class PrintColor extends CommandBase {
+public class PrintBallColor extends CommandBase {
     private ColorSensor colorSensor;
 
-    public PrintColor(ColorSensor colorSensor) {
+    public PrintBallColor(ColorSensor colorSensor) {
         this.colorSensor = colorSensor;
         addRequirements(colorSensor);
     }
@@ -16,9 +16,15 @@ public class PrintColor extends CommandBase {
     @Override
     public void execute() {
         ColorSensorV3.RawColor color = colorSensor.getRawColor();
-        SmartDashboard.putNumber("Red", color.red);
+        SmartDashboard.putString("New Ball Color", colorSensor.getBallColor().toString());
+        // SmartDashboard.putString("Ball Color", colorSensor.getBallColor().toString());
+        // System.out.println(colorSensor.getBallColor().toString());
         SmartDashboard.putNumber("Green", color.green);
         SmartDashboard.putNumber("Blue", color.blue);
+        SmartDashboard.putNumber("Red", color.red);
+
+
+        // colorSensor.
 
         /*
          * Blue(rapid react ball):
