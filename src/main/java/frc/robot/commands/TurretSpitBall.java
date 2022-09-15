@@ -42,7 +42,7 @@ public class TurretSpitBall extends CommandBase {
         if (timer.get() <= .25) {
             turret.turretRight();
         } else if (timer.get() >= .25 && timer.get() <= .5) {
-            turret.turretRight();
+            turret.turretLeft();
         }
     }
 
