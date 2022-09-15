@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.InnerMagazine;
 import frc.robot.subsystems.Shooter;
@@ -10,12 +11,14 @@ public class TurretSpitBall extends CommandBase {
     Turret turret;
     InnerMagazine innerMag;
     Shooter shooter;
+    Timer timer = new Timer();
 
     public TurretSpitBall(Turret turret, InnerMagazine innerMag, Shooter shooter) {
         this.turret = turret;
         this.innerMag = innerMag;
         this.shooter = shooter;
         addRequirements(turret, innerMag, shooter);
+        timer.start();
     }
 
     /*
@@ -35,7 +38,25 @@ public class TurretSpitBall extends CommandBase {
 
     @Override
     public void execute() {
+        timer.start();
+        if (timer.get() <= .25) {
+            turret.turretRight();
+        } else if (timer.get() >= .25 && timer.get() <= .5) {
+            turret.turretRight();
+        }
+    }
 
+    @Override
+    public boolean isFinished() {
+        return timer.get() >= .5;
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        timer.stop();
+        turret.turretStop();
+        shooter.disable();
+        innerMag.disable();
     }
 
 }
