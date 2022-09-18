@@ -253,6 +253,22 @@ public class RobotContainer {
         // })));
 
         // // Deploy Intake and Run Magazine While Operator B Held
+        // new JoystickButton(operator, XboxController.Button.kB.value)
+        // .whileHeld(new StartEndCommand(() -> {
+        // intake.intakeDeploy();
+        // outerMagazine.magazineUp();
+        // }, () -> {
+        // intake.intakeRetract();
+        // outerMagazine.magazineStop();
+        // }, intake, outerMagazine).alongWith(new InnerMagIntake(innerMagazine))
+        // .andThen(new ConditionalCommand(new ParallelCommandGroup(
+        // new TurretSpitBall(turret, innerMagazine, shooter), new InstantCommand(() -> {
+        // SmartDashboard.putString("Should Spit:", "True");
+        // })), new InstantCommand(() -> {
+        // SmartDashboard.putString("Should Spit:", "False");
+        // }), colorSensor::shouldSpit)));
+
+        // // Deploy Intake and Run Magazine While Operator B Held
         new JoystickButton(operator, XboxController.Button.kB.value)
             .whileHeld(new StartEndCommand(() -> {
                 intake.intakeDeploy();
@@ -260,13 +276,14 @@ public class RobotContainer {
             }, () -> {
                 intake.intakeRetract();
                 outerMagazine.magazineStop();
-            }, intake, outerMagazine).alongWith(new InnerMagIntake(innerMagazine))
+            }, intake, outerMagazine).alongWith(new InnerMagIntake(innerMagazine)
                 .andThen(new ConditionalCommand(new ParallelCommandGroup(
                     new TurretSpitBall(turret, innerMagazine, shooter), new InstantCommand(() -> {
                         SmartDashboard.putString("Should Spit:", "True");
                     })), new InstantCommand(() -> {
                         SmartDashboard.putString("Should Spit:", "False");
-                    }), colorSensor::shouldSpit)));
+                    }), colorSensor::shouldSpit))));
+
         // Run hopper down with POV down (180))
         new POVButton(operator, 180).whileHeld(new StartEndCommand(() -> {
             innerMagazine.magazineDown();
