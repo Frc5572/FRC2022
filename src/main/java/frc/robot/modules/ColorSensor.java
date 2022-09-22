@@ -51,7 +51,7 @@ public class ColorSensor extends SubsystemBase {
     public Color colorMatch() {
         Color detectedColor = colorSensor.getColor();
         ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
-        System.out.println(match.confidence);
+        // System.out.println(match.confidence);
         return match.color;
     }
 

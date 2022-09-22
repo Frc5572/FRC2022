@@ -1,7 +1,9 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import frc.robot.subsystems.InnerMagazine;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Turret;
@@ -38,17 +40,34 @@ public class TurretSpitBall extends CommandBase {
 
     @Override
     public void execute() {
-        timer.start();
-        if (timer.get() <= .25) {
-            turret.turretRight();
-        } else if (timer.get() >= .25 && timer.get() <= .5) {
-            turret.turretLeft();
-        }
-    }
+        // timer.start();
+        // if (timer.get() <= .25) {
+        // SmartDashboard.putString("Right: ", "Turning Right:;::::");
+        // turret.turretRight();
+        // } else if (timer.get() >= .25 && timer.get() <= .5) {
+        // SmartDashboard.putString("Left: ", "Turning Left:;::::");
 
-    @Override
-    public boolean isFinished() {
-        return timer.get() >= .5;
+        // turret.turretLeft();
+        // }
+        // SmartDashboard.putNumber("Timer: ", timer.get());
+
+        new TurretLeft(turret);
+        SmartDashboard.putString("Turret Left", "Turret is Lefting");
+        timer.start();
+        new FunctionalCommand(() -> {
+        }, () -> {
+            innerMag.magazineUp();
+            SmartDashboard.putString("Spitting:", "Spitting");
+            shooter.spinShooter();
+        }, interrupt -> {
+            innerMag.magazineStop();
+            SmartDashboard.putString("Not Spitting:", "Not Spitting");
+            shooter.stopShooter();
+        }, () -> true, innerMag, shooter);
+        SmartDashboard.putString("Turret Righting:", "Turret RIght");
+        new TurretRight(turret);
+
+
     }
 
     @Override

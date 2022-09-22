@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.Constants;
 
@@ -32,6 +33,7 @@ public class Shooter extends PIDSubsystem {
      */
     public void spinShooter() {
         shooter.set(.25);
+        SmartDashboard.putString("Spinning Shooter", "Spinning SHooter");
     }
 
     /**
