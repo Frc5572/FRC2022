@@ -1,5 +1,8 @@
 package frc.robot.modules;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.PriorityQueue;
 import org.opencv.core.Point;
 
 public class PRM {
@@ -33,6 +36,98 @@ public class PRM {
                 }
             }
         }
+    }
+
+    private static class Path {
+        List<Point> path;
+        double cost;
+        double heuristic;
+
+        Point goal;
+        Point last;
+        int lastId;
+
+        Path(Point start, Point goal_, int start_id) {
+            goal = goal_;
+            path = new ArrayList<>();
+            last = start;
+            lastId = start_id;
+            path.add(start);
+            cost = 0;
+            heuristic =
+                (start.x - goal.x) * (start.x - goal.x) + (start.y - goal.y) * (start.y - goal.y);
+        }
+
+        void add(Point newPoint, int pid) {
+            cost += (newPoint.x - last.x) * (newPoint.x - last.x)
+                + (newPoint.y - last.y) * (newPoint.y - last.y);
+            path.add(newPoint);
+            last = newPoint;
+            lastId = pid;
+            heuristic = (newPoint.x - goal.x) * (newPoint.x - goal.x)
+                + (newPoint.y - goal.y) * (newPoint.y - goal.y);
+        }
+
+        void addNoUpdate(Point newPoint) {
+            path.add(newPoint);
+        }
+
+        Path copy() {
+            Path p = new Path(path.get(0), goal, lastId);
+            for (int i = 1; i < path.size(); i++) {
+                p.addNoUpdate(path.get(i));
+            }
+            p.heuristic = heuristic;
+            p.cost = cost;
+            p.last = last;
+            return p;
+        }
+    }
+
+    public List<Point> plan(Point A, Point B) {
+        int nodeA = 0;
+        double currAlen =
+            (A.x - nodes[0].x) * (A.x - nodes[0].x) + (A.y - nodes[0].y) * (A.y - nodes[0].y);
+        int nodeB = 0;
+        double currBlen =
+            (B.x - nodes[0].x) * (B.x - nodes[0].x) + (B.y - nodes[0].y) * (B.y - nodes[0].y);
+        for (int i = 1; i < nodes.length; i++) {
+            double newAlen =
+                (A.x - nodes[i].x) * (A.x - nodes[i].x) + (A.y - nodes[i].y) * (A.y - nodes[i].y);
+            double newBlen =
+                (B.x - nodes[i].x) * (B.x - nodes[i].x) + (B.y - nodes[i].y) * (B.y - nodes[i].y);
+            if (newAlen < currAlen) {
+                currAlen = newAlen;
+                nodeA = i;
+            }
+            if (newBlen < currBlen) {
+                currBlen = newBlen;
+                nodeB = i;
+            }
+        }
+        PriorityQueue<Path> openSet = new PriorityQueue<>((a, b) -> {
+
+            double alen = a.heuristic + a.cost;
+            double blen = b.heuristic + b.cost;
+
+            return (int) Math.signum(alen - blen);
+
+        });
+        openSet.add(new Path(nodes[nodeA], nodes[nodeB], nodeA));
+
+        while (!openSet.isEmpty()) {
+            Path p = openSet.poll();
+            if (p.heuristic < 0.001) {
+                return p.path;
+            }
+
+            for (int i = 0; i < edges[p.lastId].length; i++) {
+                int j = edges[p.lastId][i];
+
+            }
+        }
+
+        return new ArrayList();
     }
 
     void debug() {
