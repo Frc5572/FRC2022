@@ -53,6 +53,7 @@ public class InnerMagazine extends PIDSubsystem {
      * Runs magazine up.
      */
     public void magazineUp() {
+        SmartDashboard.putString("Moving Magazine: ", "Moving Magazine true");
         innerMagazineMotor.set(.5);
     }
 
