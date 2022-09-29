@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import com.revrobotics.ColorSensorV3;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.modules.ColorSensor;
 
@@ -16,12 +15,12 @@ public class PrintBallColor extends CommandBase {
     @Override
     public void execute() {
         ColorSensorV3.RawColor color = colorSensor.getRawColor();
-        SmartDashboard.putString("New Ball Color", colorSensor.getBallColor().toString());
+        // SmartDashboard.putString("New Ball Color", colorSensor.getBallColor().toString());
         // SmartDashboard.putString("Ball Color", colorSensor.getBallColor().toString());
         // System.out.println(colorSensor.getBallColor().toString());
-        SmartDashboard.putNumber("Green", color.green);
-        SmartDashboard.putNumber("Blue", color.blue);
-        SmartDashboard.putNumber("Red", color.red);
+        // SmartDashboard.putNumber("Green", color.green);
+        // SmartDashboard.putNumber("Blue", color.blue);
+        // SmartDashboard.putNumber("Red", color.red);
 
 
         // colorSensor.
