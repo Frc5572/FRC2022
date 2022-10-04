@@ -6,6 +6,7 @@ import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.DriverStation;
 // import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -18,6 +19,7 @@ public class ColorSensor extends SubsystemBase {
     private final I2C.Port i2cPort = I2C.Port.kOnboard;
     private ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
     public final ColorMatch colorMatcher = new ColorMatch();
+    int i = 0;
 
     private static Color rawColor(int r, int g, int b) {
         double mag = r + g + b;
@@ -92,6 +94,8 @@ public class ColorSensor extends SubsystemBase {
     }
 
     public boolean shouldSpit() {
+        SmartDashboard.putString("Executing", "" + i);
+        i++;
         return !getBallColor().equals(DriverStation.getAlliance());
     }
 
