@@ -20,6 +20,7 @@ public class ColorSensor extends SubsystemBase {
     private ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
     public final ColorMatch colorMatcher = new ColorMatch();
     int i = 0;
+    boolean that = false;
 
     private static Color rawColor(int r, int g, int b) {
         double mag = r + g + b;
@@ -94,9 +95,12 @@ public class ColorSensor extends SubsystemBase {
     }
 
     public boolean shouldSpit() {
-        SmartDashboard.putString("Executing", "" + i);
+        SmartDashboard.putString("Executing", "" + that);
         i++;
+        that = !that;
+        // return !getBallColor().equals(DriverStation.getAlliance());\
         return !getBallColor().equals(DriverStation.getAlliance());
+
     }
 
     /**
