@@ -12,9 +12,6 @@ import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.lib.RosbotsCommandXboxController;
 import frc.robot.autos.P0;
@@ -53,7 +50,7 @@ import frc.robot.subsystems.Turret;
 public class RobotContainer {
     /* Controllers */
     private final RosbotsCommandXboxController driver = new RosbotsCommandXboxController(Constants.driverID);
-    private final XboxController operator = new XboxController(Constants.operatorID);
+    private final RosbotsCommandXboxController operator = new RosbotsCommandXboxController(Constants.operatorID);
 
     // Initialize AutoChooser Sendable
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -129,10 +126,9 @@ public class RobotContainer {
         // new Trigger(() -> this.colorSensor.getBallColor() != DriverStation.Alliance.Invalid
         // && this.colorSensor.getBallColor() != DriverStation.getAlliance()).whenActive();
         // Turn default lights back to 0 with start button.
-        new JoystickButton(operator, XboxController.Button.kStart.value)
-            .onTrue(new InstantCommand(() -> leds.pattern = 0));
+        operator.start().onTrue(new InstantCommand(() -> leds.pattern = 0));
         // Turn default lights to 2 with POV up (0)
-        new POVButton(operator, 0).onTrue(new InstantCommand(() -> leds.pattern = 2));
+        operator.pov(0).onTrue(new InstantCommand(() -> leds.pattern = 2));
         // LEDs are blue when ball is loaded
         magSensor.and(turretAligned.negate())
             .whileTrue(new RepeatCommand(new InstantCommand(() -> leds.setColor(Color.kBlue))));
@@ -175,87 +171,28 @@ public class RobotContainer {
         /* Operator Buttons */
 
         // Enable Shooter Tape Line setpoint right trigger
-        new JoystickButton(operator, XboxController.Axis.kRightTrigger.value)
-            .whileTrue(new StartEndCommand(() -> turret.alignEnabled = true,
+        operator.rightTrigger().whileTrue(new StartEndCommand(() -> turret.alignEnabled = true,
                 () -> turret.alignEnabled = false))
             .whileTrue(new ShooterRPM(this.shooter, 2400 / 60))
             .whileTrue(new FeedShooter(innerMagazine, outerMagazine, shooter, intake))
             .whileTrue(new WheelsIn(swerveDrive));
 
         // Enable Shooter Safety Location setpoint right trigger
-        new JoystickButton(operator, XboxController.Axis.kLeftTrigger.value)
-            .whileTrue(new StartEndCommand(() -> turret.alignEnabled = true,
+        operator.leftTrigger().whileTrue(new StartEndCommand(() -> turret.alignEnabled = true,
                 () -> turret.alignEnabled = false))
             .whileTrue(new ShooterRPM(this.shooter, 3250 / 60)) // 15 ft
             .whileTrue(new FeedShooter(innerMagazine, outerMagazine, shooter, intake))
             .whileTrue(new WheelsIn(swerveDrive));
 
         // Enable Shooter Magazine Combo While Operator A Button Held
-        new JoystickButton(operator, XboxController.Button.kA.value)
-            .whileTrue(new StartEndCommand(() -> turret.alignEnabled = true,
+        operator.a().whileTrue(new StartEndCommand(() -> turret.alignEnabled = true,
                 () -> turret.alignEnabled = false))
             .whileTrue(new ShooterRPM(this.shooter, this.vision))
             .whileTrue(new FeedShooter(innerMagazine, outerMagazine, shooter, intake))
             .whileTrue(new WheelsIn(swerveDrive));
 
-        // FunctionalCommand turnTurretRight = new FunctionalCommand(() -> {
-        // turretSpitWait = new WaitCommand(.25);
-        // }, () -> {
-        // turret.turretRight();
-        // }, interrupt -> turret.turretStop(), new WaitCommand(.25)::isFinished, turret);
-
-        // FunctionalCommand turnTurretLeft = new FunctionalCommand(() -> {
-        // // turretSpitWait = new WaitCommand(.25);
-        // }, () -> {
-        // turret.turretLeft();
-        // }, interrupt -> turret.turretStop(), new WaitCommand(.25)::isFinished, turret);
-
-        // FunctionalCommand innerMagRun = new FunctionalCommand(() -> {
-        // // innerMagSpitWait = new WaitCommand(1);
-        // }, () -> {
-        // innerMagazine.enable();
-        // }, interrupt -> {
-        // innerMagazine.disable();
-        // }, new WaitCommand(1)::isFinished, innerMagazine);
-        // FunctionalCommand innerMagRun = new FunctionalCommand(() -> {
-        // }, () -> {
-        // innerMagazine.enable();
-        // }, interrupt -> {
-        // innerMagazine.disable();
-        // }, magSensor::get, innerMagazine);
-
-        // Deploy Intake and Run Magazine While Operator B Held
-        // new JoystickButton(operator, XboxController.Button.kB.value)
-        // .whileHeld(new StartEndCommand(() -> {
-        // intake.intakeDeploy();
-        // outerMagazine.magazineUp();
-        // }, () -> {
-        // intake.intakeRetract();
-        // outerMagazine.magazineStop();
-        // }, intake, outerMagazine).alongWith(new InstantCommand(() -> {
-        // SmartDashboard.putString("Command Initialized", "Command is initialized");
-        // })).andThen(new InstantCommand(() -> {
-        // SmartDashboard.putString("Running Shooter", "Shooter is running");
-        // })));
-
         // // Deploy Intake and Run Magazine While Operator B Held
-        // new JoystickButton(operator, XboxController.Button.kB.value)
-        // .whileHeld(new StartEndCommand(() -> {
-        // intake.intakeDeploy();
-        // outerMagazine.magazineUp();
-        // }, () -> {
-        // intake.intakeRetract();
-        // outerMagazine.magazineStop();
-        // }, intake, outerMagazine).alongWith(new InnerMagIntake(innerMagazine))
-        // .andThen(new ConditionalCommand(new ParallelCommandGroup(
-        // new TurretSpitBall(turret, innerMagazine, shooter), new InstantCommand(() -> {
-        // SmartDashboard.putString("Should Spit:", "True");
-        // })), new InstantCommand(() -> {
-        // SmartDashboard.putString("Should Spit:", "False");
-        // }), colorSensor::shouldSpit)));
-
-        // // Deploy Intake and Run Magazine While Operator B Held
-        new JoystickButton(operator, XboxController.Button.kB.value).whileTrue(
+        operator.b().whileTrue(
             // new IntakeWithTurretSpitBall(turret, innerMagazine, shooter, intake,
             // outerMagazine, colorSensor)
             // .alongWith(
@@ -263,7 +200,7 @@ public class RobotContainer {
                 () -> SmartDashboard.putString("Ball Color", "" + colorSensor.getBallColor())));
 
         // Run hopper down with POV down (180))
-        new POVButton(operator, 180).whileTrue(new StartEndCommand(() -> {
+        operator.pov(180).whileTrue(new StartEndCommand(() -> {
             innerMagazine.magazineDown();
             outerMagazine.magazineDown();
         }, () -> {
@@ -271,16 +208,15 @@ public class RobotContainer {
             outerMagazine.magazineStop();
         }));
         // Right Turret Move While Operator Right Bumper Held
-        new JoystickButton(operator, XboxController.Button.kRightBumper.value).whileTrue(
+        operator.rightBumper().whileTrue(
             new StartEndCommand(() -> turret.turretRight(), () -> turret.turretStop(), turret));
 
         // Left Turret Move While Operator Left Bumper Held
-        new JoystickButton(operator, XboxController.Button.kLeftBumper.value).whileTrue(
+        operator.leftBumper().whileTrue(
             new StartEndCommand(() -> turret.turretLeft(), () -> turret.turretStop(), turret));
 
         // Spit ball command
-        new JoystickButton(operator, XboxController.Button.kY.value)
-            .whileTrue(new SequentialCommandGroup(new InstantCommand(() -> shooter.spinShooter()),
+        operator.y().whileTrue(new SequentialCommandGroup(new InstantCommand(() -> shooter.spinShooter()),
                 new WaitCommand(.2), new InstantCommand(() -> {
                     innerMagazine.magazineUp();
                     outerMagazine.magazineUp();
@@ -290,16 +226,6 @@ public class RobotContainer {
                 innerMagazine.magazineStop();
                 outerMagazine.magazineStop();
             }));
-
-        // magSensor.debounce(1.5, DebounceType.kFalling).whenActive(new InstantCommand(() -> {
-        // shooter.setSetpoint(1000 / 60);
-        // shooter.enable();
-        // }));
-        // Print out distance
-        // new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
-        // .whileHeld(new FunctionalCommand(() -> {
-        // }, () -> System.out.println(String.valueOf(vision.getDistance())), inter -> {
-        // }, () -> false));
     }
 
     /**
