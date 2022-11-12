@@ -12,10 +12,11 @@ import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.lib.AxisButton;
+import frc.lib.RosbotsCommandXboxController;
 import frc.robot.autos.P0;
 import frc.robot.autos.P1_3B;
 import frc.robot.autos.P1_5B;
@@ -51,7 +52,7 @@ import frc.robot.subsystems.Turret;
  */
 public class RobotContainer {
     /* Controllers */
-    private final XboxController driver = new XboxController(Constants.driverID);
+    private final RosbotsCommandXboxController driver = new RosbotsCommandXboxController(Constants.driverID);
     private final XboxController operator = new XboxController(Constants.operatorID);
 
     // Initialize AutoChooser Sendable
@@ -89,7 +90,7 @@ public class RobotContainer {
         insideClimber = new InsideClimber(ph);
         outsideClimber = new OutsideClimber(ph);
         // Default Swerve Command
-        swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, driver,
+        swerveDrive.setDefaultCommand(new TeleopSwerve(swerveDrive, driver.getHID(),
             Constants.Swerve.isFieldRelative, Constants.Swerve.isOpenLoop));
         // Default Turret Command
         turret.setDefaultCommand(new AlignTurret(turret, vision));
@@ -143,38 +144,29 @@ public class RobotContainer {
             .whileTrue(new RepeatCommand(new InstantCommand(() -> leds.setColor(Color.kRed))));
         /* Driver Buttons */
         // Reset Gyro on Driver Y pressed
-        new JoystickButton(driver, XboxController.Button.kY.value)
-            .onTrue(new InstantCommand(() -> swerveDrive.zeroGyro()));
+        driver.y().onTrue(new InstantCommand(() -> swerveDrive.zeroGyro()));
         // Turn Off Turret For Rest of Match on Driver X Pressed
-        new JoystickButton(operator, XboxController.Button.kX.value)
-            .onTrue(new InstantCommand(() -> turret.alignEnabled = !turret.alignEnabled));
+        driver.y().onTrue(new InstantCommand(() -> turret.alignEnabled = !turret.alignEnabled));
 
         /* Button Mappings for Climber Motors */
         // Extend the Outside climber arms
-        new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
-            .whileTrue(new StartEndCommand(() -> outsideClimber.engageMotors(),
+        driver.leftBumper().whileTrue(new StartEndCommand(() -> outsideClimber.engageMotors(),
                 () -> outsideClimber.stopMotors(), outsideClimber));
         // Retract the Outside climber arms
-        new JoystickButton(driver, XboxController.Axis.kLeftTrigger.value)
-            .whileTrue(new StartEndCommand(() -> outsideClimber.retractMotors(),
+        driver.leftTrigger().whileTrue(new StartEndCommand(() -> outsideClimber.retractMotors(),
                 () -> outsideClimber.stopMotors(), outsideClimber));
         // Extend the Inside climber arms
-        new JoystickButton(driver, XboxController.Button.kRightBumper.value)
-            .whileTrue(new StartEndCommand(() -> insideClimber.engageMotors(),
+        driver.rightBumper().whileTrue(new StartEndCommand(() -> insideClimber.engageMotors(),
                 () -> insideClimber.stopMotors(), insideClimber));
         // Retract the Inside climber arms
-        new JoystickButton(driver, XboxController.Axis.kRightTrigger.value)
-            .whileTrue(new StartEndCommand(() -> insideClimber.retractMotors(),
+        driver.rightTrigger().whileTrue(new StartEndCommand(() -> insideClimber.retractMotors(),
                 () -> insideClimber.stopMotors(), insideClimber));
 
         // Inside Pneumatics Activate on drive
-        new JoystickButton(driver, XboxController.Button.kB.value)
-            .onTrue(new OutsidePC(outsideClimber));
+        driver.b().onTrue(new OutsidePC(outsideClimber));
         // Outside Pneumatics Activate on driver
-        new JoystickButton(driver, XboxController.Button.kA.value)
-            .onTrue(new InsidePC(insideClimber));
-        new JoystickButton(driver, XboxController.Button.kStart.value)
-            .onTrue(new InstantCommand(() -> insideClimber.enableClimbers())
+        driver.a().onTrue(new InsidePC(insideClimber));
+        driver.start().onTrue(new InstantCommand(() -> insideClimber.enableClimbers())
                 .andThen(new InstantCommand(() -> outsideClimber.enableClimbers()))
                 .andThen(new InstantCommand(() -> turret.alignEnabled = false))
                 // Turns default LEDS to 1
