@@ -49,7 +49,7 @@ public class IntakeWithTurretSpitBall extends SequentialCommandGroup {
                     SmartDashboard.putString("Should Spit:", "True");
                 })), new InstantCommand(() -> {
                     SmartDashboard.putString("Should Spit:", "False");
-                }), () -> shouldSpit));
+                }), () -> shouldSpit), new InstantCommand(() -> endCommand()));
         // new FunctionalCommand(() -> {
         // }, () -> {
 
@@ -104,45 +104,8 @@ public class IntakeWithTurretSpitBall extends SequentialCommandGroup {
      */
 
 
-    @Override
-    public void execute() {
-        // timer.start();
-        // if (timer.get() <= .25) {
-        // SmartDashboard.putString("Right: ", "Turning Right:;::::");
-        // turret.turretRight();
-        // } else if (timer.get() >= .25 && timer.get() <= .5) {
-        // SmartDashboard.putString("Left: ", "Turning Left:;::::");
-
-        // turret.turretLeft();
-        // }
-        // SmartDashboard.putNumber("Timer: ", timer.get());
-
-        // new InstantCommand( () -> {SmartDashboard.putString("Turret Left", "Turret is
-        // Lefting")}),
-        // timer.start();
-
-
-        // new TurretLeft(turret);
-        // SmartDashboard.putString("Turret Left", "Turret is Lefting");
-        // timer.start();
-        // new FunctionalCommand(() -> {
-        // }, () -> {
-        // innerMag.magazineUp();
-        // SmartDashboard.putString("Spitting:", "Spitting");
-        // shooter.spinShooter();
-        // }, interrupt -> {
-        // innerMag.magazineStop();
-        // SmartDashboard.putString("Not Spitting:", "Not Spitting");
-        // shooter.stopShooter();
-        // }, () -> true, innerMag, shooter);
-        // SmartDashboard.putString("Turret Righting:", "Turret RIght");
-        // new TurretRight(turret);
-
-
-    }
-
-    @Override
-    public void end(boolean interrupted) {
+    
+    public void endCommand() {
         timer.stop();
         turret.turretStop();
         shooter.disable();

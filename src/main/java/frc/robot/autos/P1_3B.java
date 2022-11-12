@@ -85,11 +85,10 @@ public class P1_3B extends AutoBase {
             new SequentialCommandGroup(part1.deadlineWith(new ShooterRPM(shooter, 2450 / 60)),
                 part2.deadlineWith(new ShooterRPM(shooter, 2500 / 60)))
                     .deadlineWith(new AutoAlignTurret(turret, vision)),
-            new InstantCommand(() -> this.turret.alignEnabled = false));
+            new InstantCommand(() -> {this.turret.alignEnabled = false; endAuto();}));
     }
 
-    @Override
-    public void end(boolean interrupted) {
+    private void endAuto() {
         innerMagazine.disable();
         outerMagazine.magazineStop();
         shooter.disableShooter();

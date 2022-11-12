@@ -60,35 +60,37 @@ public class ColorSensor extends SubsystemBase {
 
 
 
-    // public String getColorString() {
-    // String colorString;
+    public String getColorString() {
+        String colorString;
 
-    // Color color = colorMatch();
+        Color color = colorMatch();
 
-    // if (color == Color.kBlue)
+        if (color == Color.kBlue)
 
-    // {
-    // colorString = "Blue";
-    // } else if (color == Color.kRed) {
-    // colorString = "Red";
-    // } else if (color == Color.kGreen) {
-    // colorString = "Green";
-    // } else if (color == Color.kYellow) {
-    // colorString = "Yellow";
-    // } else if (color == Color.kBlue) {
-    // colorString = "Blue";
-    // } else {
-    // colorString = "Unknown";
-    // }
-    // return colorString;
-    // }
+        {
+            colorString = "Blue";
+        } else if (color == Color.kRed) {
+            colorString = "Red";
+        } else if (color == Color.kGreen) {
+            colorString = "Green";
+        } else if (color == Color.kYellow) {
+            colorString = "Yellow";
+        } else if (color == Color.kBlue) {
+            colorString = "Blue";
+        } else {
+            colorString = "Unknown";
+        }
+        return colorString;
+    }
 
     public DriverStation.Alliance getBallColor() {
         Color color = colorMatch();
 
         if (color.equals(kRed)) {
+            // SmartDashboard.putString("Red:", "Red");
             return DriverStation.Alliance.Red;
         } else if (color.equals(kBlue)) {
+            // SmartDashboard.putString("Blue:", "Blue");
             return DriverStation.Alliance.Blue;
         }
         return DriverStation.Alliance.Invalid;
@@ -98,7 +100,7 @@ public class ColorSensor extends SubsystemBase {
         SmartDashboard.putString("Executing", "" + that);
         i++;
         that = !that;
-        // return !getBallColor().equals(DriverStation.getAlliance());\
+        // return !getBallColor().equals(DriverStation.getAlliance());
         return !getBallColor().equals(DriverStation.getAlliance());
 
     }

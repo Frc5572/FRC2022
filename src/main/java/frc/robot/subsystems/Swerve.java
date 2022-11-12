@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -140,6 +141,19 @@ public class Swerve extends SubsystemBase {
     }
 
     /**
+     * Gets the states of each swerve module.
+     *
+     * @return Swerve module state
+     */
+    public SwerveModulePosition[] getPositions() {
+        SwerveModulePosition[] positions = new SwerveModulePosition[4];
+        for (SwerveModule mod : swerveMods) {
+            positions[mod.moduleNumber] = mod.getPosition();
+        }
+        return positions;
+    }
+
+    /**
      * Resets the gryo to 0 offset
      */
     public void zeroGyro() {
@@ -162,7 +176,7 @@ public class Swerve extends SubsystemBase {
 
     @Override
     public void periodic() {
-        swerveOdometry.update(getYaw(), getStates());
+        swerveOdometry.update(getYaw(), getPositions());
 
         for (SwerveModule mod : swerveMods) {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder",
