@@ -19,7 +19,6 @@ public class TurretRight extends CommandBase {
      */
     public TurretRight(Turret turret) {
         this.turret = turret;
-        Timer timer = new Timer();
         addRequirements(turret);
     }
 
