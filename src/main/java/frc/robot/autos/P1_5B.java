@@ -104,11 +104,11 @@ public class P1_5B extends AutoBase {
                 part2.deadlineWith(new ShooterRPM(shooter, 2500 / 60)), part3,
                 part4.deadlineWith(new ShooterRPM(shooter, 3200 / 60)))
                     .deadlineWith(new AutoAlignTurret(turret, vision)),
-            new InstantCommand(() -> this.turret.alignEnabled = false));
+            new InstantCommand(() -> this.turret.alignEnabled = false),
+            new InstantCommand(() -> endCommand()));
     }
 
-    @Override
-    public void end(boolean interrupted) {
+    public void endCommand() {
         innerMagazine.disable();
         outerMagazine.magazineStop();
         shooter.disableShooter();

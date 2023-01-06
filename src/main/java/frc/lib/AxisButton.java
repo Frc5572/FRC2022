@@ -1,6 +1,6 @@
 package frc.lib;
 
-import static edu.wpi.first.wpilibj.util.ErrorMessages.requireNonNullParam;
+// import static edu.wpi.first.wpilibj.util.ErrorMessages.requireNonNullParam;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj2.command.button.Button;
@@ -21,7 +21,7 @@ public class AxisButton extends Button {
      * @param axisNumber The axis number (see {@link GenericHID#getRawAxis(int) }
      */
     public AxisButton(GenericHID joystick, int axisNumber) {
-        requireNonNullParam(joystick, "joystick", "JoystickAxis");
+        // requireNonNullParam(joystick, "joystick", "JoystickAxis");
 
         m_joystick = joystick;
         m_axisNumber = axisNumber;
@@ -35,7 +35,7 @@ public class AxisButton extends Button {
      * @param sensitivity The value the axis has to move to be considered as pressed
      */
     public AxisButton(GenericHID joystick, int axisNumber, double sensitivity) {
-        requireNonNullParam(joystick, "joystick", "JoystickAxis");
+        // requireNonNullParam(joystick, "joystick", "JoystickAxis");
         m_joystick = joystick;
         m_axisNumber = axisNumber;
         m_sensitivity = sensitivity;
@@ -46,7 +46,7 @@ public class AxisButton extends Button {
      *
      * @return The value of the joystick button
      */
-    @Override
+
     public boolean get() {
         return Math.abs(m_joystick.getRawAxis(m_axisNumber)) > m_sensitivity;
     }
