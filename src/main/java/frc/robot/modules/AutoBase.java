@@ -15,10 +15,11 @@ import frc.robot.subsystems.Swerve;
  */
 public class AutoBase extends SequentialCommandGroup {
     public Swerve swerve;
-    public static final ProfiledPIDController thetaController =
+    public static final ProfiledPIDController profiledthetaController =
         new ProfiledPIDController(Constants.AutoConstants.kPThetaController, 0, 0,
             Constants.AutoConstants.kThetaControllerConstraints);
-
+    public static final PIDController thetaController =
+    new PIDController(Constants.AutoConstants.kPThetaController, 0, 0);
     /**
      * Autonomous that aligns limelight then executes a trajectory.
      *
@@ -40,7 +41,7 @@ public class AutoBase extends SequentialCommandGroup {
         SwerveControllerCommand command = new SwerveControllerCommand(trajectory, swerve::getPose,
             Constants.Swerve.swerveKinematics,
             new PIDController(Constants.AutoConstants.kPXController, 0, 0),
-            new PIDController(Constants.AutoConstants.kPYController, 0, 0), thetaController,
+            new PIDController(Constants.AutoConstants.kPYController, 0, 0), profiledthetaController,
             swerve::setModuleStates, swerve);
         return command;
     }

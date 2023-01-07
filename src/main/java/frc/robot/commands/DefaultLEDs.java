@@ -9,8 +9,8 @@ import frc.robot.subsystems.LEDs;
  */
 public class DefaultLEDs extends CommandBase {
     private final LEDs leds;
-    private int redPulseBrightness = 0;
-    private boolean direction = true;
+    // private int redPulseBrightness = 0;
+    // private boolean direction = true;
 
     /**
      * Add requirements for LEDS.

@@ -22,6 +22,7 @@ public class Swerve extends SubsystemBase {
     public SwerveModule[] swerveMods;
     public AHRS gyro;
     private double pidTurn = 0;
+    ChassisSpeeds chassisSpeeds;
 
     /**
      * Initializes swerve modules.
