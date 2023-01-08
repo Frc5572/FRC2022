@@ -71,7 +71,7 @@ public class P1_5B extends AutoBase {
 
         SequentialCommandGroup part2 = new TurnToAngle(swerve, 250, false)
             .andThen((autoDrive2.andThen(new ZeroMotorsWaitCommand(swerve, 3)
-                .withInterrupt(() -> innerMagazine.magSense.get())))
+                .until(() -> innerMagazine.magSense.get())))
                     .deadlineWith(new StartEndCommand(() -> {
                         intake.intakeDeploy();
                         outerMagazine.magazineUp();

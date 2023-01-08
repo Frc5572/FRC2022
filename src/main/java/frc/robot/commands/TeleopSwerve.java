@@ -1,7 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
@@ -19,7 +19,7 @@ public class TeleopSwerve extends CommandBase {
     private double yaxis;
     private double xaxis;
     private double raxis;
-    private XboxController controller;
+    private CommandXboxController controller;
 
     /**
      * Creates an command for driving the swerve drive during tele-op
@@ -28,7 +28,7 @@ public class TeleopSwerve extends CommandBase {
      * @param fieldRelative Whether the movement is relative to the field or absolute
      * @param openLoop Open or closed loop system
      */
-    public TeleopSwerve(Swerve swerveDrive, XboxController controller, boolean fieldRelative,
+    public TeleopSwerve(Swerve swerveDrive, CommandXboxController controller, boolean fieldRelative,
         boolean openLoop) {
         this.swerveDrive = swerveDrive;
         addRequirements(swerveDrive);
