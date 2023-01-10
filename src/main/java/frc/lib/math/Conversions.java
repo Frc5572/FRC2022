@@ -52,7 +52,7 @@ public class Conversions {
      * @return Degrees of Rotation of Mechanism falconToDegrees
      */
     public static double falconToMeters(double counts, double gearRatio, double circumference) {
-        return counts / 2048 * gearRatio * circumference;
+        return counts * circumference / (gearRatio * 2048.0);
     }
 
     /**
