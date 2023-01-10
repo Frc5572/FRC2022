@@ -176,6 +176,8 @@ public class Swerve extends SubsystemBase {
                 mod.getState().angle.getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity",
                 mod.getState().speedMetersPerSecond);
+                SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Position",
+                    mod.getPosition().distanceMeters);
         }
     }
 
