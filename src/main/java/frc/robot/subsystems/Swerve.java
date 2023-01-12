@@ -29,15 +29,15 @@ public class Swerve extends SubsystemBase {
      */
     public Swerve() {
         gyro = new AHRS(Constants.Swerve.navXID);
-        zeroGyro();
-
+        // zeroGyro();
+        gyro.zeroYaw();
         swerveMods = new SwerveModule[] {new SwerveModule(0, Constants.Swerve.Mod0.constants),
             new SwerveModule(1, Constants.Swerve.Mod1.constants),
             new SwerveModule(2, Constants.Swerve.Mod2.constants),
             new SwerveModule(3, Constants.Swerve.Mod3.constants)};
 
         swerveOdometry =
-            new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getYaw(), getPositions());
+            new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, Rotation2d.fromDegrees(-gyro.getYaw()), getPositions());
 
 
     }
@@ -168,6 +168,11 @@ public class Swerve extends SubsystemBase {
     @Override
     public void periodic() {
         swerveOdometry.update(getYaw(), getPositions());
+        SmartDashboard.putNumber("Robot X", swerveOdometry.getPoseMeters().getX());
+        SmartDashboard.putNumber("Robot Y", swerveOdometry.getPoseMeters().getY());
+        SmartDashboard.putNumber("Robot Rotation", swerveOdometry.getPoseMeters().getRotation().getDegrees());
+        SmartDashboard.putNumber("Gyro Yaw",gyro.getYaw());
+
 
         for (SwerveModule mod : swerveMods) {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder",
@@ -196,4 +201,5 @@ public class Swerve extends SubsystemBase {
     public void useOutput(double output) {
         pidTurn = output * 4;
     }
+
 }

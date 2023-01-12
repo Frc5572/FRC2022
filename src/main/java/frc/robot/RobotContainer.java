@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.XboxController;
@@ -99,7 +101,7 @@ public class RobotContainer {
             new P2_4B(swerveDrive, shooter, innerMagazine, outerMagazine, intake, turret, vision));
         // Configure the button bindings
         configureButtonBindings();
-        swerveDrive.zeroGyro();
+        // swerveDrive.zeroGyro();
     }
 
     /**
@@ -132,24 +134,31 @@ public class RobotContainer {
         // Reset Gyro on Driver Y pressed
         driver.y().whileTrue((new InstantCommand(() -> swerveDrive.zeroGyro())));
         // Turn Off Turret For Rest of Match on Driver X Pressed
-        operator.x().whileTrue(new InstantCommand(() -> turret.alignEnabled = !turret.alignEnabled));
+        operator.x()
+            .whileTrue(new InstantCommand(() -> turret.alignEnabled = !turret.alignEnabled));
 
         /* Button Mappings for Climber Motors */
         // Extend the Outside climber arms
-       driver.leftBumper().whileTrue(new StartEndCommand(() -> outsideClimber.engageMotors(),
-                () -> outsideClimber.stopMotors(), outsideClimber));
+        driver.leftBumper().whileTrue(new StartEndCommand(() -> outsideClimber.engageMotors(),
+            () -> outsideClimber.stopMotors(), outsideClimber));
 
-                // Retract the Outside climber arms
-        driver.leftTrigger(Constants.stickDeadband).whileTrue(new StartEndCommand(() -> outsideClimber.retractMotors(),
-        () -> outsideClimber.stopMotors(), outsideClimber));
+        // Retract the Outside climber arms
+        driver.leftTrigger(Constants.stickDeadband)
+            .whileTrue(new StartEndCommand(() -> outsideClimber.retractMotors(),
+                () -> outsideClimber.stopMotors(), outsideClimber));
 
         // Extend the Inside climber arms
         driver.rightBumper().whileTrue(new StartEndCommand(() -> insideClimber.engageMotors(),
-                () -> insideClimber.stopMotors(), insideClimber));
+            () -> insideClimber.stopMotors(), insideClimber));
 
         // Retract the Inside climber arms
-        driver.rightTrigger(Constants.stickDeadband).whileTrue(new StartEndCommand(() -> insideClimber.retractMotors(),
-        () -> insideClimber.stopMotors(), insideClimber));
+        driver.rightTrigger(Constants.stickDeadband).whileTrue(new StartEndCommand(
+            () -> insideClimber.retractMotors(), () -> insideClimber.stopMotors(), insideClimber));
+
+
+        driver.back().whileTrue(
+            new InstantCommand(() -> swerveDrive.swerveOdometry.resetPosition(swerveDrive.getYaw(),
+                swerveDrive.getPositions(), new Pose2d(0, 0, new Rotation2d(0)))));
 
 
 
@@ -157,7 +166,8 @@ public class RobotContainer {
         driver.b().whileTrue(new OutsidePC(outsideClimber));
         // Outside Pneumatics Activate on driver
         driver.a().whileTrue(new InsidePC(insideClimber));
-        driver.start().whileTrue(new InstantCommand(() -> insideClimber.enableClimbers())
+        driver.start()
+            .whileTrue(new InstantCommand(() -> insideClimber.enableClimbers())
                 .andThen(new InstantCommand(() -> outsideClimber.enableClimbers()))
                 .andThen(new InstantCommand(() -> turret.alignEnabled = false))
                 // Turns default LEDS to 1
@@ -166,22 +176,24 @@ public class RobotContainer {
         /* Operator Buttons */
 
         // Enable Shooter Tape Line setpoint right trigger
-        operator.rightTrigger().whileTrue(new StartEndCommand(() -> turret.alignEnabled = true,
+        operator.rightTrigger()
+            .whileTrue(new StartEndCommand(() -> turret.alignEnabled = true,
                 () -> turret.alignEnabled = false))
             .whileTrue(new ShooterRPM(this.shooter, 2400 / 60))
             .whileTrue(new FeedShooter(innerMagazine, outerMagazine, shooter, intake))
             .whileTrue(new WheelsIn(swerveDrive));
 
         // Enable Shooter Safety Location setpoint left trigger
-        operator.leftTrigger().whileTrue(new StartEndCommand(() -> turret.alignEnabled = true,
+        operator.leftTrigger()
+            .whileTrue(new StartEndCommand(() -> turret.alignEnabled = true,
                 () -> turret.alignEnabled = false))
             .whileTrue(new ShooterRPM(this.shooter, 3250 / 60)) // 15 ft
             .whileTrue(new FeedShooter(innerMagazine, outerMagazine, shooter, intake))
-            .whileTrue
-            (new WheelsIn(swerveDrive));
+            .whileTrue(new WheelsIn(swerveDrive));
 
         // Enable Shooter Magazine Combo While Operator A Button Held
-        operator.a().whileTrue(new StartEndCommand(() -> turret.alignEnabled = true,
+        operator.a()
+            .whileTrue(new StartEndCommand(() -> turret.alignEnabled = true,
                 () -> turret.alignEnabled = false))
             .whileTrue(new ShooterRPM(this.shooter, this.vision))
             .whileTrue(new FeedShooter(innerMagazine, outerMagazine, shooter, intake))
@@ -189,12 +201,12 @@ public class RobotContainer {
 
         // Deploy Intake and Run Magazine While Operator B Held
         operator.b().whileTrue(new StartEndCommand(() -> {
-                intake.intakeDeploy();
-                outerMagazine.magazineUp();
-            }, () -> {
-                intake.intakeRetract();
-                outerMagazine.magazineStop();
-            }, intake, outerMagazine).alongWith(new InnerMagIntake(innerMagazine)));
+            intake.intakeDeploy();
+            outerMagazine.magazineUp();
+        }, () -> {
+            intake.intakeRetract();
+            outerMagazine.magazineStop();
+        }, intake, outerMagazine).alongWith(new InnerMagIntake(innerMagazine)));
         // Run hopper down with POV down (180))
         operator.povUp().whileTrue(new StartEndCommand(() -> {
             innerMagazine.magazineDown();
@@ -212,7 +224,8 @@ public class RobotContainer {
             new StartEndCommand(() -> turret.turretLeft(), () -> turret.turretStop(), turret));
 
         // Spit ball command
-        operator.y().whileTrue(new SequentialCommandGroup(new InstantCommand(() -> shooter.spinShooter()),
+        operator.y()
+            .whileTrue(new SequentialCommandGroup(new InstantCommand(() -> shooter.spinShooter()),
                 new WaitCommand(.2), new InstantCommand(() -> {
                     innerMagazine.magazineUp();
                     outerMagazine.magazineUp();

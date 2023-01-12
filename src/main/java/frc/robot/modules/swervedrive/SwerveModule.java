@@ -8,6 +8,7 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.math.Conversions;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -46,6 +47,8 @@ public class SwerveModule {
         /* Drive Motor Config */
         driveMotor = new TalonFX(moduleConstants.driveMotorID, "canivore");
         configDriveMotor();
+        // angleMotor.setSelectedSensorPosition(0);
+
 
         lastAngle = getState().angle.getDegrees();
     }
@@ -122,7 +125,7 @@ public class SwerveModule {
 
 
 
-        Rotation2d angle = getCanCoder();
+        Rotation2d angle = Rotation2d.fromDegrees(Conversions.falconToDegrees(angleMotor.getSelectedSensorPosition(), Constants.Swerve.angleGearRatio));
         return new SwerveModulePosition(position, angle);
         // return new SwerveModulePosition(.5, new Rotation2d(.5));
 
