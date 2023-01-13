@@ -147,6 +147,13 @@ public class Swerve extends SubsystemBase {
      * Resets the gryo to 0 offset
      */
     public void zeroGyro() {
+        gyro.zeroYaw();
+    }
+
+    /**
+     * Resets the gyro field relative driving offset
+     */
+    public void resetFieldRelativeOffset() {
         // gyro.zeroYaw();
         fieldOffset = getYaw().getDegrees();
     }

@@ -132,7 +132,7 @@ public class RobotContainer {
             }, leds));
         /* Driver Buttons */
         // Reset Gyro on Driver Y pressed
-        driver.y().whileTrue((new InstantCommand(() -> swerveDrive.zeroGyro())));
+        driver.y().whileTrue((new InstantCommand(() -> swerveDrive.resetFieldRelativeOffset())));
         // Turn Off Turret For Rest of Match on Driver X Pressed
         operator.x()
             .whileTrue(new InstantCommand(() -> turret.alignEnabled = !turret.alignEnabled));
