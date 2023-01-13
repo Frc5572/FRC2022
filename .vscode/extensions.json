@@ -1,0 +1,11 @@
+{
+    "recommendations": [
+        "vscjava.vscode-java-debug",
+        "editorconfig.editorconfig",
+        "vscjava.vscode-java-pack",
+        "github.vscode-pull-request-github",
+        "eamodio.gitlens",
+        "redhat.java",
+        "wpilibsuite.vscode-wpilib"
+    ]
+}
