@@ -515,8 +515,7 @@
               "_showGlyph": false,
               "Game/Game": "A2022_Rapid_React",
               "Visuals/Robot Icon Size": 50.0,
-              "Visuals/Show Outside Circles": false,
-              "Colors/traj": "#FFFFFFFF"
+              "Visuals/Show Outside Circles": false
             }
           },
           "0,3": {
@@ -606,6 +605,71 @@
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Mod 3 Position",
               "_title": "Mod 3 Position",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Robot X",
+              "_title": "Robot X",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Robot Y",
+              "_title": "Robot Y",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "9,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Robot Rotation",
+              "_title": "Robot Rotation",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Gyro Yaw",
+              "_title": "Gyro Yaw",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Field Offset",
+              "_title": "Field Offset",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -1166,8 +1230,99 @@
               "_showGlyph": false,
               "Game/Game": "A2022_Rapid_React",
               "Visuals/Robot Icon Size": 50.0,
-              "Visuals/Show Outside Circles": false,
-              "Colors/traj": "#FFFFFFFF"
+              "Visuals/Show Outside Circles": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Tab 5",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "3,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Robot Rotation",
+              "_title": "SmartDashboard/Robot Rotation",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "3,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Robot X",
+              "_title": "SmartDashboard/Robot X",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "5,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Robot Y",
+              "_title": "SmartDashboard/Robot Y",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "5,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Gyro Yaw",
+              "_title": "SmartDashboard/Gyro Yaw",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Field Offset",
+              "_title": "SmartDashboard/Field Offset",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Gyro Yaw - Offset",
+              "_title": "SmartDashboard/Gyro Yaw - Offset",
+              "_glyph": 148,
+              "_showGlyph": false
             }
           }
         }

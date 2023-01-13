@@ -18,26 +18,25 @@ import frc.robot.modules.swervedrive.SwerveModule;
  * Creates swerve drive and commands for drive.
  */
 public class Swerve extends SubsystemBase {
+    public AHRS gyro = new AHRS(Constants.Swerve.navXID);
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] swerveMods;
-    public AHRS gyro;
     private double pidTurn = 0;
+    private double fieldOffset = gyro.getYaw();
     ChassisSpeeds chassisSpeeds;
 
     /**
      * Initializes swerve modules.
      */
     public Swerve() {
-        gyro = new AHRS(Constants.Swerve.navXID);
         // zeroGyro();
-        gyro.zeroYaw();
         swerveMods = new SwerveModule[] {new SwerveModule(0, Constants.Swerve.Mod0.constants),
             new SwerveModule(1, Constants.Swerve.Mod1.constants),
             new SwerveModule(2, Constants.Swerve.Mod2.constants),
             new SwerveModule(3, Constants.Swerve.Mod3.constants)};
 
         swerveOdometry =
-            new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, Rotation2d.fromDegrees(-gyro.getYaw()), getPositions());
+            new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getYaw(), getPositions());
 
 
     }
@@ -73,7 +72,7 @@ public class Swerve extends SubsystemBase {
         SwerveModuleState[] swerveModuleStates =
             Constants.Swerve.swerveKinematics.toSwerveModuleStates(fieldRelative
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(), translation.getY(),
-                    rotation, getYaw())
+                    rotation, Rotation2d.fromDegrees(getYaw().getDegrees() - fieldOffset))
                 : new ChassisSpeeds(translation.getX(), translation.getY(), rotation));
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed);
 
@@ -148,7 +147,8 @@ public class Swerve extends SubsystemBase {
      * Resets the gryo to 0 offset
      */
     public void zeroGyro() {
-        gyro.zeroYaw();
+        // gyro.zeroYaw();
+        fieldOffset = getYaw().getDegrees();
     }
 
     /**
@@ -156,7 +156,7 @@ public class Swerve extends SubsystemBase {
      */
     public Rotation2d getYaw() {
         float yaw = gyro.getYaw();
-        return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - yaw)
+        return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(-yaw)
             : Rotation2d.fromDegrees(yaw);
     }
 
@@ -167,11 +167,17 @@ public class Swerve extends SubsystemBase {
 
     @Override
     public void periodic() {
-        swerveOdometry.update(getYaw(), getPositions());
+        Rotation2d yaw = getYaw();
+        // swerveOdometry.update(getYaw(), getPositions());
+        swerveOdometry.update(new Rotation2d(yaw.getRadians()), getPositions());
+
+
         SmartDashboard.putNumber("Robot X", swerveOdometry.getPoseMeters().getX());
         SmartDashboard.putNumber("Robot Y", swerveOdometry.getPoseMeters().getY());
         SmartDashboard.putNumber("Robot Rotation", swerveOdometry.getPoseMeters().getRotation().getDegrees());
-        SmartDashboard.putNumber("Gyro Yaw",gyro.getYaw());
+        SmartDashboard.putNumber("Gyro Yaw", yaw.getDegrees());
+        SmartDashboard.putNumber("Field Offset", fieldOffset);
+        SmartDashboard.putNumber("Gyro Yaw - Offset", yaw.getDegrees() - fieldOffset);
 
 
         for (SwerveModule mod : swerveMods) {

@@ -101,7 +101,7 @@ public class RobotContainer {
             new P2_4B(swerveDrive, shooter, innerMagazine, outerMagazine, intake, turret, vision));
         // Configure the button bindings
         configureButtonBindings();
-        // swerveDrive.zeroGyro();
+        swerveDrive.zeroGyro();
     }
 
     /**
