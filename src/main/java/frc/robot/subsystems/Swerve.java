@@ -29,7 +29,6 @@ public class Swerve extends SubsystemBase {
      * Initializes swerve modules.
      */
     public Swerve() {
-        // zeroGyro();
         swerveMods = new SwerveModule[] {new SwerveModule(0, Constants.Swerve.Mod0.constants),
             new SwerveModule(1, Constants.Swerve.Mod1.constants),
             new SwerveModule(2, Constants.Swerve.Mod2.constants),
@@ -37,8 +36,6 @@ public class Swerve extends SubsystemBase {
 
         swerveOdometry =
             new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getYaw(), getPositions());
-
-
     }
 
     /**
@@ -225,5 +222,4 @@ public class Swerve extends SubsystemBase {
     public void useOutput(double output) {
         pidTurn = output * 4;
     }
-
 }
