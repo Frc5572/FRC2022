@@ -200,6 +200,11 @@ public class Swerve extends SubsystemBase {
         }
     }
 
+    /**
+     * Get rotation in Degrees of Gyro
+     *
+     * @return Rotation of gyro in Degrees
+     */
     public double getRotation() {
         return getYaw().getDegrees();
     }
