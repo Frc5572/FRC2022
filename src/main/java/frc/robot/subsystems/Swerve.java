@@ -4,6 +4,7 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -23,7 +24,8 @@ public class Swerve extends SubsystemBase {
     public SwerveModule[] swerveMods;
     private double pidTurn = 0;
     private double fieldOffset = gyro.getYaw();
-    ChassisSpeeds chassisSpeeds;
+    // ChassisSpeeds chassisSpeeds;
+    public static final double kLooperDt = 0.01;
 
     /**
      * Initializes swerve modules.
@@ -76,6 +78,23 @@ public class Swerve extends SubsystemBase {
         for (SwerveModule mod : swerveMods) {
             mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
         }
+    }
+
+    /**
+     * See
+     * https://www.chiefdelphi.com/t/whitepaper-swerve-drive-skew-and-second-order-kinematics/416964/5?u=legoguy1000
+     *
+     * @param inputSpeeds
+     * @return New chassis speeds with accounting for rotational drift
+     */
+    public ChassisSpeeds test254Kin(ChassisSpeeds inputSpeeds) {
+        Pose2d robot_pose_vel = new Pose2d(inputSpeeds.vxMetersPerSecond * kLooperDt,
+            inputSpeeds.vyMetersPerSecond * kLooperDt,
+            Rotation2d.fromRadians(inputSpeeds.omegaRadiansPerSecond * kLooperDt));
+        Twist2d twist_vel = swerveOdometry.getPoseMeters().log(robot_pose_vel);
+        ChassisSpeeds updated_chassis_speeds = new ChassisSpeeds(twist_vel.dx / kLooperDt,
+            twist_vel.dy / kLooperDt, twist_vel.dtheta / kLooperDt);
+        return updated_chassis_speeds;
     }
 
     /**
