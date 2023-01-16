@@ -69,18 +69,17 @@ public class P1_5B extends AutoBase {
                 })).andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter,
                     this.intake).withTimeout(1.5));
 
-        SequentialCommandGroup part2 = new TurnToAngle(swerve, 250, false)
-            .andThen((autoDrive2.andThen(new ZeroMotorsWaitCommand(swerve, 3)
-                .withInterrupt(() -> innerMagazine.magSense.get())))
+        SequentialCommandGroup part2 =
+            new TurnToAngle(swerve, 250, false).andThen((autoDrive2.andThen(
+                new ZeroMotorsWaitCommand(swerve, 3).until(() -> innerMagazine.magSense.get())))
                     .deadlineWith(new StartEndCommand(() -> {
                         intake.intakeDeploy();
                         outerMagazine.magazineUp();
                     }, () -> {
                         outerMagazine.magazineStop();
                     }), new InnerMagIntake(this.innerMagazine)))
-            .andThen(
-                new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter, this.intake)
-                    .withTimeout(.7));
+                .andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter,
+                    this.intake).withTimeout(.7));
 
         ParallelDeadlineGroup part3 = (autoDrive3.andThen(new ZeroMotorsWaitCommand(swerve, 1.5)))
             .deadlineWith(new StartEndCommand(() -> {
@@ -104,11 +103,14 @@ public class P1_5B extends AutoBase {
                 part2.deadlineWith(new ShooterRPM(shooter, 2500 / 60)), part3,
                 part4.deadlineWith(new ShooterRPM(shooter, 3200 / 60)))
                     .deadlineWith(new AutoAlignTurret(turret, vision)),
-            new InstantCommand(() -> this.turret.alignEnabled = false));
+            new InstantCommand(() -> this.turret.alignEnabled = false),
+            new InstantCommand(() -> endCommand()));
     }
 
-    @Override
-    public void end(boolean interrupted) {
+    /**
+     * Command to run at the end of the command
+     */
+    public void endCommand() {
         innerMagazine.disable();
         outerMagazine.magazineStop();
         shooter.disableShooter();

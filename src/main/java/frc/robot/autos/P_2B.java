@@ -76,12 +76,14 @@ public class P_2B extends AutoBase {
             new InstantCommand(() -> this.turret.alignEnabled = true),
             part1.deadlineWith(new ShooterRPM(shooter, 2450 / 60),
                 new AutoAlignTurret(turret, vision)),
-            new InstantCommand(() -> this.turret.alignEnabled = false));
+            new InstantCommand(() -> this.turret.alignEnabled = false),
+            new InstantCommand(() -> endCommand()));
     }
 
-    // new AutoAlignTurret(turret,vision))
-    @Override
-    public void end(boolean interrupted) {
+    /**
+     * Command to run at the end of the command
+     */
+    public void endCommand() {
         innerMagazine.disable();
         outerMagazine.magazineStop();
         shooter.disableShooter();

@@ -1,8 +1,11 @@
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
@@ -11,10 +14,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.lib.AxisButton;
 import frc.robot.autos.P0;
 import frc.robot.autos.P1_3B;
 import frc.robot.autos.P1_5B;
@@ -49,8 +49,8 @@ import frc.robot.subsystems.Turret;
  */
 public class RobotContainer {
     /* Controllers */
-    private final XboxController driver = new XboxController(Constants.driverID);
-    private final XboxController operator = new XboxController(Constants.operatorID);
+    private final CommandXboxController driver = new CommandXboxController(Constants.driverID);
+    private final CommandXboxController operator = new CommandXboxController(Constants.operatorID);
 
     // Initialize AutoChooser Sendable
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -115,56 +115,59 @@ public class RobotContainer {
         Trigger turretAligned =
             new Trigger(() -> this.vision.getTargetAligned() && this.turret.alignEnabled);
         // Turn default lights back to 0 with start button.
-        new JoystickButton(operator, XboxController.Button.kStart.value)
-            .whenPressed(new InstantCommand(() -> leds.pattern = 0));
+        operator.start().whileTrue((new InstantCommand(() -> leds.pattern = 0)));
         // Turn default lights to 2 with POV up (0)
-        new POVButton(operator, 0).whenPressed(new InstantCommand(() -> leds.pattern = 2));
+        operator.povUp().whileTrue(new InstantCommand(() -> leds.pattern = 2));
         // LEDs are blue when ball is loaded
         magSensor.and(turretAligned.negate())
-            .whileActiveContinuous(new StartEndCommand(() -> leds.setColor(Color.kBlue), () -> {
+            .whileTrue(new StartEndCommand(() -> leds.setColor(Color.kBlue), () -> {
             }, leds));
         // LEDs are green when ball is loaded and locked on
         magSensor.and(turretAligned)
-            .whileActiveContinuous(new StartEndCommand(() -> leds.setColor(Color.kGreen), () -> {
+            .whileTrue(new StartEndCommand(() -> leds.setColor(Color.kGreen), () -> {
             }, leds));
         // LEDs are red when limelight aligned but ball not loaded
         magSensor.negate().and(turretAligned)
-            .whileActiveContinuous(new StartEndCommand(() -> leds.setColor(Color.kRed), () -> {
+            .whileTrue(new StartEndCommand(() -> leds.setColor(Color.kRed), () -> {
             }, leds));
         /* Driver Buttons */
         // Reset Gyro on Driver Y pressed
-        new JoystickButton(driver, XboxController.Button.kY.value)
-            .whenPressed(new InstantCommand(() -> swerveDrive.zeroGyro()));
+        driver.y().whileTrue((new InstantCommand(() -> swerveDrive.resetFieldRelativeOffset())));
         // Turn Off Turret For Rest of Match on Driver X Pressed
-        new JoystickButton(operator, XboxController.Button.kX.value)
-            .whenPressed(new InstantCommand(() -> turret.alignEnabled = !turret.alignEnabled));
+        operator.x()
+            .whileTrue(new InstantCommand(() -> turret.alignEnabled = !turret.alignEnabled));
 
         /* Button Mappings for Climber Motors */
         // Extend the Outside climber arms
-        new JoystickButton(driver, XboxController.Button.kLeftBumper.value)
-            .whileHeld(new StartEndCommand(() -> outsideClimber.engageMotors(),
-                () -> outsideClimber.stopMotors(), outsideClimber));
+        driver.leftBumper().whileTrue(new StartEndCommand(() -> outsideClimber.engageMotors(),
+            () -> outsideClimber.stopMotors(), outsideClimber));
+
         // Retract the Outside climber arms
-        new AxisButton(driver, XboxController.Axis.kLeftTrigger.value)
-            .whileHeld(new StartEndCommand(() -> outsideClimber.retractMotors(),
+        driver.leftTrigger(Constants.stickDeadband)
+            .whileTrue(new StartEndCommand(() -> outsideClimber.retractMotors(),
                 () -> outsideClimber.stopMotors(), outsideClimber));
+
         // Extend the Inside climber arms
-        new JoystickButton(driver, XboxController.Button.kRightBumper.value)
-            .whileHeld(new StartEndCommand(() -> insideClimber.engageMotors(),
-                () -> insideClimber.stopMotors(), insideClimber));
+        driver.rightBumper().whileTrue(new StartEndCommand(() -> insideClimber.engageMotors(),
+            () -> insideClimber.stopMotors(), insideClimber));
+
         // Retract the Inside climber arms
-        new AxisButton(driver, XboxController.Axis.kRightTrigger.value)
-            .whileHeld(new StartEndCommand(() -> insideClimber.retractMotors(),
-                () -> insideClimber.stopMotors(), insideClimber));
+        driver.rightTrigger(Constants.stickDeadband).whileTrue(new StartEndCommand(
+            () -> insideClimber.retractMotors(), () -> insideClimber.stopMotors(), insideClimber));
+
+
+        driver.back().whileTrue(
+            new InstantCommand(() -> swerveDrive.swerveOdometry.resetPosition(swerveDrive.getYaw(),
+                swerveDrive.getPositions(), new Pose2d(0, 0, new Rotation2d(0)))));
+
+
 
         // Inside Pneumatics Activate on drive
-        new JoystickButton(driver, XboxController.Button.kB.value)
-            .whenPressed(new OutsidePC(outsideClimber));
+        driver.b().whileTrue(new OutsidePC(outsideClimber));
         // Outside Pneumatics Activate on driver
-        new JoystickButton(driver, XboxController.Button.kA.value)
-            .whenPressed(new InsidePC(insideClimber));
-        new JoystickButton(driver, XboxController.Button.kStart.value)
-            .whenPressed(new InstantCommand(() -> insideClimber.enableClimbers())
+        driver.a().whileTrue(new InsidePC(insideClimber));
+        driver.start()
+            .whileTrue(new InstantCommand(() -> insideClimber.enableClimbers())
                 .andThen(new InstantCommand(() -> outsideClimber.enableClimbers()))
                 .andThen(new InstantCommand(() -> turret.alignEnabled = false))
                 // Turns default LEDS to 1
@@ -173,40 +176,39 @@ public class RobotContainer {
         /* Operator Buttons */
 
         // Enable Shooter Tape Line setpoint right trigger
-        new AxisButton(operator, XboxController.Axis.kRightTrigger.value)
-            .whileHeld(new StartEndCommand(() -> turret.alignEnabled = true,
+        operator.rightTrigger()
+            .whileTrue(new StartEndCommand(() -> turret.alignEnabled = true,
                 () -> turret.alignEnabled = false))
-            .whileHeld(new ShooterRPM(this.shooter, 2400 / 60))
-            .whileHeld(new FeedShooter(innerMagazine, outerMagazine, shooter, intake))
-            .whileHeld(new WheelsIn(swerveDrive));
+            .whileTrue(new ShooterRPM(this.shooter, 2400 / 60))
+            .whileTrue(new FeedShooter(innerMagazine, outerMagazine, shooter, intake))
+            .whileTrue(new WheelsIn(swerveDrive));
 
-        // Enable Shooter Safety Location setpoint right trigger
-        new AxisButton(operator, XboxController.Axis.kLeftTrigger.value)
-            .whileHeld(new StartEndCommand(() -> turret.alignEnabled = true,
+        // Enable Shooter Safety Location setpoint left trigger
+        operator.leftTrigger()
+            .whileTrue(new StartEndCommand(() -> turret.alignEnabled = true,
                 () -> turret.alignEnabled = false))
-            .whileHeld(new ShooterRPM(this.shooter, 3250 / 60)) // 15 ft
-            .whileHeld(new FeedShooter(innerMagazine, outerMagazine, shooter, intake))
-            .whileHeld(new WheelsIn(swerveDrive));
+            .whileTrue(new ShooterRPM(this.shooter, 3250 / 60)) // 15 ft
+            .whileTrue(new FeedShooter(innerMagazine, outerMagazine, shooter, intake))
+            .whileTrue(new WheelsIn(swerveDrive));
 
         // Enable Shooter Magazine Combo While Operator A Button Held
-        new JoystickButton(operator, XboxController.Button.kA.value)
-            .whileHeld(new StartEndCommand(() -> turret.alignEnabled = true,
+        operator.a()
+            .whileTrue(new StartEndCommand(() -> turret.alignEnabled = true,
                 () -> turret.alignEnabled = false))
-            .whileHeld(new ShooterRPM(this.shooter, this.vision))
-            .whileHeld(new FeedShooter(innerMagazine, outerMagazine, shooter, intake))
-            .whileHeld(new WheelsIn(swerveDrive));
+            .whileTrue(new ShooterRPM(this.shooter, this.vision))
+            .whileTrue(new FeedShooter(innerMagazine, outerMagazine, shooter, intake))
+            .whileTrue(new WheelsIn(swerveDrive));
 
         // Deploy Intake and Run Magazine While Operator B Held
-        new JoystickButton(operator, XboxController.Button.kB.value)
-            .whileHeld(new StartEndCommand(() -> {
-                intake.intakeDeploy();
-                outerMagazine.magazineUp();
-            }, () -> {
-                intake.intakeRetract();
-                outerMagazine.magazineStop();
-            }, intake, outerMagazine).alongWith(new InnerMagIntake(innerMagazine)));
+        operator.b().whileTrue(new StartEndCommand(() -> {
+            intake.intakeDeploy();
+            outerMagazine.magazineUp();
+        }, () -> {
+            intake.intakeRetract();
+            outerMagazine.magazineStop();
+        }, intake, outerMagazine).alongWith(new InnerMagIntake(innerMagazine)));
         // Run hopper down with POV down (180))
-        new POVButton(operator, 180).whileHeld(new StartEndCommand(() -> {
+        operator.povUp().whileTrue(new StartEndCommand(() -> {
             innerMagazine.magazineDown();
             outerMagazine.magazineDown();
         }, () -> {
@@ -214,21 +216,21 @@ public class RobotContainer {
             outerMagazine.magazineStop();
         }));
         // Right Turret Move While Operator Right Bumper Held
-        new JoystickButton(operator, XboxController.Button.kRightBumper.value).whileHeld(
+        operator.rightBumper().whileTrue(
             new StartEndCommand(() -> turret.turretRight(), () -> turret.turretStop(), turret));
 
         // Left Turret Move While Operator Left Bumper Held
-        new JoystickButton(operator, XboxController.Button.kLeftBumper.value).whileHeld(
+        operator.leftBumper().whileTrue(
             new StartEndCommand(() -> turret.turretLeft(), () -> turret.turretStop(), turret));
 
         // Spit ball command
-        new JoystickButton(operator, XboxController.Button.kY.value)
-            .whileHeld(new SequentialCommandGroup(new InstantCommand(() -> shooter.spinShooter()),
+        operator.y()
+            .whileTrue(new SequentialCommandGroup(new InstantCommand(() -> shooter.spinShooter()),
                 new WaitCommand(.2), new InstantCommand(() -> {
                     innerMagazine.magazineUp();
                     outerMagazine.magazineUp();
                 })))
-            .whenReleased(new InstantCommand(() -> {
+            .whileFalse(new InstantCommand(() -> {
                 shooter.stopShooter();
                 innerMagazine.magazineStop();
                 outerMagazine.magazineStop();

@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.lib.math.Conversions;
 import frc.robot.Constants;
@@ -45,6 +46,8 @@ public class SwerveModule {
         /* Drive Motor Config */
         driveMotor = new TalonFX(moduleConstants.driveMotorID, "canivore");
         configDriveMotor();
+
+
 
         lastAngle = getState().angle.getDegrees();
     }
@@ -109,7 +112,21 @@ public class SwerveModule {
     }
 
     /**
+     * Gets the Swerve module position
      *
+     * @return Swerve module position
+     */
+    public SwerveModulePosition getPosition() {
+        double position = Conversions.falconToMeters(driveMotor.getSelectedSensorPosition(),
+            Constants.Swerve.driveGearRatio, Constants.Swerve.wheelCircumference);
+
+        Rotation2d angle = Rotation2d.fromDegrees(Conversions.falconToDegrees(
+            angleMotor.getSelectedSensorPosition(), Constants.Swerve.angleGearRatio));
+        return new SwerveModulePosition(position, angle);
+    }
+
+    /**
+     * Configure the Angle motor CANCoder
      */
     private void configAngleEncoder() {
         angleEncoder.configFactoryDefault();
@@ -117,7 +134,7 @@ public class SwerveModule {
     }
 
     /**
-     *
+     * Configure the Angle motor
      */
     private void configAngleMotor() {
         angleMotor.configFactoryDefault();
@@ -128,7 +145,7 @@ public class SwerveModule {
     }
 
     /**
-     *
+     * Configure the Drive motor
      */
     private void configDriveMotor() {
         driveMotor.configFactoryDefault();
