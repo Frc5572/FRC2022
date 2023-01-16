@@ -80,7 +80,9 @@ public class P_2B extends AutoBase {
             new InstantCommand(() -> endCommand()));
     }
 
-    // new AutoAlignTurret(turret,vision))
+    /**
+     * Command to run at the end of the command
+     */
     public void endCommand() {
         innerMagazine.disable();
         outerMagazine.magazineStop();

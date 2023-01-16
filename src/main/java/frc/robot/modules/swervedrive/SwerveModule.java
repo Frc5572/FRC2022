@@ -8,7 +8,6 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.math.Conversions;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -118,21 +117,16 @@ public class SwerveModule {
      * @return Swerve module position
      */
     public SwerveModulePosition getPosition() {
-        // double velocity = Conversions.falconToMPS(driveMotor.getSelectedSensorVelocity(),
-        // Constants.Swerve.wheelCircumference, Constants.Swerve.driveGearRatio);
         double position = Conversions.falconToMeters(driveMotor.getSelectedSensorPosition(),
             Constants.Swerve.driveGearRatio, Constants.Swerve.wheelCircumference);
 
-
-
-        Rotation2d angle = Rotation2d.fromDegrees(Conversions.falconToDegrees(angleMotor.getSelectedSensorPosition(), Constants.Swerve.angleGearRatio));
+        Rotation2d angle = Rotation2d.fromDegrees(Conversions.falconToDegrees(
+            angleMotor.getSelectedSensorPosition(), Constants.Swerve.angleGearRatio));
         return new SwerveModulePosition(position, angle);
- 
-
     }
 
     /**
-     *
+     * Configure the Angle motor CANCoder
      */
     private void configAngleEncoder() {
         angleEncoder.configFactoryDefault();
@@ -140,7 +134,7 @@ public class SwerveModule {
     }
 
     /**
-     *
+     * Configure the Angle motor
      */
     private void configAngleMotor() {
         angleMotor.configFactoryDefault();
@@ -151,7 +145,7 @@ public class SwerveModule {
     }
 
     /**
-     *
+     * Configure the Drive motor
      */
     private void configDriveMotor() {
         driveMotor.configFactoryDefault();

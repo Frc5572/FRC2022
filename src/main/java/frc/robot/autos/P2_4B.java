@@ -91,6 +91,9 @@ public class P2_4B extends AutoBase {
             new InstantCommand(() -> endCommand()));
     }
 
+    /**
+     * Command to run at the end of the command
+     */
     public void endCommand() {
         innerMagazine.disable();
         outerMagazine.magazineStop();

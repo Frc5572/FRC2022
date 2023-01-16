@@ -181,7 +181,8 @@ public class Swerve extends SubsystemBase {
 
         SmartDashboard.putNumber("Robot X", swerveOdometry.getPoseMeters().getX());
         SmartDashboard.putNumber("Robot Y", swerveOdometry.getPoseMeters().getY());
-        SmartDashboard.putNumber("Robot Rotation", swerveOdometry.getPoseMeters().getRotation().getDegrees());
+        SmartDashboard.putNumber("Robot Rotation",
+            swerveOdometry.getPoseMeters().getRotation().getDegrees());
         SmartDashboard.putNumber("Gyro Yaw", yaw.getDegrees());
         SmartDashboard.putNumber("Field Offset", fieldOffset);
         SmartDashboard.putNumber("Gyro Yaw - Offset", yaw.getDegrees() - fieldOffset);
@@ -194,8 +195,8 @@ public class Swerve extends SubsystemBase {
                 mod.getState().angle.getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity",
                 mod.getState().speedMetersPerSecond);
-                SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Position",
-                    mod.getPosition().distanceMeters);
+            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Position",
+                mod.getPosition().distanceMeters);
         }
     }
 
@@ -203,6 +204,11 @@ public class Swerve extends SubsystemBase {
         return getYaw().getDegrees();
     }
 
+    /**
+     * Get position of all swerve modules
+     *
+     * @return Array of Swerve Module Positions
+     */
     public SwerveModulePosition[] getPositions() {
         SwerveModulePosition[] positions = new SwerveModulePosition[4];
         for (SwerveModule mod : swerveMods) {

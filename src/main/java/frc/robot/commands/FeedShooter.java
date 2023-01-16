@@ -51,6 +51,9 @@ public class FeedShooter extends SequentialCommandGroup {
         addCommands(intakeWhileShooting, new InstantCommand(() -> endCommand()));
     }
 
+    /**
+     * Command to run at the end of the command
+     */
     public void endCommand() {
         this.innerMagazine.disable();
         this.outerMagazine.magazineStop();

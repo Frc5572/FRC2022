@@ -69,18 +69,17 @@ public class P1_5B extends AutoBase {
                 })).andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter,
                     this.intake).withTimeout(1.5));
 
-        SequentialCommandGroup part2 = new TurnToAngle(swerve, 250, false)
-            .andThen((autoDrive2.andThen(new ZeroMotorsWaitCommand(swerve, 3)
-                .until(() -> innerMagazine.magSense.get())))
+        SequentialCommandGroup part2 =
+            new TurnToAngle(swerve, 250, false).andThen((autoDrive2.andThen(
+                new ZeroMotorsWaitCommand(swerve, 3).until(() -> innerMagazine.magSense.get())))
                     .deadlineWith(new StartEndCommand(() -> {
                         intake.intakeDeploy();
                         outerMagazine.magazineUp();
                     }, () -> {
                         outerMagazine.magazineStop();
                     }), new InnerMagIntake(this.innerMagazine)))
-            .andThen(
-                new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter, this.intake)
-                    .withTimeout(.7));
+                .andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter,
+                    this.intake).withTimeout(.7));
 
         ParallelDeadlineGroup part3 = (autoDrive3.andThen(new ZeroMotorsWaitCommand(swerve, 1.5)))
             .deadlineWith(new StartEndCommand(() -> {
@@ -108,6 +107,9 @@ public class P1_5B extends AutoBase {
             new InstantCommand(() -> endCommand()));
     }
 
+    /**
+     * Command to run at the end of the command
+     */
     public void endCommand() {
         innerMagazine.disable();
         outerMagazine.magazineStop();

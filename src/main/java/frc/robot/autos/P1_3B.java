@@ -56,24 +56,22 @@ public class P1_3B extends AutoBase {
 
         SequentialCommandGroup part1 =
             new SequentialCommandGroup(autoDrive, new ZeroMotorsWaitCommand(swerve, .5))
-                 .deadlineWith(new StartEndCommand(() -> {
-                     intake.intakeDeploy();
-                     outerMagazine.magazineUp();
-                 }, () -> {
-                     outerMagazine.magazineStop();
-                 })).andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter,
-                     this.intake).withTimeout(1.5));
+                .deadlineWith(new StartEndCommand(() -> {
+                    intake.intakeDeploy();
+                    outerMagazine.magazineUp();
+                }, () -> {
+                    outerMagazine.magazineStop();
+                })).andThen(new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter,
+                    this.intake).withTimeout(1.5));
 
-        SequentialCommandGroup part2 = new TurnToAngle(swerve, 250, false)
-            .andThen((autoDrive2)).andThen(new ZeroMotorsWaitCommand(swerve, 3)
-                .until(() -> innerMagazine.magSense.get()))
-                    .deadlineWith(new StartEndCommand(() -> {
-                        intake.intakeDeploy();
-                        outerMagazine.magazineUp();
-                    }, () -> {
-                        outerMagazine.magazineStop();
-                    }), new InnerMagIntake(this.innerMagazine))
-            .andThen(
+        SequentialCommandGroup part2 = new TurnToAngle(swerve, 250, false).andThen((autoDrive2))
+            .andThen(new ZeroMotorsWaitCommand(swerve, 3).until(() -> innerMagazine.magSense.get()))
+            .deadlineWith(new StartEndCommand(() -> {
+                intake.intakeDeploy();
+                outerMagazine.magazineUp();
+            }, () -> {
+                outerMagazine.magazineStop();
+            }), new InnerMagIntake(this.innerMagazine)).andThen(
                 new FeedShooter(this.innerMagazine, this.outerMagazine, this.shooter, this.intake)
                     .withTimeout(.7));
 
@@ -89,6 +87,9 @@ public class P1_3B extends AutoBase {
             new InstantCommand(() -> endCommand()));
     }
 
+    /**
+     * Command to run at the end of the command
+     */
     public void endCommand() {
         innerMagazine.disable();
         outerMagazine.magazineStop();
