@@ -48,11 +48,13 @@ public class FeedShooter extends SequentialCommandGroup {
 
         ParallelDeadlineGroup intakeWhileShooting = new SequentialCommandGroup(part1, part2)
             .deadlineWith(new InstantCommand(() -> intake.intakeDeploy()));
-        addCommands(intakeWhileShooting);
+        addCommands(intakeWhileShooting, new InstantCommand(() -> endCommand()));
     }
 
-    @Override
-    public void end(boolean interrupted) {
+    /**
+     * Command to run at the end of the command
+     */
+    public void endCommand() {
         this.innerMagazine.disable();
         this.outerMagazine.magazineStop();
         this.intake.intakeRetract();
