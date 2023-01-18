@@ -174,7 +174,7 @@ public class Swerve extends SubsystemBase {
     public void periodic() {
         Rotation2d yaw = getYaw();
         // swerveOdometry.update(getYaw(), getPositions());
-        swerveOdometry.update(new Rotation2d(yaw.getRadians()), getPositions());
+        swerveOdometry.update(yaw, getPositions());
 
 
         SmartDashboard.putNumber("Robot X", swerveOdometry.getPoseMeters().getX());
@@ -204,7 +204,7 @@ public class Swerve extends SubsystemBase {
      * @return Rotation of gyro in Degrees
      */
     public double getRotation() {
-        return getYaw().getDegrees();
+        return getPose().getRotation().getDegrees();
     }
 
     /**
@@ -221,6 +221,6 @@ public class Swerve extends SubsystemBase {
     }
 
     public void useOutput(double output) {
-        pidTurn = output * 4;
+        pidTurn = output * 1;
     }
 }

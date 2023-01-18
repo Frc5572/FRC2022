@@ -5,7 +5,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
@@ -14,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.autos.P0;
 import frc.robot.autos.P1_3B;
@@ -92,7 +92,7 @@ public class RobotContainer {
         SmartDashboard.putData("Choose Auto: ", autoChooser);
         autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
         autoChooser.addOption("P0", new P0(swerveDrive));
-        autoChooser.addOption("Turn2Angle", new TurnToAngle(swerveDrive, 90, true));
+        autoChooser.addOption("Turn2Angle", new TurnToAngle(swerveDrive, 90, false));
         autoChooser.addOption("P_2B",
             new P_2B(swerveDrive, shooter, innerMagazine, outerMagazine, intake, turret, vision));
         autoChooser.addOption("P1_3B",
@@ -103,7 +103,6 @@ public class RobotContainer {
             new P2_4B(swerveDrive, shooter, innerMagazine, outerMagazine, intake, turret, vision));
         // Configure the button bindings
         configureButtonBindings();
-        swerveDrive.zeroGyro();
     }
 
     /**

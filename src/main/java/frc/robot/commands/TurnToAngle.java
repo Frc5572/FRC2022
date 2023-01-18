@@ -1,21 +1,27 @@
 package frc.robot.commands;
 
+import edu.wpi.first.math.controller.HolonomicDriveController;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
-import frc.lib.math.Conversions;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
 
 /**
  * This command will turn the robot to a specified angle.
  */
-public class TurnToAngle extends ProfiledPIDCommand {
+public class TurnToAngle extends CommandBase {
 
     private Swerve swerve;
     private boolean isRelative;
     private double goal;
+    private HolonomicDriveController holonomicDriveController;
+    private Pose2d startPos = new Pose2d();
+    private Pose2d targetPose2d = new Pose2d();
 
     /**
      * Turns robot to specified angle. Uses absolute rotation on field.
@@ -27,55 +33,44 @@ public class TurnToAngle extends ProfiledPIDCommand {
      */
 
     public TurnToAngle(Swerve swerve, double angle, boolean isRelative) {
-        super(
-            // The ProfiledPIDController used by the command
-            new ProfiledPIDController(
-                // The PID gainss
-                .02, 0, 0,
-                // The motion profile constraints
-                new TrapezoidProfile.Constraints(720, 1080)),
-            // This should return the measurement
-            swerve::getRotation,
-            // This should return the goal (can also be a constant)
-            isRelative ? Conversions.reduceTo0_360(swerve.getRotation() + angle)
-                : Conversions.reduceTo0_360(angle),
-            // This uses the output
-            (output, setpoint) -> swerve.useOutput(output));
-        // Use addRequirements() here to declare subsystem dependencies.
-        // Configure additional PID options by calling `getController` here.
-        getController().setTolerance(1);
-        getController().enableContinuousInput(0, 360);
         addRequirements(swerve);
         this.swerve = swerve;
         this.isRelative = isRelative;
         this.goal = angle;
+        holonomicDriveController = new HolonomicDriveController(
+            new PIDController(Constants.AutoConstants.kPXController, 0, 0),
+            new PIDController(Constants.AutoConstants.kPYController, 0, 0),
+            new ProfiledPIDController(.5, 0, 0,
+                Constants.AutoConstants.kThetaControllerConstraints));
 
     }
 
     @Override
     public void initialize() {
-        super.initialize();
-        getController()
-            .setGoal(this.isRelative ? Conversions.reduceTo0_360(swerve.getRotation() + this.goal)
-                : Conversions.reduceTo0_360(this.goal));
+        startPos = swerve.getPose();
+        targetPose2d = new Pose2d(startPos.getTranslation(), Rotation2d.fromDegrees(goal));
+        // targetPose2d = new Pose2d(startPos.getTranslation(), startPos.getRotation().plus(
+        // Rotation2d.fromDegrees(goal)));
     }
 
     @Override
     public void execute() {
-        super.execute();
-        swerve.drive(new Translation2d(0, 0), 0, Constants.Swerve.isFieldRelative,
-            Constants.Swerve.isOpenLoop);
+        Pose2d currPose2d = swerve.getPose();
+        this.holonomicDriveController.calculate(currPose2d, targetPose2d, 0,
+            targetPose2d.getRotation());
+
     }
 
     @Override
     public void end(boolean interrupt) {
-        super.end(interrupt);
-        swerve.useOutput(0);
-        swerve.setMotorsZero(Constants.Swerve.isOpenLoop, Constants.Swerve.isFieldRelative);
+        ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, 0, 0);
+        SwerveModuleState[] swerveModuleStates =
+            Constants.Swerve.swerveKinematics.toSwerveModuleStates(chassisSpeeds);
+        swerve.setModuleStates(swerveModuleStates);
     }
 
     @Override
     public boolean isFinished() {
-        return getController().atGoal();
+        return holonomicDriveController.atReference();
     }
 }
