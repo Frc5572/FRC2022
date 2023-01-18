@@ -35,8 +35,8 @@ public class TurnToAngle extends CommandBase {
     public TurnToAngle(Swerve swerve, double angle, boolean isRelative) {
         addRequirements(swerve);
         this.swerve = swerve;
-        this.isRelative = isRelative;
         this.goal = angle;
+        this.isRelative = isRelative;
         holonomicDriveController = new HolonomicDriveController(
             new PIDController(Constants.AutoConstants.kPXController, 0, 0),
             new PIDController(Constants.AutoConstants.kPYController, 0, 0),
@@ -49,8 +49,12 @@ public class TurnToAngle extends CommandBase {
     public void initialize() {
         startPos = swerve.getPose();
         targetPose2d = new Pose2d(startPos.getTranslation(), Rotation2d.fromDegrees(goal));
-        // targetPose2d = new Pose2d(startPos.getTranslation(), startPos.getRotation().plus(
-        // Rotation2d.fromDegrees(goal)));
+        // if (isRelative) {
+        // targetPose2d = new Pose2d(startPos.getTranslation(),
+        // startPos.getRotation().plus(Rotation2d.fromDegrees(goal)));
+        // } else {
+        // targetPose2d = new Pose2d(startPos.getTranslation(), Rotation2d.fromDegrees(goal));
+        // }
     }
 
     @Override

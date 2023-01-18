@@ -164,6 +164,11 @@ public class Swerve extends SubsystemBase {
             : Rotation2d.fromDegrees(yaw);
     }
 
+    /**
+     * Gets the rotation degree from swerve modules and returns it as a string.
+     *
+     * @return The value of the yaw as a string.
+     */
     public String getStringYaw() {
         float yaw = gyro.getYaw();
         double heading = yaw < 0 ? -yaw : 360 - yaw;
