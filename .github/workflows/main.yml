@@ -40,13 +40,17 @@ jobs:
           check_filenames: true
   build:
     name: Build
-    runs-on: windows-2019
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # This grabs the WPILib docker container
+    container: wpilib/roborio-cross-ubuntu:2022-18.04
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v2
-        with:
-          distribution: 'temurin' # See 'Supported distributions' for available options
-          java-version: '11'
-      - name: Build
-        shell: cmd
-        run: ./gradlew build
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+    # Grant execute permission for gradlew
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    # Runs a single command using the runners shell
+    - name: Compile and run tests on robot code
+      run: ./gradlew build
