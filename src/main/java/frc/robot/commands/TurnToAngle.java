@@ -37,32 +37,37 @@ public class TurnToAngle extends CommandBase {
         this.swerve = swerve;
         this.goal = angle;
         this.isRelative = isRelative;
-        holonomicDriveController = new HolonomicDriveController(
-            new PIDController(Constants.AutoConstants.kPXController, 0, 0),
-            new PIDController(Constants.AutoConstants.kPYController, 0, 0),
-            new ProfiledPIDController(.5, 0, 0,
-                Constants.AutoConstants.kThetaControllerConstraints));
+
+        PIDController xcontroller = new PIDController(Constants.AutoConstants.kPXController, 0, 0);
+        PIDController ycontroller = new PIDController(Constants.AutoConstants.kPYController, 0, 0);
+        ProfiledPIDController thetacontroller = new ProfiledPIDController(-4, 0, 0,
+            Constants.AutoConstants.kThetaControllerConstraints);
+        holonomicDriveController =
+            new HolonomicDriveController(xcontroller, ycontroller, thetacontroller);
+        holonomicDriveController.setTolerance(new Pose2d(1, 1, Rotation2d.fromDegrees(1)));
 
     }
 
     @Override
     public void initialize() {
         startPos = swerve.getPose();
-        targetPose2d = new Pose2d(startPos.getTranslation(), Rotation2d.fromDegrees(goal));
-        // if (isRelative) {
-        // targetPose2d = new Pose2d(startPos.getTranslation(),
-        // startPos.getRotation().plus(Rotation2d.fromDegrees(goal)));
-        // } else {
-        // targetPose2d = new Pose2d(startPos.getTranslation(), Rotation2d.fromDegrees(goal));
-        // }
+        if (isRelative) {
+            targetPose2d = new Pose2d(startPos.getTranslation(),
+                startPos.getRotation().rotateBy(Rotation2d.fromDegrees(goal)));
+        } else {
+            targetPose2d = new Pose2d(startPos.getTranslation(), Rotation2d.fromDegrees(goal));
+        }
     }
 
     @Override
     public void execute() {
         Pose2d currPose2d = swerve.getPose();
-        this.holonomicDriveController.calculate(currPose2d, targetPose2d, 0,
-            targetPose2d.getRotation());
-
+        ChassisSpeeds chassisSpeeds = this.holonomicDriveController.calculate(currPose2d,
+            targetPose2d, 0, targetPose2d.getRotation());
+        SwerveModuleState[] swerveModuleStates =
+            Constants.Swerve.swerveKinematics.toSwerveModuleStates(chassisSpeeds);
+        swerve.setModuleStates(swerveModuleStates);
+        // System.out.println(targetPose2d.relativeTo(currPose2d));
     }
 
     @Override
@@ -76,5 +81,6 @@ public class TurnToAngle extends CommandBase {
     @Override
     public boolean isFinished() {
         return holonomicDriveController.atReference();
+
     }
 }

@@ -93,6 +93,7 @@ public class RobotContainer {
         autoChooser.setDefaultOption("Do Nothing", new ZeroMotorsWaitCommand(swerveDrive, 1));
         autoChooser.addOption("P0", new P0(swerveDrive));
         autoChooser.addOption("Turn2Angle", new TurnToAngle(swerveDrive, 90, false));
+        autoChooser.addOption("Turn2AngleRelative", new TurnToAngle(swerveDrive, 90, true));
         autoChooser.addOption("P_2B",
             new P_2B(swerveDrive, shooter, innerMagazine, outerMagazine, intake, turret, vision));
         autoChooser.addOption("P1_3B",

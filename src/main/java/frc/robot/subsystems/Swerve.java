@@ -224,8 +224,4 @@ public class Swerve extends SubsystemBase {
         }
         return positions;
     }
-
-    public void useOutput(double output) {
-        pidTurn = output * 1;
-    }
 }
