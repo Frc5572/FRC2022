@@ -44,7 +44,7 @@ public class TurnToAngle extends CommandBase {
             new ProfiledPIDController(4, 0, 0, Constants.AutoConstants.kThetaControllerConstraints);
         holonomicDriveController =
             new HolonomicDriveController(xcontroller, ycontroller, thetacontroller);
-        holonomicDriveController.setTolerance(new Pose2d(1, 1, Rotation2d.fromDegrees(1)));
+        holonomicDriveController.setTolerance(new Pose2d(1, 1, Rotation2d.fromDegrees(0.5)));
 
     }
 
