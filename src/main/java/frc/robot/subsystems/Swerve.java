@@ -164,16 +164,22 @@ public class Swerve extends SubsystemBase {
             : Rotation2d.fromDegrees(yaw);
     }
 
+    /**
+     * Gets the rotation degree from swerve modules and returns it as a string.
+     *
+     * @return The value of the yaw as a string.
+     */
     public String getStringYaw() {
         float yaw = gyro.getYaw();
-        return (Constants.Swerve.invertGyro) ? "Yaw: " + (360 - yaw) : "Yaw: " + yaw;
+        double heading = yaw < 0 ? -yaw : 360 - yaw;
+        return (Constants.Swerve.invertGyro) ? "Yaw: " + (360 - heading) : "Yaw: " + heading;
     }
 
     @Override
     public void periodic() {
         Rotation2d yaw = getYaw();
         // swerveOdometry.update(getYaw(), getPositions());
-        swerveOdometry.update(new Rotation2d(yaw.getRadians()), getPositions());
+        swerveOdometry.update(yaw, getPositions());
 
 
         SmartDashboard.putNumber("Robot X", swerveOdometry.getPoseMeters().getX());
@@ -203,7 +209,7 @@ public class Swerve extends SubsystemBase {
      * @return Rotation of gyro in Degrees
      */
     public double getRotation() {
-        return getYaw().getDegrees();
+        return getPose().getRotation().getDegrees();
     }
 
     /**
@@ -217,9 +223,5 @@ public class Swerve extends SubsystemBase {
             positions[mod.moduleNumber] = mod.getPosition();
         }
         return positions;
-    }
-
-    public void useOutput(double output) {
-        pidTurn = output * 4;
     }
 }
